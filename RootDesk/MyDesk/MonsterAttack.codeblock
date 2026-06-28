@@ -1,0 +1,143 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "codeblock://monsterattack",
+  "ContentType": "x-mod/codeblock",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "1.21.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "CoreVersion": {
+        "Major": 0,
+        "Minor": 2
+      },
+      "ScriptVersion": {
+        "Major": 1,
+        "Minor": 5
+      },
+      "Description": "",
+      "Id": "MonsterAttack",
+      "Language": 1,
+      "Name": "MonsterAttack",
+      "Type": 4,
+      "Source": 1,
+      "Target": "MOD.Core.AttackComponent",
+      "Properties": [
+        {
+          "Type": "number",
+          "DefaultValue": "0.03",
+          "SyncDirection": 0,
+          "Attributes": [
+            {
+              "$type": "MOD.Core.Script.MinValueScriptAttribute, MOD.Core",
+              "Value": 0.0
+            }
+          ],
+          "Name": "AttackInterval"
+        },
+        {
+          "Type": "any",
+          "DefaultValue": "nil",
+          "SyncDirection": 0,
+          "Attributes": [
+            {
+              "$type": "MOD.Core.Script.HideFromInspectorScriptAttribute, MOD.Core"
+            }
+          ],
+          "Name": "Shape"
+        },
+        {
+          "Type": "Vector2",
+          "DefaultValue": "Vector2(0,0)",
+          "SyncDirection": 0,
+          "Attributes": [
+            {
+              "$type": "MOD.Core.Script.HideFromInspectorScriptAttribute, MOD.Core"
+            }
+          ],
+          "Name": "SpriteSize"
+        },
+        {
+          "Type": "Vector2",
+          "DefaultValue": "Vector2(0,0)",
+          "SyncDirection": 0,
+          "Attributes": [
+            {
+              "$type": "MOD.Core.Script.HideFromInspectorScriptAttribute, MOD.Core"
+            }
+          ],
+          "Name": "PositionOffset"
+        }
+      ],
+      "Methods": [
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "local monster = self.Entity.Monster\nif not monster then\n\treturn\nend\n\nself.Shape = BoxShape(Vector2.zero, Vector2.one, 0)\n\n-- sprite 사이즈를 가져와 공격 영역으로 사용한다\n_ResourceService:PreloadAsync({self.Entity.SpriteRendererComponent.SpriteRUID}, function()\n\tlocal clip = _ResourceService:LoadAnimationClipAndWait(self.Entity.SpriteRendererComponent.SpriteRUID)\n\tlocal firstFrameSprite = clip.Frames[1].FrameSprite\n\tlocal firstSpriteSizeInPixel = Vector2(firstFrameSprite.Width, firstFrameSprite.Height)\n\tlocal ppu = firstFrameSprite.PixelPerUnit\n\n\tself.SpriteSize = firstSpriteSizeInPixel / ppu\n\tself.PositionOffset = (firstSpriteSizeInPixel / 2 - firstFrameSprite.PivotPixel:ToVector2()) / ppu\n\t\n\t_TimerService:SetTimerRepeat(function() \n\t\tif monster.IsDead == false then\n\t\t\tself:AttackNear()\n\t\tend\n\tend, self.AttackInterval)\nend)",
+          "Scope": 2,
+          "ExecSpace": 1,
+          "Attributes": [],
+          "Name": "OnBeginPlay"
+        },
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "local transformComponent = self.Entity.TransformComponent\n\nif isvalid(transformComponent) then\n\tlocal worldPosition = transformComponent.WorldPosition\n\tlocal scaleX = transformComponent.Scale.x\n\tlocal scaleY = transformComponent.Scale.y\n\tlocal radian = math.rad(transformComponent.ZRotation)\n\tlocal offsetX = math.cos(radian) * self.PositionOffset.x * scaleX - math.sin(radian) * self.PositionOffset.y * scaleY\n\tlocal offsetY = math.sin(radian) * self.PositionOffset.x * scaleX + math.cos(radian) * self.PositionOffset.y * scaleY\n\tself.Shape.Size = Vector2(self.SpriteSize.x * math.abs(scaleX), self.SpriteSize.y * math.abs(scaleY))\n\tself.Shape.Position = Vector2(worldPosition.x + offsetX, worldPosition.y + offsetY)\n\tself.Shape.Angle = transformComponent.ZRotation\nend\n\nself:AttackFast(self.Shape, nil, CollisionGroups.Player)",
+          "Scope": 2,
+          "ExecSpace": 0,
+          "Attributes": [],
+          "Name": "AttackNear"
+        },
+        {
+          "Return": {
+            "Type": "boolean",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [
+            {
+              "Type": "Entity",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "defender"
+            },
+            {
+              "Type": "string",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "attackInfo"
+            }
+          ],
+          "Code": "if isvalid(defender.PlayerComponent) == false then\n\treturn false\nend\n\nreturn __base:IsAttackTarget(defender, attackInfo)",
+          "Scope": 2,
+          "ExecSpace": 0,
+          "Attributes": [],
+          "Name": "IsAttackTarget"
+        }
+      ],
+      "EntityEventHandlers": []
+    }
+  }
+}

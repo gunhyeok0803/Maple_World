@@ -1,0 +1,138 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "codeblock://monster",
+  "ContentType": "x-mod/codeblock",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "1.21.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "CoreVersion": {
+        "Major": 0,
+        "Minor": 2
+      },
+      "ScriptVersion": {
+        "Major": 1,
+        "Minor": 3
+      },
+      "Description": "",
+      "Id": "Monster",
+      "Language": 1,
+      "Name": "Monster",
+      "Type": 1,
+      "Source": 1,
+      "Target": null,
+      "Properties": [
+        {
+          "Type": "number",
+          "DefaultValue": "100",
+          "SyncDirection": 3,
+          "Attributes": [],
+          "Name": "MaxHp"
+        },
+        {
+          "Type": "number",
+          "DefaultValue": "0",
+          "SyncDirection": 3,
+          "Attributes": [],
+          "Name": "Hp"
+        },
+        {
+          "Type": "boolean",
+          "DefaultValue": "false",
+          "SyncDirection": 3,
+          "Attributes": [],
+          "Name": "RespawnOn"
+        },
+        {
+          "Type": "boolean",
+          "DefaultValue": "false",
+          "SyncDirection": 3,
+          "Attributes": [
+            {
+              "$type": "MOD.Core.Script.HideFromInspectorScriptAttribute, MOD.Core"
+            }
+          ],
+          "Name": "IsDead"
+        },
+        {
+          "Type": "number",
+          "DefaultValue": "5",
+          "SyncDirection": 3,
+          "Attributes": [],
+          "Name": "RespawnDelay"
+        },
+        {
+          "Type": "number",
+          "DefaultValue": "0.6",
+          "SyncDirection": 3,
+          "Attributes": [],
+          "Name": "DestroyDelay"
+        }
+      ],
+      "Methods": [
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "self.Hp = self.MaxHp",
+          "Scope": 2,
+          "ExecSpace": 0,
+          "Attributes": [],
+          "Name": "OnBeginPlay"
+        },
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "self.IsDead = true\nlocal stateComponent = self.Entity.StateComponent\nif stateComponent then\n\tstateComponent:ChangeState(\"DEAD\")\n\tlog(\"monster change state to DEAD\")\nend\n\nlocal delayHide = function()\n\tself.Entity:SetVisible(false)\n\tself.Entity:SetEnable(false)\n\t\n\tif self.RespawnOn == false then\n\t\tself.Entity:Destroy()\n\tend\nend\n\n_TimerService:SetTimerOnce(delayHide, self.DestroyDelay)",
+          "Scope": 2,
+          "ExecSpace": 1,
+          "Attributes": [],
+          "Name": "Dead"
+        },
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "log(\"Respawn\")\nself.IsDead = false\nself.Entity:SetVisible(true)\nself.Entity:SetEnable(true)\n\nself.Hp = self.MaxHp\nlocal stateComponent = self.Entity.StateComponent\nif stateComponent then\n\tstateComponent:ChangeState(\"IDLE\")\nend",
+          "Scope": 2,
+          "ExecSpace": 1,
+          "Attributes": [],
+          "Name": "Respawn"
+        }
+      ],
+      "EntityEventHandlers": [
+        {
+          "Name": "HandleHitEvent",
+          "EventName": "HitEvent",
+          "Target": "self",
+          "Code": "-- Parameters\n-- local AttackCenter = event.AttackCenter\n-- local AttackerEntity = event.AttackerEntity\n-- local Damages = event.Damages\n-- local Extra = event.Extra\n-- local IsCritical = event.IsCritical\nlocal TotalDamage = event.TotalDamage\n--------------------------------------------------------\n\nlocal originalHp = self.Hp\nself.Hp = self.Hp - TotalDamage\n\nif self.Hp > 0 or originalHp <= 0 then\n\treturn\t\nend\n\nself:Dead()\nlocal timerFunc = function() self:Respawn() end\n\nif self.RespawnOn then\n\t_TimerService:SetTimerOnce(timerFunc, self.RespawnDelay)\nend",
+          "Scope": 1,
+          "ExecSpace": 1
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "codeblock://playerattack",
+  "ContentType": "x-mod/codeblock",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "1.21.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "CoreVersion": {
+        "Major": 0,
+        "Minor": 2
+      },
+      "ScriptVersion": {
+        "Major": 1,
+        "Minor": 4
+      },
+      "Description": "",
+      "Id": "PlayerAttack",
+      "Language": 1,
+      "Name": "PlayerAttack",
+      "Type": 4,
+      "Source": 1,
+      "Target": "MOD.Core.AttackComponent",
+      "Properties": [
+        {
+          "Type": "any",
+          "DefaultValue": "nil",
+          "SyncDirection": 0,
+          "Attributes": [
+            {
+              "$type": "MOD.Core.Script.HideFromInspectorScriptAttribute, MOD.Core"
+            }
+          ],
+          "Name": "Shape"
+        }
+      ],
+      "Methods": [
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "self.Shape = BoxShape(Vector2.zero, Vector2.one, 0)",
+          "Scope": 2,
+          "ExecSpace": 1,
+          "Attributes": [],
+          "Name": "OnBeginPlay"
+        },
+        {
+          "Return": {
+            "Type": "void",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "local playerController = self.Entity.PlayerControllerComponent\nlocal transform = self.Entity.TransformComponent\nif playerController and transform then\n\tlocal worldPosition = transform.WorldPosition\n\tlocal attackOffset = Vector2(worldPosition.x + 0.5 * playerController.LookDirectionX, worldPosition.y + 0.5)\n\tself.Shape.Position = attackOffset\n\t\n\tself:AttackFast(self.Shape, nil, CollisionGroups.Monster)\nend",
+          "Scope": 2,
+          "ExecSpace": 1,
+          "Attributes": [],
+          "Name": "AttackNormal"
+        },
+        {
+          "Return": {
+            "Type": "int",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [
+            {
+              "Type": "Entity",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "attacker"
+            },
+            {
+              "Type": "Entity",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "defender"
+            },
+            {
+              "Type": "string",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "attackInfo"
+            }
+          ],
+          "Code": "return 50",
+          "Scope": 2,
+          "ExecSpace": 0,
+          "Attributes": [],
+          "Name": "CalcDamage"
+        },
+        {
+          "Return": {
+            "Type": "boolean",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [
+            {
+              "Type": "Entity",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "attacker"
+            },
+            {
+              "Type": "Entity",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "defender"
+            },
+            {
+              "Type": "string",
+              "DefaultValue": null,
+              "SyncDirection": 0,
+              "Attributes": [],
+              "Name": "attackInfo"
+            }
+          ],
+          "Code": "return _UtilLogic:RandomDouble() < 0.3",
+          "Scope": 2,
+          "ExecSpace": 0,
+          "Attributes": [],
+          "Name": "CalcCritical"
+        },
+        {
+          "Return": {
+            "Type": "number",
+            "DefaultValue": null,
+            "SyncDirection": 0,
+            "Attributes": [],
+            "Name": null
+          },
+          "Arguments": [],
+          "Code": "return 2",
+          "Scope": 2,
+          "ExecSpace": 0,
+          "Attributes": [],
+          "Name": "GetCriticalDamageRate"
+        }
+      ],
+      "EntityEventHandlers": [
+        {
+          "Name": "HandlePlayerActionEvent",
+          "EventName": "PlayerActionEvent",
+          "Target": "self",
+          "Code": "-- Parameters\nlocal ActionName = event.ActionName\n-- local PlayerEntity = event.PlayerEntity\n--------------------------------------------------------\n\nif ActionName == \"Attack\" then\n\tself:AttackNormal()\nend",
+          "Scope": 1,
+          "ExecSpace": 1
+        }
+      ]
+    }
+  }
+}
