@@ -1,0 +1,253 @@
+@Component
+script Inventory extends Component
+
+	-- 커스텀 슬롯 인벤토리 (공식 튜토리얼 방식) + 장착(표시식).
+	--  * 개별 슬롯(아이템 1개 = 1칸), 용량 MaxSlots(기본 100)
+	--  * 슬롯 목록(itemName) + 장착(부위Part→itemName)을 DataStorage에 저장/로드
+	--  * 저장은 디바운스: 변경 시 @Sync만 즉시 갱신(UI 반영) + dirty 표시 →
+	--    FlushInterval초마다 / 퇴장 시에만 실제 SetAsync 저장(Credit 절약)
+	--  * API: AddItem / RemoveItemAt / HasSpaceFor / RequestEquip / GetEquipped
+	-- ★ 이 컴포넌트는 DefaultPlayer에 Add Component로 직접 부착해야 함(Maker).
+
+	property integer MaxSlots = 100
+	property string SaveKey = "inventoryV2"
+	property number FlushInterval = 15      -- 저장 플러시 주기(초). 짧을수록 유실↓·저장빈도↑
+
+	-- 슬롯 목록 CSV(itemName,...) 와 장착 CSV(part:name,...) — 단일 문자열이라 OnSyncProperty 안정적.
+	@Sync property string SlotsCsv = ""
+	@Sync property string EquippedCsv = ""
+	-- 해금된 부위 CSV(part,...) — 기본 잠금 슬롯을 추후 해금하면 여기 누적(영속).
+	@Sync property string UnlockedCsv = ""
+
+	-- ===== 서버: 권위 데이터 + 디바운스 저장 =====
+
+	@ExecSpace("ServerOnly")
+	method void OnBeginPlay()
+		-- DataStorage 로드: "slots#equipped" 한 키. 이후 디바운스 저장 타이머 시작.
+		self._T.slots = {}
+		self._T.equipped = {}
+		self._T.unlocked = {}
+		self._T.dirty = false
+		self._T.lastSaved = ""
+		local userId = self.Entity.PlayerComponent.UserId
+		local ds = _DataStorageService:GetUserDataStorage(userId)
+		local code, raw = ds:GetAndWait(self.SaveKey)
+		if code == 0 and _UtilLogic:IsNilorEmptyString(raw) == false then
+			local parts = _UtilLogic:Split(raw, "#")
+			local slotsPart = parts[1] or ""
+			local equipPart = parts[2] or ""
+			local unlockPart = parts[3] or ""     -- 구버전 저장본엔 없음 → 빈값
+			for i, name in ipairs(_UtilLogic:Split(slotsPart, ",")) do
+				if name ~= "" then self._T.slots[#self._T.slots + 1] = name end
+			end
+			for i, pair in ipairs(_UtilLogic:Split(equipPart, ",")) do
+				local kv = _UtilLogic:Split(pair, ":")
+				if kv[1] ~= nil and kv[1] ~= "" and kv[2] ~= nil then self._T.equipped[kv[1]] = kv[2] end
+			end
+			for i, part in ipairs(_UtilLogic:Split(unlockPart, ",")) do
+				if part ~= "" then self._T.unlocked[part] = true end
+			end
+		end
+		self:Publish()
+		self._T.lastSaved = self:DataString()   -- 로드 직후 상태 = 저장본 (즉시 재저장 방지)
+
+		-- 디바운스 플러시 타이머
+		self._T.flushTimer = _TimerService:SetTimerRepeat(function()
+			self:Flush()
+		end, self.FlushInterval)
+
+		log("[Inventory] loaded " .. tostring(#self._T.slots) .. " slots for " .. tostring(userId))
+	end
+
+	@ExecSpace("ServerOnly")
+	method void OnEndPlay()
+		-- 퇴장 시: 타이머 정리 + 마지막 변경 즉시 저장(블로킹).
+		if self._T.flushTimer ~= nil then _TimerService:ClearTimer(self._T.flushTimer) end
+		if self._T.dirty then
+			local userId = self.Entity.PlayerComponent.UserId
+			local ds = _DataStorageService:GetUserDataStorage(userId)
+			local data = self:DataString()
+			local code = ds:SetAndWait(self.SaveKey, data)
+			if code == 0 then self._T.lastSaved = data; self._T.dirty = false
+			else log_warning("[Inventory] final save failed code=" .. tostring(code)) end
+		end
+	end
+
+	method string SerializeEquipped()
+		-- _T.equipped(서버) → "part:name,part:name"
+		local out = {}
+		if self._T ~= nil and self._T.equipped ~= nil then
+			for part, name in pairs(self._T.equipped) do
+				if name ~= nil and name ~= "" then out[#out + 1] = part .. ":" .. name end
+			end
+		end
+		return table.concat(out, ",")
+	end
+
+	method string SerializeUnlocked()
+		-- _T.unlocked(서버) → "part,part"
+		local out = {}
+		if self._T ~= nil and self._T.unlocked ~= nil then
+			for part, on in pairs(self._T.unlocked) do
+				if on then out[#out + 1] = part end
+			end
+		end
+		return table.concat(out, ",")
+	end
+
+	@ExecSpace("ServerOnly")
+	method void Publish()
+		-- 서버 데이터 → @Sync 문자열 반영(UI 즉시 갱신). 저장은 하지 않음.
+		self.SlotsCsv = table.concat(self._T.slots, ",")
+		self.EquippedCsv = self:SerializeEquipped()
+		self.UnlockedCsv = self:SerializeUnlocked()
+	end
+
+	method string DataString()
+		-- 저장 문자열 "slots#equipped#unlocked".
+		return self.SlotsCsv .. "#" .. self.EquippedCsv .. "#" .. self.UnlockedCsv
+	end
+
+	@ExecSpace("ServerOnly")
+	method void MarkDirty()
+		-- 변경됨 표시(다음 플러시 때 저장).
+		self._T.dirty = true
+	end
+
+	@ExecSpace("ServerOnly")
+	method void Flush()
+		-- 디바운스 저장: dirty이고 직전 저장과 다를 때만 SetAsync.
+		if not self._T.dirty then return end
+		local data = self:DataString()
+		if data == self._T.lastSaved then self._T.dirty = false return end
+		local userId = self.Entity.PlayerComponent.UserId
+		local ds = _DataStorageService:GetUserDataStorage(userId)
+		ds:SetAsync(self.SaveKey, data, function(errorCode, key)
+			if errorCode == 0 then
+				self._T.lastSaved = data
+				self._T.dirty = false
+			else
+				log_warning("[Inventory] save failed code=" .. tostring(errorCode))
+			end
+		end)
+	end
+
+	-- ===== API =====
+
+	method integer SlotCount()
+		if self._T == nil or self._T.slots == nil then return 0 end
+		return #self._T.slots
+	end
+
+	method boolean HasSpaceFor(integer count)
+		if count == nil or count < 1 then count = 1 end
+		return (self:SlotCount() + count) <= self.MaxSlots
+	end
+
+	@ExecSpace("ServerOnly")
+	method boolean AddItem(string itemName)
+		if not self:HasSpaceFor(1) then
+			log_warning("[Inventory] 가득 참 — " .. tostring(itemName) .. " 미획득")
+			return false
+		end
+		self._T.slots[#self._T.slots + 1] = itemName
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] AddItem: " .. tostring(itemName) .. " (총 " .. tostring(#self._T.slots) .. ")")
+		return true
+	end
+
+	@ExecSpace("ServerOnly")
+	method void RemoveItemAt(integer index)
+		if self._T.slots == nil or index == nil or index < 1 or index > #self._T.slots then
+			log_warning("[Inventory] RemoveItemAt 잘못된 index=" .. tostring(index))
+			return
+		end
+		local removed = self._T.slots[index]
+		table.remove(self._T.slots, index)
+		-- 제거된 아이템이 어떤 부위에 장착돼 있었다면 장착 해제.
+		for part, name in pairs(self._T.equipped) do
+			if name == removed then self._T.equipped[part] = nil end
+		end
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] RemoveItemAt " .. tostring(index) .. " -> " .. tostring(removed))
+	end
+
+	@ExecSpace("Server")
+	method void RequestRemoveAt(integer index)
+		self:RemoveItemAt(index)
+	end
+
+	@ExecSpace("Server")
+	method void RequestEquip(string part, string itemName)
+		-- 장착(표시식): 해당 부위(part)에 itemName 장착(부위당 1개, 교체). 인벤토리엔 유지.
+		if part == nil or part == "" or itemName == nil or itemName == "" then return end
+		self._T.equipped[part] = itemName
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] Equip " .. tostring(part) .. " = " .. tostring(itemName))
+	end
+
+	@ExecSpace("Server")
+	method void RequestUnequip(string part)
+		-- 장착 해제: 해당 부위 비움(아이템은 인벤토리에 유지).
+		if part == nil or part == "" then return end
+		if self._T.equipped == nil or self._T.equipped[part] == nil then return end
+		self._T.equipped[part] = nil
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] Unequip " .. tostring(part))
+	end
+
+	@ExecSpace("Server")
+	method void RequestUnlockPart(string part)
+		-- 잠긴 부위(part)를 해금(영속). 추후 레벨/재화 조건은 호출부에서 판단.
+		if part == nil or part == "" then return end
+		if self._T.unlocked == nil then self._T.unlocked = {} end
+		if self._T.unlocked[part] then return end
+		self._T.unlocked[part] = true
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] Unlock " .. tostring(part))
+	end
+
+	-- ===== 클라이언트 =====
+
+	@ExecSpace("ClientOnly")
+	method void OnSyncProperty(string name, any value)
+		if name == "SlotsCsv" or name == "EquippedCsv" or name == "UnlockedCsv" then
+			self.Entity:SendEvent(InventoryChangedEvent())
+		end
+	end
+
+	method table GetSlots()
+		local t = {}
+		if self.SlotsCsv ~= nil and self.SlotsCsv ~= "" then
+			for i, n in ipairs(_UtilLogic:Split(self.SlotsCsv, ",")) do
+				if n ~= "" then t[#t + 1] = n end
+			end
+		end
+		return t
+	end
+
+	method string GetEquipped(string part)
+		-- 해당 부위에 장착된 itemName(없으면 "").
+		if self.EquippedCsv == nil or self.EquippedCsv == "" then return "" end
+		for i, pair in ipairs(_UtilLogic:Split(self.EquippedCsv, ",")) do
+			local kv = _UtilLogic:Split(pair, ":")
+			if kv[1] == part and kv[2] ~= nil then return kv[2] end
+		end
+		return ""
+	end
+
+	method boolean IsUnlocked(string part)
+		-- 해당 부위가 해금됐는지(UnlockedCsv 기준). 기본 미잠금 슬롯은 UI가 별도 판단.
+		if self.UnlockedCsv == nil or self.UnlockedCsv == "" then return false end
+		for i, p in ipairs(_UtilLogic:Split(self.UnlockedCsv, ",")) do
+			if p == part then return true end
+		end
+		return false
+	end
+
+end

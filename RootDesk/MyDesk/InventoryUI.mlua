@@ -1,0 +1,445 @@
+@Component
+script InventoryUI extends Component
+
+	property string OpenButtonPath = "/ui/DefaultGroup/Btn_Inventory"
+
+	method table SlotDefs()
+		return {
+			{ part = "반지1",   locked = false },
+			{ part = "얼굴장식", locked = false },
+			{ part = "반지2",   locked = false },
+			{ part = "눈장식",   locked = false },
+			{ part = "반지3",   locked = false },
+			{ part = "귀고리",   locked = false },
+			{ part = "반지4",   locked = false },
+			{ part = "펜던트1", locked = false },
+			{ part = "훈장",     locked = false },
+			{ part = "펜던트2", locked = false },
+			{ part = "모자",     locked = false },
+			{ part = "어깨장식", locked = false },
+			{ part = "상의",     locked = false },
+			{ part = "벨트",     locked = false },
+			{ part = "하의",     locked = false },
+			{ part = "뱃지",     locked = true  },
+			{ part = "신발",     locked = false },
+			{ part = "안드로이드", locked = true },
+			{ part = "장갑",     locked = false },
+			{ part = "망토",     locked = false },
+			{ part = "무기",     locked = false },
+			{ part = "보조무기", locked = true  },
+			{ part = "엠블렘",   locked = true  },
+			{ part = "포켓",     locked = true  },
+			{ part = "기계심장", locked = true  },
+			{ part = "펫",       locked = true  },
+			{ part = "미정",     locked = true  },
+		}
+	end
+
+	method table TabCategories()
+		return { "장비", "소비", "기타", "설치", "캐시", "치장" }
+	end
+
+	method any GetInv()
+		-- LocalPlayer의 Inventory 컴포넌트(없으면 nil).
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		---@type Inventory
+		local inv = lp:GetComponent("script.Inventory")
+		return inv
+	end
+
+	method boolean HasColumn(string col)
+		-- UserItemDataSet에 해당 열이 있는지(없는 열 GetItem은 LEA-3011 예외 → 사전 확인).
+		local ds = _DataService:GetTable("UserItemDataSet")
+		if ds == nil or ds.Columns == nil then return false end
+		for i, c in ipairs(ds.Columns:ToTable()) do
+			if c == col then return true end
+		end
+		return false
+	end
+
+	method string Cell(any row, string col)
+		-- 없는 열 GetItem은 LEA-3011 예외 → HasColumn 가드 후 값 반환(없으면 "").
+		if self:HasColumn(col) then
+			local v = row:GetItem(col)
+			if v ~= nil then return tostring(v) end
+		end
+		return ""
+	end
+
+	method string CategoryOf(any row)
+		-- 아이템의 탭 카테고리(Category 열). 없으면 "기타".
+		local cat = self:Cell(row, "Category")
+		if cat ~= "" then return cat end
+		return "기타"
+	end
+
+	method boolean IsEquipCategory(string cat)
+		return cat == "장비"
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Wire(string path, any fn)
+		-- 경로의 버튼에 클릭 핸들러 연결(핸들러는 GC 방지 위해 보관).
+		local e = _EntityService:GetEntityByPath(path)
+		if e == nil then return end
+		if e.ButtonComponent == nil then e:AddComponent("MOD.Core.ButtonComponent") end
+		local h = e:ConnectEvent(ButtonClickEvent, fn)
+		self._T.handlers[#self._T.handlers + 1] = { entity = e, hnd = h }
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		local base = self.Entity.Path
+		self._T.handlers = {}
+		self._T.slots    = {}       -- 스폰된 가방 슬롯
+		self._T.curIndex = nil
+		self._T.curName  = nil
+		self._T.curCat   = nil
+		self._T.selSlot  = nil
+		self._T.tab      = 1        -- 현재 탭(1-based)
+		
+		self._T.equipPanel  = base .. "/EquipPanel"
+		self._T.bagPanel    = base .. "/BagPanel"
+		self._T.detail      = _EntityService:GetEntityByPath(base .. "/DetailPopup")
+		self._T.dimmer      = _EntityService:GetEntityByPath(base .. "/Dimmer")
+		self._T.grid        = _EntityService:GetEntityByPath(base .. "/BagPanel/Grid")
+		self._T.count       = _EntityService:GetEntityByPath(base .. "/BagPanel/Count")
+		self._T.template    = _EntityService:GetEntityByPath(base .. "/BagPanel/SlotTemplate")
+		self._T.dIcon       = _EntityService:GetEntityByPath(base .. "/DetailPopup/Icon")
+		self._T.dName       = _EntityService:GetEntityByPath(base .. "/DetailPopup/Name")
+		self._T.dTag        = _EntityService:GetEntityByPath(base .. "/DetailPopup/Tag")
+		self._T.dExpiry     = _EntityService:GetEntityByPath(base .. "/DetailPopup/Expiry")
+		self._T.dDesc       = _EntityService:GetEntityByPath(base .. "/DetailPopup/Desc")
+		self._T.btnEquip    = _EntityService:GetEntityByPath(base .. "/DetailPopup/BtnEquip")
+		self._T.dPower      = _EntityService:GetEntityByPath(base .. "/DetailPopup/PowerVal")
+		self._T.dStat       = {
+			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_0"),   -- 공격력
+			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_1"),   -- 방어력
+			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_2"),   -- 최대HP
+		}
+		
+		if self._T.template ~= nil then self._T.template:SetEnable(false) end
+		
+		-- 열기 버튼 = (DefaultGroup/Btn_Inventory). OpenButtonPath로 연결.
+		if self.OpenButtonPath ~= "" then
+			self:Wire(self.OpenButtonPath, function() self:Toggle() end)
+		end
+		-- 닫기는 X 버튼으로만(Dimmer는 뒤 HUD 입력 차단 역할만, 클릭 시 닫지 않음)
+		self:Wire(base .. "/BagPanel/CloseBtn", function() self:SetOpen(false) end)
+		-- 상세 팝업 버튼
+		self:Wire(base .. "/DetailPopup/BtnEquip", function() self:OnEquipClicked() end)
+		self:Wire(base .. "/DetailPopup/BtnDrop", function() self:OnDropClicked() end)
+		self:Wire(base .. "/DetailPopup/BtnCloseDetail", function() self:HideDetail() end)
+		
+		-- 탭 버튼 6개 (BagPanel/Tab_0 .. Tab_5)
+		local tabs = self:TabCategories()
+		for i = 1, #tabs do
+			local idx = i
+			self:Wire(base .. "/BagPanel/Tab_" .. tostring(i - 1), function() self:SelectTab(idx) end)
+		end
+		
+		-- 좌측 착용 슬롯 27개: 클릭 시 해당 부위 장착 해제.
+		local defs = self:SlotDefs()
+		for i = 1, #defs do
+			local part = defs[i].part
+			self:Wire(base .. "/EquipPanel/EquipSlot_" .. tostring(i - 1), function() self:OnEquipSlotClicked(part) end)
+		end
+		
+		self:SetOpen(false)
+		log("[InventoryUI] OnBeginPlay ok")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEndPlay()
+		if self._T.handlers ~= nil then
+			for i = 1, #self._T.handlers do
+				local rec = self._T.handlers[i]
+				if rec.entity ~= nil and isvalid(rec.entity) then
+					rec.entity:DisconnectEvent(ButtonClickEvent, rec.hnd)
+				end
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetPanel(string path, boolean on)
+		local e = _EntityService:GetEntityByPath(path)
+		if e ~= nil then e.Enable = on end
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean IsOpen()
+		local e = _EntityService:GetEntityByPath(self._T.bagPanel)
+		return e ~= nil and e.Enable
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Toggle()
+		self:SetOpen(not self:IsOpen())
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Open()
+		self:SetOpen(true)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetOpen(boolean open)
+		if self._T.dimmer ~= nil then self._T.dimmer.Enable = open end
+		self:SetPanel(self._T.equipPanel, open)
+		self:SetPanel(self._T.bagPanel, open)
+		self:HideDetail()
+		if open then
+			self:SelectTab(self._T.tab or 1)
+			self:RefreshWorn()
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SelectTab(integer index)
+		self._T.tab = index
+		local tabs = self:TabCategories()
+		-- 탭 버튼 하이라이트(선택=밝게)
+		local base = self.Entity.Path
+		for i = 1, #tabs do
+			local e = _EntityService:GetEntityByPath(base .. "/BagPanel/Tab_" .. tostring(i - 1))
+			if e ~= nil and e.SpriteGUIRendererComponent ~= nil then
+				if i == index then
+					e.SpriteGUIRendererComponent.Color = Color(0.24, 0.61, 0.84, 1)
+				else
+					e.SpriteGUIRendererComponent.Color = Color(0.23, 0.29, 0.39, 1)
+				end
+			end
+		end
+		self:HideDetail()
+		self:Rebuild()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Rebuild()
+		-- 그리드를 현재 탭 카테고리로 필터해 다시 구성. 글로벌 인덱스 보관.
+		if self._T.slots ~= nil then
+			for i = 1, #self._T.slots do
+				if isvalid(self._T.slots[i]) then self._T.slots[i]:Destroy() end
+			end
+		end
+		self._T.slots = {}
+		local inv = self:GetInv()
+		if inv == nil or self._T.template == nil or self._T.grid == nil then return end
+		local names = inv:GetSlots()
+		-- 상단 개수 표시(전체 보유 / 최대).
+		if self._T.count ~= nil then
+			local maxN = inv.MaxSlots
+			if maxN == nil or maxN <= 0 then maxN = 100 end
+			self._T.count.TextComponent.Text = tostring(#names) .. " / " .. tostring(maxN)
+		end
+		local ds = _DataService:GetTable("UserItemDataSet")
+		local tabs = self:TabCategories()
+		local cat = tabs[self._T.tab] or "장비"
+		for gi = 1, #names do
+			local name = names[gi]
+			local row = ds:FindRow("Name", name)
+			if row ~= nil and self:CategoryOf(row) == cat then
+				local slot = _SpawnService:SpawnByEntity(self._T.template, "Slot", Vector3.zero, self._T.grid)
+				slot:SetEnable(true)
+				---@type UIItemSlot
+				local us = slot:GetComponent("script.UIItemSlot")
+				if us ~= nil then
+					us.ownerWindow = self.Entity
+					us:SetData(name, gi)
+				end
+				self._T.slots[#self._T.slots + 1] = slot
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshWorn()
+		-- 장비 슬롯을 부위별 착용 아이템으로 채움. 잠금 슬롯은 자물쇠 표시.
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local defs = self:SlotDefs()
+		local base = self.Entity.Path .. "/EquipPanel/EquipSlot_"
+		for i = 1, #defs do
+			local def = defs[i]
+			local slotPath = base .. tostring(i - 1)
+			local locked = def.locked and (inv:IsUnlocked(def.part) == false)
+			self:SetWorn(slotPath, inv:GetEquipped(def.part), locked)
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetWorn(string slotPath, string itemName, boolean locked)
+		-- 착용칸 1개: 잠금이면 자물쇠 아이콘, 아니면 착용 아이콘(없으면 빈칸).
+		local slot = _EntityService:GetEntityByPath(slotPath)
+		if slot == nil then return end
+		local icon = slot:GetChildByName("Icon")
+		local lockIcon = slot:GetChildByName("Lock")
+		if lockIcon ~= nil then lockIcon.Enable = locked end
+		if locked then
+			if icon ~= nil then icon.Enable = false end
+			return
+		end
+		if itemName ~= nil and itemName ~= "" then
+			local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
+			if row ~= nil and icon ~= nil then
+				icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+				icon.Enable = true
+			end
+		else
+			if icon ~= nil then icon.Enable = false end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnSlotClicked(Entity slotEntity)
+		-- 이전 선택 해제
+		if self._T.selSlot ~= nil and isvalid(self._T.selSlot) then
+			---@type UIItemSlot
+			local prev = self._T.selSlot:GetComponent("script.UIItemSlot")
+			if prev ~= nil then prev:SetSelected(false) end
+		end
+		self._T.selSlot = slotEntity
+		---@type UIItemSlot
+		local us = slotEntity:GetComponent("script.UIItemSlot")
+		if us ~= nil then
+			us:SetSelected(true)
+			self._T.curName = us.itemName
+			self._T.curIndex = us.slotIndex
+			self:ShowDetail(self._T.curName)
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ShowDetail(string itemName)
+		local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
+		if row == nil then return end
+		self._T.curCat = self:CategoryOf(row)
+		if self._T.dIcon ~= nil then
+			self._T.dIcon.SpriteGUIRendererComponent.ImageRUID = self:Cell(row, "IconRUID")
+			self._T.dIcon.Enable = true
+		end
+		if self._T.dName ~= nil then self._T.dName.TextComponent.Text = tostring(itemName) end
+		-- 태그줄: 등급 · 부위(장비면). 예: "상급 · 무기"
+		if self._T.dTag ~= nil then
+			local grade = self:Cell(row, "Grade")
+			local part = self:Cell(row, "Part")
+			local tag = grade
+			if part ~= "" then
+				if tag ~= "" then tag = tag .. " · " .. part else tag = part end
+			end
+			if tag == "" then tag = self._T.curCat end
+			self._T.dTag.TextComponent.Text = tag
+		end
+		-- 부가줄: Lv.N · 교환 가능/불가
+		if self._T.dExpiry ~= nil then
+			local lv = self:Cell(row, "ReqLevel")
+			local tradable = self:Cell(row, "Tradable")
+			local parts = {}
+			if lv ~= "" then parts[#parts + 1] = "Lv." .. lv end
+			if tradable == "X" then parts[#parts + 1] = "교환 불가"
+			elseif tradable ~= "" then parts[#parts + 1] = "교환 가능" end
+			self._T.dExpiry.TextComponent.Text = table.concat(parts, "  ·  ")
+		end
+		-- 장착 효과: 공격력 / 방어력 / 최대HP (데이터 값). 전투력(dPower)은 계산식 생기면 연결.
+		if self._T.dStat ~= nil then
+			local vals = { self:Cell(row, "Attack"), self:Cell(row, "Defense"), self:Cell(row, "MaxHP") }
+			for i = 1, 3 do
+				if self._T.dStat[i] ~= nil then
+					local v = vals[i]
+					self._T.dStat[i].TextComponent.Text = (v ~= "" and v) or "-"
+				end
+			end
+		end
+		if self._T.dDesc ~= nil then self._T.dDesc.TextComponent.Text = self:Cell(row, "Description") end
+		-- 장착 버튼은 장비 카테고리에서만 노출.
+		if self._T.btnEquip ~= nil then self._T.btnEquip.Enable = self:IsEquipCategory(self._T.curCat) end
+		-- 정보창은 가방 왼쪽 고정 위치(빌드에서 배치). 위치 계산 불필요.
+		if self._T.detail ~= nil then self._T.detail.Enable = true end
+		log("[InventoryUI] ShowDetail: " .. tostring(itemName) .. " (" .. tostring(self._T.curCat) .. ")")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void PositionPopupAt(Entity slotEntity)
+		-- 팝업을 클릭한 슬롯 옆(가방이 우측이라 왼쪽)에 배치. 화면 밖으로 안 나가게 클램프.
+		if self._T.detail == nil or slotEntity == nil or isvalid(slotEntity) == false then return end
+		local ut = slotEntity.UITransformComponent
+		if ut == nil then return end
+		local corners = ut:GetWorldCorners()   -- {BL, TL, TR, BR} — 실측 결과 '스크린' 좌표
+		if corners == nil or corners[1] == nil or corners[3] == nil then return end
+		local center = Vector2((corners[1].x + corners[3].x) / 2, (corners[1].y + corners[3].y) / 2)
+		-- 스크린 → UI 캔버스 좌표(팝업 부모=풀스크린, 중심원점). WorldToScreen 단계 없음.
+		local uiPos = _UILogic:ScreenToUIPosition(center)
+		-- 클릭한 인벤토리 슬롯 위치에 팝업을 띄우되 화면 밖으로 안 나가게 클램프(팝업 ~420x340).
+		local px = uiPos.x
+		local py = uiPos.y
+		if px > 720 then px = 720 elseif px < -720 then px = -720 end
+		if py > 360 then py = 360 elseif py < -360 then py = -360 end
+		self._T.detail.UITransformComponent.anchoredPosition = Vector2(px, py)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void HideDetail()
+		if self._T.detail ~= nil then self._T.detail.Enable = false end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEquipClicked()
+		-- 선택 아이템을 데이터셋 Part 부위에 장착(장비 카테고리 + 미잠금 슬롯만).
+		if self._T.curName == nil or self._T.curName == "" then return end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", self._T.curName)
+		if row == nil then return end
+		local part = row:GetItem("Part")
+		if part == nil or part == "" then
+			log_warning("[InventoryUI] Part 미설정: " .. tostring(self._T.curName))
+			return
+		end
+		if inv:IsUnlocked(part) == false and self:IsLockedDefault(part) then
+			log_warning("[InventoryUI] 잠긴 부위: " .. tostring(part))
+			return
+		end
+		inv:RequestEquip(part, self._T.curName)
+		self:HideDetail()
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean IsLockedDefault(string part)
+		-- 기본 잠금 부위 여부(SlotDefs 기준).
+		local defs = self:SlotDefs()
+		for i = 1, #defs do
+			if defs[i].part == part then return defs[i].locked end
+		end
+		return false
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEquipSlotClicked(string part)
+		-- 좌측 착용칸 클릭 → 장착 해제(빈 칸/미장착이면 무시).
+		local inv = self:GetInv()
+		if inv == nil then return end
+		if inv:GetEquipped(part) == "" then return end
+		inv:RequestUnequip(part)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnDropClicked()
+		-- 분해(제거): 현재 선택 슬롯 제거 요청.
+		if self._T.curIndex == nil then return end
+		local inv = self:GetInv()
+		if inv ~= nil then inv:RequestRemoveAt(self._T.curIndex) end
+		self:HideDetail()
+	end
+
+	@EventSender("LocalPlayer")
+	handler HandleInventoryChangedEvent(InventoryChangedEvent event)
+		-- 인벤 변경 → 그리드 재구성 + 착용칸 갱신.
+		if self:IsOpen() then
+			self:Rebuild()
+			self:RefreshWorn()
+		end
+	end
+
+end

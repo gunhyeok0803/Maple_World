@@ -1,0 +1,10 @@
+@Event
+script InventoryChangedEvent extends EventType
+
+	property number NewValue1 = 0
+
+	method void Function1()
+		
+	end
+
+end

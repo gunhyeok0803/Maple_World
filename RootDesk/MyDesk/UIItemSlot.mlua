@@ -1,0 +1,62 @@
+@Component
+script UIItemSlot extends Component
+
+	-- 인벤토리 슬롯(개별). itemName + 인벤토리 전체에서의 글로벌 인덱스 보관.
+	-- 흰 바탕 + (선택 시) 테두리 하이라이트 + 아이템 아이콘.
+
+	property string itemName = ""
+	property integer slotIndex = 0
+	property Entity ownerWindow = nil
+
+	-- 하위: <slot>(테두리/하이라이트 sprite + Button + script) / Fill(흰 바탕) / Icon(아이콘)
+
+	method Color ColorNeutral()
+		return Color(0.80, 0.80, 0.80, 1)
+	end
+	method Color ColorSelected()
+		return Color(0.31, 0.76, 0.97, 1)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		self._T.selected = false
+		self:RefreshBorder()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetData(string itemName, integer slotIndex)
+		-- itemName + 글로벌 인덱스 저장, 데이터셋 아이콘 표시.
+		self.itemName = itemName
+		self.slotIndex = slotIndex
+		local iconEntity = self.Entity:GetChildByName("Icon")
+		if iconEntity ~= nil then
+			local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
+			if row ~= nil then
+				iconEntity.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetSelected(boolean on)
+		self._T.selected = on
+		self:RefreshBorder()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshBorder()
+		local sr = self.Entity.SpriteGUIRendererComponent
+		if sr == nil then return end
+		if self._T.selected then sr.Color = self:ColorSelected() else sr.Color = self:ColorNeutral() end
+	end
+
+	@EventSender("Self")
+	handler HandleButtonClickEvent(ButtonClickEvent event)
+		if self.itemName == "" then return end
+		if self.ownerWindow == nil then return end
+		---@type InventoryUI
+		local ctrl = self.ownerWindow:GetComponent("script.InventoryUI")
+		if ctrl ~= nil then ctrl:OnSlotClicked(self.Entity) end
+	end
+
+end

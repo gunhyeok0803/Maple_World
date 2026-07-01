@@ -1,0 +1,13 @@
+# --- 도구/런타임/캐시 (게임 소스 아님) ---
+.claude/
+.mswai/
+**/node_modules/
+
+# --- 잠재적 비밀정보 ---
+.mcp.json
+
+# --- OS / 에디터 junk ---
+Thumbs.db
+.DS_Store
+*.log
+desktop.ini

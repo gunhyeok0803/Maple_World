@@ -1,0 +1,45 @@
+@Component
+script Item extends Component
+
+	-- 필드에 떨어진 아이템 오브젝트. 플레이어가 닿으면 인벤토리에 습득.
+	-- ItemIndex = UserItemDataSet의 행 번호(1-based). 인스펙터에서 지정.
+
+	@Sync
+	property number ItemIndex = 0
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 월드에 아이템 아이콘 표시(데이터셋 IconRUID).
+		local ds = _DataService:GetTable("UserItemDataSet")
+		local idx = math.tointeger(self.ItemIndex) or 0
+		if idx < 1 or idx > ds:GetRowCount() then return end
+		local ruid = ds:GetRow(idx):GetItem("IconRUID")
+		if self.Entity.SpriteRendererComponent ~= nil and ruid ~= nil and ruid ~= "" then
+			self.Entity.SpriteRendererComponent.SpriteRUID = ruid
+		end
+	end
+
+	@ExecSpace("ServerOnly")
+	@EventSender("Self")
+	handler HandleTriggerEnterEvent(TriggerEnterEvent event)
+		-- 닿은 대상(플레이어)의 Inventory에 습득.
+		local body = event.TriggerBodyEntity
+		if body == nil then return end
+		---@type Inventory
+		local inv = body:GetComponent("script.Inventory")
+		if inv == nil then return end
+
+		local ds = _DataService:GetTable("UserItemDataSet")
+		local idx = math.tointeger(self.ItemIndex) or 0
+		if idx < 1 or idx > ds:GetRowCount() then
+			log_warning("[Item] 잘못된 ItemIndex=" .. tostring(self.ItemIndex))
+			return
+		end
+		local name = ds:GetRow(idx):GetItem("Name")
+		-- 공간이 있을 때만 습득 + 오브젝트 제거(가득 차면 필드에 남김).
+		if inv:AddItem(name) then
+			self.Entity:Destroy()
+		end
+	end
+
+end
