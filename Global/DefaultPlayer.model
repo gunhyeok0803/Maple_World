@@ -20,7 +20,10 @@
       "Components": [
         "script.PlayerHit",
         "script.PlayerAttack",
-        "script.Inventory"
+        "script.Inventory",
+        "script.CombatStats",
+        "script.PlayerResource",
+        "script.PlayerDBManager"
       ],
       "Properties": [],
       "Values": [
@@ -682,6 +685,33 @@
         {
           "TargetType": "MOD.Core.MODEntity",
           "Name": "Visible",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.CombatStats",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.PlayerResource",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.PlayerDBManager",
+          "Name": "Enable",
           "ValueType": {
             "$type": "MODNativeType",
             "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"

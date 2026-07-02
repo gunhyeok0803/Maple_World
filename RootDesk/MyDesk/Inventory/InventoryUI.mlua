@@ -118,7 +118,19 @@ script InventoryUI extends Component
 			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_1"),   -- 방어력
 			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_2"),   -- 최대HP
 		}
-		
+		-- 전투력 바(캐릭터 아래) + 스탯 정보 팝업
+		self._T.pbValue   = _EntityService:GetEntityByPath(base .. "/EquipPanel/PowerBar/Value")
+		self._T.statPopup = _EntityService:GetEntityByPath(base .. "/StatPopup")
+		self._T.spPower   = _EntityService:GetEntityByPath(base .. "/StatPopup/PowerRow/PValue")
+		self._T.spStat    = {
+			_EntityService:GetEntityByPath(base .. "/StatPopup/StatVal_0"),   -- 공격력
+			_EntityService:GetEntityByPath(base .. "/StatPopup/StatVal_1"),   -- 방어력
+			_EntityService:GetEntityByPath(base .. "/StatPopup/StatVal_2"),   -- 최대HP
+		}
+		self._T.avatarEnt = _EntityService:GetEntityByPath(base .. "/EquipPanel/Char/Avatar")
+		self._T.mesoValue = _EntityService:GetEntityByPath(base .. "/BagPanel/MesoBar/Value")
+		self._T.evtHandlers = {}
+
 		if self._T.template ~= nil then self._T.template:SetEnable(false) end
 		
 		-- 열기 버튼 = (DefaultGroup/Btn_Inventory). OpenButtonPath로 연결.
@@ -131,6 +143,9 @@ script InventoryUI extends Component
 		self:Wire(base .. "/DetailPopup/BtnEquip", function() self:OnEquipClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnDrop", function() self:OnDropClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnCloseDetail", function() self:HideDetail() end)
+		-- 전투력 바 🔍 → 스탯 팝업 토글 / 팝업 CloseBtn → 닫기
+		self:Wire(base .. "/EquipPanel/PowerBar/SearchBtn", function() self:ToggleStat() end)
+		self:Wire(base .. "/StatPopup/CloseBtn", function() self:CloseStat() end)
 		
 		-- 탭 버튼 6개 (BagPanel/Tab_0 .. Tab_5)
 		local tabs = self:TabCategories()
@@ -146,6 +161,17 @@ script InventoryUI extends Component
 			self:Wire(base .. "/EquipPanel/EquipSlot_" .. tostring(i - 1), function() self:OnEquipSlotClicked(part) end)
 		end
 		
+		-- 메소(재화) 표시: PlayerResource 이벤트 구독(값 변경/초기 동기화 시 갱신)
+		local lp = _UserService.LocalPlayer
+		if lp ~= nil then
+			local h1 = lp:ConnectEvent(ResourceValueChangedEvent, function(e) self:OnResourceChanged(e) end)
+			local h2 = lp:ConnectEvent(ClientResourceInitializedEvent, function() self:RefreshMeso() end)
+			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ResourceValueChangedEvent, hnd = h1 }
+			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ClientResourceInitializedEvent, hnd = h2 }
+		end
+
+		self:SetupAvatar()
+		self:RefreshMeso()
 		self:SetOpen(false)
 		log("[InventoryUI] OnBeginPlay ok")
 	end
@@ -157,6 +183,14 @@ script InventoryUI extends Component
 				local rec = self._T.handlers[i]
 				if rec.entity ~= nil and isvalid(rec.entity) then
 					rec.entity:DisconnectEvent(ButtonClickEvent, rec.hnd)
+				end
+			end
+		end
+		if self._T.evtHandlers ~= nil then
+			for i = 1, #self._T.evtHandlers do
+				local rec = self._T.evtHandlers[i]
+				if rec.entity ~= nil and isvalid(rec.entity) then
+					rec.entity:DisconnectEvent(rec.evt, rec.hnd)
 				end
 			end
 		end
@@ -190,9 +224,12 @@ script InventoryUI extends Component
 		self:SetPanel(self._T.equipPanel, open)
 		self:SetPanel(self._T.bagPanel, open)
 		self:HideDetail()
+		self:CloseStat()
 		if open then
 			self:SelectTab(self._T.tab or 1)
 			self:RefreshWorn()
+			self:RefreshPower()
+			self:RefreshMeso()
 		end
 	end
 
@@ -433,12 +470,128 @@ script InventoryUI extends Component
 		self:HideDetail()
 	end
 
+	@ExecSpace("ClientOnly")
+	method void SetupAvatar()
+		-- UI 아바타를 내 캐릭터 모습으로 미러링(DefaultEquipUserId = 내 UserId → 코스튬 복제).
+		if self._T.avatarEnt == nil then return end
+		local cm = self._T.avatarEnt.CostumeManagerComponent
+		if cm == nil then return end
+		local lp = _UserService.LocalPlayer
+		if lp == nil or lp.PlayerComponent == nil then return end
+		cm.DefaultEquipUserId = lp.PlayerComponent.UserId
+		log("[InventoryUI] avatar mirror userId=" .. tostring(lp.PlayerComponent.UserId))
+	end
+
+	@ExecSpace("ClientOnly")
+	method any GetWallet()
+		-- LocalPlayer의 PlayerResource(재화, resource-package). 없으면 nil.
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.PlayerResource")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshMeso()
+		-- 메소(Type 1) 값을 BagPanel/MesoBar/Value에 표시(천단위).
+		if self._T.mesoValue == nil then return end
+		local amount = 0
+		local w = self:GetWallet()
+		if w ~= nil then
+			local r = w:GetResource(1)
+			if r ~= nil then amount = r.Value end
+		end
+		self._T.mesoValue.TextComponent.Text = self:Comma(amount)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnResourceChanged(any e)
+		-- 재화 값 변경 이벤트: 메소(Type 1)만 갱신.
+		if e ~= nil and e.Type == 1 then self:RefreshMeso() end
+	end
+
+	@ExecSpace("ClientOnly")
+	method any GetStats()
+		-- LocalPlayer의 CombatStats 컴포넌트(없으면 nil). 전투력/스탯 계산 담당(Inventory와 분리).
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		---@type CombatStats
+		local cs = lp:GetComponent("script.CombatStats")
+		return cs
+	end
+
+	method string Comma(number n)
+		-- 정수로 반올림 후 천단위 콤마 문자열.
+		local i = math.floor((n or 0) + 0.5)
+		local s = tostring(i)
+		local neg = ""
+		if string.sub(s, 1, 1) == "-" then
+			neg = "-"
+			s = string.sub(s, 2)
+		end
+		local out = ""
+		local cnt = 0
+		for k = #s, 1, -1 do
+			out = string.sub(s, k, k) .. out
+			cnt = cnt + 1
+			if cnt % 3 == 0 and k > 1 then out = "," .. out end
+		end
+		return neg .. out
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshPower()
+		-- 전투력 바 + 스탯 팝업 값 갱신(CombatStats 합산). 컴포넌트 없으면 0.
+		local atk, def, hp, power = 0, 0, 0, 0
+		local cs = self:GetStats()
+		if cs ~= nil then
+			local s = cs:GetStatSummary()
+			if s ~= nil then
+				atk = s.atk or 0
+				def = s.def or 0
+				hp = s.hp or 0
+				power = s.power or 0
+			end
+		end
+		local pstr = self:Comma(power)
+		if self._T.pbValue ~= nil then self._T.pbValue.TextComponent.Text = pstr end
+		if self._T.spPower ~= nil then self._T.spPower.TextComponent.Text = pstr end
+		if self._T.spStat ~= nil then
+			local vals = { atk, def, hp }
+			for i = 1, 3 do
+				if self._T.spStat[i] ~= nil then
+					self._T.spStat[i].TextComponent.Text = self:Comma(vals[i])
+				end
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OpenStat()
+		-- 스탯 정보 팝업 열기(값 갱신 후 표시).
+		self:RefreshPower()
+		if self._T.statPopup ~= nil then self._T.statPopup.Enable = true end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void CloseStat()
+		-- 스탯 정보 팝업 닫기.
+		if self._T.statPopup ~= nil then self._T.statPopup.Enable = false end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ToggleStat()
+		-- 🔍 클릭: 열려 있으면 닫고, 아니면 연다.
+		if self._T.statPopup == nil then return end
+		if self._T.statPopup.Enable then self:CloseStat() else self:OpenStat() end
+	end
+
 	@EventSender("LocalPlayer")
 	handler HandleInventoryChangedEvent(InventoryChangedEvent event)
 		-- 인벤 변경 → 그리드 재구성 + 착용칸 갱신.
 		if self:IsOpen() then
 			self:Rebuild()
 			self:RefreshWorn()
+			self:RefreshPower()
 		end
 	end
 

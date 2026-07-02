@@ -1,0 +1,79 @@
+@Component
+script CombatStats extends Component
+
+	property number PowerAtkWeight = 100
+
+	property number PowerDefWeight = 20
+
+	property number PowerHpWeight = 2
+
+	method Inventory GetInv()
+		-- 같은 엔티티의 Inventory 컴포넌트(없으면 nil).
+		---@type Inventory
+		local inv = self.Entity:GetComponent("script.Inventory")
+		return inv
+	end
+
+	method boolean HasColumn(string col)
+		-- 데이터셋에 해당 열이 있는지 첫 호출 시 캐시.
+		if self._T.cols == nil then
+			self._T.cols = {}
+			local tbl = _DataService:GetTable("UserItemDataSet")
+			if tbl ~= nil then
+				for i, c in ipairs(tbl.Columns:ToTable()) do self._T.cols[c] = true end
+			end
+		end
+		return self._T.cols[col] == true
+	end
+
+	method number CellNum(any row, string col)
+		
+		if row == nil or not self:HasColumn(col) then return 0 end
+		local n = tonumber(row:GetItem(col))
+		if n == nil then return 0 end
+		return n
+	end
+
+	method table GetEquippedStats()
+		-- 장착된 모든 아이템의 공격력/방어력/최대HP 합산
+		local res = { atk = 0, def = 0, hp = 0 }
+		local inv = self:GetInv()
+		if inv == nil then return res end
+		local csv = inv.EquippedCsv
+		if csv == nil or csv == "" then return res end
+		local tbl = _DataService:GetTable("UserItemDataSet")
+		if tbl == nil then return res end
+		for i, pair in ipairs(_UtilLogic:Split(csv, ",")) do
+			local kv = _UtilLogic:Split(pair, ":")
+			local name = kv[2]
+			if name ~= nil and name ~= "" then
+				local row = tbl:FindRow("Name", name)
+				if row ~= nil then
+					res.atk = res.atk + self:CellNum(row, "Attack")
+					res.def = res.def + self:CellNum(row, "Defense")
+					res.hp = res.hp + self:CellNum(row, "MaxHP")
+				end
+			end
+		end
+		return res
+	end
+
+	method table GetStatSummary()
+		-- UI 한 번 조회용
+		local s = self:GetEquippedStats()
+		s.power = s.atk * self.PowerAtkWeight + s.def * self.PowerDefWeight + s.hp * self.PowerHpWeight
+		return s
+	end
+
+	method number GetPower()
+		-- 전투력 값
+		return self:GetStatSummary().power
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 부착 확인용 로그
+		log("[CombatStats] OnBeginPlay ok")
+	end
+
+end

@@ -1,0 +1,133 @@
+@Component
+script AttendanceUI extends Component
+
+	-- 출석판 UI 컨트롤러(클라이언트). 열기/닫기 + 보상 아이콘 표시 + 수령 버튼.
+	--  * 데이터 권위는 Inventory(서버). 여기선 표시 + 수령 요청만.
+	--  * 경로 기반: self.Entity.Path(=Controller) 기준 하위 엔티티를 조회(바인딩 주입 없음).
+	--  * 닫기는 X 버튼으로만(Dimmer는 뒤 HUD 입력 차단 역할, 클릭 시 닫지 않음).
+
+	property string OpenButtonPath = "/ui/DefaultGroup/Btn_Attendance"
+
+	method any GetInv()
+		-- LocalPlayer의 Inventory 컴포넌트(없으면 nil).
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		---@type Inventory
+		local inv = lp:GetComponent("script.Inventory")
+		return inv
+	end
+
+	method string RewardName()
+		-- 보상 아이템명(Inventory 설정값, 없으면 기본 빨간포션).
+		local inv = self:GetInv()
+		if inv ~= nil and inv.AttendReward ~= nil and inv.AttendReward ~= "" then
+			return inv.AttendReward
+		end
+		return "빨간포션"
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Wire(string path, any fn)
+		-- 경로의 버튼에 클릭 핸들러 연결(핸들러는 GC 방지 위해 보관).
+		local e = _EntityService:GetEntityByPath(path)
+		if e == nil then return end
+		if e.ButtonComponent == nil then e:AddComponent("MOD.Core.ButtonComponent") end
+		local h = e:ConnectEvent(ButtonClickEvent, fn)
+		self._T.handlers[#self._T.handlers + 1] = { entity = e, hnd = h }
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 하위 엔티티 캐시 + 버튼 배선 + 초기 닫힘.
+		local base = self.Entity.Path
+		self._T.handlers = {}
+		self._T.dimmer = _EntityService:GetEntityByPath(base .. "/Dimmer")
+		self._T.board  = _EntityService:GetEntityByPath(base .. "/Board")
+		self._T.icon   = _EntityService:GetEntityByPath(base .. "/Board/RewardIcon")
+		self._T.rname  = _EntityService:GetEntityByPath(base .. "/Board/RewardName")
+		self._T.status = _EntityService:GetEntityByPath(base .. "/Board/Status")
+		self._T.claim  = _EntityService:GetEntityByPath(base .. "/Board/ClaimBtn")
+
+		-- 열기 버튼 = HUD의 Btn_Attendance(외부 경로). InventoryUI와 동일 패턴.
+		if self.OpenButtonPath ~= "" then
+			self:Wire(self.OpenButtonPath, function() self:Toggle() end)
+		end
+		self:Wire(base .. "/Board/CloseBtn", function() self:SetOpen(false) end)
+		self:Wire(base .. "/Board/ClaimBtn", function() self:OnClaimClicked() end)
+
+		self:SetOpen(false)
+		log("[AttendanceUI] OnBeginPlay ok")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEndPlay()
+		-- 연결한 버튼 핸들러 해제.
+		if self._T.handlers ~= nil then
+			for i = 1, #self._T.handlers do
+				local rec = self._T.handlers[i]
+				if rec.entity ~= nil and isvalid(rec.entity) then
+					rec.entity:DisconnectEvent(ButtonClickEvent, rec.hnd)
+				end
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean IsOpen()
+		return self._T.board ~= nil and self._T.board.Enable
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Toggle()
+		self:SetOpen(not self:IsOpen())
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetOpen(boolean open)
+		-- Dimmer + Board 표시 토글. 열 때 보상/버튼 상태 갱신.
+		if self._T.dimmer ~= nil then self._T.dimmer.Enable = open end
+		if self._T.board ~= nil then self._T.board.Enable = open end
+		if open then self:RefreshBoard() end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshBoard()
+		-- 보상 아이콘/이름 표시 + 오늘 수령 여부에 따라 버튼/상태 갱신.
+		local reward = self:RewardName()
+		local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", reward)
+		if self._T.icon ~= nil and row ~= nil then
+			self._T.icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+			self._T.icon.Enable = true
+		end
+		if self._T.rname ~= nil then self._T.rname.TextComponent.Text = reward end
+
+		local inv = self:GetInv()
+		local claimed = inv ~= nil and inv:IsAttendedToday()
+		if self._T.claim ~= nil and self._T.claim.ButtonComponent ~= nil then
+			self._T.claim.ButtonComponent.Enable = not claimed
+		end
+		if self._T.status ~= nil then
+			if claimed then
+				self._T.status.TextComponent.Text = "오늘은 이미 수령했어요"
+			else
+				self._T.status.TextComponent.Text = "오늘의 출석 보상을 받으세요!"
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnClaimClicked()
+		-- 수령 요청(서버가 당일 중복 여부 재검증). 이미 수령이면 무시.
+		local inv = self:GetInv()
+		if inv == nil then return end
+		if inv:IsAttendedToday() then return end
+		inv:RequestClaimAttendance()
+	end
+
+	@EventSender("LocalPlayer")
+	handler HandleInventoryChangedEvent(InventoryChangedEvent event)
+		-- 수령 후 LastAttendDate 동기화 → 버튼/상태 갱신(창이 열려 있을 때만).
+		if self:IsOpen() then self:RefreshBoard() end
+	end
+
+end

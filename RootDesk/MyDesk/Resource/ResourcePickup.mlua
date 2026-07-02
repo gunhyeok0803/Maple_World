@@ -1,0 +1,42 @@
+@Component
+script ResourcePickup extends Component
+
+	-- 필드에 떨어진 재화(메소/다이아 등) 픽업. 플레이어가 닿으면 PlayerResource에 지급.
+	--  * ResourceType = ResourceDataSet의 Type (1=메소). Amount = 이 픽업이 주는 양.
+	--  * 둘 다 인스펙터에서 지정 → 픽업마다 다른 재화/금액 가능(10/100/1000 코인 등).
+	-- ★ 배치하는 엔티티엔 SpriteRendererComponent + TriggerComponent 필요(닿음 감지).
+
+	@Sync
+	property integer ResourceType = 1
+
+	@Sync
+	property integer Amount = 100
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 월드에 재화 아이콘 표시(ResourceDataSet의 RUID). 스프라이트 이미 지정돼 있으면 생략 가능.
+		local ds = _DataService:GetTable("ResourceDataSet")
+		if ds == nil then return end
+		local row = ds:FindRow("Type", tostring(self.ResourceType))
+		if row == nil then return end
+		local ruid = row:GetItem("RUID")
+		if self.Entity.SpriteRendererComponent ~= nil and ruid ~= nil and ruid ~= "" then
+			self.Entity.SpriteRendererComponent.SpriteRUID = ruid
+		end
+	end
+
+	@ExecSpace("ServerOnly")
+	@EventSender("Self")
+	handler HandleTriggerEnterEvent(TriggerEnterEvent event)
+		-- 닿은 플레이어의 PlayerResource에 지급 후 오브젝트 제거.
+		local body = event.TriggerBodyEntity
+		if body == nil then return end
+		---@type PlayerResource
+		local pr = body:GetComponent("script.PlayerResource")
+		if pr == nil then return end
+		if self.Amount <= 0 then return end
+		pr:AddResource(self.ResourceType, self.Amount)
+		self.Entity:Destroy()
+	end
+
+end

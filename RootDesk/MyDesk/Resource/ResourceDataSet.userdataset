@@ -1,0 +1,23 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "userdataset://1728ec9c-2924-4b09-81a0-1c227e931357",
+  "ContentType": "x-mod/userdataset",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.5.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Json",
+    "Json": {
+      "name": "ResourceDataSet",
+      "id": "1728ec9c-2924-4b09-81a0-1c227e931357",
+      "serveronly": false,
+      "syncDataSetWebUrl": "",
+      "dynamicloading": 0
+    }
+  }
+}
