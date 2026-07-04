@@ -1,18 +1,16 @@
 @Component
 script UIItemSlot extends Component
 
-	-- 인벤토리 슬롯(개별). itemName + 인벤토리 전체에서의 글로벌 인덱스 보관.
-	-- 흰 바탕 + (선택 시) 테두리 하이라이트 + 아이템 아이콘.
-
 	property string itemName = ""
-	property integer slotIndex = 0
-	property Entity ownerWindow = nil
 
-	-- 하위: <slot>(테두리/하이라이트 sprite + Button + script) / Fill(흰 바탕) / Icon(아이콘)
+	property integer slotIndex = 0
+
+	property Entity ownerWindow = nil
 
 	method Color ColorNeutral()
 		return Color(0.80, 0.80, 0.80, 1)
 	end
+
 	method Color ColorSelected()
 		return Color(0.31, 0.76, 0.97, 1)
 	end
@@ -24,8 +22,8 @@ script UIItemSlot extends Component
 	end
 
 	@ExecSpace("ClientOnly")
-	method void SetData(string itemName, integer slotIndex)
-		-- itemName + 글로벌 인덱스 저장, 데이터셋 아이콘 표시.
+	method void SetData(string itemName, integer slotIndex, integer count)
+		-- itemName + 인덱스 + 개수 저장, 아이콘 + 개수(x2 이상) 표시.
 		self.itemName = itemName
 		self.slotIndex = slotIndex
 		local iconEntity = self.Entity:GetChildByName("Icon")
@@ -33,6 +31,16 @@ script UIItemSlot extends Component
 			local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
 			if row ~= nil then
 				iconEntity.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+			end
+		end
+		-- 개수 라벨(Count 자식): 2개 이상일 때만 표시. 없으면 스킵.
+		local countEntity = self.Entity:GetChildByName("Count")
+		if countEntity ~= nil and countEntity.TextComponent ~= nil then
+			if count ~= nil and count > 1 then
+				countEntity.TextComponent.Text = tostring(count)
+				countEntity.Enable = true
+			else
+				countEntity.Enable = false
 			end
 		end
 	end

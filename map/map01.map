@@ -6636,76 +6636,6 @@
         }
       },
       {
-        "id": "a67bf045-d426-465c-a20f-c63a77dff290",
-        "path": "/maps/map01/item-11472_1",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.Item",
-        "jsonString": {
-          "name": "item-11472_1",
-          "path": "/maps/map01/item-11472_1",
-          "nameEditable": true,
-          "enable": true,
-          "visible": true,
-          "localize": false,
-          "displayOrder": 8,
-          "pathConstraints": "///",
-          "revision": 1,
-          "origin": {
-            "type": "Model",
-            "entry_id": "ItemAsset",
-            "sub_entity_id": null,
-            "root_entity_id": "4ec4b455-f3d4-42ab-9ad5-73146db7f13d",
-            "replaced_model_id": null
-          },
-          "modelId": "itemasset",
-          "@components": [
-            {
-              "@type": "MOD.Core.TransformComponent",
-              "Position": {
-                "x": 0.640728652,
-                "y": -0.0605571941,
-                "z": 999.998047
-              },
-              "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
-              },
-              "Enable": true
-            },
-            {
-              "@type": "MOD.Core.SpriteRendererComponent",
-              "ActionSheet": {},
-              "EndFrameIndex": 2147483647,
-              "RenderSetting": 0,
-              "SortingLayer": "MapLayer0",
-              "SpriteRUID": "6710e8c647d0448a80f5ea4abd95c960",
-              "StartFrameIndex": 0,
-              "Enable": true
-            },
-            {
-              "@type": "MOD.Core.TriggerComponent",
-              "BoxSize": {
-                "x": 0.27,
-                "y": 0.29
-              },
-              "ColliderOffset": {
-                "x": 0.165,
-                "y": 0.155
-              },
-              "IsLegacy": false,
-              "Enable": true
-            },
-            {
-              "@type": "script.Item",
-              "Enable": true,
-              "ItemIndex": 3.0
-            }
-          ],
-          "@version": 1
-        }
-      },
-      {
         "id": "a7e0a259-aecf-41d0-b000-2abc40237162",
         "path": "/maps/map01/item-17553",
         "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.Item",
@@ -6716,7 +6646,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 9,
+          "displayOrder": 8,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -6786,7 +6716,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 10,
+          "displayOrder": 9,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -6856,7 +6786,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 11,
+          "displayOrder": 10,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -6926,7 +6856,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 12,
+          "displayOrder": 11,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -6996,7 +6926,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 13,
+          "displayOrder": 12,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7066,7 +6996,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 14,
+          "displayOrder": 13,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7136,7 +7066,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 15,
+          "displayOrder": 14,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7206,7 +7136,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 16,
+          "displayOrder": 15,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7276,7 +7206,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 17,
+          "displayOrder": 16,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7346,7 +7276,7 @@
           "enable": true,
           "visible": true,
           "localize": false,
-          "displayOrder": 18,
+          "displayOrder": 17,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7400,6 +7330,75 @@
               "@type": "script.Item",
               "Enable": true,
               "ItemIndex": 11.0
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "e3092205-9806-464a-af6d-f0f8a364b46d",
+        "path": "/maps/map01/item-20612",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ResourcePickup",
+        "jsonString": {
+          "name": "item-20612",
+          "path": "/maps/map01/item-20612",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": false,
+          "displayOrder": 18,
+          "pathConstraints": "///",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "ItemAsset",
+            "sub_entity_id": null,
+            "root_entity_id": "e3092205-9806-464a-af6d-f0f8a364b46d",
+            "replaced_model_id": null
+          },
+          "modelId": "itemasset",
+          "@components": [
+            {
+              "@type": "MOD.Core.TransformComponent",
+              "Position": {
+                "x": 0.6456339,
+                "y": 0.0237728581,
+                "z": 999.999
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteRendererComponent",
+              "ActionSheet": {},
+              "EndFrameIndex": 2147483647,
+              "RenderSetting": 0,
+              "SortingLayer": "MapLayer0",
+              "SpriteRUID": "6d050c1d59154c968a8ff74e6fc229cb",
+              "StartFrameIndex": 0,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TriggerComponent",
+              "BoxSize": {
+                "x": 0.29,
+                "y": 0.29
+              },
+              "ColliderOffset": {
+                "x": 0.164999992,
+                "y": 0.155
+              },
+              "IsLegacy": false,
+              "Enable": true
+            },
+            {
+              "@type": "script.ResourcePickup",
+              "Enable": true
             }
           ],
           "@version": 1

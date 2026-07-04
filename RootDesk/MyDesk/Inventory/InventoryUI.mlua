@@ -80,7 +80,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void Wire(string path, any fn)
-		-- 경로의 버튼에 클릭 핸들러 연결(핸들러는 GC 방지 위해 보관).
+		-- 경로의 버튼에 클릭 핸들러 연결.
 		local e = _EntityService:GetEntityByPath(path)
 		if e == nil then return end
 		if e.ButtonComponent == nil then e:AddComponent("MOD.Core.ButtonComponent") end
@@ -97,7 +97,7 @@ script InventoryUI extends Component
 		self._T.curName  = nil
 		self._T.curCat   = nil
 		self._T.selSlot  = nil
-		self._T.tab      = 1        -- 현재 탭(1-based)
+		self._T.tab      = 1        
 		
 		self._T.equipPanel  = base .. "/EquipPanel"
 		self._T.bagPanel    = base .. "/BagPanel"
@@ -130,7 +130,7 @@ script InventoryUI extends Component
 		self._T.avatarEnt = _EntityService:GetEntityByPath(base .. "/EquipPanel/Char/Avatar")
 		self._T.mesoValue = _EntityService:GetEntityByPath(base .. "/BagPanel/MesoBar/Value")
 		self._T.evtHandlers = {}
-
+		
 		if self._T.template ~= nil then self._T.template:SetEnable(false) end
 		
 		-- 열기 버튼 = (DefaultGroup/Btn_Inventory). OpenButtonPath로 연결.
@@ -169,7 +169,7 @@ script InventoryUI extends Component
 			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ResourceValueChangedEvent, hnd = h1 }
 			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ClientResourceInitializedEvent, hnd = h2 }
 		end
-
+		
 		self:SetupAvatar()
 		self:RefreshMeso()
 		self:SetOpen(false)
@@ -255,7 +255,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void Rebuild()
-		-- 그리드를 현재 탭 카테고리로 필터해 다시 구성. 글로벌 인덱스 보관.
+		-- 스택 개수 표시
 		if self._T.slots ~= nil then
 			for i = 1, #self._T.slots do
 				if isvalid(self._T.slots[i]) then self._T.slots[i]:Destroy() end
@@ -275,7 +275,8 @@ script InventoryUI extends Component
 		local tabs = self:TabCategories()
 		local cat = tabs[self._T.tab] or "장비"
 		for gi = 1, #names do
-			local name = names[gi]
+			local st = names[gi]
+			local name = st.name
 			local row = ds:FindRow("Name", name)
 			if row ~= nil and self:CategoryOf(row) == cat then
 				local slot = _SpawnService:SpawnByEntity(self._T.template, "Slot", Vector3.zero, self._T.grid)
@@ -284,7 +285,7 @@ script InventoryUI extends Component
 				local us = slot:GetComponent("script.UIItemSlot")
 				if us ~= nil then
 					us.ownerWindow = self.Entity
-					us:SetData(name, gi)
+					us:SetData(name, gi, st.count)
 				end
 				self._T.slots[#self._T.slots + 1] = slot
 			end
@@ -308,7 +309,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SetWorn(string slotPath, string itemName, boolean locked)
-		-- 착용칸 1개: 잠금이면 자물쇠 아이콘, 아니면 착용 아이콘(없으면 빈칸).
+		-- 잠금이면 자물쇠 아이콘, 아니면 착용 아이콘(없으면 빈칸).
 		local slot = _EntityService:GetEntityByPath(slotPath)
 		if slot == nil then return end
 		local icon = slot:GetChildByName("Icon")
@@ -399,11 +400,11 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void PositionPopupAt(Entity slotEntity)
-		-- 팝업을 클릭한 슬롯 옆(가방이 우측이라 왼쪽)에 배치. 화면 밖으로 안 나가게 클램프.
+		--  화면 밖으로 안 나가게 클램프.
 		if self._T.detail == nil or slotEntity == nil or isvalid(slotEntity) == false then return end
 		local ut = slotEntity.UITransformComponent
 		if ut == nil then return end
-		local corners = ut:GetWorldCorners()   -- {BL, TL, TR, BR} — 실측 결과 '스크린' 좌표
+		local corners = ut:GetWorldCorners()   -- 
 		if corners == nil or corners[1] == nil or corners[3] == nil then return end
 		local center = Vector2((corners[1].x + corners[3].x) / 2, (corners[1].y + corners[3].y) / 2)
 		-- 스크린 → UI 캔버스 좌표(팝업 부모=풀스크린, 중심원점). WorldToScreen 단계 없음.
@@ -463,7 +464,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnDropClicked()
-		-- 분해(제거): 현재 선택 슬롯 제거 요청.
+		-- 분해(제거)
 		if self._T.curIndex == nil then return end
 		local inv = self:GetInv()
 		if inv ~= nil then inv:RequestRemoveAt(self._T.curIndex) end
@@ -472,7 +473,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SetupAvatar()
-		-- UI 아바타를 내 캐릭터 모습으로 미러링(DefaultEquipUserId = 내 UserId → 코스튬 복제).
+		-- UI 아바타를 내 캐릭터 모습으로.
 		if self._T.avatarEnt == nil then return end
 		local cm = self._T.avatarEnt.CostumeManagerComponent
 		if cm == nil then return end
@@ -484,7 +485,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method any GetWallet()
-		-- LocalPlayer의 PlayerResource(재화, resource-package). 없으면 nil.
+		-- LocalPlayer의 PlayerResource
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
 		return lp:GetComponent("script.PlayerResource")
