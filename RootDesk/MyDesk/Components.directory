@@ -1,20 +1,20 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "directory://61fd2b223b7b4003965df735cb7de95d",
+  "EntryKey": "directory://dd5afc895c254407b450575a4a34e979",
   "ContentType": "x-mod/directory",
   "Content": "",
   "Usage": 0,
   "UsePublish": 1,
   "UseService": 0,
   "CoreVersion": "26.5.0.0",
-  "StudioVersion": "0.1.0.0",
+  "StudioVersion": "",
   "DynamicLoading": 0,
   "ContentProto": {
     "Use": "Json",
     "Json": {
-      "entry_id": "directory://61fd2b223b7b4003965df735cb7de95d",
-      "name": "Attendance",
+      "entry_id": "directory://dd5afc895c254407b450575a4a34e979",
+      "name": "Components",
       "lock": false,
       "folding": false,
       "nameEditable": true

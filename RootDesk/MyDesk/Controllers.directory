@@ -1,20 +1,20 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "directory://f90ad30cb67746288807b1b0182436e7",
+  "EntryKey": "directory://64524739d84b4311b7c622421eed2364",
   "ContentType": "x-mod/directory",
   "Content": "",
   "Usage": 0,
   "UsePublish": 1,
   "UseService": 0,
   "CoreVersion": "26.5.0.0",
-  "StudioVersion": "0.1.0.0",
+  "StudioVersion": "",
   "DynamicLoading": 0,
   "ContentProto": {
     "Use": "Json",
     "Json": {
-      "entry_id": "directory://f90ad30cb67746288807b1b0182436e7",
-      "name": "Inventory",
+      "entry_id": "directory://64524739d84b4311b7c622421eed2364",
+      "name": "Controllers",
       "lock": false,
       "folding": false,
       "nameEditable": true
