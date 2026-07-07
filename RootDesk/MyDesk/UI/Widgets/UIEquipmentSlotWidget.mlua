@@ -1,5 +1,5 @@
 @Component
-script UIItemSlot extends Component
+script UIEquipmentSlotWidget extends Component
 
 	property string itemName = ""
 
@@ -70,8 +70,8 @@ script UIItemSlot extends Component
 	handler HandleButtonClickEvent(ButtonClickEvent event)
 		if self.itemName == "" then return end
 		if self.ownerWindow == nil then return end
-		---@type InventoryUI
-		local ctrl = self.ownerWindow:GetComponent("script.InventoryUI")
+		---@type UIInventoryPopup
+		local ctrl = self.ownerWindow:GetComponent("script.UIInventoryPopup")
 		if ctrl ~= nil then ctrl:OnSlotClicked(self.Entity) end
 	end
 

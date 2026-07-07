@@ -1,7 +1,7 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://e6498016-b787-47c6-966e-fe41911bd63e",
+  "EntryKey": "codeblock://ac334bee-44f2-46c4-b492-21c9fc9a6dc1",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
@@ -22,9 +22,9 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "e6498016-b787-47c6-966e-fe41911bd63e",
+      "Id": "ac334bee-44f2-46c4-b492-21c9fc9a6dc1",
       "Language": 1,
-      "Name": "EnhanceUI",
+      "Name": "UIAttendancePopup",
       "Type": 1,
       "Source": 0,
       "Target": null

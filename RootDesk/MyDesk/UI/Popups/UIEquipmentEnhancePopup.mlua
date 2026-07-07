@@ -1,5 +1,5 @@
 @Component
-script EnhanceUI extends Component
+script UIEquipmentEnhancePopup extends Component
 
 	-- 독립 강화 창(무기강화 탭에서 열림). 좌:가방 장비 목록 / 중:선택 상세 / 우:승급·스타포스·컬렉션 탭.
 	-- Controller 엔티티(항상 활성)에 부착. EnhancePopup(기본 숨김)을 제어한다.
@@ -127,7 +127,7 @@ script EnhanceUI extends Component
 		end
 
 		self:SetPopup(false)
-		log("[EnhanceUI] OnBeginPlay ok")
+		log("[UIEquipmentEnhancePopup] OnBeginPlay ok")
 	end
 
 	@ExecSpace("ClientOnly")
@@ -153,7 +153,7 @@ script EnhanceUI extends Component
 		self:SetPopup(true)
 		self:BuildList()
 		self:SetTab(self._T.tab or 0)
-		log("[EnhanceUI] Open")
+		log("[UIEquipmentEnhancePopup] Open")
 	end
 
 	@ExecSpace("ClientOnly")

@@ -1,5 +1,5 @@
 @Component
-script AttendanceUI extends Component
+script UIAttendancePopup extends Component
 
 	property string OpenButtonPath = "/ui/DefaultGroup/Btn_Attendance"
 
@@ -51,7 +51,7 @@ script AttendanceUI extends Component
 		self:Wire(base .. "/Board/ClaimBtn", function() self:OnClaimClicked() end)
 		
 		self:SetOpen(false)
-		log("[AttendanceUI] OnBeginPlay ok")
+		log("[UIAttendancePopup] OnBeginPlay ok")
 	end
 
 	@ExecSpace("ClientOnly")

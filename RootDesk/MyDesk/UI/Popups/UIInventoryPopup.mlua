@@ -1,5 +1,6 @@
 @Component
-script InventoryUI extends Component
+script UIInventoryPopup extends Component
+	-- §13 rename: InventoryUI -> UIInventoryPopup (rebind touch)
 
 	property string OpenButtonPath = "/ui/DefaultGroup/Btn_Inventory"
 
@@ -199,7 +200,7 @@ script InventoryUI extends Component
 		self:SetupAvatar()
 		self:RefreshMeso()
 		self:SetOpen(false)
-		log("[InventoryUI] OnBeginPlay ok")
+		log("[UIInventoryPopup] OnBeginPlay ok")
 	end
 
 	@ExecSpace("ClientOnly")
@@ -307,8 +308,8 @@ script InventoryUI extends Component
 			if row ~= nil and self:CategoryOf(row) == cat then
 				local slot = _SpawnService:SpawnByEntity(self._T.template, "Slot", Vector3.zero, self._T.grid)
 				slot:SetEnable(true)
-				---@type UIItemSlot
-				local us = slot:GetComponent("script.UIItemSlot")
+				---@type UIEquipmentSlotWidget
+				local us = slot:GetComponent("script.UIEquipmentSlotWidget")
 				if us ~= nil then
 					us.ownerWindow = self.Entity
 					us:SetData(name, gi, st.count, st.grade or 1)
@@ -360,13 +361,13 @@ script InventoryUI extends Component
 	method void OnSlotClicked(Entity slotEntity)
 		-- 이전 선택 해제
 		if self._T.selSlot ~= nil and isvalid(self._T.selSlot) then
-			---@type UIItemSlot
-			local prev = self._T.selSlot:GetComponent("script.UIItemSlot")
+			---@type UIEquipmentSlotWidget
+			local prev = self._T.selSlot:GetComponent("script.UIEquipmentSlotWidget")
 			if prev ~= nil then prev:SetSelected(false) end
 		end
 		self._T.selSlot = slotEntity
-		---@type UIItemSlot
-		local us = slotEntity:GetComponent("script.UIItemSlot")
+		---@type UIEquipmentSlotWidget
+		local us = slotEntity:GetComponent("script.UIEquipmentSlotWidget")
 		if us ~= nil then
 			us:SetSelected(true)
 			self._T.curName = us.itemName
@@ -442,7 +443,7 @@ script InventoryUI extends Component
 		if self._T.btnEquip ~= nil then self._T.btnEquip.Enable = self:IsEquipCategory(self._T.curCat) end
 		-- 정보창은 가방 왼쪽 고정 위치(빌드에서 배치). 위치 계산 불필요.
 		if self._T.detail ~= nil then self._T.detail.Enable = true end
-		log("[InventoryUI] ShowDetail: " .. tostring(itemName) .. " (" .. tostring(self._T.curCat) .. ") G" .. tostring(self._T.curGrade) .. " ★" .. tostring(self._T.curStar))
+		log("[UIInventoryPopup] ShowDetail: " .. tostring(itemName) .. " (" .. tostring(self._T.curCat) .. ") G" .. tostring(self._T.curGrade) .. " ★" .. tostring(self._T.curStar))
 	end
 
 	@ExecSpace("ClientOnly")
@@ -479,11 +480,11 @@ script InventoryUI extends Component
 		if row == nil then return end
 		local part = row:GetItem("Part")
 		if part == nil or part == "" then
-			log_warning("[InventoryUI] Part 미설정: " .. tostring(self._T.curName))
+			log_warning("[UIInventoryPopup] Part 미설정: " .. tostring(self._T.curName))
 			return
 		end
 		if inv:IsUnlocked(part) == false and self:IsLockedDefault(part) then
-			log_warning("[InventoryUI] 잠긴 부위: " .. tostring(part))
+			log_warning("[UIInventoryPopup] 잠긴 부위: " .. tostring(part))
 			return
 		end
 		-- 승급 UI 연동 시 선택 슬롯의 star/grade를 추적해 전달. 현재는 star0·레어(1) 기준.
@@ -528,7 +529,7 @@ script InventoryUI extends Component
 		local lp = _UserService.LocalPlayer
 		if lp == nil or lp.PlayerComponent == nil then return end
 		cm.DefaultEquipUserId = lp.PlayerComponent.UserId
-		log("[InventoryUI] avatar mirror userId=" .. tostring(lp.PlayerComponent.UserId))
+		log("[UIInventoryPopup] avatar mirror userId=" .. tostring(lp.PlayerComponent.UserId))
 	end
 
 	@ExecSpace("ClientOnly")

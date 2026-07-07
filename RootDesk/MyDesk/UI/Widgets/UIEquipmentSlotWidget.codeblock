@@ -1,14 +1,14 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://b8aa95bd-b3e0-44a7-959e-2755c7f92d30",
+  "EntryKey": "codeblock://eb157439-30ac-48b4-94c4-d8bdfb7de248",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
   "UsePublish": 1,
   "UseService": 0,
   "CoreVersion": "26.5.0.0",
-  "StudioVersion": "0.1.0.0",
+  "StudioVersion": "",
   "DynamicLoading": 0,
   "ContentProto": {
     "Use": "Json",
@@ -22,9 +22,9 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "b8aa95bd-b3e0-44a7-959e-2755c7f92d30",
+      "Id": "eb157439-30ac-48b4-94c4-d8bdfb7de248",
       "Language": 1,
-      "Name": "AttendanceUI",
+      "Name": "UIEquipmentSlotWidget",
       "Type": 1,
       "Source": 0,
       "Target": null
