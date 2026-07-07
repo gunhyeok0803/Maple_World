@@ -1,0 +1,122 @@
+@Component
+script CollectionManager extends Component
+
+	-- 컬렉션: 동일 장비 대량 등록 → 영구 전투력(스탯 풀) + 장비 소멸. 반복 가능. MVP v11 §05.
+	property string SaveKey = "collectionV1"
+
+	@Sync
+	property integer CollAtk = 0
+
+	@Sync
+	property integer CollDef = 0
+
+	@Sync
+	property integer CollHp = 0
+
+	method Inventory GetInv()
+		-- 같은 엔티티의 Inventory(없으면 nil).
+		---@type Inventory
+		local inv = self.Entity:GetComponent("script.Inventory")
+		return inv
+	end
+
+	method any FindGradeRow(integer grade)
+		-- CollectionDataSet에서 Grade 일치 행(없으면 nil).
+		local t = _DataService:GetTable("CollectionDataSet")
+		if t == nil then return nil end
+		local n = t:GetRowCount()
+		for i = 1, n do
+			local row = t:GetRow(i)
+			if (tonumber(row:GetItem("Grade")) or 0) == grade then return row end
+		end
+		return nil
+	end
+
+	method integer RegUnitOf(integer grade)
+		-- 해당 등급 1회 등록에 필요한 개수(없으면 0).
+		local row = self:FindGradeRow(grade)
+		if row == nil then return 0 end
+		return tonumber(row:GetItem("RegUnit")) or 0
+	end
+
+	method integer MaxRegister(string itemName, integer grade)
+		-- ★0 순정 (name,grade) 보유량 / 등록단위 = 가능 등록 횟수.
+		local unit = self:RegUnitOf(grade)
+		if unit <= 0 then return 0 end
+		local inv = self:GetInv()
+		if inv == nil then return 0 end
+		return math.floor(inv:CountItem(itemName, 0, grade) / unit)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void SaveNow()
+		-- 컬렉션 누적 저장(등록은 드물어 즉시 SetAsync).
+		local userId = self.Entity.PlayerComponent.UserId
+		local ds = _DataStorageService:GetUserDataStorage(userId)
+		local data = tostring(self.CollAtk) .. ":" .. tostring(self.CollDef) .. ":" .. tostring(self.CollHp)
+		ds:SetAsync(self.SaveKey, data, function(errorCode, key)
+			if errorCode ~= 0 then log_warning("[Collection] save failed code=" .. tostring(errorCode)) end
+		end)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoRegister(string itemName, integer grade, integer times)
+		-- ★0 순정 (name,grade)를 등록단위×times 소모 → 등급별 보너스×times 누적(영구) → 소멸 → 저장.
+		local unit = self:RegUnitOf(grade)
+		if unit <= 0 then
+			log("[Collection] 등록 불가 등급: G" .. tostring(grade))
+			return
+		end
+		local t = times or 1
+		if t < 1 then t = 1 end
+		local maxT = self:MaxRegister(itemName, grade)
+		if t > maxT then t = maxT end
+		if t < 1 then
+			log("[Collection] 재료 부족: " .. tostring(itemName) .. " G" .. tostring(grade) .. " (필요 " .. tostring(unit) .. "개/회)")
+			return
+		end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local row = self:FindGradeRow(grade)
+		local addAtk = (tonumber(row:GetItem("Atk")) or 0) * t
+		local addDef = (tonumber(row:GetItem("Def")) or 0) * t
+		local addHp = (tonumber(row:GetItem("Hp")) or 0) * t
+		local need = unit * t
+		for k = 1, need do inv:ConsumeItem(itemName, 0, grade) end
+		inv:Publish()      -- 소멸 반영(@Sync) → 클라 InventoryChangedEvent → 전투력 갱신
+		inv:MarkDirty()
+		self.CollAtk = self.CollAtk + addAtk
+		self.CollDef = self.CollDef + addDef
+		self.CollHp = self.CollHp + addHp
+		self:SaveNow()
+		log("[Collection] 등록 " .. tostring(itemName) .. " G" .. tostring(grade) .. " x" .. tostring(need) .. " → +공" .. tostring(addAtk) .. "/방" .. tostring(addDef) .. "/HP" .. tostring(addHp) .. " (누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
+	end
+
+	@ExecSpace("Server")
+	method void RequestRegister(string itemName, integer grade, integer times)
+		-- 클라 컬렉션 등록 요청 → 본인 검증 후 DoRegister.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoRegister(itemName, grade, times)
+	end
+
+	method table GetBonus()
+		-- 컬렉션 누적 보너스 {atk,def,hp}. (CombatStats가 호출, @Sync라 클라도 읽음)
+		return { atk = self.CollAtk, def = self.CollDef, hp = self.CollHp }
+	end
+
+	@ExecSpace("ServerOnly")
+	method void OnBeginPlay()
+		-- 컬렉션 누적 로드.
+		local userId = self.Entity.PlayerComponent.UserId
+		local ds = _DataStorageService:GetUserDataStorage(userId)
+		local code, raw = ds:GetAndWait(self.SaveKey)
+		if code == 0 and _UtilLogic:IsNilorEmptyString(raw) == false then
+			local kv = _UtilLogic:Split(raw, ":")
+			self.CollAtk = tonumber(kv[1]) or 0
+			self.CollDef = tonumber(kv[2]) or 0
+			self.CollHp = tonumber(kv[3]) or 0
+		end
+		log("[CollectionManager] OnBeginPlay ok (누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
+	end
+
+end

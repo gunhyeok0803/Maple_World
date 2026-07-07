@@ -68,8 +68,16 @@ script CombatStats extends Component
 	end
 
 	method table GetStatSummary()
-		-- UI 한 번 조회용
+		-- UI 한 번 조회용. 장착(base+강화) + 컬렉션 영구 보너스 합산.
 		local s = self:GetEquippedStats()
+		---@type CollectionManager
+		local cm = self.Entity:GetComponent("script.CollectionManager")
+		if cm ~= nil then
+			local b = cm:GetBonus()
+			s.atk = s.atk + (b.atk or 0)
+			s.def = s.def + (b.def or 0)
+			s.hp = s.hp + (b.hp or 0)
+		end
 		s.power = s.atk * self.PowerAtkWeight + s.def * self.PowerDefWeight + s.hp * self.PowerHpWeight
 		return s
 	end

@@ -1,4 +1,4 @@
-Star,SuccessRate,DestroyRate,Cost,AtkGain,DefGain,HpGain
+﻿Star,SuccessRate,DestroyRate,Cost,AtkGain,DefGain,HpGain
 1,1.00,0,res:1:100,10,5,50
 2,1.00,0,res:1:150,10,5,50
 3,1.00,0,res:1:220,10,5,50
