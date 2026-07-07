@@ -115,7 +115,7 @@
       {
         "id": "03bcd2e6-8a25-48be-b99f-02c2b90c2f04",
         "path": "/ui/InventoryGroup/Controller",
-        "componentNames": "MOD.Core.UITransformComponent,script.UIInventoryPopup,script.UIEquipmentEnhancePopup",
+        "componentNames": "MOD.Core.UITransformComponent,script.UIEquipmentEnhancePopup,script.UIInventoryPopup",
         "jsonString": {
           "name": "Controller",
           "path": "/ui/InventoryGroup/Controller",
@@ -194,11 +194,11 @@
               "Enable": true
             },
             {
-              "@type": "script.UIInventoryPopup",
+              "@type": "script.UIEquipmentEnhancePopup",
               "Enable": true
             },
             {
-              "@type": "script.UIEquipmentEnhancePopup",
+              "@type": "script.UIInventoryPopup",
               "Enable": true
             }
           ],
