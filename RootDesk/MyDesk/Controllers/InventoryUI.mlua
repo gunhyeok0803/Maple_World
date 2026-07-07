@@ -114,8 +114,6 @@ script InventoryUI extends Component
 		self._T.btnEquip    = _EntityService:GetEntityByPath(base .. "/DetailPopup/BtnEquip")
 		self._T.dPromoteInfo = _EntityService:GetEntityByPath(base .. "/DetailPopup/PromoteInfo")
 		self._T.btnPromote   = _EntityService:GetEntityByPath(base .. "/DetailPopup/BtnPromote")
-		self._T.btnCollect   = _EntityService:GetEntityByPath(base .. "/DetailPopup/BtnCollect")
-		self._T.dCollectInfo = _EntityService:GetEntityByPath(base .. "/DetailPopup/CollectInfo")
 		self._T.dPower      = _EntityService:GetEntityByPath(base .. "/DetailPopup/PowerVal")
 		self._T.dStat       = {
 			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_0"),   -- 공격력
@@ -148,7 +146,6 @@ script InventoryUI extends Component
 		self:Wire(base .. "/DetailPopup/BtnDrop", function() self:OnDropClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnCloseDetail", function() self:HideDetail() end)
 		self:Wire(base .. "/DetailPopup/BtnPromote", function() self:OnPromoteClicked() end)
-		self:Wire(base .. "/DetailPopup/BtnCollect", function() self:OnCollectClicked() end)
 		-- 전투력 바 🔍 → 스탯 팝업 토글 / 팝업 CloseBtn → 닫기
 		self:Wire(base .. "/EquipPanel/PowerBar/SearchBtn", function() self:ToggleStat() end)
 		self:Wire(base .. "/StatPopup/CloseBtn", function() self:CloseStat() end)
@@ -408,7 +405,6 @@ script InventoryUI extends Component
 			if si ~= nil then self._T.curStar = si.star or 0; self._T.curGrade = si.grade or 1 end
 		end
 		self:RefreshPromote()
-		self:RefreshCollect()
 		-- 정보창은 가방 왼쪽 고정 위치(빌드에서 배치). 위치 계산 불필요.
 		if self._T.detail ~= nil then self._T.detail.Enable = true end
 		log("[InventoryUI] ShowDetail: " .. tostring(itemName) .. " (" .. tostring(self._T.curCat) .. ") G" .. tostring(self._T.curGrade) .. " ★" .. tostring(self._T.curStar))
@@ -423,38 +419,19 @@ script InventoryUI extends Component
 	end
 
 	@ExecSpace("ClientOnly")
-	method any GetStarforceMgr()
-		-- LocalPlayer의 StarforceSystem(스타포스, 없으면 nil).
-		local lp = _UserService.LocalPlayer
-		if lp == nil then return nil end
-		return lp:GetComponent("script.StarforceSystem")
-	end
-
-	@ExecSpace("ClientOnly")
-	method any GetCollectMgr()
-		-- LocalPlayer의 CollectionSystem(컬렉션, 없으면 nil).
-		local lp = _UserService.LocalPlayer
-		if lp == nil then return nil end
-		return lp:GetComponent("script.CollectionSystem")
-	end
-
-	@ExecSpace("ClientOnly")
 	method void RefreshPromote()
-		-- 강화 버튼 갱신: 장비 + ★0 + grade<4 → 승급 / 장비 + 레전드리(grade==4) → 스타포스.
+		-- 승급 안내/버튼 갱신. 장비 + ★0 순정 + 상위 등급(grade<4)일 때만 노출.
 		local info = self._T.dPromoteInfo
 		local btn = self._T.btnPromote
 		local show = false
 		local infoText = ""
-		local btnLabel = ""
 		self._T.promoteMax = 0
-		self._T.enhMode = nil
 		local inv = self:GetInv()
-		if inv ~= nil and self._T.curName ~= nil and self._T.curName ~= "" and self:IsEquipCategory(self._T.curCat) then
+		local pm = self:GetPromoteMgr()
+		if inv ~= nil and pm ~= nil and self._T.curName ~= nil and self._T.curName ~= "" then
 			local star = self._T.curStar or 0
 			local grade = self._T.curGrade or 1
-			local pm = self:GetPromoteMgr()
-			if star == 0 and grade < 4 and pm ~= nil then
-				-- 승급(등급업)
+			if self:IsEquipCategory(self._T.curCat) and star == 0 and grade < 4 then
 				local ratio = pm:RatioFor(grade)
 				if ratio > 0 then
 					local have = 0
@@ -463,70 +440,11 @@ script InventoryUI extends Component
 					end
 					local maxT = math.floor(have / ratio)
 					self._T.promoteMax = maxT
-					self._T.enhMode = "promote"
 					show = true
-					btnLabel = "일괄 승급"
 					if maxT >= 1 then
 						infoText = "승급 " .. tostring(maxT) .. "회 가능 → 결과 " .. tostring(maxT) .. "개 (회당 " .. tostring(ratio) .. "개)"
 					else
 						infoText = "승급 재료 부족 (" .. tostring(have) .. "/" .. tostring(ratio) .. ")"
-					end
-				end
-			elseif grade >= 4 then
-				-- 스타포스(레전드리 전용): 다음 성급 성공/파괴 확률 표시.
-				local target = star + 1
-				local t = _DataService:GetTable("EnhanceDataSet")
-				local row = nil
-				if t ~= nil then
-					local n = t:GetRowCount()
-					for i = 1, n do
-						local r = t:GetRow(i)
-						if (tonumber(r:GetItem("Star")) or 0) == target then row = r break end
-					end
-				end
-				if row ~= nil then
-					self._T.enhMode = "starforce"
-					show = true
-					btnLabel = "스타포스"
-					local sr = math.floor((tonumber(row:GetItem("SuccessRate")) or 0) * 100 + 0.5)
-					local dr = math.floor((tonumber(row:GetItem("DestroyRate")) or 0) * 100 + 0.5)
-					infoText = "★" .. tostring(star) .. "→★" .. tostring(target) .. "  성공 " .. tostring(sr) .. "%  파괴 " .. tostring(dr) .. "%"
-				else
-					infoText = "최대 성급 도달 (★" .. tostring(star) .. ")"
-				end
-			end
-		end
-		if info ~= nil and info.TextComponent ~= nil then info.TextComponent.Text = infoText end
-		if info ~= nil then info.Enable = show or (infoText ~= "") end
-		if btn ~= nil then
-			btn.Enable = show
-			if show and btn.TextComponent ~= nil then btn.TextComponent.Text = btnLabel end
-		end
-	end
-
-	@ExecSpace("ClientOnly")
-	method void RefreshCollect()
-		-- 컬렉션 등록 버튼 갱신: 장비 + ★0 순정일 때 노출. 등급별 등록단위×횟수.
-		local info = self._T.dCollectInfo
-		local btn = self._T.btnCollect
-		local show = false
-		local infoText = ""
-		self._T.collectMax = 0
-		local inv = self:GetInv()
-		local cm = self:GetCollectMgr()
-		if inv ~= nil and cm ~= nil and self._T.curName ~= nil and self._T.curName ~= "" then
-			local star = self._T.curStar or 0
-			local grade = self._T.curGrade or 1
-			if self:IsEquipCategory(self._T.curCat) and star == 0 then
-				local unit = cm:RegUnitOf(grade)
-				if unit > 0 then
-					local times = cm:MaxRegister(self._T.curName, grade)
-					self._T.collectMax = times
-					show = true
-					if times >= 1 then
-						infoText = "컬렉션 등록 " .. tostring(times) .. "회 가능 (회당 " .. tostring(unit) .. "개, 소멸→영구 전투력)"
-					else
-						infoText = "컬렉션 재료 부족 (회당 " .. tostring(unit) .. "개)"
 					end
 				end
 			end
@@ -538,33 +456,14 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnPromoteClicked()
-		-- 강화 버튼: enhMode에 따라 승급(일괄) 또는 스타포스(1회) 요청.
+		-- 일괄 승급: 가능한 최대 횟수만큼 승급 요청.
 		if self._T.curName == nil or self._T.curName == "" then return end
-		local mode = self._T.enhMode
-		if mode == "promote" then
-			local maxT = self._T.promoteMax or 0
-			if maxT < 1 then return end
-			local pm = self:GetPromoteMgr()
-			if pm == nil then return end
-			pm:RequestPromote(self._T.curName, self._T.curGrade or 1, maxT)
-		elseif mode == "starforce" then
-			local sf = self:GetStarforceMgr()
-			if sf == nil or self._T.curIndex == nil then return end
-			sf:RequestEnhance(self._T.curIndex)
-		end
-		-- 결과 반영은 InventoryChangedEvent → Rebuild/RefreshPromote/RefreshCollect가 처리.
-	end
-
-	@ExecSpace("ClientOnly")
-	method void OnCollectClicked()
-		-- 일괄 컬렉션 등록: 가능한 최대 횟수만큼 등록 요청.
-		if self._T.curName == nil or self._T.curName == "" then return end
-		local times = self._T.collectMax or 0
-		if times < 1 then return end
-		local cm = self:GetCollectMgr()
-		if cm == nil then return end
-		cm:RequestRegister(self._T.curName, self._T.curGrade or 1, times)
-		-- 결과 반영은 InventoryChangedEvent → Rebuild/RefreshCollect가 처리.
+		local maxT = self._T.promoteMax or 0
+		if maxT < 1 then return end
+		local pm = self:GetPromoteMgr()
+		if pm == nil then return end
+		pm:RequestPromote(self._T.curName, self._T.curGrade or 1, maxT)
+		-- 결과 반영은 InventoryChangedEvent → Rebuild/RefreshPromote가 처리.
 	end
 
 	@ExecSpace("ClientOnly")
@@ -764,7 +663,7 @@ script InventoryUI extends Component
 			self:RefreshWorn()
 			self:RefreshPower()
 			-- 상세 팝업이 열려 있으면 승급 안내도 갱신(승급/획득으로 개수 변동 반영).
-			if self._T.detail ~= nil and self._T.detail.Enable then self:RefreshPromote() self:RefreshCollect() end
+			if self._T.detail ~= nil and self._T.detail.Enable then self:RefreshPromote() end
 		end
 	end
 
