@@ -1,7 +1,7 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "userdataset://f39ff2f3-a0f6-4de2-baf9-1439c091baf9",
+  "EntryKey": "userdataset://433208ce-e42e-40e8-80b1-fb481cdd490d",
   "ContentType": "x-mod/userdataset",
   "Content": "",
   "Usage": 0,
@@ -13,8 +13,8 @@
   "ContentProto": {
     "Use": "Json",
     "Json": {
-      "name": "CollectionDataSet",
-      "id": "f39ff2f3-a0f6-4de2-baf9-1439c091baf9",
+      "name": "StarforceData",
+      "id": "433208ce-e42e-40e8-80b1-fb481cdd490d",
       "serveronly": false,
       "syncDataSetWebUrl": "",
       "dynamicloading": 0

@@ -20,8 +20,8 @@ script CollectionSystem extends Component
 	end
 
 	method any FindGradeRow(integer grade)
-		-- CollectionDataSet에서 Grade 일치 행(없으면 nil).
-		local t = _DataService:GetTable("CollectionDataSet")
+		-- CollectionData에서 Grade 일치 행(없으면 nil).
+		local t = _DataService:GetTable("CollectionData")
 		if t == nil then return nil end
 		local n = t:GetRowCount()
 		for i = 1, n do

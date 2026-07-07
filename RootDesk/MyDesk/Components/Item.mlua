@@ -19,7 +19,7 @@ script Item extends Component
 	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
 		-- 아이콘(IconRUID) 표시.
-		local ds = _DataService:GetTable("UserItemDataSet")
+		local ds = _DataService:GetTable("ItemData")
 		local idx = math.tointeger(self.ItemIndex) or 0
 		if idx < 1 or idx > ds:GetRowCount() then return end
 		local ruid = ds:GetRow(idx):GetItem("IconRUID")
@@ -83,7 +83,7 @@ script Item extends Component
 		---@type Inventory
 		local inv = body:GetComponent("script.Inventory")
 		if inv == nil then return end
-		local ds = _DataService:GetTable("UserItemDataSet")
+		local ds = _DataService:GetTable("ItemData")
 		local idx = math.tointeger(self.ItemIndex) or 0
 		if idx < 1 or idx > ds:GetRowCount() then
 			log_warning("[Item] 잘못된 ItemIndex=" .. tostring(self.ItemIndex))

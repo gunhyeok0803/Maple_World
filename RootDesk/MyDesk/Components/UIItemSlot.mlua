@@ -36,7 +36,7 @@ script UIItemSlot extends Component
 		self:RefreshBorder()
 		local iconEntity = self.Entity:GetChildByName("Icon")
 		if iconEntity ~= nil then
-			local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
+			local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
 			if row ~= nil then
 				iconEntity.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
 			end

@@ -18,8 +18,8 @@ script StarforceSystem extends Component
 	end
 
 	method any FindStarRow(integer targetStar)
-		-- EnhanceDataSet에서 Star 일치 행 조회(성급 기반, 없으면 nil).
-		local t = _DataService:GetTable("EnhanceDataSet")
+		-- StarforceData에서 Star 일치 행 조회(성급 기반, 없으면 nil).
+		local t = _DataService:GetTable("StarforceData")
 		if t == nil then return nil end
 		local n = t:GetRowCount()
 		for i = 1, n do

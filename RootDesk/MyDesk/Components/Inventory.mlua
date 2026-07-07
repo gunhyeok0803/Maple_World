@@ -126,10 +126,10 @@ script Inventory extends Component
 	end
 
 	method boolean HasCol(string col)
-		-- UserItemDataSet 열 존재 여부 캐시(없는 열 GetItem은 LEA-3011 예외).
+		-- ItemData 열 존재 여부 캐시(없는 열 GetItem은 LEA-3011 예외).
 		if self._T.cols == nil then
 			self._T.cols = {}
-			local t = _DataService:GetTable("UserItemDataSet")
+			local t = _DataService:GetTable("ItemData")
 			if t ~= nil and t.Columns ~= nil then
 				for i, c in ipairs(t.Columns:ToTable()) do self._T.cols[c] = true end
 			end
@@ -140,7 +140,7 @@ script Inventory extends Component
 	method string MetaCell(string name, string col)
 		-- 아이템 데이터셋에서 name의 col 값(없으면 "").
 		if not self:HasCol(col) then return "" end
-		local t = _DataService:GetTable("UserItemDataSet")
+		local t = _DataService:GetTable("ItemData")
 		if t == nil then return "" end
 		local row = t:FindRow("Name", name)
 		if row == nil then return "" end

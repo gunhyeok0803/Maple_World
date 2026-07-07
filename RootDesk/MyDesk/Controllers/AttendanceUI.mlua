@@ -89,7 +89,7 @@ script AttendanceUI extends Component
 	method void RefreshBoard()
 		-- 보상 아이콘, 이름 표시 + 오늘 수령 여부에 따라 버튼, 상태 갱신.
 		local reward = self:RewardName()
-		local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", reward)
+		local row = _DataService:GetTable("ItemData"):FindRow("Name", reward)
 		if self._T.icon ~= nil and row ~= nil then
 			self._T.icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
 			self._T.icon.Enable = true

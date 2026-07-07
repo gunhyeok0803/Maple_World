@@ -31,7 +31,7 @@ script EnhanceUI extends Component
 	end
 
 	method boolean HasColumn(string col)
-		local ds = _DataService:GetTable("UserItemDataSet")
+		local ds = _DataService:GetTable("ItemData")
 		if ds == nil or ds.Columns == nil then return false end
 		for i, c in ipairs(ds.Columns:ToTable()) do
 			if c == col then return true end
@@ -175,7 +175,7 @@ script EnhanceUI extends Component
 		-- 가방의 장비 아이템만 목록에 채움(스택 단위). 초과분은 무시.
 		self._T.listMap = {}
 		local inv = self:GetInv()
-		local ds = _DataService:GetTable("UserItemDataSet")
+		local ds = _DataService:GetTable("ItemData")
 		local k = 0
 		if inv ~= nil and ds ~= nil then
 			local slots = inv:GetSlots()
@@ -213,7 +213,7 @@ script EnhanceUI extends Component
 		local it = self._T.listMap[k]
 		if it == nil then return end
 		self._T.sel = it
-		local ds = _DataService:GetTable("UserItemDataSet")
+		local ds = _DataService:GetTable("ItemData")
 		local row = nil
 		if ds ~= nil then row = ds:FindRow("Name", it.name) end
 		if self._T.eMidIcon ~= nil and row ~= nil then
@@ -251,7 +251,7 @@ script EnhanceUI extends Component
 	end
 
 	method any StarRow(integer targetStar)
-		local t = _DataService:GetTable("EnhanceDataSet")
+		local t = _DataService:GetTable("StarforceData")
 		if t == nil then return nil end
 		for i = 1, t:GetRowCount() do
 			local r = t:GetRow(i)
@@ -329,7 +329,7 @@ script EnhanceUI extends Component
 					local unit = cm:RegUnitOf(it.grade)
 					local times = cm:MaxRegister(it.name, it.grade)
 					self._T.actMax = times
-					local ct = _DataService:GetTable("CollectionDataSet")
+					local ct = _DataService:GetTable("CollectionData")
 					local ga, gd, gh = 0, 0, 0
 					if ct ~= nil then
 						for i = 1, ct:GetRowCount() do

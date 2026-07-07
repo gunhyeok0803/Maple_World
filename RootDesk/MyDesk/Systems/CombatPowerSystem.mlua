@@ -19,7 +19,7 @@ script CombatPowerSystem extends Component
 		-- 데이터셋에 해당 열이 있는지 첫 호출 시 캐시.
 		if self._T.cols == nil then
 			self._T.cols = {}
-			local tbl = _DataService:GetTable("UserItemDataSet")
+			local tbl = _DataService:GetTable("ItemData")
 			if tbl ~= nil then
 				for i, c in ipairs(tbl.Columns:ToTable()) do self._T.cols[c] = true end
 			end
@@ -42,7 +42,7 @@ script CombatPowerSystem extends Component
 		if inv == nil then return res end
 		local csv = inv.EquippedCsv
 		if csv == nil or csv == "" then return res end
-		local tbl = _DataService:GetTable("UserItemDataSet")
+		local tbl = _DataService:GetTable("ItemData")
 		if tbl == nil then return res end
 		---@type StarforceSystem
 		local enh = self.Entity:GetComponent("script.StarforceSystem")   -- 강화 보너스용(없으면 base만)

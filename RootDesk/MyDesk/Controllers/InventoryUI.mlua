@@ -49,8 +49,8 @@ script InventoryUI extends Component
 	end
 
 	method boolean HasColumn(string col)
-		-- UserItemDataSet에 해당 열이 있는지(없는 열 GetItem은 LEA-3011 예외 → 사전 확인).
-		local ds = _DataService:GetTable("UserItemDataSet")
+		-- ItemData에 해당 열이 있는지(없는 열 GetItem은 LEA-3011 예외 → 사전 확인).
+		local ds = _DataService:GetTable("ItemData")
 		if ds == nil or ds.Columns == nil then return false end
 		for i, c in ipairs(ds.Columns:ToTable()) do
 			if c == col then return true end
@@ -297,7 +297,7 @@ script InventoryUI extends Component
 			if maxN == nil or maxN <= 0 then maxN = 100 end
 			self._T.count.TextComponent.Text = tostring(#names) .. " / " .. tostring(maxN)
 		end
-		local ds = _DataService:GetTable("UserItemDataSet")
+		local ds = _DataService:GetTable("ItemData")
 		local tabs = self:TabCategories()
 		local cat = tabs[self._T.tab] or "장비"
 		for gi = 1, #names do
@@ -346,7 +346,7 @@ script InventoryUI extends Component
 			return
 		end
 		if itemName ~= nil and itemName ~= "" then
-			local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
+			local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
 			if row ~= nil and icon ~= nil then
 				icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
 				icon.Enable = true
@@ -377,7 +377,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void ShowDetail(string itemName)
-		local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
+		local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
 		if row == nil then return end
 		self._T.curCat = self:CategoryOf(row)
 		if self._T.dIcon ~= nil then
@@ -475,7 +475,7 @@ script InventoryUI extends Component
 		if self._T.curName == nil or self._T.curName == "" then return end
 		local inv = self:GetInv()
 		if inv == nil then return end
-		local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", self._T.curName)
+		local row = _DataService:GetTable("ItemData"):FindRow("Name", self._T.curName)
 		if row == nil then return end
 		local part = row:GetItem("Part")
 		if part == nil or part == "" then
