@@ -294,7 +294,7 @@ script EnhanceUI extends Component
 					local maxT = 0
 					if ratio > 0 then maxT = math.floor(have / ratio) end
 					self._T.actMax = maxT
-					infoText = self:GradeName(it.grade) .. " → " .. self:GradeName(it.grade + 1) .. "\n보유 " .. tostring(have) .. " / 회당 " .. tostring(ratio) .. "개"
+					infoText = self:GradeName(it.grade) .. " → " .. self:GradeName(it.grade + 1) .. "\n보유 " .. tostring(have) .. " / 회당 " .. tostring(ratio) .. "개\n[상승수치] 등급업 → 스탯 대폭 증가"
 					if maxT >= 1 then infoText = infoText .. "\n" .. tostring(maxT) .. "회 승급 가능" canDo = true
 					else infoText = infoText .. "\n재료 부족" end
 				end
@@ -311,7 +311,10 @@ script EnhanceUI extends Component
 					else
 						local sr = math.floor((tonumber(row:GetItem("SuccessRate")) or 0) * 100 + 0.5)
 						local dr = math.floor((tonumber(row:GetItem("DestroyRate")) or 0) * 100 + 0.5)
-						infoText = "★" .. tostring(it.star) .. " → ★" .. tostring(target) .. "\n성공 " .. tostring(sr) .. "%   파괴 " .. tostring(dr) .. "%"
+						local ag = tonumber(row:GetItem("AtkGain")) or 0
+						local dg = tonumber(row:GetItem("DefGain")) or 0
+						local hg = tonumber(row:GetItem("HpGain")) or 0
+						infoText = "★" .. tostring(it.star) .. " → ★" .. tostring(target) .. "\n성공 " .. tostring(sr) .. "%   파괴 " .. tostring(dr) .. "%\n[상승수치] 공+" .. tostring(ag) .. "  방+" .. tostring(dg) .. "  HP+" .. tostring(hg)
 						costText = "필요: " .. tostring(row:GetItem("Cost"))
 						canDo = true
 					end
@@ -326,7 +329,22 @@ script EnhanceUI extends Component
 					local unit = cm:RegUnitOf(it.grade)
 					local times = cm:MaxRegister(it.name, it.grade)
 					self._T.actMax = times
-					infoText = "회당 " .. tostring(unit) .. "개 소모 → 영구 전투력\n등록 " .. tostring(times) .. "회 가능"
+					local ct = _DataService:GetTable("CollectionDataSet")
+					local ga, gd, gh = 0, 0, 0
+					if ct ~= nil then
+						for i = 1, ct:GetRowCount() do
+							local r = ct:GetRow(i)
+							if (tonumber(r:GetItem("Grade")) or 0) == it.grade then
+								ga = tonumber(r:GetItem("Atk")) or 0
+								gd = tonumber(r:GetItem("Def")) or 0
+								gh = tonumber(r:GetItem("Hp")) or 0
+								break
+							end
+						end
+					end
+					local mul = times
+					if mul < 1 then mul = 1 end
+					infoText = "회당 " .. tostring(unit) .. "개 소모 → 영구 전투력\n등록 " .. tostring(times) .. "회 가능\n[영구상승] 공+" .. tostring(ga * mul) .. " 방+" .. tostring(gd * mul) .. " HP+" .. tostring(gh * mul)
 					if times >= 1 then canDo = true else infoText = infoText .. "\n재료 부족" end
 				end
 			end
