@@ -3,7 +3,7 @@ script StarforceSystem extends Component
 
 	property integer MaxStar = 20
 
-	property integer LegendaryGrade = 4
+	-- 레전드리 등급 상수는 _ItemGrade.Legendary로 중앙화(§13). 스타포스는 레전드리 전용.
 
 	method Inventory GetInv()
 		-- 같은 엔티티의 Inventory(없으면 nil).
@@ -104,7 +104,7 @@ script StarforceSystem extends Component
 		local name = info.name
 		local star = info.star or 0
 		local grade = info.grade or 1
-		if grade < self.LegendaryGrade then
+		if grade < _ItemGrade.Legendary then
 			log("[SF] 레전드리만 스타포스 가능: " .. tostring(name) .. " G" .. tostring(grade))
 			return
 		end
@@ -157,13 +157,13 @@ script StarforceSystem extends Component
 			log_warning("[SF] 잘못된 흔적 index=" .. tostring(traceIndex))
 			return
 		end
-		if inv:CountItem(tr.name, 0, self.LegendaryGrade) < 1 then
+		if inv:CountItem(tr.name, 0, _ItemGrade.Legendary) < 1 then
 			log("[SF] 복구 재료 부족(레전드리 순정 필요): " .. tostring(tr.name))
 			return
 		end
-		inv:ConsumeItem(tr.name, 0, self.LegendaryGrade)
+		inv:ConsumeItem(tr.name, 0, _ItemGrade.Legendary)
 		inv:RemoveTraceAt(traceIndex)
-		inv:AddItem(tr.name, tr.star or 0, tr.grade or self.LegendaryGrade)
+		inv:AddItem(tr.name, tr.star or 0, tr.grade or _ItemGrade.Legendary)
 		log("[SF] 복구! " .. tostring(tr.name) .. " ★" .. tostring(tr.star or 0) .. " (레전드리 순정 1 소모)")
 	end
 

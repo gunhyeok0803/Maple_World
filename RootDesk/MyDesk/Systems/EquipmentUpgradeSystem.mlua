@@ -18,9 +18,9 @@ script EquipmentUpgradeSystem extends Component
 
 	method integer RatioFor(integer grade)
 		-- grade(현재 등급) → 다음 등급 승급에 필요한 개수. 최상위(레전드리)면 0(승급 불가).
-		if grade == 1 then return self.RareToEpic
-		elseif grade == 2 then return self.EpicToUnique
-		elseif grade == 3 then return self.UniqueToLegendary
+		if grade == _ItemGrade.Rare then return self.RareToEpic
+		elseif grade == _ItemGrade.Epic then return self.EpicToUnique
+		elseif grade == _ItemGrade.Unique then return self.UniqueToLegendary
 		else return 0 end
 	end
 
