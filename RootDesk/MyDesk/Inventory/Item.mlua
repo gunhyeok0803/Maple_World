@@ -90,7 +90,7 @@ script Item extends Component
 			return
 		end
 		local name = ds:GetRow(idx):GetItem("Name")
-		if inv:AddItem(name) then
+		if inv:AddItem(name, 0) then
 			self._T.collected = true
 			self.Entity:Destroy()
 		end

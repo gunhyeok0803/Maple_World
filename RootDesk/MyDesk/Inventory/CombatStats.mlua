@@ -35,7 +35,7 @@ script CombatStats extends Component
 	end
 
 	method table GetEquippedStats()
-		-- 장착된 모든 아이템의 공격력/방어력/최대HP 합산
+		-- 장착된 모든 아이템의 공격력/방어력/최대HP 합산 + 성급(★) 강화 보너스.
 		local res = { atk = 0, def = 0, hp = 0 }
 		local inv = self:GetInv()
 		if inv == nil then return res end
@@ -43,15 +43,24 @@ script CombatStats extends Component
 		if csv == nil or csv == "" then return res end
 		local tbl = _DataService:GetTable("UserItemDataSet")
 		if tbl == nil then return res end
+		---@type EnhanceManager
+		local enh = self.Entity:GetComponent("script.EnhanceManager")   -- 강화 보너스용(없으면 base만)
 		for i, pair in ipairs(_UtilLogic:Split(csv, ",")) do
 			local kv = _UtilLogic:Split(pair, ":")
 			local name = kv[2]
+			local star = tonumber(kv[3]) or 0
 			if name ~= nil and name ~= "" then
 				local row = tbl:FindRow("Name", name)
 				if row ~= nil then
 					res.atk = res.atk + self:CellNum(row, "Attack")
 					res.def = res.def + self:CellNum(row, "Defense")
 					res.hp = res.hp + self:CellNum(row, "MaxHP")
+				end
+				if enh ~= nil and star > 0 then
+					local b = enh:GetEnhanceBonus(name, star)
+					res.atk = res.atk + (b.atk or 0)
+					res.def = res.def + (b.def or 0)
+					res.hp = res.hp + (b.hp or 0)
 				end
 			end
 		end

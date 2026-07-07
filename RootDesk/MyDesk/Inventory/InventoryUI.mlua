@@ -439,7 +439,8 @@ script InventoryUI extends Component
 			log_warning("[InventoryUI] 잠긴 부위: " .. tostring(part))
 			return
 		end
-		inv:RequestEquip(part, self._T.curName)
+		-- 현재 전 아이템 star 0. 강화 UI 연동 시 선택 슬롯의 star를 추적해 전달.
+		inv:RequestEquip(part, self._T.curName, 0)
 		self:HideDetail()
 	end
 

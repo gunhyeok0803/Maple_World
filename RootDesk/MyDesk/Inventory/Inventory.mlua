@@ -46,12 +46,15 @@ script Inventory extends Component
 					local kv = _UtilLogic:Split(entry, ":")
 					local nm = kv[1]
 					local cnt = tonumber(kv[2]) or 1     -- 구버전(이름만)은 개수 1
-					if nm ~= nil and nm ~= "" then self._T.slots[#self._T.slots + 1] = { name = nm, count = cnt } end
+					local st = tonumber(kv[3]) or 0      -- 구버전(성급 없음)은 0
+					if nm ~= nil and nm ~= "" then self._T.slots[#self._T.slots + 1] = { name = nm, count = cnt, star = st } end
 				end
 			end
 			for i, pair in ipairs(_UtilLogic:Split(equipPart, ",")) do
 				local kv = _UtilLogic:Split(pair, ":")
-				if kv[1] ~= nil and kv[1] ~= "" and kv[2] ~= nil then self._T.equipped[kv[1]] = kv[2] end
+				if kv[1] ~= nil and kv[1] ~= "" and kv[2] ~= nil then
+					self._T.equipped[kv[1]] = { name = kv[2], star = tonumber(kv[3]) or 0 }
+				end
 			end
 			for i, part in ipairs(_UtilLogic:Split(unlockPart, ",")) do
 				if part ~= "" then self._T.unlocked[part] = true end
@@ -87,8 +90,10 @@ script Inventory extends Component
 		
 		local out = {}
 		if self._T ~= nil and self._T.equipped ~= nil then
-			for part, name in pairs(self._T.equipped) do
-				if name ~= nil and name ~= "" then out[#out + 1] = part .. ":" .. name end
+			for part, e in pairs(self._T.equipped) do
+				if e ~= nil and e.name ~= nil and e.name ~= "" then
+					out[#out + 1] = part .. ":" .. e.name .. ":" .. tostring(e.star or 0)
+				end
 			end
 		end
 		return table.concat(out, ",")
@@ -106,16 +111,18 @@ script Inventory extends Component
 	end
 
 	method void MergeStacks()
-		-- 같은 이름 슬롯을 하나로 합침(개수 합산, 첫 등장 순서 유지). 로드 시 중복 정리 + 이름당 한 칸.
+		-- 같은 이름+성급 슬롯을 하나로 합침(개수 합산, 첫 등장 순서 유지). 로드 시 중복 정리.
 		local merged = {}
-		local byName = {}
+		local byKey = {}
 		if self._T ~= nil and self._T.slots ~= nil then
 			for i, s in ipairs(self._T.slots) do
-				if byName[s.name] ~= nil then
-					byName[s.name].count = byName[s.name].count + s.count
+				local st = s.star or 0
+				local key = s.name .. "\1" .. tostring(st)   -- 이름+성급 복합 키(\1=이름 충돌 방지)
+				if byKey[key] ~= nil then
+					byKey[key].count = byKey[key].count + s.count
 				else
-					local e = { name = s.name, count = s.count }
-					byName[s.name] = e
+					local e = { name = s.name, count = s.count, star = st }
+					byKey[key] = e
 					merged[#merged + 1] = e
 				end
 			end
@@ -124,11 +131,11 @@ script Inventory extends Component
 	end
 
 	method string SerializeSlots()
-		-- _T.slots({name,count}) → "name:count,name:count"
+		-- _T.slots({name,count,star}) → "name:count:star,..."
 		local out = {}
 		if self._T ~= nil and self._T.slots ~= nil then
 			for i, s in ipairs(self._T.slots) do
-				out[#out + 1] = s.name .. ":" .. tostring(s.count)
+				out[#out + 1] = s.name .. ":" .. tostring(s.count) .. ":" .. tostring(s.star or 0)
 			end
 		end
 		return table.concat(out, ",")
@@ -183,15 +190,15 @@ script Inventory extends Component
 	end
 
 	@ExecSpace("ServerOnly")
-	method boolean AddItem(string itemName)
-		-- 같은 이름이면 무조건 한 칸에 누적(장비 포함). 없으면 새 칸.
-		-- (강화 등 개별 식별이 생기면 그때 분리 — 지금은 이름 기준 누적.)
+	method boolean AddItem(string itemName, integer star)
+		-- 같은 이름+성급이면 한 칸에 누적. 없으면 새 칸. star 미지정(nil)=0(미강화).
+		local st = star or 0
 		for i, s in ipairs(self._T.slots) do
-			if s.name == itemName then
+			if s.name == itemName and (s.star or 0) == st then
 				s.count = s.count + 1
 				self:Publish()
 				self:MarkDirty()
-				log("[Inventory] AddItem(stack): " .. tostring(itemName) .. " x" .. tostring(s.count))
+				log("[Inventory] AddItem(stack): " .. tostring(itemName) .. " ★" .. tostring(st) .. " x" .. tostring(s.count))
 				return true
 			end
 		end
@@ -199,10 +206,10 @@ script Inventory extends Component
 			log_warning("[Inventory] 가득 참 — " .. tostring(itemName) .. " 미획득")
 			return false
 		end
-		self._T.slots[#self._T.slots + 1] = { name = itemName, count = 1 }
+		self._T.slots[#self._T.slots + 1] = { name = itemName, count = 1, star = st }
 		self:Publish()
 		self:MarkDirty()
-		log("[Inventory] AddItem: " .. tostring(itemName) .. " (슬롯 " .. tostring(#self._T.slots) .. ")")
+		log("[Inventory] AddItem: " .. tostring(itemName) .. " ★" .. tostring(st) .. " (슬롯 " .. tostring(#self._T.slots) .. ")")
 		return true
 	end
 
@@ -230,10 +237,11 @@ script Inventory extends Component
 	end
 
 	@ExecSpace("ServerOnly")
-	method boolean ConsumeOne(string itemName)
-		-- 가방에서 itemName 1개 차감(장착용). 0이면 칸 제거. 자동 장착해제는 하지 않음. 있으면 true.
+	method boolean ConsumeItem(string itemName, integer star)
+		-- 가방에서 (이름+성급) 1개 차감(장착·강화용). 0이면 칸 제거. 자동 장착해제 안 함. 있으면 true.
+		local st = star or 0
 		for i, s in ipairs(self._T.slots) do
-			if s.name == itemName then
+			if s.name == itemName and (s.star or 0) == st then
 				s.count = s.count - 1
 				if s.count <= 0 then table.remove(self._T.slots, i) end
 				return true
@@ -243,35 +251,36 @@ script Inventory extends Component
 	end
 
 	@ExecSpace("Server")
-	method void RequestEquip(string part, string itemName)
-		-- 장착 -> 가방에서 1개 꺼내 페이퍼돌로 이동(가방 -1). 부위에 기존 장착품이 있으면 가방으로 반환(+1, 교체).
+	method void RequestEquip(string part, string itemName, integer star)
+		-- 장착 -> 가방에서 (이름+성급) 1개 꺼내 페이퍼돌로(가방 -1). 기존 장착품 있으면 가방 반환(+1, 교체).
 		if part == nil or part == "" or itemName == nil or itemName == "" then return end
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
-		if not self:ConsumeOne(itemName) then
-			log_warning("[Inventory] 장착 실패(가방에 없음): " .. tostring(itemName))
+		local st = star or 0
+		if not self:ConsumeItem(itemName, st) then
+			log_warning("[Inventory] 장착 실패(가방에 없음): " .. tostring(itemName) .. " ★" .. tostring(st))
 			return
 		end
 		local prev = self._T.equipped[part]
-		if prev ~= nil and prev ~= "" then
-			self:AddItem(prev)   -- 교체: 기존 장착품 가방으로 반환(+1)
+		if prev ~= nil and prev.name ~= nil and prev.name ~= "" then
+			self:AddItem(prev.name, prev.star or 0)   -- 교체: 기존 장착품 가방으로 반환(+1)
 		end
-		self._T.equipped[part] = itemName
+		self._T.equipped[part] = { name = itemName, star = st }
 		self:Publish()
 		self:MarkDirty()
-		log("[Inventory] Equip " .. tostring(part) .. " = " .. tostring(itemName) .. " (가방 -1)")
+		log("[Inventory] Equip " .. tostring(part) .. " = " .. tostring(itemName) .. " ★" .. tostring(st) .. " (가방 -1)")
 	end
 
 	@ExecSpace("Server")
 	method void RequestUnequip(string part)
-		-- 장착 해제 -> 페이퍼돌에서 내려 가방으로 반환(+1).
+		-- 장착 해제 -> 페이퍼돌에서 내려 가방으로 반환(+1). 성급 보존.
 		if part == nil or part == "" then return end
 		if self._T.equipped == nil or self._T.equipped[part] == nil then return end
-		local name = self._T.equipped[part]
+		local e = self._T.equipped[part]
 		self._T.equipped[part] = nil
-		if name ~= nil and name ~= "" then self:AddItem(name) end   -- 가방으로 반환(+1)
+		if e.name ~= nil and e.name ~= "" then self:AddItem(e.name, e.star or 0) end   -- 가방으로 반환(+1)
 		self:Publish()
 		self:MarkDirty()
-		log("[Inventory] Unequip " .. tostring(part) .. " -> 가방 +1 (" .. tostring(name) .. ")")
+		log("[Inventory] Unequip " .. tostring(part) .. " -> 가방 +1 (" .. tostring(e.name) .. " ★" .. tostring(e.star or 0) .. ")")
 	end
 
 	@ExecSpace("Server")
@@ -305,7 +314,7 @@ script Inventory extends Component
 		if count < 1 then count = 1 end
 		local given = 0
 		for i = 1, count do
-			if self:AddItem(self.AttendReward) then given = given + 1 end
+			if self:AddItem(self.AttendReward, 0) then given = given + 1 end
 		end
 		self._T.attendDate = today
 		self:Publish()
@@ -326,7 +335,7 @@ script Inventory extends Component
 	end
 
 	method table GetSlots()
-		-- 클라 UI용: { {name, count}, ... }
+		-- 클라 UI용: { {name, count, star}, ... }
 		local t = {}
 		if self.SlotsCsv ~= nil and self.SlotsCsv ~= "" then
 			for i, entry in ipairs(_UtilLogic:Split(self.SlotsCsv, ",")) do
@@ -334,7 +343,8 @@ script Inventory extends Component
 					local kv = _UtilLogic:Split(entry, ":")
 					local nm = kv[1]
 					local cnt = tonumber(kv[2]) or 1
-					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, count = cnt } end
+					local st = tonumber(kv[3]) or 0
+					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, count = cnt, star = st } end
 				end
 			end
 		end
@@ -349,6 +359,34 @@ script Inventory extends Component
 			if kv[1] == part and kv[2] ~= nil then return kv[2] end
 		end
 		return ""
+	end
+
+	method integer GetEquippedStar(string part)
+		-- 해당 부위 장착품의 성급(없으면 0).
+		if self.EquippedCsv == nil or self.EquippedCsv == "" then return 0 end
+		for i, pair in ipairs(_UtilLogic:Split(self.EquippedCsv, ",")) do
+			local kv = _UtilLogic:Split(pair, ":")
+			if kv[1] == part then return tonumber(kv[3]) or 0 end
+		end
+		return 0
+	end
+
+	method table GetSlotInfo(integer index)
+		-- 서버용: index(1-based) 슬롯의 {name,count,star}(없으면 nil). 강화 대상 조회용(_T 기반).
+		if self._T == nil or self._T.slots == nil then return nil end
+		if index == nil or index < 1 or index > #self._T.slots then return nil end
+		local s = self._T.slots[index]
+		return { name = s.name, count = s.count, star = s.star or 0 }
+	end
+
+	method integer CountItem(string itemName, integer star)
+		-- 서버용: (이름+성급) 보유 개수(강화 비용 아이템 확인용).
+		local st = star or 0
+		if self._T == nil or self._T.slots == nil then return 0 end
+		for i, s in ipairs(self._T.slots) do
+			if s.name == itemName and (s.star or 0) == st then return s.count end
+		end
+		return 0
 	end
 
 	method boolean IsUnlocked(string part)
