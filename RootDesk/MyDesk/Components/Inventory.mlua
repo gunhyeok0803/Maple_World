@@ -125,15 +125,51 @@ script Inventory extends Component
 		return table.concat(out, ",")
 	end
 
+	method boolean HasCol(string col)
+		-- UserItemDataSet 열 존재 여부 캐시(없는 열 GetItem은 LEA-3011 예외).
+		if self._T.cols == nil then
+			self._T.cols = {}
+			local t = _DataService:GetTable("UserItemDataSet")
+			if t ~= nil and t.Columns ~= nil then
+				for i, c in ipairs(t.Columns:ToTable()) do self._T.cols[c] = true end
+			end
+		end
+		return self._T.cols[col] == true
+	end
+
+	method string MetaCell(string name, string col)
+		-- 아이템 데이터셋에서 name의 col 값(없으면 "").
+		if not self:HasCol(col) then return "" end
+		local t = _DataService:GetTable("UserItemDataSet")
+		if t == nil then return "" end
+		local row = t:FindRow("Name", name)
+		if row == nil then return "" end
+		local v = row:GetItem(col)
+		return (v ~= nil) and tostring(v) or ""
+	end
+
+	method string StackKeyOf(string name, integer star, integer grade)
+		-- 스펙 StackKey = ItemId + Level + Grade + Part + IsPristine.
+		-- ItemId/Level 열 없으면 name/ReqLevel로 폴백(현 데이터: name 유일 → 동작 동일).
+		local itemId = self:MetaCell(name, "ItemId")
+		if itemId == "" then itemId = name end
+		local level = self:MetaCell(name, "Level")
+		if level == "" then level = self:MetaCell(name, "ReqLevel") end
+		local part = self:MetaCell(name, "Part")
+		local st = star or 0
+		local pristine = (st == 0)   -- IsPristine(현재 ★0; 잠재/환생 생기면 확장)
+		return itemId .. "\1" .. level .. "\1" .. part .. "\1" .. tostring(grade or 1) .. "\1" .. (pristine and "P" or ("S" .. tostring(st)))
+	end
+
 	method void MergeStacks()
-		-- 같은 이름+성급+등급 슬롯을 하나로 합침(개수 합산, 첫 등장 순서 유지). 로드 시 중복 정리.
+		-- 같은 StackKey(ItemId+Level+Part+Grade+IsPristine) 슬롯을 하나로 합침. 로드 시 중복 정리.
 		local merged = {}
 		local byKey = {}
 		if self._T ~= nil and self._T.slots ~= nil then
 			for i, s in ipairs(self._T.slots) do
 				local st = s.star or 0
 				local gr = s.grade or 1
-				local key = s.name .. "\1" .. tostring(st) .. "\1" .. tostring(gr)   -- 이름+성급+등급 복합 키
+				local key = self:StackKeyOf(s.name, st, gr)   -- 스펙 구조화 키
 				if byKey[key] ~= nil then
 					byKey[key].count = byKey[key].count + s.count
 				else
@@ -222,8 +258,9 @@ script Inventory extends Component
 		-- 같은 이름+성급+등급이면 한 칸에 누적. 없으면 새 칸. star 미지정=0, grade 미지정=1(레어).
 		local st = star or 0
 		local gr = grade or 1
+		local key = self:StackKeyOf(itemName, st, gr)
 		for i, s in ipairs(self._T.slots) do
-			if s.name == itemName and (s.star or 0) == st and (s.grade or 1) == gr then
+			if self:StackKeyOf(s.name, s.star or 0, s.grade or 1) == key then
 				s.count = s.count + 1
 				self:Publish()
 				self:MarkDirty()
