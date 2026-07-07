@@ -19,6 +19,9 @@ script Inventory extends Component
 	@Sync
 	property string LastAttendDate = ""
 
+	@Sync
+	property string TracesCsv = ""
+
 	property string AttendReward = "빨간포션"
 
 	property integer AttendRewardCount = 1
@@ -29,6 +32,7 @@ script Inventory extends Component
 		self._T.slots = {}
 		self._T.equipped = {}
 		self._T.unlocked = {}
+		self._T.traces = {}      -- 파괴 흔적 {name,star,grade}
 		self._T.attendDate = ""
 		self._T.dirty = false
 		self._T.lastSaved = ""
@@ -59,6 +63,16 @@ script Inventory extends Component
 			end
 			for i, part in ipairs(_UtilLogic:Split(unlockPart, ",")) do
 				if part ~= "" then self._T.unlocked[part] = true end
+			end
+			local tracePart = parts[5] or ""
+			for i, entry in ipairs(_UtilLogic:Split(tracePart, ",")) do
+				if entry ~= "" then
+					local kv = _UtilLogic:Split(entry, ":")
+					local nm = kv[1]
+					if nm ~= nil and nm ~= "" then
+						self._T.traces[#self._T.traces + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or 4 }
+					end
+				end
 			end
 		end
 		self:MergeStacks()   -- 로드 시 같은 이름 중복 슬롯 병합(레거시 정리 + 이름당 한 칸)
@@ -143,6 +157,17 @@ script Inventory extends Component
 		return table.concat(out, ",")
 	end
 
+	method string SerializeTraces()
+		-- _T.traces({name,star,grade}) → "name:star:grade,..." (파괴 흔적)
+		local out = {}
+		if self._T ~= nil and self._T.traces ~= nil then
+			for i, t in ipairs(self._T.traces) do
+				out[#out + 1] = t.name .. ":" .. tostring(t.star or 0) .. ":" .. tostring(t.grade or 4)
+			end
+		end
+		return table.concat(out, ",")
+	end
+
 	@ExecSpace("ServerOnly")
 	method void Publish()
 		-- 서버 데이터에서 UI 갱신 (저장은 X)
@@ -150,11 +175,12 @@ script Inventory extends Component
 		self.EquippedCsv = self:SerializeEquipped()
 		self.UnlockedCsv = self:SerializeUnlocked()
 		self.LastAttendDate = self._T.attendDate or ""
+		self.TracesCsv = self:SerializeTraces()
 	end
 
 	method string DataString()
-		-- 저장 문자열 
-		return self.SlotsCsv .. "#" .. self.EquippedCsv .. "#" .. self.UnlockedCsv .. "#" .. self.LastAttendDate
+		-- 저장 문자열(5세그: slots#equipped#unlocked#attendDate#traces)
+		return self.SlotsCsv .. "#" .. self.EquippedCsv .. "#" .. self.UnlockedCsv .. "#" .. self.LastAttendDate .. "#" .. self.TracesCsv
 	end
 
 	@ExecSpace("ServerOnly")
@@ -329,7 +355,7 @@ script Inventory extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnSyncProperty(string name, any value)
-		if name == "SlotsCsv" or name == "EquippedCsv" or name == "UnlockedCsv" or name == "LastAttendDate" then
+		if name == "SlotsCsv" or name == "EquippedCsv" or name == "UnlockedCsv" or name == "LastAttendDate" or name == "TracesCsv" then
 			self.Entity:SendEvent(InventoryChangedEvent())
 		end
 	end
@@ -404,6 +430,49 @@ script Inventory extends Component
 			if s.name == itemName and (s.star or 0) == st and (s.grade or 1) == gr then return s.count end
 		end
 		return 0
+	end
+
+	@ExecSpace("ServerOnly")
+	method void AddTrace(string itemName, integer star, integer grade)
+		-- 파괴 흔적 추가(성급·등급 보존). 스타포스 파괴 시 호출.
+		if self._T.traces == nil then self._T.traces = {} end
+		self._T.traces[#self._T.traces + 1] = { name = itemName, star = star or 0, grade = grade or 4 }
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] AddTrace: " .. tostring(itemName) .. " ★" .. tostring(star or 0) .. " (흔적 " .. tostring(#self._T.traces) .. ")")
+	end
+
+	@ExecSpace("ServerOnly")
+	method table GetTraceAt(integer index)
+		-- 서버용: index(1-based) 흔적의 {name,star,grade}(없으면 nil).
+		if self._T == nil or self._T.traces == nil then return nil end
+		if index == nil or index < 1 or index > #self._T.traces then return nil end
+		local t = self._T.traces[index]
+		return { name = t.name, star = t.star or 0, grade = t.grade or 4 }
+	end
+
+	@ExecSpace("ServerOnly")
+	method void RemoveTraceAt(integer index)
+		-- 흔적 1개 제거(복구 완료 시).
+		if self._T.traces == nil or index == nil or index < 1 or index > #self._T.traces then return end
+		table.remove(self._T.traces, index)
+		self:Publish()
+		self:MarkDirty()
+	end
+
+	method table GetTraces()
+		-- 클라 UI용: { {name,star,grade}, ... } (TracesCsv 파싱)
+		local t = {}
+		if self.TracesCsv ~= nil and self.TracesCsv ~= "" then
+			for i, entry in ipairs(_UtilLogic:Split(self.TracesCsv, ",")) do
+				if entry ~= "" then
+					local kv = _UtilLogic:Split(entry, ":")
+					local nm = kv[1]
+					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or 4 } end
+				end
+			end
+		end
+		return t
 	end
 
 	method boolean IsUnlocked(string part)

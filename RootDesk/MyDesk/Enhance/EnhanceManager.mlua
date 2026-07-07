@@ -1,7 +1,10 @@
 @Component
 script EnhanceManager extends Component
 
-	property integer MaxStar = 10
+	-- 스타포스: 레전드리(grade 4) 전용. 성공(★+1)/실패(유지)/파괴(흔적). 하락 없음. 비용=메소. MVP v11 §06.
+	property integer MaxStar = 20
+
+	property integer LegendaryGrade = 4
 
 	method Inventory GetInv()
 		-- 같은 엔티티의 Inventory(없으면 nil).
@@ -15,48 +18,25 @@ script EnhanceManager extends Component
 		return self.Entity:GetComponent("script.PlayerResource")
 	end
 
-	method boolean TableHasColumn(any ds, string col)
-		-- 데이터셋에 열 존재 여부(없는 열 GetItem = LEA-3011 방지).
-		if ds == nil or ds.Columns == nil then return false end
-		for i, c in ipairs(ds.Columns:ToTable()) do
-			if c == col then return true end
-		end
-		return false
-	end
-
-	method integer BandOf(string itemName)
-		-- 아이템 ReqLevel → 강화 밴드(45/65/85). 열 없거나 미상이면 45.
-		local ds = _DataService:GetTable("UserItemDataSet")
-		if ds == nil then return 45 end
-		local row = ds:FindRow("Name", itemName)
-		if row == nil then return 45 end
-		local lv = 0
-		if self:TableHasColumn(ds, "ReqLevel") then lv = tonumber(row:GetItem("ReqLevel")) or 0 end
-		if lv <= 45 then return 45 elseif lv <= 65 then return 65 else return 85 end
-	end
-
-	method any FindEnhanceRow(integer band, integer targetStar)
-		-- EnhanceDataSet에서 (Band, Star) 두 열 일치 행 조회(없으면 nil).
+	method any FindStarRow(integer targetStar)
+		-- EnhanceDataSet에서 Star 일치 행 조회(성급 기반, 없으면 nil).
 		local t = _DataService:GetTable("EnhanceDataSet")
 		if t == nil then return nil end
 		local n = t:GetRowCount()
 		for i = 1, n do
 			local row = t:GetRow(i)
-			if (tonumber(row:GetItem("Band")) or 0) == band and (tonumber(row:GetItem("Star")) or 0) == targetStar then
-				return row
-			end
+			if (tonumber(row:GetItem("Star")) or 0) == targetStar then return row end
 		end
 		return nil
 	end
 
 	method table GetEnhanceBonus(string itemName, integer star)
-		-- 성급 1..star 누적 강화 보너스 {atk,def,hp}. star<=0이면 0. (전투력/스탯 시스템이 호출)
+		-- 성급 1..star 누적 스타포스 스탯 보너스 {atk,def,hp}. (CombatStats가 호출)
 		local res = { atk = 0, def = 0, hp = 0 }
 		local st = star or 0
 		if st <= 0 then return res end
-		local band = self:BandOf(itemName)
 		for s = 1, st do
-			local row = self:FindEnhanceRow(band, s)
+			local row = self:FindStarRow(s)
 			if row ~= nil then
 				res.atk = res.atk + (tonumber(row:GetItem("AtkGain")) or 0)
 				res.def = res.def + (tonumber(row:GetItem("DefGain")) or 0)
@@ -67,7 +47,7 @@ script EnhanceManager extends Component
 	end
 
 	method table ParseCost(string spec)
-		-- "res:6:5;res:1:1000" → { {kind,key,amount}, ... }. kind=res(재화Type)/item(가방 아이템명).
+		-- "res:1:1000" → { {kind,key,amount}, ... }. kind=res(재화Type)/item(가방 아이템명).
 		local out = {}
 		if spec == nil or spec == "" then return out end
 		for i, part in ipairs(_UtilLogic:Split(spec, ";")) do
@@ -82,7 +62,7 @@ script EnhanceManager extends Component
 	end
 
 	method boolean CanPay(table costs)
-		-- 비용 전부 지불 가능한지(부분 소모 방지 위해 소모 전 전량 확인).
+		-- 비용 전부 지불 가능한지(소모 전 전량 확인).
 		local inv = self:GetInv()
 		local w = self:GetWallet()
 		for i, c in ipairs(costs) do
@@ -100,7 +80,7 @@ script EnhanceManager extends Component
 
 	@ExecSpace("ServerOnly")
 	method void PayCost(table costs)
-		-- 비용 소모(CanPay 통과 후 호출). res→ConsumeResource, item→ConsumeItem(star0) 반복.
+		-- 비용 소모(CanPay 통과 후). res→ConsumeResource, item→ConsumeItem 반복.
 		local inv = self:GetInv()
 		local w = self:GetWallet()
 		for i, c in ipairs(costs) do
@@ -114,61 +94,89 @@ script EnhanceManager extends Component
 
 	@ExecSpace("ServerOnly")
 	method void DoEnhance(integer slotIndex)
-		-- 강화 로직(권위). 대상 조회→밴드/목표성급→비용 확인·소모→확률 판정→성공 시 성급+1.
+		-- 스타포스(권위). 레전드리만. 비용 소모 후 성공(★+1)/실패(유지)/파괴(흔적) 3분기.
 		local inv = self:GetInv()
 		if inv == nil then return end
 		local info = inv:GetSlotInfo(slotIndex)
 		if info == nil then
-			log_warning("[Enhance] 잘못된 슬롯 index=" .. tostring(slotIndex))
+			log_warning("[SF] 잘못된 슬롯 index=" .. tostring(slotIndex))
 			return
 		end
 		local name = info.name
 		local star = info.star or 0
 		local grade = info.grade or 1
-		local target = star + 1
-		if target > self.MaxStar then
-			log("[Enhance] 이미 최대 성급: " .. tostring(name) .. " ★" .. tostring(star))
+		if grade < self.LegendaryGrade then
+			log("[SF] 레전드리만 스타포스 가능: " .. tostring(name) .. " G" .. tostring(grade))
 			return
 		end
-		local band = self:BandOf(name)
-		local row = self:FindEnhanceRow(band, target)
+		local target = star + 1
+		if target > self.MaxStar then
+			log("[SF] 최대 성급 도달: " .. tostring(name) .. " ★" .. tostring(star))
+			return
+		end
+		local row = self:FindStarRow(target)
 		if row == nil then
-			log_warning("[Enhance] 데이터 없음 band=" .. tostring(band) .. " star=" .. tostring(target))
+			log_warning("[SF] 데이터 없음 star=" .. tostring(target))
 			return
 		end
 		local costs = self:ParseCost(row:GetItem("Cost"))
 		if not self:CanPay(costs) then
-			log("[Enhance] 재료 부족: " .. tostring(name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
+			log("[SF] 메소 부족: " .. tostring(name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
 			return
 		end
 		self:PayCost(costs)
-		local rate = tonumber(row:GetItem("SuccessRate")) or 0
+		local success = tonumber(row:GetItem("SuccessRate")) or 0
+		local destroy = tonumber(row:GetItem("DestroyRate")) or 0
 		local roll = _UtilLogic:RandomDouble()
-		if roll < rate then
+		if roll < success then
 			inv:ConsumeItem(name, star, grade)
 			inv:AddItem(name, target, grade)
-			log("[Enhance] 성공! " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (rate=" .. tostring(rate) .. ", roll=" .. tostring(roll) .. ")")
+			log("[SF] 성공! " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
+		elseif roll < success + destroy then
+			inv:ConsumeItem(name, star, grade)
+			inv:AddTrace(name, star, grade)
+			log("[SF] 파괴! " .. tostring(name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
 		else
-			local failDown = tonumber(row:GetItem("FailDown")) or 0
-			if failDown == 1 and star > 0 then
-				inv:ConsumeItem(name, star, grade)
-				inv:AddItem(name, star - 1, grade)
-				log("[Enhance] 실패(하락) " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(star - 1))
-			else
-				log("[Enhance] 실패(유지) " .. tostring(name) .. " ★" .. tostring(star) .. " (rate=" .. tostring(rate) .. ", roll=" .. tostring(roll) .. ")")
-			end
+			log("[SF] 실패(유지) " .. tostring(name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
 		end
 	end
 
 	@ExecSpace("Server")
 	method void RequestEnhance(integer slotIndex)
-		-- 클라 강화 요청 → 본인 검증 후 DoEnhance.
+		-- 클라 스타포스 요청 → 본인 검증 후 DoEnhance.
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
 		self:DoEnhance(slotIndex)
 	end
 
+	@ExecSpace("ServerOnly")
+	method void DoRestore(integer traceIndex)
+		-- 파괴 흔적 복구: 동일 이름 레전드리 순정(★0,G4) 1개 소모 → 흔적을 원래 성급으로 복원.
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local tr = inv:GetTraceAt(traceIndex)
+		if tr == nil then
+			log_warning("[SF] 잘못된 흔적 index=" .. tostring(traceIndex))
+			return
+		end
+		if inv:CountItem(tr.name, 0, self.LegendaryGrade) < 1 then
+			log("[SF] 복구 재료 부족(레전드리 순정 필요): " .. tostring(tr.name))
+			return
+		end
+		inv:ConsumeItem(tr.name, 0, self.LegendaryGrade)
+		inv:RemoveTraceAt(traceIndex)
+		inv:AddItem(tr.name, tr.star or 0, tr.grade or self.LegendaryGrade)
+		log("[SF] 복구! " .. tostring(tr.name) .. " ★" .. tostring(tr.star or 0) .. " (레전드리 순정 1 소모)")
+	end
+
+	@ExecSpace("Server")
+	method void RequestRestore(integer traceIndex)
+		-- 클라 복구 요청 → 본인 검증 후 DoRestore.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoRestore(traceIndex)
+	end
+
 	method void OnBeginPlay()
-		-- 부착 확인용 로그(서버/클라 양쪽). 강화는 등급 보존(grade 그대로).
+		-- 부착 확인용 로그(서버/클라 양쪽). 스타포스: 레전드리 전용, 파괴 흔적/복구.
 		log("[EnhanceManager] OnBeginPlay ok")
 	end
 
