@@ -1,14 +1,14 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://75afa75c-303e-40ea-9f7e-009d801db4d1",
+  "EntryKey": "codeblock://113e8066-105c-4bbe-b318-e716ea28f29c",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
   "UsePublish": 1,
   "UseService": 0,
   "CoreVersion": "26.5.0.0",
-  "StudioVersion": "",
+  "StudioVersion": "0.1.0.0",
   "DynamicLoading": 0,
   "ContentProto": {
     "Use": "Json",
@@ -22,9 +22,9 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "75afa75c-303e-40ea-9f7e-009d801db4d1",
+      "Id": "113e8066-105c-4bbe-b318-e716ea28f29c",
       "Language": 1,
-      "Name": "CollectionManager",
+      "Name": "StarforceSystem",
       "Type": 1,
       "Source": 0,
       "Target": null

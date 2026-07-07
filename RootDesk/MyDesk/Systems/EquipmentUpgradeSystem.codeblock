@@ -1,14 +1,14 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://8e9f330c-aa20-46bb-991a-3890eaa9ae33",
+  "EntryKey": "codeblock://2e2e9a5c-6501-4a2e-ab5b-7b7e7b37fad6",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
   "UsePublish": 1,
   "UseService": 0,
   "CoreVersion": "26.5.0.0",
-  "StudioVersion": "",
+  "StudioVersion": "0.1.0.0",
   "DynamicLoading": 0,
   "ContentProto": {
     "Use": "Json",
@@ -22,9 +22,9 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "8e9f330c-aa20-46bb-991a-3890eaa9ae33",
+      "Id": "2e2e9a5c-6501-4a2e-ab5b-7b7e7b37fad6",
       "Language": 1,
-      "Name": "PromoteManager",
+      "Name": "EquipmentUpgradeSystem",
       "Type": 1,
       "Source": 0,
       "Target": null

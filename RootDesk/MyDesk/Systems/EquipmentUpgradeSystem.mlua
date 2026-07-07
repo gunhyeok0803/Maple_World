@@ -1,14 +1,13 @@
 @Component
-script PromoteManager extends Component
+script EquipmentUpgradeSystem extends Component
 
-	-- 승급 비율(현재 등급 → 다음 등급 1개 만드는 데 필요한 동일 아이템 수). MVP v11 §05 기준, 인스펙터 튜닝 가능.
 	property integer RareToEpic = 800
 
 	property integer EpicToUnique = 200
 
 	property integer UniqueToLegendary = 20
 
-	property integer MaxGrade = 4   -- 1레어 / 2에픽 / 3유니크 / 4레전드리
+	property integer MaxGrade = 4
 
 	method Inventory GetInv()
 		-- 같은 엔티티의 Inventory(없으면 nil).
@@ -68,7 +67,7 @@ script PromoteManager extends Component
 
 	method void OnBeginPlay()
 		-- 부착 확인용 로그(서버/클라 양쪽).
-		log("[PromoteManager] OnBeginPlay ok")
+		log("[EquipmentUpgradeSystem] OnBeginPlay ok")
 	end
 
 end

@@ -412,10 +412,10 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method any GetPromoteMgr()
-		-- LocalPlayer의 PromoteManager(없으면 nil).
+		-- LocalPlayer의 EquipmentUpgradeSystem(승급, 없으면 nil).
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
-		return lp:GetComponent("script.PromoteManager")
+		return lp:GetComponent("script.EquipmentUpgradeSystem")
 	end
 
 	@ExecSpace("ClientOnly")
@@ -581,11 +581,11 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method any GetStats()
-		-- LocalPlayer의 CombatStats 컴포넌트(없으면 nil). 전투력/스탯 계산 담당(Inventory와 분리).
+		-- LocalPlayer의 CombatPowerSystem 컴포넌트(구 CombatStats, 없으면 nil). 전투력/스탯 계산 담당(Inventory와 분리).
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
-		---@type CombatStats
-		local cs = lp:GetComponent("script.CombatStats")
+		---@type CombatPowerSystem
+		local cs = lp:GetComponent("script.CombatPowerSystem")
 		return cs
 	end
 
@@ -610,7 +610,7 @@ script InventoryUI extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshPower()
-		-- 전투력 바 + 스탯 팝업 값 갱신(CombatStats 합산). 컴포넌트 없으면 0.
+		-- 전투력 바 + 스탯 팝업 값 갱신(CombatPowerSystem 합산). 컴포넌트 없으면 0.
 		local atk, def, hp, power = 0, 0, 0, 0
 		local cs = self:GetStats()
 		if cs ~= nil then

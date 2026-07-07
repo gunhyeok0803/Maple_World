@@ -1,7 +1,6 @@
 @Component
-script EnhanceManager extends Component
+script StarforceSystem extends Component
 
-	-- 스타포스: 레전드리(grade 4) 전용. 성공(★+1)/실패(유지)/파괴(흔적). 하락 없음. 비용=메소. MVP v11 §06.
 	property integer MaxStar = 20
 
 	property integer LegendaryGrade = 4
@@ -31,7 +30,7 @@ script EnhanceManager extends Component
 	end
 
 	method table GetEnhanceBonus(string itemName, integer star)
-		-- 성급 1..star 누적 스타포스 스탯 보너스 {atk,def,hp}. (CombatStats가 호출)
+		-- 성급 1..star 누적 스타포스 스탯 보너스 {atk,def,hp}. (CombatPowerSystem이 호출)
 		local res = { atk = 0, def = 0, hp = 0 }
 		local st = star or 0
 		if st <= 0 then return res end
@@ -177,7 +176,7 @@ script EnhanceManager extends Component
 
 	method void OnBeginPlay()
 		-- 부착 확인용 로그(서버/클라 양쪽). 스타포스: 레전드리 전용, 파괴 흔적/복구.
-		log("[EnhanceManager] OnBeginPlay ok")
+		log("[StarforceSystem] OnBeginPlay ok")
 	end
 
 end

@@ -1,7 +1,6 @@
 @Component
-script CollectionManager extends Component
+script CollectionSystem extends Component
 
-	-- 컬렉션: 동일 장비 대량 등록 → 영구 전투력(스탯 풀) + 장비 소멸. 반복 가능. MVP v11 §05.
 	property string SaveKey = "collectionV1"
 
 	@Sync
@@ -100,7 +99,7 @@ script CollectionManager extends Component
 	end
 
 	method table GetBonus()
-		-- 컬렉션 누적 보너스 {atk,def,hp}. (CombatStats가 호출, @Sync라 클라도 읽음)
+		-- 컬렉션 누적 보너스 {atk,def,hp}. (CombatPowerSystem이 호출, @Sync라 클라도 읽음)
 		return { atk = self.CollAtk, def = self.CollDef, hp = self.CollHp }
 	end
 
@@ -116,7 +115,7 @@ script CollectionManager extends Component
 			self.CollDef = tonumber(kv[2]) or 0
 			self.CollHp = tonumber(kv[3]) or 0
 		end
-		log("[CollectionManager] OnBeginPlay ok (누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
+		log("[CollectionSystem] OnBeginPlay ok (누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
 	end
 
 end

@@ -21,12 +21,12 @@
         "script.PlayerHit",
         "script.PlayerAttack",
         "script.Inventory",
-        "script.CombatStats",
         "script.PlayerResource",
         "script.PlayerDBManager",
-        "script.EnhanceManager",
-        "script.PromoteManager",
-        "script.CollectionManager"
+        "script.CombatPowerSystem",
+        "script.StarforceSystem",
+        "script.EquipmentUpgradeSystem",
+        "script.CollectionSystem"
       ],
       "Properties": [],
       "Values": [
@@ -695,15 +695,6 @@
           "Value": true
         },
         {
-          "TargetType": "script.CombatStats",
-          "Name": "Enable",
-          "ValueType": {
-            "$type": "MODNativeType",
-            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-          },
-          "Value": true
-        },
-        {
           "TargetType": "script.PlayerResource",
           "Name": "Enable",
           "ValueType": {
@@ -722,7 +713,7 @@
           "Value": true
         },
         {
-          "TargetType": "script.EnhanceManager",
+          "TargetType": "script.CombatPowerSystem",
           "Name": "Enable",
           "ValueType": {
             "$type": "MODNativeType",
@@ -731,7 +722,7 @@
           "Value": true
         },
         {
-          "TargetType": "script.PromoteManager",
+          "TargetType": "script.StarforceSystem",
           "Name": "Enable",
           "ValueType": {
             "$type": "MODNativeType",
@@ -740,7 +731,16 @@
           "Value": true
         },
         {
-          "TargetType": "script.CollectionManager",
+          "TargetType": "script.EquipmentUpgradeSystem",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.CollectionSystem",
           "Name": "Enable",
           "ValueType": {
             "$type": "MODNativeType",

@@ -1,7 +1,7 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://c8d74cd3-3b00-42d7-90d5-1bf3e9c34cc2",
+  "EntryKey": "codeblock://bb94a0ac-b269-4414-ba37-3e4c7ca91309",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
@@ -22,9 +22,9 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "c8d74cd3-3b00-42d7-90d5-1bf3e9c34cc2",
+      "Id": "bb94a0ac-b269-4414-ba37-3e4c7ca91309",
       "Language": 1,
-      "Name": "CombatStats",
+      "Name": "CollectionSystem",
       "Type": 1,
       "Source": 0,
       "Target": null

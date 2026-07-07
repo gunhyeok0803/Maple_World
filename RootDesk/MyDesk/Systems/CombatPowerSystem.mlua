@@ -1,5 +1,6 @@
 @Component
-script CombatStats extends Component
+script CombatPowerSystem extends Component
+	-- 전투력/스탯 계산 시스템 (구 CombatStats). 장착 base + 스타포스 + 컬렉션 합산.
 
 	property number PowerAtkWeight = 100
 
@@ -43,8 +44,8 @@ script CombatStats extends Component
 		if csv == nil or csv == "" then return res end
 		local tbl = _DataService:GetTable("UserItemDataSet")
 		if tbl == nil then return res end
-		---@type EnhanceManager
-		local enh = self.Entity:GetComponent("script.EnhanceManager")   -- 강화 보너스용(없으면 base만)
+		---@type StarforceSystem
+		local enh = self.Entity:GetComponent("script.StarforceSystem")   -- 강화 보너스용(없으면 base만)
 		for i, pair in ipairs(_UtilLogic:Split(csv, ",")) do
 			local kv = _UtilLogic:Split(pair, ":")
 			local name = kv[2]
@@ -70,8 +71,8 @@ script CombatStats extends Component
 	method table GetStatSummary()
 		-- UI 한 번 조회용. 장착(base+강화) + 컬렉션 영구 보너스 합산.
 		local s = self:GetEquippedStats()
-		---@type CollectionManager
-		local cm = self.Entity:GetComponent("script.CollectionManager")
+		---@type CollectionSystem
+		local cm = self.Entity:GetComponent("script.CollectionSystem")
 		if cm ~= nil then
 			local b = cm:GetBonus()
 			s.atk = s.atk + (b.atk or 0)
@@ -90,7 +91,7 @@ script CombatStats extends Component
 	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
 		-- 부착 확인용 로그
-		log("[CombatStats] OnBeginPlay ok")
+		log("[CombatPowerSystem] OnBeginPlay ok")
 	end
 
 end
