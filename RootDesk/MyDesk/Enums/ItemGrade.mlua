@@ -1,0 +1,55 @@
+@Logic
+script ItemGrade extends Logic
+	-- §13 등급 Enum(고정 용어: Rare/Epic/Unique/Legendary = 레어/에픽/유니크/레전드리).
+	-- mlua엔 사용자 @Enum이 없어 @Logic 싱글턴으로 상수+헬퍼를 전역 노출한다(_ItemGrade).
+	-- 런타임/저장/StackKey 호환을 위해 정수는 1-기반(0=None). 문서의 0-기반 표기는 설계용.
+	property integer None = 0
+	property integer Rare = 1
+	property integer Epic = 2
+	property integer Unique = 3
+	property integer Legendary = 4
+
+	method string Name(integer g)
+		-- 등급 정수 → 한글 표기(UI 태그/툴팁 공용). 미상은 "-".
+		if g == 4 then return "레전드리" end
+		if g == 3 then return "유니크" end
+		if g == 2 then return "에픽" end
+		if g == 1 then return "레어" end
+		return "-"
+	end
+
+	method string Key(integer g)
+		-- 등급 정수 → 영문 키(데이터/문서 공용 용어). 미상은 "None".
+		if g == 4 then return "Legendary" end
+		if g == 3 then return "Unique" end
+		if g == 2 then return "Epic" end
+		if g == 1 then return "Rare" end
+		return "None"
+	end
+
+	method integer FromKey(string s)
+		-- 등급 문자열(영/한) → 정수. 데이터 Grade 열/거래 파싱용. 미상은 레어(1).
+		if s == "Legendary" or s == "레전드리" then return 4 end
+		if s == "Unique" or s == "유니크" then return 3 end
+		if s == "Epic" or s == "에픽" then return 2 end
+		return 1
+	end
+
+	method Color ColorOf(integer g)
+		-- 등급별 색: 레어(하늘)/에픽(보라)/유니크(노랑)/레전드리(초록). 테두리·슬롯 공용.
+		if g == 4 then return Color(0.40, 0.85, 0.45, 1) end
+		if g == 3 then return Color(0.98, 0.82, 0.25, 1) end
+		if g == 2 then return Color(0.66, 0.42, 0.92, 1) end
+		return Color(0.36, 0.74, 0.96, 1)
+	end
+
+	method boolean IsMax(integer g)
+		-- 최상위 등급(레전드리)인지. 승급 가능 여부 판정용.
+		return g >= 4
+	end
+
+	method void OnBeginPlay()
+		-- 등록 확인용 마커.
+		log("[ItemGrade] enum ready (Rare=1..Legendary=4)")
+	end
+end
