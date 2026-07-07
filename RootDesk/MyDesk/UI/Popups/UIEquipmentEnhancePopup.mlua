@@ -48,18 +48,13 @@ script UIEquipmentEnhancePopup extends Component
 	end
 
 	method string GradeName(integer g)
-		if g == 4 then return "레전드리" end
-		if g == 3 then return "유니크" end
-		if g == 2 then return "에픽" end
-		return "레어"
+		-- 등급 표기는 _ItemGrade로 중앙화(§13).
+		return _ItemGrade:Name(g)
 	end
 
 	method Color GradeColor(integer g)
-		-- 레어(하늘)/에픽(보라)/유니크(노랑)/레전드리(초록).
-		if g == 4 then return Color(0.40, 0.85, 0.45, 1) end
-		if g == 3 then return Color(0.98, 0.82, 0.25, 1) end
-		if g == 2 then return Color(0.66, 0.42, 0.92, 1) end
-		return Color(0.36, 0.74, 0.96, 1)
+		-- 등급 색은 _ItemGrade로 중앙화(§13). 레어(하늘)/에픽(보라)/유니크(노랑)/레전드리(초록).
+		return _ItemGrade:ColorOf(g)
 	end
 
 	method string StarStr(integer star)

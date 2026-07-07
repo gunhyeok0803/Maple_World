@@ -87,10 +87,8 @@ script UIInventoryPopup extends Component
 	end
 
 	method string GradeName(integer g)
-		if g == 4 then return "레전드리" end
-		if g == 3 then return "유니크" end
-		if g == 2 then return "에픽" end
-		return "레어"
+		-- 등급 표기는 _ItemGrade로 중앙화(§13).
+		return _ItemGrade:Name(g)
 	end
 
 	method string StarStr(integer star)
