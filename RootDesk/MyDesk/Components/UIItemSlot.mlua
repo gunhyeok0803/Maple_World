@@ -5,14 +5,20 @@ script UIItemSlot extends Component
 
 	property integer slotIndex = 0
 
+	property integer itemGrade = 1
+
 	property Entity ownerWindow = nil
 
-	method Color ColorNeutral()
-		return Color(0.80, 0.80, 0.80, 1)
+	method Color ColorForGrade(integer g)
+		-- 등급별 슬롯 색: 레어(하늘)/에픽(보라)/유니크(노랑)/레전드리(초록).
+		if g == 4 then return Color(0.40, 0.85, 0.45, 1) end
+		if g == 3 then return Color(0.98, 0.82, 0.25, 1) end
+		if g == 2 then return Color(0.66, 0.42, 0.92, 1) end
+		return Color(0.36, 0.74, 0.96, 1)
 	end
 
 	method Color ColorSelected()
-		return Color(0.31, 0.76, 0.97, 1)
+		return Color(1.0, 1.0, 1.0, 1)
 	end
 
 	@ExecSpace("ClientOnly")
@@ -22,10 +28,12 @@ script UIItemSlot extends Component
 	end
 
 	@ExecSpace("ClientOnly")
-	method void SetData(string itemName, integer slotIndex, integer count)
-		-- itemName + 인덱스 + 개수 저장, 아이콘 + 개수(x2 이상) 표시.
+	method void SetData(string itemName, integer slotIndex, integer count, integer grade)
+		-- itemName + 인덱스 + 개수 + 등급 저장, 아이콘 + 개수(x2 이상) 표시 + 등급색.
 		self.itemName = itemName
 		self.slotIndex = slotIndex
+		self.itemGrade = grade or 1
+		self:RefreshBorder()
 		local iconEntity = self.Entity:GetChildByName("Icon")
 		if iconEntity ~= nil then
 			local row = _DataService:GetTable("UserItemDataSet"):FindRow("Name", itemName)
@@ -55,7 +63,7 @@ script UIItemSlot extends Component
 	method void RefreshBorder()
 		local sr = self.Entity.SpriteGUIRendererComponent
 		if sr == nil then return end
-		if self._T.selected then sr.Color = self:ColorSelected() else sr.Color = self:ColorNeutral() end
+		if self._T.selected then sr.Color = self:ColorSelected() else sr.Color = self:ColorForGrade(self.itemGrade) end
 	end
 
 	@EventSender("Self")

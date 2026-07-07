@@ -112,8 +112,6 @@ script InventoryUI extends Component
 		self._T.dExpiry     = _EntityService:GetEntityByPath(base .. "/DetailPopup/Expiry")
 		self._T.dDesc       = _EntityService:GetEntityByPath(base .. "/DetailPopup/Desc")
 		self._T.btnEquip    = _EntityService:GetEntityByPath(base .. "/DetailPopup/BtnEquip")
-		self._T.dPromoteInfo = _EntityService:GetEntityByPath(base .. "/DetailPopup/PromoteInfo")
-		self._T.btnPromote   = _EntityService:GetEntityByPath(base .. "/DetailPopup/BtnPromote")
 		self._T.dPower      = _EntityService:GetEntityByPath(base .. "/DetailPopup/PowerVal")
 		self._T.dStat       = {
 			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_0"),   -- 공격력
@@ -145,7 +143,6 @@ script InventoryUI extends Component
 		self:Wire(base .. "/DetailPopup/BtnEquip", function() self:OnEquipClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnDrop", function() self:OnDropClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnCloseDetail", function() self:HideDetail() end)
-		self:Wire(base .. "/DetailPopup/BtnPromote", function() self:OnPromoteClicked() end)
 		-- 전투력 바 🔍 → 스탯 팝업 토글 / 팝업 CloseBtn → 닫기
 		self:Wire(base .. "/EquipPanel/PowerBar/SearchBtn", function() self:ToggleStat() end)
 		self:Wire(base .. "/StatPopup/CloseBtn", function() self:CloseStat() end)
@@ -288,7 +285,7 @@ script InventoryUI extends Component
 				local us = slot:GetComponent("script.UIItemSlot")
 				if us ~= nil then
 					us.ownerWindow = self.Entity
-					us:SetData(name, gi, st.count)
+					us:SetData(name, gi, st.count, st.grade or 1)
 				end
 				self._T.slots[#self._T.slots + 1] = slot
 			end
@@ -404,66 +401,9 @@ script InventoryUI extends Component
 			local si = inv0:GetSlots()[self._T.curIndex]
 			if si ~= nil then self._T.curStar = si.star or 0; self._T.curGrade = si.grade or 1 end
 		end
-		self:RefreshPromote()
 		-- 정보창은 가방 왼쪽 고정 위치(빌드에서 배치). 위치 계산 불필요.
 		if self._T.detail ~= nil then self._T.detail.Enable = true end
 		log("[InventoryUI] ShowDetail: " .. tostring(itemName) .. " (" .. tostring(self._T.curCat) .. ") G" .. tostring(self._T.curGrade) .. " ★" .. tostring(self._T.curStar))
-	end
-
-	@ExecSpace("ClientOnly")
-	method any GetPromoteMgr()
-		-- LocalPlayer의 EquipmentUpgradeSystem(승급, 없으면 nil).
-		local lp = _UserService.LocalPlayer
-		if lp == nil then return nil end
-		return lp:GetComponent("script.EquipmentUpgradeSystem")
-	end
-
-	@ExecSpace("ClientOnly")
-	method void RefreshPromote()
-		-- 승급 안내/버튼 갱신. 장비 + ★0 순정 + 상위 등급(grade<4)일 때만 노출.
-		local info = self._T.dPromoteInfo
-		local btn = self._T.btnPromote
-		local show = false
-		local infoText = ""
-		self._T.promoteMax = 0
-		local inv = self:GetInv()
-		local pm = self:GetPromoteMgr()
-		if inv ~= nil and pm ~= nil and self._T.curName ~= nil and self._T.curName ~= "" then
-			local star = self._T.curStar or 0
-			local grade = self._T.curGrade or 1
-			if self:IsEquipCategory(self._T.curCat) and star == 0 and grade < 4 then
-				local ratio = pm:RatioFor(grade)
-				if ratio > 0 then
-					local have = 0
-					for i, s in ipairs(inv:GetSlots()) do
-						if s.name == self._T.curName and (s.star or 0) == 0 and (s.grade or 1) == grade then have = s.count break end
-					end
-					local maxT = math.floor(have / ratio)
-					self._T.promoteMax = maxT
-					show = true
-					if maxT >= 1 then
-						infoText = "승급 " .. tostring(maxT) .. "회 가능 → 결과 " .. tostring(maxT) .. "개 (회당 " .. tostring(ratio) .. "개)"
-					else
-						infoText = "승급 재료 부족 (" .. tostring(have) .. "/" .. tostring(ratio) .. ")"
-					end
-				end
-			end
-		end
-		if info ~= nil and info.TextComponent ~= nil then info.TextComponent.Text = infoText end
-		if info ~= nil then info.Enable = show end
-		if btn ~= nil then btn.Enable = show end
-	end
-
-	@ExecSpace("ClientOnly")
-	method void OnPromoteClicked()
-		-- 일괄 승급: 가능한 최대 횟수만큼 승급 요청.
-		if self._T.curName == nil or self._T.curName == "" then return end
-		local maxT = self._T.promoteMax or 0
-		if maxT < 1 then return end
-		local pm = self:GetPromoteMgr()
-		if pm == nil then return end
-		pm:RequestPromote(self._T.curName, self._T.curGrade or 1, maxT)
-		-- 결과 반영은 InventoryChangedEvent → Rebuild/RefreshPromote가 처리.
 	end
 
 	@ExecSpace("ClientOnly")
@@ -662,8 +602,6 @@ script InventoryUI extends Component
 			self:Rebuild()
 			self:RefreshWorn()
 			self:RefreshPower()
-			-- 상세 팝업이 열려 있으면 승급 안내도 갱신(승급/획득으로 개수 변동 반영).
-			if self._T.detail ~= nil and self._T.detail.Enable then self:RefreshPromote() end
 		end
 	end
 
