@@ -92,7 +92,7 @@ script EnhanceManager extends Component
 				if r == nil or r.Value < c.amount then return false end
 			elseif c.kind == "item" then
 				if inv == nil then return false end
-				if inv:CountItem(c.key, 0) < c.amount then return false end
+				if inv:CountItem(c.key, 0, 1) < c.amount then return false end
 			end
 		end
 		return true
@@ -107,7 +107,7 @@ script EnhanceManager extends Component
 			if c.kind == "res" and w ~= nil then
 				w:ConsumeResource(tonumber(c.key) or 0, c.amount)
 			elseif c.kind == "item" and inv ~= nil then
-				for k = 1, c.amount do inv:ConsumeItem(c.key, 0) end
+				for k = 1, c.amount do inv:ConsumeItem(c.key, 0, 1) end
 			end
 		end
 	end
@@ -124,6 +124,7 @@ script EnhanceManager extends Component
 		end
 		local name = info.name
 		local star = info.star or 0
+		local grade = info.grade or 1
 		local target = star + 1
 		if target > self.MaxStar then
 			log("[Enhance] 이미 최대 성급: " .. tostring(name) .. " ★" .. tostring(star))
@@ -144,14 +145,14 @@ script EnhanceManager extends Component
 		local rate = tonumber(row:GetItem("SuccessRate")) or 0
 		local roll = _UtilLogic:RandomDouble()
 		if roll < rate then
-			inv:ConsumeItem(name, star)
-			inv:AddItem(name, target)
+			inv:ConsumeItem(name, star, grade)
+			inv:AddItem(name, target, grade)
 			log("[Enhance] 성공! " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (rate=" .. tostring(rate) .. ", roll=" .. tostring(roll) .. ")")
 		else
 			local failDown = tonumber(row:GetItem("FailDown")) or 0
 			if failDown == 1 and star > 0 then
-				inv:ConsumeItem(name, star)
-				inv:AddItem(name, star - 1)
+				inv:ConsumeItem(name, star, grade)
+				inv:AddItem(name, star - 1, grade)
 				log("[Enhance] 실패(하락) " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(star - 1))
 			else
 				log("[Enhance] 실패(유지) " .. tostring(name) .. " ★" .. tostring(star) .. " (rate=" .. tostring(rate) .. ", roll=" .. tostring(roll) .. ")")
@@ -167,7 +168,7 @@ script EnhanceManager extends Component
 	end
 
 	method void OnBeginPlay()
-		-- 부착 확인용 로그(서버/클라 양쪽).
+		-- 부착 확인용 로그(서버/클라 양쪽). 강화는 등급 보존(grade 그대로).
 		log("[EnhanceManager] OnBeginPlay ok")
 	end
 

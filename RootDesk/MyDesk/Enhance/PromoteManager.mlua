@@ -1,0 +1,74 @@
+@Component
+script PromoteManager extends Component
+
+	-- 승급 비율(현재 등급 → 다음 등급 1개 만드는 데 필요한 동일 아이템 수). MVP v11 §05 기준, 인스펙터 튜닝 가능.
+	property integer RareToEpic = 800
+
+	property integer EpicToUnique = 200
+
+	property integer UniqueToLegendary = 20
+
+	property integer MaxGrade = 4   -- 1레어 / 2에픽 / 3유니크 / 4레전드리
+
+	method Inventory GetInv()
+		-- 같은 엔티티의 Inventory(없으면 nil).
+		---@type Inventory
+		local inv = self.Entity:GetComponent("script.Inventory")
+		return inv
+	end
+
+	method integer RatioFor(integer grade)
+		-- grade(현재 등급) → 다음 등급 승급에 필요한 개수. 최상위(레전드리)면 0(승급 불가).
+		if grade == 1 then return self.RareToEpic
+		elseif grade == 2 then return self.EpicToUnique
+		elseif grade == 3 then return self.UniqueToLegendary
+		else return 0 end
+	end
+
+	method integer MaxPromotable(string itemName, integer grade)
+		-- 서버용: ★0 순정 (name,grade) 보유량 / 비율 = 가능 승급 횟수.
+		local ratio = self:RatioFor(grade)
+		if ratio <= 0 then return 0 end
+		local inv = self:GetInv()
+		if inv == nil then return 0 end
+		local have = inv:CountItem(itemName, 0, grade)   -- ★0 순정만 승급 대상
+		return math.floor(have / ratio)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoPromote(string itemName, integer grade, integer times)
+		-- (name,grade,★0) 를 비율×times 소모 → (name,grade+1,★0) times개 생성. 요청 초과분은 가능치로 클램프.
+		local ratio = self:RatioFor(grade)
+		if ratio <= 0 then
+			log("[Promote] 최상위 등급이라 승급 불가: " .. tostring(itemName) .. " G" .. tostring(grade))
+			return
+		end
+		local t = times or 1
+		if t < 1 then t = 1 end
+		local maxT = self:MaxPromotable(itemName, grade)
+		if t > maxT then t = maxT end
+		if t < 1 then
+			log("[Promote] 재료 부족: " .. tostring(itemName) .. " G" .. tostring(grade) .. " (필요 " .. tostring(ratio) .. "개/회)")
+			return
+		end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local need = ratio * t
+		for k = 1, need do inv:ConsumeItem(itemName, 0, grade) end
+		for k = 1, t do inv:AddItem(itemName, 0, grade + 1) end
+		log("[Promote] " .. tostring(itemName) .. " G" .. tostring(grade) .. " x" .. tostring(need) .. " → G" .. tostring(grade + 1) .. " x" .. tostring(t))
+	end
+
+	@ExecSpace("Server")
+	method void RequestPromote(string itemName, integer grade, integer times)
+		-- 클라 승급 요청 → 본인 검증 후 DoPromote.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoPromote(itemName, grade, times)
+	end
+
+	method void OnBeginPlay()
+		-- 부착 확인용 로그(서버/클라 양쪽).
+		log("[PromoteManager] OnBeginPlay ok")
+	end
+
+end

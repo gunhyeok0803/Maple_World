@@ -23,7 +23,9 @@
         "script.Inventory",
         "script.CombatStats",
         "script.PlayerResource",
-        "script.PlayerDBManager"
+        "script.PlayerDBManager",
+        "script.EnhanceManager",
+        "script.PromoteManager"
       ],
       "Properties": [],
       "Values": [
@@ -711,6 +713,24 @@
         },
         {
           "TargetType": "script.PlayerDBManager",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.EnhanceManager",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.PromoteManager",
           "Name": "Enable",
           "ValueType": {
             "$type": "MODNativeType",
