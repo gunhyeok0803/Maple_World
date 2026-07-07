@@ -1,0 +1,356 @@
+@Component
+script EnhanceUI extends Component
+
+	-- 독립 강화 창(무기강화 탭에서 열림). 좌:가방 장비 목록 / 중:선택 상세 / 우:승급·스타포스·컬렉션 탭.
+	-- Controller 엔티티(항상 활성)에 부착. EnhancePopup(기본 숨김)을 제어한다.
+
+	property integer ListMax = 24
+
+	method any GetInv()
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.Inventory")
+	end
+
+	method any GetPromoteMgr()
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.EquipmentUpgradeSystem")
+	end
+
+	method any GetStarforceMgr()
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.StarforceSystem")
+	end
+
+	method any GetCollectMgr()
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.CollectionSystem")
+	end
+
+	method boolean HasColumn(string col)
+		local ds = _DataService:GetTable("UserItemDataSet")
+		if ds == nil or ds.Columns == nil then return false end
+		for i, c in ipairs(ds.Columns:ToTable()) do
+			if c == col then return true end
+		end
+		return false
+	end
+
+	method string Cell(any row, string col)
+		if self:HasColumn(col) then
+			local v = row:GetItem(col)
+			if v ~= nil then return tostring(v) end
+		end
+		return ""
+	end
+
+	method string GradeName(integer g)
+		if g == 4 then return "레전드리" end
+		if g == 3 then return "유니크" end
+		if g == 2 then return "에픽" end
+		return "레어"
+	end
+
+	method string StarStr(integer star)
+		local s = ""
+		local n = star or 0
+		for i = 1, 5 do
+			if i <= n then s = s .. "★" else s = s .. "☆" end
+		end
+		if n > 5 then s = "★" .. tostring(n) end
+		return s
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Wire(string path, any fn)
+		local e = _EntityService:GetEntityByPath(path)
+		if e == nil then return end
+		if e.ButtonComponent == nil then e:AddComponent("MOD.Core.ButtonComponent") end
+		local h = e:ConnectEvent(ButtonClickEvent, fn)
+		self._T.handlers[#self._T.handlers + 1] = { entity = e, hnd = h }
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		local base = self.Entity.Path
+		self._T.popup = base .. "/EnhancePopup"
+		self._T.handlers = {}
+		self._T.listMap = {}
+		self._T.sel = nil
+		self._T.tab = 0
+
+		local p = self._T.popup
+		self._T.eMidIcon  = _EntityService:GetEntityByPath(p .. "/MidIcon")
+		self._T.eMidName  = _EntityService:GetEntityByPath(p .. "/MidName")
+		self._T.eMidTag   = _EntityService:GetEntityByPath(p .. "/MidTag")
+		self._T.eMidStars = _EntityService:GetEntityByPath(p .. "/MidStars")
+		self._T.eStatA    = _EntityService:GetEntityByPath(p .. "/MidStatA")
+		self._T.eStatD    = _EntityService:GetEntityByPath(p .. "/MidStatD")
+		self._T.eStatH    = _EntityService:GetEntityByPath(p .. "/MidStatH")
+		self._T.eInfo     = _EntityService:GetEntityByPath(p .. "/RInfo")
+		self._T.eCost     = _EntityService:GetEntityByPath(p .. "/RCost")
+		self._T.eAction   = _EntityService:GetEntityByPath(p .. "/RAction")
+		self._T.eResult   = _EntityService:GetEntityByPath(p .. "/RResult")
+		self._T.eTabs = {
+			_EntityService:GetEntityByPath(p .. "/RTab_0"),
+			_EntityService:GetEntityByPath(p .. "/RTab_1"),
+			_EntityService:GetEntityByPath(p .. "/RTab_2"),
+		}
+
+		-- 무기강화 탭(EquipPanel/ETab_2) → 열기
+		self:Wire(base .. "/EquipPanel/ETab_2", function() self:Open() end)
+		self:Wire(p .. "/CloseBtn", function() self:Close() end)
+		self:Wire(p .. "/RTab_0", function() self:SetTab(0) end)
+		self:Wire(p .. "/RTab_1", function() self:SetTab(1) end)
+		self:Wire(p .. "/RTab_2", function() self:SetTab(2) end)
+		self:Wire(p .. "/RAction", function() self:OnAction() end)
+		for i = 0, self.ListMax - 1 do
+			local k = i
+			self:Wire(p .. "/EList_" .. tostring(i), function() self:SelectByIndex(k) end)
+		end
+
+		-- 인벤 변경 시 갱신(창 열려 있으면)
+		local lp = _UserService.LocalPlayer
+		if lp ~= nil then
+			self._T.invHnd = lp:ConnectEvent(InventoryChangedEvent, function() self:OnInvChanged() end)
+		end
+
+		self:SetPopup(false)
+		log("[EnhanceUI] OnBeginPlay ok")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEndPlay()
+		if self._T.handlers ~= nil then
+			for i = 1, #self._T.handlers do
+				local r = self._T.handlers[i]
+				if r.entity ~= nil and isvalid(r.entity) then r.entity:DisconnectEvent(ButtonClickEvent, r.hnd) end
+			end
+		end
+		local lp = _UserService.LocalPlayer
+		if lp ~= nil and self._T.invHnd ~= nil then lp:DisconnectEvent(InventoryChangedEvent, self._T.invHnd) end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetPopup(boolean on)
+		local e = _EntityService:GetEntityByPath(self._T.popup)
+		if e ~= nil then e.Enable = on end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Open()
+		self:SetPopup(true)
+		self:BuildList()
+		self:SetTab(self._T.tab or 0)
+		log("[EnhanceUI] Open")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Close()
+		self:SetPopup(false)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnInvChanged()
+		local e = _EntityService:GetEntityByPath(self._T.popup)
+		if e ~= nil and e.Enable then
+			self:BuildList()
+			self:RefreshTab()
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void BuildList()
+		-- 가방의 장비 아이템만 목록에 채움(스택 단위). 초과분은 무시.
+		self._T.listMap = {}
+		local inv = self:GetInv()
+		local ds = _DataService:GetTable("UserItemDataSet")
+		local k = 0
+		if inv ~= nil and ds ~= nil then
+			local slots = inv:GetSlots()
+			for gi = 1, #slots do
+				if k >= self.ListMax then break end
+				local st = slots[gi]
+				local row = ds:FindRow("Name", st.name)
+				if row ~= nil and self:Cell(row, "Category") == "장비" then
+					local slotBtn = _EntityService:GetEntityByPath(self._T.popup .. "/EList_" .. tostring(k))
+					if slotBtn ~= nil then
+						slotBtn.Enable = true
+						local icon = slotBtn:GetChildByName("Icon")
+						if icon ~= nil then
+							icon.SpriteGUIRendererComponent.ImageRUID = self:Cell(row, "IconRUID")
+							icon.Enable = true
+						end
+						self._T.listMap[k] = { name = st.name, star = st.star or 0, grade = st.grade or 1, index = gi }
+					end
+					k = k + 1
+				end
+			end
+		end
+		-- 남는 슬롯 숨김
+		for j = k, self.ListMax - 1 do
+			local slotBtn = _EntityService:GetEntityByPath(self._T.popup .. "/EList_" .. tostring(j))
+			if slotBtn ~= nil then slotBtn.Enable = false end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SelectByIndex(integer k)
+		local it = self._T.listMap[k]
+		if it == nil then return end
+		self._T.sel = it
+		local ds = _DataService:GetTable("UserItemDataSet")
+		local row = nil
+		if ds ~= nil then row = ds:FindRow("Name", it.name) end
+		if self._T.eMidIcon ~= nil and row ~= nil then
+			self._T.eMidIcon.SpriteGUIRendererComponent.ImageRUID = self:Cell(row, "IconRUID")
+		end
+		if self._T.eMidName ~= nil then self._T.eMidName.TextComponent.Text = it.name end
+		if self._T.eMidTag ~= nil then
+			local part = (row ~= nil) and self:Cell(row, "Part") or ""
+			local tag = self:GradeName(it.grade)
+			if part ~= "" then tag = tag .. " · " .. part end
+			self._T.eMidTag.TextComponent.Text = tag
+		end
+		if self._T.eMidStars ~= nil then self._T.eMidStars.TextComponent.Text = self:StarStr(it.star) end
+		if row ~= nil then
+			if self._T.eStatA ~= nil then self._T.eStatA.TextComponent.Text = "공격력  " .. (self:Cell(row, "Attack") ~= "" and self:Cell(row, "Attack") or "-") end
+			if self._T.eStatD ~= nil then self._T.eStatD.TextComponent.Text = "방어력  " .. (self:Cell(row, "Defense") ~= "" and self:Cell(row, "Defense") or "-") end
+			if self._T.eStatH ~= nil then self._T.eStatH.TextComponent.Text = "최대HP  " .. (self:Cell(row, "MaxHP") ~= "" and self:Cell(row, "MaxHP") or "-") end
+		end
+		self:RefreshTab()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetTab(integer i)
+		self._T.tab = i
+		local on = { r = 0.24, g = 0.55, b = 0.85, a = 1 }
+		local off = { r = 0.20, g = 0.25, b = 0.34, a = 1 }
+		for t = 1, 3 do
+			local btn = self._T.eTabs[t]
+			if btn ~= nil and btn.SpriteGUIRendererComponent ~= nil then
+				if (t - 1) == i then btn.SpriteGUIRendererComponent.Color = Color(on.r, on.g, on.b, on.a)
+				else btn.SpriteGUIRendererComponent.Color = Color(off.r, off.g, off.b, off.a) end
+			end
+		end
+		self:RefreshTab()
+	end
+
+	method any StarRow(integer targetStar)
+		local t = _DataService:GetTable("EnhanceDataSet")
+		if t == nil then return nil end
+		for i = 1, t:GetRowCount() do
+			local r = t:GetRow(i)
+			if (tonumber(r:GetItem("Star")) or 0) == targetStar then return r end
+		end
+		return nil
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshTab()
+		-- 선택 + 현재 탭에 따라 정보/비용/실행버튼 갱신.
+		local info = self._T.eInfo
+		local cost = self._T.eCost
+		local act = self._T.eAction
+		local infoText = ""
+		local costText = ""
+		local actLabel = "강화"
+		local canDo = false
+		self._T.actMax = 0
+		local it = self._T.sel
+		if it == nil then
+			infoText = "왼쪽에서 장비를 선택하세요"
+		else
+			local inv = self:GetInv()
+			local tab = self._T.tab or 0
+			if tab == 0 then
+				-- 승급
+				actLabel = "일괄 승급"
+				local pm = self:GetPromoteMgr()
+				if it.grade >= 4 then
+					infoText = "이미 최고 등급(레전드리)"
+				elseif it.star ~= 0 then
+					infoText = "★0 순정만 승급 가능"
+				elseif pm ~= nil and inv ~= nil then
+					local ratio = pm:RatioFor(it.grade)
+					local have = 0
+					for i, s in ipairs(inv:GetSlots()) do
+						if s.name == it.name and (s.star or 0) == 0 and (s.grade or 1) == it.grade then have = s.count break end
+					end
+					local maxT = 0
+					if ratio > 0 then maxT = math.floor(have / ratio) end
+					self._T.actMax = maxT
+					infoText = self:GradeName(it.grade) .. " → " .. self:GradeName(it.grade + 1) .. "\n보유 " .. tostring(have) .. " / 회당 " .. tostring(ratio) .. "개"
+					if maxT >= 1 then infoText = infoText .. "\n" .. tostring(maxT) .. "회 승급 가능" canDo = true
+					else infoText = infoText .. "\n재료 부족" end
+				end
+			elseif tab == 1 then
+				-- 스타포스(레전드리 전용)
+				actLabel = "스타포스 강화"
+				if it.grade < 4 then
+					infoText = "레전드리 장비만 스타포스 가능"
+				else
+					local target = it.star + 1
+					local row = self:StarRow(target)
+					if row == nil then
+						infoText = "최대 성급 도달 (★" .. tostring(it.star) .. ")"
+					else
+						local sr = math.floor((tonumber(row:GetItem("SuccessRate")) or 0) * 100 + 0.5)
+						local dr = math.floor((tonumber(row:GetItem("DestroyRate")) or 0) * 100 + 0.5)
+						infoText = "★" .. tostring(it.star) .. " → ★" .. tostring(target) .. "\n성공 " .. tostring(sr) .. "%   파괴 " .. tostring(dr) .. "%"
+						costText = "필요: " .. tostring(row:GetItem("Cost"))
+						canDo = true
+					end
+				end
+			else
+				-- 컬렉션
+				actLabel = "컬렉션 등록"
+				local cm = self:GetCollectMgr()
+				if it.star ~= 0 then
+					infoText = "★0 순정만 등록 가능"
+				elseif cm ~= nil then
+					local unit = cm:RegUnitOf(it.grade)
+					local times = cm:MaxRegister(it.name, it.grade)
+					self._T.actMax = times
+					infoText = "회당 " .. tostring(unit) .. "개 소모 → 영구 전투력\n등록 " .. tostring(times) .. "회 가능"
+					if times >= 1 then canDo = true else infoText = infoText .. "\n재료 부족" end
+				end
+			end
+		end
+		if info ~= nil and info.TextComponent ~= nil then info.TextComponent.Text = infoText end
+		if cost ~= nil and cost.TextComponent ~= nil then cost.TextComponent.Text = costText end
+		if act ~= nil then
+			act.Enable = canDo
+			if act.TextComponent ~= nil then act.TextComponent.Text = actLabel end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnAction()
+		local it = self._T.sel
+		if it == nil then return end
+		local tab = self._T.tab or 0
+		if tab == 0 then
+			local maxT = self._T.actMax or 0
+			if maxT < 1 then return end
+			local pm = self:GetPromoteMgr()
+			if pm ~= nil then pm:RequestPromote(it.name, it.grade, maxT) end
+		elseif tab == 1 then
+			local sf = self:GetStarforceMgr()
+			if sf ~= nil then sf:RequestEnhance(it.index) end
+		else
+			local times = self._T.actMax or 0
+			if times < 1 then return end
+			local cm = self:GetCollectMgr()
+			if cm ~= nil then cm:RequestRegister(it.name, it.grade, times) end
+		end
+		-- 결과 반영은 InventoryChangedEvent(OnInvChanged) → BuildList/RefreshTab.
+		if self._T.eResult ~= nil and self._T.eResult.TextComponent ~= nil then
+			self._T.eResult.TextComponent.Text = "요청 완료 — 결과 반영 중..."
+		end
+	end
+
+end
