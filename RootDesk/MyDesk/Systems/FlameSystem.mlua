@@ -1,0 +1,198 @@
+@Component
+script FlameSystem extends Component
+
+	-- 환생의 불꽃(§06): 레전드리 전용. 고정 드랍 능력치와 별도의 '추가 옵션'을 개별 인스턴스에 부여/재설정.
+	-- 계승하지 않음(§07: 현재 장비 고점 전용) — 계승 시스템에서 flame은 승계 제외.
+
+	property integer LinesMin = 2
+
+	property integer LinesMax = 4
+
+	-- 부여/재설정 비용 명세("res:재화Type:수량;item:아이템명:수량"). placeholder — 불꽃 아이템 경제 확정 시 교체.
+	property string FlameCost = "res:1:20000"
+
+	method InventoryController GetInv()
+		-- 같은 엔티티의 InventoryController(없으면 nil).
+		---@type InventoryController
+		local inv = self.Entity:GetComponent("script.InventoryController")
+		return inv
+	end
+
+	method any GetWallet()
+		-- 같은 엔티티의 PlayerResource(재화, 없으면 nil).
+		return self.Entity:GetComponent("script.PlayerResource")
+	end
+
+	method table ParseCost(string spec)
+		-- "res:1:1000" → { {kind,key,amount}, ... }. kind=res(재화Type)/item(가방 아이템명).
+		local out = {}
+		if spec == nil or spec == "" then return out end
+		for i, part in ipairs(_UtilLogic:Split(spec, ";")) do
+			if part ~= "" then
+				local kv = _UtilLogic:Split(part, ":")
+				if #kv >= 3 then
+					out[#out + 1] = { kind = kv[1], key = kv[2], amount = tonumber(kv[3]) or 0 }
+				end
+			end
+		end
+		return out
+	end
+
+	method boolean CanPay(table costs)
+		-- 비용 전부 지불 가능한지(소모 전 전량 확인).
+		local inv = self:GetInv()
+		local w = self:GetWallet()
+		for i, c in ipairs(costs) do
+			if c.kind == "res" then
+				if w == nil then return false end
+				local r = w:GetResource(tonumber(c.key) or 0)
+				if r == nil or r.Value < c.amount then return false end
+			elseif c.kind == "item" then
+				if inv == nil then return false end
+				if inv:CountItem(c.key, 0, 1) < c.amount then return false end
+			end
+		end
+		return true
+	end
+
+	@ExecSpace("ServerOnly")
+	method void PayCost(table costs)
+		-- 비용 소모(CanPay 통과 후). res→ConsumeResource, item→ConsumeItem 반복.
+		local inv = self:GetInv()
+		local w = self:GetWallet()
+		for i, c in ipairs(costs) do
+			if c.kind == "res" and w ~= nil then
+				w:ConsumeResource(tonumber(c.key) or 0, c.amount)
+			elseif c.kind == "item" and inv ~= nil then
+				for k = 1, c.amount do inv:ConsumeItem(c.key, 0, 1) end
+			end
+		end
+	end
+
+	method string PartClassOf(string itemName)
+		-- 아이템의 풀 클래스(무기/방어구/장신구). ItemData Part → ItemPart:ClassOf.
+		local inv = self:GetInv()
+		if inv == nil then return "" end
+		return _ItemPart:ClassOf(inv:MetaCell(itemName, "Part"))
+	end
+
+	method table PoolRows(string partClass)
+		-- FlameOptionData에서 PartClass 일치 행 목록.
+		local out = {}
+		local t = _DataService:GetTable("FlameOptionData")
+		if t == nil then return out end
+		local n = t:GetRowCount()
+		for i = 1, n do
+			local row = t:GetRow(i)
+			if row:GetItem("PartClass") == partClass then out[#out + 1] = row end
+		end
+		return out
+	end
+
+	method string RollFlame(string partClass)
+		-- 비복원 가중치 추첨으로 LinesMin~LinesMax줄 롤(스탯 중복 없음) → flame 문자열("스탯=값|..."). 풀 없으면 "".
+		local rows = self:PoolRows(partClass)
+		if #rows == 0 then return "" end
+		local span = self.LinesMax - self.LinesMin
+		local lines = self.LinesMin + math.floor(_UtilLogic:RandomDouble() * (span + 1))
+		if lines > #rows then lines = #rows end
+		local parts = {}
+		for line = 1, lines do
+			local total = 0
+			for i, r in ipairs(rows) do total = total + (tonumber(r:GetItem("Weight")) or 0) end
+			if total <= 0 then break end
+			local pick = _UtilLogic:RandomDouble() * total
+			local acc = 0
+			for i, r in ipairs(rows) do
+				acc = acc + (tonumber(r:GetItem("Weight")) or 0)
+				if pick < acc then
+					local lo = tonumber(r:GetItem("MinValue")) or 0
+					local hi = tonumber(r:GetItem("MaxValue")) or lo
+					local v = lo + math.floor(_UtilLogic:RandomDouble() * (hi - lo + 1))
+					parts[#parts + 1] = r:GetItem("Stat") .. "=" .. tostring(v)
+					table.remove(rows, i)   -- 비복원: 같은 옵션 중복 방지
+					break
+				end
+			end
+		end
+		return table.concat(parts, "|")
+	end
+
+	@ExecSpace("ServerOnly")
+	method boolean FlameFor(string itemName, integer grade)
+		-- 공통 검증+롤: 레전드리/풀/비용 확인 후 새 flame을 _T에 기록. 성공 시 true.
+		if (grade or 1) < _ItemGrade.Legendary then
+			log("[Flame] 레전드리만 환생의 불꽃 가능: " .. tostring(itemName) .. " G" .. tostring(grade))
+			return false
+		end
+		local partClass = self:PartClassOf(itemName)
+		if partClass == "" then
+			log_warning("[Flame] 풀 클래스 없음(비장비?): " .. tostring(itemName))
+			return false
+		end
+		local newFlame = self:RollFlame(partClass)
+		if newFlame == "" then
+			log_warning("[Flame] 옵션 풀 없음: " .. partClass)
+			return false
+		end
+		local costs = self:ParseCost(self.FlameCost)
+		if not self:CanPay(costs) then
+			log("[Flame] 비용 부족: " .. tostring(itemName))
+			return false
+		end
+		self:PayCost(costs)
+		self._T.lastFlame = newFlame
+		return true
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoFlame(integer slotIndex)
+		-- 인벤 슬롯 환생옵션 부여/재설정(권위): 해당 개체 1개를 새 flame으로 교체(잠재 보존).
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local info = inv:GetSlotInfo(slotIndex)
+		if info == nil then
+			log_warning("[Flame] 잘못된 슬롯 index=" .. tostring(slotIndex))
+			return
+		end
+		if not self:FlameFor(info.name, info.grade or 1) then return end
+		inv:ConsumeItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "")
+		inv:AddItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", self._T.lastFlame)
+		log("[Flame] 부여(가방) " .. tostring(info.name) .. " [" .. self._T.lastFlame .. "]")
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoFlameEquipped(string part)
+		-- 착용 중 장비 환생옵션 부여/재설정(권위): 페이퍼돌 개체의 flame 갱신(잠재 보존).
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local e = inv:GetEquippedInfo(part)
+		if e == nil then
+			log_warning("[Flame] 장착품 없음 part=" .. tostring(part))
+			return
+		end
+		if not self:FlameFor(e.name, e.grade or 1) then return end
+		inv:SetEquippedInvest(part, e.pot or "", self._T.lastFlame)
+		log("[Flame] 부여(착용) " .. tostring(part) .. "/" .. tostring(e.name) .. " [" .. self._T.lastFlame .. "]")
+	end
+
+	@ExecSpace("Server")
+	method void RequestFlame(integer slotIndex)
+		-- 클라 환생옵션 요청(가방) → 본인 검증 후 DoFlame.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoFlame(slotIndex)
+	end
+
+	@ExecSpace("Server")
+	method void RequestFlameEquipped(string part)
+		-- 클라 환생옵션 요청(착용) → 본인 검증 후 DoFlameEquipped.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoFlameEquipped(part)
+	end
+
+	method void OnBeginPlay()
+		-- 부착 확인용 로그(서버/클라 양쪽). 환생의 불꽃: 레전드리 전용, 인스턴스 귀속, 계승 안 함.
+		log("[FlameSystem] OnBeginPlay ok")
+	end
+
+end

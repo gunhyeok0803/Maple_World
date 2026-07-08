@@ -104,6 +104,8 @@ script StarforceSystem extends Component
 		local name = info.name
 		local star = info.star or 0
 		local grade = info.grade or 1
+		local pot = info.pot or ""
+		local flame = info.flame or ""
 		if grade < _ItemGrade.Legendary then
 			log("[SF] 레전드리만 스타포스 가능: " .. tostring(name) .. " G" .. tostring(grade))
 			return
@@ -128,12 +130,12 @@ script StarforceSystem extends Component
 		local destroy = tonumber(row:GetItem("DestroyRate")) or 0
 		local roll = _UtilLogic:RandomDouble()
 		if roll < success then
-			inv:ConsumeItem(name, star, grade)
-			inv:AddItem(name, target, grade)
+			inv:ConsumeItemEx(name, star, grade, pot, flame)
+			inv:AddItemEx(name, target, grade, pot, flame)   -- 잠재/환생 보존 승계
 			log("[SF] 성공! " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
 		elseif roll < success + destroy then
-			inv:ConsumeItem(name, star, grade)
-			inv:AddTrace(name, star, grade)
+			inv:ConsumeItemEx(name, star, grade, pot, flame)
+			inv:AddTraceEx(name, star, grade, pot, flame)   -- §06 흔적에 투자 메타 보존
 			log("[SF] 파괴! " .. tostring(name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
 		else
 			log("[SF] 실패(유지) " .. tostring(name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
@@ -163,7 +165,7 @@ script StarforceSystem extends Component
 		end
 		inv:ConsumeItem(tr.name, 0, _ItemGrade.Legendary)
 		inv:RemoveTraceAt(traceIndex)
-		inv:AddItem(tr.name, tr.star or 0, tr.grade or _ItemGrade.Legendary)
+		inv:AddItemEx(tr.name, tr.star or 0, tr.grade or _ItemGrade.Legendary, tr.pot or "", tr.flame or "")   -- §06 하락 없이 기존 상태(투자 포함) 복원
 		log("[SF] 복구! " .. tostring(tr.name) .. " ★" .. tostring(tr.star or 0) .. " (레전드리 순정 1 소모)")
 	end
 

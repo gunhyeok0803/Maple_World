@@ -1,7 +1,10 @@
 @Component
 script CollectionSystem extends Component
 
-	property string SaveKey = "collectionV1"
+	-- 컬렉션 도감(§05 반복 등록): 슬롯 = 부위×레벨×등급(CollectionBookData).
+	-- ★0 순정만 등록 → 소멸 → 슬롯별 보너스×횟수 영구 누적. v1(등급별 합계)은 도감 역산 불가로 폐기.
+
+	property string SaveKey = "collectionV2"
 
 	@Sync
 	property integer CollAtk = 0
@@ -12,6 +15,10 @@ script CollectionSystem extends Component
 	@Sync
 	property integer CollHp = 0
 
+	-- 도감 등록 현황("부위:레벨:등급:횟수,..." — 도감 UI용 동기화)
+	@Sync
+	property string BookCsv = ""
+
 	method InventoryController GetInv()
 		-- 같은 엔티티의 InventoryController(없으면 nil).
 		---@type InventoryController
@@ -19,53 +26,112 @@ script CollectionSystem extends Component
 		return inv
 	end
 
-	method any FindGradeRow(integer grade)
-		-- CollectionData에서 Grade 일치 행(없으면 nil).
-		local t = _DataService:GetTable("CollectionData")
+	method table ItemBookKey(string itemName)
+		-- 아이템 → {part, level}(ItemData Part/Level 열). 도감 대상 아니면 nil.
+		local inv = self:GetInv()
+		if inv == nil then return nil end
+		local part = inv:MetaCell(itemName, "Part")
+		local level = tonumber(inv:MetaCell(itemName, "Level")) or 0
+		if part == "" or level <= 0 then return nil end
+		return { part = part, level = level }
+	end
+
+	method any FindBookRow(string part, integer level, integer grade)
+		-- CollectionBookData에서 (부위,레벨,등급) 일치 행(없으면 nil).
+		local t = _DataService:GetTable("CollectionBookData")
 		if t == nil then return nil end
 		local n = t:GetRowCount()
 		for i = 1, n do
 			local row = t:GetRow(i)
-			if (tonumber(row:GetItem("Grade")) or 0) == grade then return row end
+			if row:GetItem("Part") == part and (tonumber(row:GetItem("Level")) or 0) == level and (tonumber(row:GetItem("Grade")) or 0) == grade then return row end
 		end
 		return nil
 	end
 
-	method integer RegUnitOf(integer grade)
-		-- 해당 등급 1회 등록에 필요한 개수(없으면 0).
-		local row = self:FindGradeRow(grade)
+	method integer RegUnitFor(string itemName, integer grade)
+		-- 해당 아이템·등급의 1회 등록 필요 개수(도감 행 없으면 0). UI 표시용.
+		local key = self:ItemBookKey(itemName)
+		if key == nil then return 0 end
+		local row = self:FindBookRow(key.part, key.level, grade)
 		if row == nil then return 0 end
 		return tonumber(row:GetItem("RegUnit")) or 0
 	end
 
 	method integer MaxRegister(string itemName, integer grade)
-		-- ★0 순정 (name,grade) 보유량 / 등록단위 = 가능 등록 횟수.
-		local unit = self:RegUnitOf(grade)
+		-- ★0 순정 (name,grade) 보유량 / 등록단위 = 가능 등록 횟수(§04 일괄 등록 미리보기).
+		local unit = self:RegUnitFor(itemName, grade)
 		if unit <= 0 then return 0 end
 		local inv = self:GetInv()
 		if inv == nil then return 0 end
 		return math.floor(inv:CountItem(itemName, 0, grade) / unit)
 	end
 
+	method integer RegCountOf(string part, integer level, integer grade)
+		-- 서버용: 해당 도감 슬롯의 누적 등록 횟수.
+		if self._T == nil or self._T.book == nil then return 0 end
+		return self._T.book[part .. ":" .. tostring(level) .. ":" .. tostring(grade)] or 0
+	end
+
+	method string SerializeBook()
+		-- _T.book → "부위:레벨:등급:횟수,..." (0회 슬롯 생략)
+		local out = {}
+		if self._T ~= nil and self._T.book ~= nil then
+			for k, cnt in pairs(self._T.book) do
+				if cnt > 0 then out[#out + 1] = k .. ":" .. tostring(cnt) end
+			end
+		end
+		return table.concat(out, ",")
+	end
+
+	@ExecSpace("ServerOnly")
+	method void RecalcBonus()
+		-- 도감 전체(등록 횟수 × 슬롯 보너스) 재합산 → @Sync 누적치 갱신.
+		local atk = 0
+		local def = 0
+		local hp = 0
+		if self._T ~= nil and self._T.book ~= nil then
+			for k, cnt in pairs(self._T.book) do
+				if cnt > 0 then
+					local kv = _UtilLogic:Split(k, ":")
+					local row = self:FindBookRow(kv[1], tonumber(kv[2]) or 0, tonumber(kv[3]) or 0)
+					if row ~= nil then
+						atk = atk + (tonumber(row:GetItem("Atk")) or 0) * cnt
+						def = def + (tonumber(row:GetItem("Def")) or 0) * cnt
+						hp = hp + (tonumber(row:GetItem("Hp")) or 0) * cnt
+					end
+				end
+			end
+		end
+		self.CollAtk = atk
+		self.CollDef = def
+		self.CollHp = hp
+	end
+
 	@ExecSpace("ServerOnly")
 	method void SaveNow()
-		-- 컬렉션 누적 저장(등록은 드물어 즉시 SetAsync).
+		-- 도감 등록 횟수 저장(등록은 드물어 즉시 SetAsync). 보너스는 로드 시 재계산.
 		local userId = self.Entity.PlayerComponent.UserId
 		local ds = _DataStorageService:GetUserDataStorage(userId)
-		local data = tostring(self.CollAtk) .. ":" .. tostring(self.CollDef) .. ":" .. tostring(self.CollHp)
-		ds:SetAsync(self.SaveKey, data, function(errorCode, key)
+		ds:SetAsync(self.SaveKey, self:SerializeBook(), function(errorCode, key)
 			if errorCode ~= 0 then log_warning("[Collection] save failed code=" .. tostring(errorCode)) end
 		end)
 	end
 
 	@ExecSpace("ServerOnly")
 	method void DoRegister(string itemName, integer grade, integer times)
-		-- ★0 순정 (name,grade)를 등록단위×times 소모 → 등급별 보너스×times 누적(영구) → 소멸 → 저장.
-		local unit = self:RegUnitOf(grade)
-		if unit <= 0 then
-			log("[Collection] 등록 불가 등급: G" .. tostring(grade))
+		-- ★0 순정 (name,grade)를 도감 슬롯(부위×레벨×등급)에 times회 등록: 등록단위×times 소모 → 횟수 누적·보너스 재계산 → 저장.
+		local key = self:ItemBookKey(itemName)
+		if key == nil then
+			log("[Collection] 도감 대상 아님: " .. tostring(itemName))
 			return
 		end
+		local row = self:FindBookRow(key.part, key.level, grade)
+		if row == nil then
+			log("[Collection] 도감 행 없음: " .. key.part .. "/Lv" .. tostring(key.level) .. "/G" .. tostring(grade))
+			return
+		end
+		local unit = tonumber(row:GetItem("RegUnit")) or 0
+		if unit <= 0 then return end
 		local t = times or 1
 		if t < 1 then t = 1 end
 		local maxT = self:MaxRegister(itemName, grade)
@@ -76,19 +142,17 @@ script CollectionSystem extends Component
 		end
 		local inv = self:GetInv()
 		if inv == nil then return end
-		local row = self:FindGradeRow(grade)
-		local addAtk = (tonumber(row:GetItem("Atk")) or 0) * t
-		local addDef = (tonumber(row:GetItem("Def")) or 0) * t
-		local addHp = (tonumber(row:GetItem("Hp")) or 0) * t
 		local need = unit * t
 		for k = 1, need do inv:ConsumeItem(itemName, 0, grade) end
 		inv:Publish()      -- 소멸 반영(@Sync) → 클라 InventoryChangedEvent → 전투력 갱신
 		inv:MarkDirty()
-		self.CollAtk = self.CollAtk + addAtk
-		self.CollDef = self.CollDef + addDef
-		self.CollHp = self.CollHp + addHp
+		if self._T.book == nil then self._T.book = {} end
+		local bk = key.part .. ":" .. tostring(key.level) .. ":" .. tostring(grade)
+		self._T.book[bk] = (self._T.book[bk] or 0) + t
+		self:RecalcBonus()
+		self.BookCsv = self:SerializeBook()
 		self:SaveNow()
-		log("[Collection] 등록 " .. tostring(itemName) .. " G" .. tostring(grade) .. " x" .. tostring(need) .. " → +공" .. tostring(addAtk) .. "/방" .. tostring(addDef) .. "/HP" .. tostring(addHp) .. " (누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
+		log("[Collection] 등록 " .. bk .. " x" .. tostring(t) .. "회(" .. tostring(need) .. "개 소멸) → 누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp))
 	end
 
 	@ExecSpace("Server")
@@ -103,19 +167,36 @@ script CollectionSystem extends Component
 		return { atk = self.CollAtk, def = self.CollDef, hp = self.CollHp }
 	end
 
+	method table GetBookEntries()
+		-- 클라 UI용: BookCsv 파싱 → { {part,level,grade,count}, ... } (도감 패널 표시용)
+		local out = {}
+		if self.BookCsv ~= nil and self.BookCsv ~= "" then
+			for i, entry in ipairs(_UtilLogic:Split(self.BookCsv, ",")) do
+				local kv = _UtilLogic:Split(entry, ":")
+				if #kv >= 4 then out[#out + 1] = { part = kv[1], level = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or 0, count = tonumber(kv[4]) or 0 } end
+			end
+		end
+		return out
+	end
+
 	@ExecSpace("ServerOnly")
 	method void OnBeginPlay()
-		-- 컬렉션 누적 로드.
+		-- 도감 등록 현황 로드 → 보너스 재계산. (구 collectionV1은 읽지 않음 — 도감 슬롯 역산 불가로 폐기)
+		self._T.book = {}
 		local userId = self.Entity.PlayerComponent.UserId
 		local ds = _DataStorageService:GetUserDataStorage(userId)
 		local code, raw = ds:GetAndWait(self.SaveKey)
 		if code == 0 and _UtilLogic:IsNilorEmptyString(raw) == false then
-			local kv = _UtilLogic:Split(raw, ":")
-			self.CollAtk = tonumber(kv[1]) or 0
-			self.CollDef = tonumber(kv[2]) or 0
-			self.CollHp = tonumber(kv[3]) or 0
+			for i, entry in ipairs(_UtilLogic:Split(raw, ",")) do
+				local kv = _UtilLogic:Split(entry, ":")
+				if #kv >= 4 then
+					self._T.book[kv[1] .. ":" .. kv[2] .. ":" .. kv[3]] = tonumber(kv[4]) or 0
+				end
+			end
 		end
-		log("[CollectionSystem] OnBeginPlay ok (누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
+		self:RecalcBonus()
+		self.BookCsv = self:SerializeBook()
+		log("[CollectionSystem] OnBeginPlay ok (도감 " .. tostring(#self:GetBookEntries()) .. "슬롯, 누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp) .. ")")
 	end
 
 end
