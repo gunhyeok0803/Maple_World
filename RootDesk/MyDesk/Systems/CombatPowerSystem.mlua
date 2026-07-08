@@ -8,10 +8,10 @@ script CombatPowerSystem extends Component
 
 	property number PowerHpWeight = 2
 
-	method Inventory GetInv()
-		-- 같은 엔티티의 Inventory 컴포넌트(없으면 nil).
-		---@type Inventory
-		local inv = self.Entity:GetComponent("script.Inventory")
+	method InventoryController GetInv()
+		-- 같은 엔티티의 InventoryController 컴포넌트(없으면 nil).
+		---@type InventoryController
+		local inv = self.Entity:GetComponent("script.InventoryController")
 		return inv
 	end
 

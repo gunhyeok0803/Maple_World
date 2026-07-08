@@ -9,10 +9,10 @@ script EquipmentUpgradeSystem extends Component
 
 	property integer MaxGrade = 4
 
-	method Inventory GetInv()
-		-- 같은 엔티티의 Inventory(없으면 nil).
-		---@type Inventory
-		local inv = self.Entity:GetComponent("script.Inventory")
+	method InventoryController GetInv()
+		-- 같은 엔티티의 InventoryController(없으면 nil).
+		---@type InventoryController
+		local inv = self.Entity:GetComponent("script.InventoryController")
 		return inv
 	end
 

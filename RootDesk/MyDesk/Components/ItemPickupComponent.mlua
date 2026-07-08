@@ -80,8 +80,8 @@ script ItemPickupComponent extends Component
 		-- 습득: 인벤토리에 추가 후 오브젝트 제거(중복 방지 가드). 가득 차면 남김.
 		if self._T.collected then return end
 		if isvalid(body) == false then return end
-		---@type Inventory
-		local inv = body:GetComponent("script.Inventory")
+		---@type InventoryController
+		local inv = body:GetComponent("script.InventoryController")
 		if inv == nil then return end
 		local ds = _DataService:GetTable("ItemData")
 		local idx = math.tointeger(self.ItemIndex) or 0

@@ -1,5 +1,5 @@
 @Component
-script Inventory extends Component
+script InventoryController extends Component
 
 	property integer MaxSlots = 300
 

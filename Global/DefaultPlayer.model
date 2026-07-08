@@ -20,13 +20,13 @@
       "Components": [
         "script.PlayerHit",
         "script.PlayerAttack",
-        "script.Inventory",
         "script.PlayerResource",
         "script.PlayerDBManager",
         "script.CombatPowerSystem",
         "script.StarforceSystem",
         "script.EquipmentUpgradeSystem",
-        "script.CollectionSystem"
+        "script.CollectionSystem",
+        "script.InventoryController"
       ],
       "Properties": [],
       "Values": [
@@ -668,15 +668,6 @@
           "Value": true
         },
         {
-          "TargetType": "script.Inventory",
-          "Name": "Enable",
-          "ValueType": {
-            "$type": "MODNativeType",
-            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-          },
-          "Value": true
-        },
-        {
           "TargetType": "MOD.Core.MODEntity",
           "Name": "Enable",
           "ValueType": {
@@ -741,6 +732,15 @@
         },
         {
           "TargetType": "script.CollectionSystem",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.InventoryController",
           "Name": "Enable",
           "ValueType": {
             "$type": "MODNativeType",

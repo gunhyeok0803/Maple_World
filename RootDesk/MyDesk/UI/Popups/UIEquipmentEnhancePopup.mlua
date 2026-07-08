@@ -9,7 +9,7 @@ script UIEquipmentEnhancePopup extends Component
 	method any GetInv()
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
-		return lp:GetComponent("script.Inventory")
+		return lp:GetComponent("script.InventoryController")
 	end
 
 	method any GetPromoteMgr()

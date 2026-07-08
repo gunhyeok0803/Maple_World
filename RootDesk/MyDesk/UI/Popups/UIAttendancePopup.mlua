@@ -7,8 +7,8 @@ script UIAttendancePopup extends Component
 		-- LocalPlayer의 Inventory 컴포넌트(없으면 nil).
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
-		---@type Inventory
-		local inv = lp:GetComponent("script.Inventory")
+		---@type InventoryController
+		local inv = lp:GetComponent("script.InventoryController")
 		return inv
 	end
 
