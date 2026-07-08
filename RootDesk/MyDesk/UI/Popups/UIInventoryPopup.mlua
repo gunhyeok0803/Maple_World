@@ -3,7 +3,7 @@ script UIInventoryPopup extends Component
 
 	property string OpenButtonPath = "/ui/DefaultGroup/Btn_Inventory"
 
-	property string WindowPath = "/ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory"
+	property string WindowPath = "/ui/InventoryGroup/UI_Inventory"
 
 	method table SlotDefs()
 		return {
@@ -136,23 +136,58 @@ script UIInventoryPopup extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
-		local base = self.Entity.Path
-		local WIN = self.WindowPath
+		-- 창 내부 배선은 첫 열기 때 지연 실행(EnsureWired). 이유: 그룹월드에선 UI_Inventory가
+		-- 모델 인스턴스라 자식이 늦게 스폰됨 → OnBeginPlay 시점엔 자식 경로가 아직 없어 배선 실패.
 		self._T.handlers = {}
+		self._T.evtHandlers = {}
 		self._T.filtered = {}
 		self._T.curIndex = nil
 		self._T.curName  = nil
 		self._T.curCat   = nil
 		self._T.selSlot  = nil
 		self._T.tab      = 1
+		self._T.sortMode = 0   -- 0=습득순 1=등급순 2=수량순
+		self._T.wired    = false
 
-		self._T.window   = _EntityService:GetEntityByPath(WIN)
+		self._T.window = _EntityService:GetEntityByPath(self.WindowPath)
+
+		_UIManager:Register("inventory", function() self:SetOpen(false) end)
+
+		-- 열기 버튼은 외부(DefaultGroup)라 처음부터 존재 → 여기서 바로 연결.
+		if self.OpenButtonPath ~= "" then
+			self:Wire(self.OpenButtonPath, function() self:Toggle() end)
+		end
+
+		-- 메소 이벤트(LocalPlayer 기반, 처음부터 존재)
+		local lp = _UserService.LocalPlayer
+		if lp ~= nil then
+			local h1 = lp:ConnectEvent(ResourceValueChangedEvent, function(e) self:OnResourceChanged(e) end)
+			local h2 = lp:ConnectEvent(ClientResourceInitializedEvent, function() self:RefreshMeso() end)
+			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ResourceValueChangedEvent, hnd = h1 }
+			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ClientResourceInitializedEvent, hnd = h2 }
+		end
+
+		self:SetOpen(false)
+		log("[UIInventoryPopup] OnBeginPlay ok (lazy wire)")
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean EnsureWired()
+		-- 창 내부 엔티티 참조 해결 + 버튼 배선 + 그리드 셋업(최초 1회). 자식 미스폰이면 false 반환 후 다음 열기 때 재시도.
+		if self._T.wired then return true end
+		local WIN = self.WindowPath
+		if self._T.window == nil then self._T.window = _EntityService:GetEntityByPath(WIN) end
+
 		self._T.gridEnt  = _EntityService:GetEntityByPath(WIN .. "/Layout_Item/Layout/Layout_Gear/GridView_Gear")
 		self._T.cellTpl  = _EntityService:GetEntityByPath(WIN .. "/CellTemplate")
+		if self._T.gridEnt == nil or self._T.cellTpl == nil then
+			log_warning("[UIInventoryPopup] EnsureWired: 창 자식 아직 미스폰 — 다음 열기 때 재시도")
+			return false
+		end
+
 		self._T.bagInfo  = _EntityService:GetEntityByPath(WIN .. "/Layout_Item/Etc/Text_BagInfo")
 		self._T.mesoText = _EntityService:GetEntityByPath(WIN .. "/Layout_Item/Etc/Text_Meso")
 		self._T.avatarEnt = _EntityService:GetEntityByPath(WIN .. "/Layout_PlayerInfo/Avatar_Char")
-		-- 상세 팝업(창 내부로 이사 — 창 위 레이어 보장, 교체 전까지 재사용)
 		self._T.detail   = _EntityService:GetEntityByPath(WIN .. "/DetailPopup")
 		self._T.dIcon    = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/Icon")
 		self._T.dName    = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/Name")
@@ -167,67 +202,44 @@ script UIInventoryPopup extends Component
 			_EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatV_1"),
 			_EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatV_2"),
 		}
-		self._T.evtHandlers = {}
 
-		self._T.sortMode = 0   -- 0=습득순 1=등급순 2=수량순
-
-		-- GridView 셀 프리팹 주입(런타임 주입이 표준) + 그리드 파라미터
-		if self._T.gridEnt ~= nil and self._T.gridEnt.GridViewComponent ~= nil and self._T.cellTpl ~= nil then
-			local gv = self._T.gridEnt.GridViewComponent
+		-- GridView 셀 프리팹 주입 + 그리드 파라미터 + 좌우 대칭 패딩
+		local gv = self._T.gridEnt.GridViewComponent
+		if gv ~= nil then
 			gv.ItemEntity = self._T.cellTpl
 			gv.CellSize = Vector2(118, 118)
 			gv.Spacing = Vector2(15, 15)
 			gv.FixedCount = 7
-			-- 좌우 여백 대칭: 남는 폭을 절반씩 패딩으로 분배
 			local gw = self._T.gridEnt.UITransformComponent.RectSize.x
 			local content = 7 * gv.CellSize.x + 6 * gv.Spacing.x
 			local half = math.floor(math.max(0, gw - content) / 2)
 			gv.Padding = RectOffset(half, half, gv.Padding.top, gv.Padding.bottom)
 			gv.OnRefresh = self.OnGridRefresh
 			gv.TotalCount = 0
-		else
-			log_warning("[UIInventoryPopup] GridView/CellTemplate 미발견")
 		end
 
-		_UIManager:Register("inventory", function() self:SetOpen(false) end)
-
-		if self.OpenButtonPath ~= "" then
-			self:Wire(self.OpenButtonPath, function() self:Toggle() end)
-		end
 		self:Wire(WIN .. "/BtnClose", function() self:SetOpen(false) end)
 		self:Wire(WIN .. "/Layout_Item/Etc/Btn_Sort", function() self:CycleSort() end)
-		-- 상세 팝업 버튼
 		self:Wire(WIN .. "/DetailPopup/BtnEquip", function() self:OnEquipClicked() end)
 		self:Wire(WIN .. "/DetailPopup/BtnDrop", function() self:OnDropClicked() end)
 		self:Wire(WIN .. "/DetailPopup/BtnCloseDetail", function() self:HideDetail() end)
 
-		-- 타입 탭 5종
 		local tabBtns = self:TabButtonNames()
 		for i = 1, #tabBtns do
 			local idx = i
 			self:Wire(WIN .. "/Layout_Item/Scroll_ItemTypeTab/" .. tabBtns[i], function() self:SelectTab(idx) end)
 		end
 
-		-- 장비칸 27개(페이퍼돌): 클릭 시 해제
 		local defs = self:SlotDefs()
 		for i = 1, #defs do
 			local part = defs[i].part
 			self:Wire(WIN .. "/Layout_PlayerInfo/EquipSlot_" .. tostring(i - 1), function() self:OnEquipSlotClicked(part) end)
 		end
 
-		-- 메소 이벤트
-		local lp = _UserService.LocalPlayer
-		if lp ~= nil then
-			local h1 = lp:ConnectEvent(ResourceValueChangedEvent, function(e) self:OnResourceChanged(e) end)
-			local h2 = lp:ConnectEvent(ClientResourceInitializedEvent, function() self:RefreshMeso() end)
-			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ResourceValueChangedEvent, hnd = h1 }
-			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ClientResourceInitializedEvent, hnd = h2 }
-		end
-
 		self:SetupAvatar()
-		self:RefreshMeso()
-		self:SetOpen(false)
-		log("[UIInventoryPopup] OnBeginPlay ok (sample window)")
+		self._T.wired = true
+		log("[UIInventoryPopup] EnsureWired ok")
+		return true
 	end
 
 	@ExecSpace("ClientOnly")
@@ -267,6 +279,14 @@ script UIInventoryPopup extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
+		if open then
+			-- 창 내부 배선 지연 실행. 아직 자식 미스폰이면 이번 열기는 취소(다음 클릭 때 재시도).
+			if self:EnsureWired() == false then return end
+			-- 부모 그룹(InventoryGroup)이 꺼져 있으면 창을 켜도 안 보임 → 열 때 그룹도 보장.
+			if self._T.window ~= nil and self._T.window.Parent ~= nil then
+				self._T.window.Parent.Enable = true
+			end
+		end
 		if open then _UIManager:RequestOpen("inventory") else _UIManager:NotifyClose("inventory") end
 		if self._T.window ~= nil then self._T.window.Enable = open end
 		self:HideDetail()
@@ -554,6 +574,8 @@ script UIInventoryPopup extends Component
 		if cm == nil then return end
 		local lp = _UserService.LocalPlayer
 		if lp == nil or lp.PlayerComponent == nil then return end
+		-- 샘플 모델이 UseCustomEquipOnly=true(커스텀 슬롯 비움)라 계정 코스튬이 무시됨 → 꺼서 미러 활성화.
+		cm.UseCustomEquipOnly = false
 		cm.DefaultEquipUserId = lp.PlayerComponent.UserId
 		log("[UIInventoryPopup] avatar mirror userId=" .. tostring(lp.PlayerComponent.UserId))
 	end
