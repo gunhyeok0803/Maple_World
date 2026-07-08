@@ -51,14 +51,14 @@ script InventoryController extends Component
 					local nm = kv[1]
 					local cnt = tonumber(kv[2]) or 1     -- 구버전(이름만)은 개수 1
 					local st = tonumber(kv[3]) or 0      -- 구버전(성급 없음)은 0
-					local gr = tonumber(kv[4]) or 1      -- 구버전(등급 없음)은 레어(1)
+					local gr = tonumber(kv[4]) or _ItemGrade.Rare      -- 구버전(등급 없음)은 레어(1)
 					if nm ~= nil and nm ~= "" then self._T.slots[#self._T.slots + 1] = { name = nm, count = cnt, star = st, grade = gr } end
 				end
 			end
 			for i, pair in ipairs(_UtilLogic:Split(equipPart, ",")) do
 				local kv = _UtilLogic:Split(pair, ":")
 				if kv[1] ~= nil and kv[1] ~= "" and kv[2] ~= nil then
-					self._T.equipped[kv[1]] = { name = kv[2], star = tonumber(kv[3]) or 0, grade = tonumber(kv[4]) or 1 }
+					self._T.equipped[kv[1]] = { name = kv[2], star = tonumber(kv[3]) or 0, grade = tonumber(kv[4]) or _ItemGrade.Rare }
 				end
 			end
 			for i, part in ipairs(_UtilLogic:Split(unlockPart, ",")) do
@@ -70,7 +70,7 @@ script InventoryController extends Component
 					local kv = _UtilLogic:Split(entry, ":")
 					local nm = kv[1]
 					if nm ~= nil and nm ~= "" then
-						self._T.traces[#self._T.traces + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or 4 }
+						self._T.traces[#self._T.traces + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or _ItemGrade.Legendary }
 					end
 				end
 			end
@@ -107,7 +107,7 @@ script InventoryController extends Component
 		if self._T ~= nil and self._T.equipped ~= nil then
 			for part, e in pairs(self._T.equipped) do
 				if e ~= nil and e.name ~= nil and e.name ~= "" then
-					out[#out + 1] = part .. ":" .. e.name .. ":" .. tostring(e.star or 0) .. ":" .. tostring(e.grade or 1)
+					out[#out + 1] = part .. ":" .. e.name .. ":" .. tostring(e.star or 0) .. ":" .. tostring(e.grade or _ItemGrade.Rare)
 				end
 			end
 		end
@@ -158,7 +158,7 @@ script InventoryController extends Component
 		local part = self:MetaCell(name, "Part")
 		local st = star or 0
 		local pristine = (st == 0)   -- IsPristine(현재 ★0; 잠재/환생 생기면 확장)
-		return itemId .. "\1" .. level .. "\1" .. part .. "\1" .. tostring(grade or 1) .. "\1" .. (pristine and "P" or ("S" .. tostring(st)))
+		return itemId .. "\1" .. level .. "\1" .. part .. "\1" .. tostring(grade or _ItemGrade.Rare) .. "\1" .. (pristine and "P" or ("S" .. tostring(st)))
 	end
 
 	method void MergeStacks()
@@ -168,7 +168,7 @@ script InventoryController extends Component
 		if self._T ~= nil and self._T.slots ~= nil then
 			for i, s in ipairs(self._T.slots) do
 				local st = s.star or 0
-				local gr = s.grade or 1
+				local gr = s.grade or _ItemGrade.Rare
 				local key = self:StackKeyOf(s.name, st, gr)   -- 스펙 구조화 키
 				if byKey[key] ~= nil then
 					byKey[key].count = byKey[key].count + s.count
@@ -187,7 +187,7 @@ script InventoryController extends Component
 		local out = {}
 		if self._T ~= nil and self._T.slots ~= nil then
 			for i, s in ipairs(self._T.slots) do
-				out[#out + 1] = s.name .. ":" .. tostring(s.count) .. ":" .. tostring(s.star or 0) .. ":" .. tostring(s.grade or 1)
+				out[#out + 1] = s.name .. ":" .. tostring(s.count) .. ":" .. tostring(s.star or 0) .. ":" .. tostring(s.grade or _ItemGrade.Rare)
 			end
 		end
 		return table.concat(out, ",")
@@ -198,7 +198,7 @@ script InventoryController extends Component
 		local out = {}
 		if self._T ~= nil and self._T.traces ~= nil then
 			for i, t in ipairs(self._T.traces) do
-				out[#out + 1] = t.name .. ":" .. tostring(t.star or 0) .. ":" .. tostring(t.grade or 4)
+				out[#out + 1] = t.name .. ":" .. tostring(t.star or 0) .. ":" .. tostring(t.grade or _ItemGrade.Legendary)
 			end
 		end
 		return table.concat(out, ",")
@@ -257,10 +257,10 @@ script InventoryController extends Component
 	method boolean AddItem(string itemName, integer star, integer grade)
 		-- 같은 이름+성급+등급이면 한 칸에 누적. 없으면 새 칸. star 미지정=0, grade 미지정=1(레어).
 		local st = star or 0
-		local gr = grade or 1
+		local gr = grade or _ItemGrade.Rare
 		local key = self:StackKeyOf(itemName, st, gr)
 		for i, s in ipairs(self._T.slots) do
-			if self:StackKeyOf(s.name, s.star or 0, s.grade or 1) == key then
+			if self:StackKeyOf(s.name, s.star or 0, s.grade or _ItemGrade.Rare) == key then
 				s.count = s.count + 1
 				self:Publish()
 				self:MarkDirty()
@@ -306,9 +306,9 @@ script InventoryController extends Component
 	method boolean ConsumeItem(string itemName, integer star, integer grade)
 		-- 가방에서 (이름+성급+등급) 1개 차감. 0이면 칸 제거. 자동 장착해제 안 함. 있으면 true.
 		local st = star or 0
-		local gr = grade or 1
+		local gr = grade or _ItemGrade.Rare
 		for i, s in ipairs(self._T.slots) do
-			if s.name == itemName and (s.star or 0) == st and (s.grade or 1) == gr then
+			if s.name == itemName and (s.star or 0) == st and (s.grade or _ItemGrade.Rare) == gr then
 				s.count = s.count - 1
 				if s.count <= 0 then table.remove(self._T.slots, i) end
 				return true
@@ -323,14 +323,14 @@ script InventoryController extends Component
 		if part == nil or part == "" or itemName == nil or itemName == "" then return end
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
 		local st = star or 0
-		local gr = grade or 1
+		local gr = grade or _ItemGrade.Rare
 		if not self:ConsumeItem(itemName, st, gr) then
 			log_warning("[Inventory] 장착 실패(가방에 없음): " .. tostring(itemName) .. " G" .. tostring(gr) .. " ★" .. tostring(st))
 			return
 		end
 		local prev = self._T.equipped[part]
 		if prev ~= nil and prev.name ~= nil and prev.name ~= "" then
-			self:AddItem(prev.name, prev.star or 0, prev.grade or 1)   -- 교체: 기존 장착품 가방으로 반환(+1)
+			self:AddItem(prev.name, prev.star or 0, prev.grade or _ItemGrade.Rare)   -- 교체: 기존 장착품 가방으로 반환(+1)
 		end
 		self._T.equipped[part] = { name = itemName, star = st, grade = gr }
 		self:Publish()
@@ -345,10 +345,10 @@ script InventoryController extends Component
 		if self._T.equipped == nil or self._T.equipped[part] == nil then return end
 		local e = self._T.equipped[part]
 		self._T.equipped[part] = nil
-		if e.name ~= nil and e.name ~= "" then self:AddItem(e.name, e.star or 0, e.grade or 1) end   -- 가방으로 반환(+1)
+		if e.name ~= nil and e.name ~= "" then self:AddItem(e.name, e.star or 0, e.grade or _ItemGrade.Rare) end   -- 가방으로 반환(+1)
 		self:Publish()
 		self:MarkDirty()
-		log("[Inventory] Unequip " .. tostring(part) .. " -> 가방 +1 (" .. tostring(e.name) .. " G" .. tostring(e.grade or 1) .. " ★" .. tostring(e.star or 0) .. ")")
+		log("[Inventory] Unequip " .. tostring(part) .. " -> 가방 +1 (" .. tostring(e.name) .. " G" .. tostring(e.grade or _ItemGrade.Rare) .. " ★" .. tostring(e.star or 0) .. ")")
 	end
 
 	@ExecSpace("Server")
@@ -412,7 +412,7 @@ script InventoryController extends Component
 					local nm = kv[1]
 					local cnt = tonumber(kv[2]) or 1
 					local st = tonumber(kv[3]) or 0
-					local gr = tonumber(kv[4]) or 1
+					local gr = tonumber(kv[4]) or _ItemGrade.Rare
 					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, count = cnt, star = st, grade = gr } end
 				end
 			end
@@ -445,7 +445,7 @@ script InventoryController extends Component
 		if self.EquippedCsv == nil or self.EquippedCsv == "" then return 1 end
 		for i, pair in ipairs(_UtilLogic:Split(self.EquippedCsv, ",")) do
 			local kv = _UtilLogic:Split(pair, ":")
-			if kv[1] == part then return tonumber(kv[4]) or 1 end
+			if kv[1] == part then return tonumber(kv[4]) or _ItemGrade.Rare end
 		end
 		return 1
 	end
@@ -455,16 +455,16 @@ script InventoryController extends Component
 		if self._T == nil or self._T.slots == nil then return nil end
 		if index == nil or index < 1 or index > #self._T.slots then return nil end
 		local s = self._T.slots[index]
-		return { name = s.name, count = s.count, star = s.star or 0, grade = s.grade or 1 }
+		return { name = s.name, count = s.count, star = s.star or 0, grade = s.grade or _ItemGrade.Rare }
 	end
 
 	method integer CountItem(string itemName, integer star, integer grade)
 		-- 서버용: (이름+성급+등급) 보유 개수.
 		local st = star or 0
-		local gr = grade or 1
+		local gr = grade or _ItemGrade.Rare
 		if self._T == nil or self._T.slots == nil then return 0 end
 		for i, s in ipairs(self._T.slots) do
-			if s.name == itemName and (s.star or 0) == st and (s.grade or 1) == gr then return s.count end
+			if s.name == itemName and (s.star or 0) == st and (s.grade or _ItemGrade.Rare) == gr then return s.count end
 		end
 		return 0
 	end
@@ -473,7 +473,7 @@ script InventoryController extends Component
 	method void AddTrace(string itemName, integer star, integer grade)
 		-- 파괴 흔적 추가(성급·등급 보존). 스타포스 파괴 시 호출.
 		if self._T.traces == nil then self._T.traces = {} end
-		self._T.traces[#self._T.traces + 1] = { name = itemName, star = star or 0, grade = grade or 4 }
+		self._T.traces[#self._T.traces + 1] = { name = itemName, star = star or 0, grade = grade or _ItemGrade.Legendary }
 		self:Publish()
 		self:MarkDirty()
 		log("[Inventory] AddTrace: " .. tostring(itemName) .. " ★" .. tostring(star or 0) .. " (흔적 " .. tostring(#self._T.traces) .. ")")
@@ -485,7 +485,7 @@ script InventoryController extends Component
 		if self._T == nil or self._T.traces == nil then return nil end
 		if index == nil or index < 1 or index > #self._T.traces then return nil end
 		local t = self._T.traces[index]
-		return { name = t.name, star = t.star or 0, grade = t.grade or 4 }
+		return { name = t.name, star = t.star or 0, grade = t.grade or _ItemGrade.Legendary }
 	end
 
 	@ExecSpace("ServerOnly")
@@ -505,7 +505,7 @@ script InventoryController extends Component
 				if entry ~= "" then
 					local kv = _UtilLogic:Split(entry, ":")
 					local nm = kv[1]
-					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or 4 } end
+					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or _ItemGrade.Legendary } end
 				end
 			end
 		end
