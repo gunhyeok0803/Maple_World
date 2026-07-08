@@ -1,5 +1,5 @@
 @Component
-script Item extends Component
+script ItemPickupComponent extends Component
 
 	@Sync
 	property number ItemIndex = 0
