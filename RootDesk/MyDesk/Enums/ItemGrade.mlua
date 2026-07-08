@@ -41,6 +41,16 @@ script ItemGrade extends Logic
 		return Color(0.36, 0.74, 0.96, 1)
 	end
 
+	method string SlotRUID(integer g)
+		-- 등급 → 슬롯 배경 스프라이트 RUID(UIResourceSimpleFantasy Core_Slot 첫째줄, 그대로 사용).
+		-- 일반/레어/에픽/유니크/레전드리.
+		if g == 4 then return "70565cb756634ae7a168975f7a18fb1d" end
+		if g == 3 then return "74d4021ef1794501acb73b78d267574e" end
+		if g == 2 then return "90c4bb16c95a4ae3916098b6ffb4d0e4" end
+		if g == 1 then return "dcbbede8a7a0478b97e2ffa23b7fc14a" end
+		return "aa931a755e5949699233b817029a3e36"
+	end
+
 	method boolean IsMax(integer g)
 		-- 최고 등급(레전드리)
 		return g >= 4

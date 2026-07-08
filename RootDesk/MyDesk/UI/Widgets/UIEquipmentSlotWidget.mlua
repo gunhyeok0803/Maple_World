@@ -58,9 +58,14 @@ script UIEquipmentSlotWidget extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshBorder()
+		-- 등급 배경 = 팩 슬롯 이미지 그대로 교체(색 틴트 아님). 선택 시 밝게, 비선택은 약간 어둡게.
 		local sr = self.Entity.SpriteGUIRendererComponent
 		if sr == nil then return end
-		if self._T.selected then sr.Color = self:ColorSelected() else sr.Color = self:ColorForGrade(self.itemGrade) end
+		sr.ImageRUID = _ItemGrade:SlotRUID(self.itemGrade)
+		if self._T.selected then sr.Color = Color(1, 1, 1, 1) else sr.Color = Color(0.82, 0.82, 0.82, 1) end
+		-- 옛 프레임 오버레이(Body=MapleFrameSlot)는 등급 슬롯을 가리므로 끔.
+		local body = self.Entity:GetChildByName("Body")
+		if body ~= nil then body.Enable = false end
 	end
 
 	@EventSender("Self")

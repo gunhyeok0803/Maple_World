@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>암허스트 MVP 장비·전투·경제 시스템 리팩토링 v11</title>
+<style>
+:root{
+  --bg:#eef2f7;
+  --paper:#ffffff;
+  --ink:#111827;
+  --muted:#526070;
+  --line:#d2dbe8;
+  --soft:#f7f9fc;
+  --soft2:#edf2f8;
+  --navy:#14243d;
+  --blue:#1f4f8f;
+  --green:#176a4b;
+  --amber:#946000;
+  --red:#9b2f27;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;line-height:1.43}
+a{color:#154da3;text-decoration:none;font-weight:800}
+a:hover{text-decoration:underline}
+.wrap{max-width:1580px;margin:0 auto;padding:14px}
+.header{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:10px}
+.meta{font-size:13px;font-weight:900;letter-spacing:.08em;color:var(--amber);margin-bottom:4px}
+h1{margin:0;color:var(--navy);font-size:34px;line-height:1.08;letter-spacing:-.04em}
+.desc{margin:7px 0 0;color:var(--muted);font-size:15px}
+.tabs{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:9px;margin-bottom:10px}
+.tab{height:42px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#081527;font-size:15px;font-weight:900;cursor:pointer;white-space:nowrap}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.panel{display:none;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:18px}
+.panel.active{display:block}
+.panelHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:3px solid var(--navy);padding-bottom:8px;margin-bottom:12px}
+h2{margin:0;color:var(--navy);font-size:29px;line-height:1.08;letter-spacing:-.035em}
+.sub{margin:5px 0 0;color:var(--muted);font-size:15px}
+.label{display:inline-flex;align-items:center;height:30px;padding:0 11px;border:1px solid var(--line);border-radius:8px;background:var(--soft);font-size:13px;font-weight:900;color:var(--navy);white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.card{border:1px solid var(--line);background:#fff;border-radius:9px;padding:12px;min-height:74px}
+.card h3,.card h4{margin:0 0 8px;color:var(--navy);letter-spacing:-.02em}
+.card h3{font-size:18px}
+.card h4{font-size:16px}
+.card p{margin:0 0 7px;font-size:14px;color:#1d2735}
+.card p:last-child{margin-bottom:0}
+ul{margin:7px 0 0;padding-left:18px}
+li{margin:4px 0}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th,td{border:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{background:#eaf0f7;font-weight:900;color:#0f2138}
+tr:nth-child(even) td{background:#fbfcfe}
+.code{white-space:pre-wrap;font-family:Consolas,Monaco,"Courier New",monospace;background:#f7f9fc;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.45;overflow:auto}
+.flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;gap:8px;align-items:stretch}
+.arrow{display:flex;align-items:center;justify-content:center;font-weight:900;color:#526070;font-size:20px}
+.decision{border:1px solid var(--line);background:#fff;border-radius:9px;padding:12px;margin:10px 0}
+.decision strong{font-weight:900}
+.underline{font-weight:900;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.note{background:#fff8e8;border:1px solid #e6c57a;color:#513600;border-radius:9px;padding:10px 12px;font-size:14px;font-weight:800}
+.warn{background:#fff1ef;border:1px solid #e9b7b1;color:#6e1f17;border-radius:9px;padding:10px 12px;font-size:14px;font-weight:800}
+.ok{background:#edf9f3;border:1px solid #b9dec9;color:#0d4f36;border-radius:9px;padding:10px 12px;font-size:14px;font-weight:800}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:3px 8px;background:#fff;font-size:12px;font-weight:900;margin:2px}
+.pill.navy{background:#e9eef6;color:#14243d}
+.pill.green{background:#eaf7f1;color:#176a4b}
+.pill.amber{background:#fff4d8;color:#7a4e00}
+.pill.red{background:#fff0ee;color:#8a241d}
+.tree{font-family:Consolas,Monaco,"Courier New",monospace;background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:12px;font-size:13.5px;line-height:1.52;white-space:pre;overflow:auto}
+.tight{font-size:13.5px}
+.twoRows{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kpi{font-size:25px;font-weight:900;color:var(--navy);letter-spacing:-.035em}
+@media(max-width:1100px){.tabs{grid-template-columns:repeat(3,1fr)}.grid2,.grid3,.grid4,.grid5,.flow{grid-template-columns:1fr}.arrow{display:none}}
+@media(max-width:720px){.wrap{padding:10px}h1{font-size:27px}h2{font-size:24px}.tabs{grid-template-columns:1fr 1fr}.tab{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="header">
+  <div class="meta">AMHERST MVP SYSTEM SPEC · REFACTORED V11</div>
+  <h1>장비·전투·경제 시스템 결정안</h1>
+  <p class="desc">레어→에픽→유니크→레전드리 용어 체계, 엘리트 장신구 드랍, 보스 필드 보상 재정의, 하락 없는 파괴형 스타포스, UI 컨벤션을 반영한 개발 기준 문서.</p>
+</header>
+<nav class="tabs">
+  <button class="tab active" data-tab="summary">01. 최종 요약</button>
+  <button class="tab" data-tab="loop">02. 감성·루프</button>
+  <button class="tab" data-tab="gear">03. 장비 구조</button>
+  <button class="tab" data-tab="drop">04. 드랍·인벤토리</button>
+  <button class="tab" data-tab="upgrade">05. 승급·컬렉션</button>
+  <button class="tab" data-tab="enhance">06. 강화·잠재·환불</button>
+  <button class="tab" data-tab="inherit">07. 장비 계승</button>
+  <button class="tab" data-tab="accessory">08. 장신구·엘리트</button>
+  <button class="tab" data-tab="boss">09. 보스 필드</button>
+  <button class="tab" data-tab="trade">10. 거래 경제</button>
+  <button class="tab" data-tab="combat">11. 전투 공식</button>
+  <button class="tab" data-tab="field">12. 필드 곡선</button>
+  <button class="tab" data-tab="convention">13. 컨벤션</button>
+  <button class="tab" data-tab="refs">14. 레퍼런스</button>
+</nav>
+
+<section id="summary" class="panel active">
+  <div class="panelHead"><div><h2>01. 최종 요약</h2><p class="sub">이번 리팩토링의 핵심은 장비 파밍 중심 구조를 유지하면서도 장신구, 보스, 파괴, 거래, UI 구조를 명확히 분리하는 것이다.</p></div><span class="label">Decision Board</span></div>
+  <div class="grid4">
+    <div class="card"><h3>장비 등급 용어</h3><p><span class="underline">하급/중급/상급/최상급</span>은 사용하지 않는다.</p><p><strong>레어 → 에픽 → 유니크 → 레전드리</strong>로 통일한다.</p></div>
+    <div class="card"><h3>장신구 출처</h3><p>장신구는 보스 필드 고정 보상이 아니다.</p><p><span class="underline">엘리트 몬스터와 엘리트 보스</span>가 장신구를 드랍한다.</p></div>
+    <div class="card"><h3>스타포스</h3><p><span class="underline">하락 없음</span>.</p><p>실패 시 별은 유지하고, 고성 구간에서 <strong>파괴 확률</strong>을 높인다.</p></div>
+    <div class="card"><h3>거래 정책</h3><p>거래 불가로 닫아두지 않는다.</p><p><span class="underline">거래 가능성은 열어두고</span>, 투자 상태에 따라 제한 정책을 둔다.</p></div>
+  </div>
+  <div class="flow" style="margin-top:12px">
+    <div class="card"><h3>1. 사냥</h3><p>일반 몬스터는 레어 장비를 대량 공급한다.</p><p>엘리트는 장신구와 희귀 재료 기대감을 만든다.</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><h3>2. 누적</h3><p>동일 장비는 StackKey 기준으로 쌓인다.</p><p>레어 3,200,000개가 같은 레전드리 1개의 기본 원가가 된다.</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><h3>3. 투자</h3><p><span class="underline">레전드리 장비만</span> 스타포스, 잠재, 환생의 불꽃을 사용한다.</p><p>파괴는 장비 공급을 지속적으로 빨아들이는 싱크다.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card">
+      <h3>결정 사항</h3>
+      <table><tr><th>분류</th><th>최종 결정</th></tr>
+      <tr><td>일반 필드</td><td>무기, 투구, 상의, 하의, 견장, 신발, 장갑 드랍</td></tr>
+      <tr><td>엘리트 몬스터</td><td>장신구 조각, 장신구 상자, 희귀 장비 묶음 드랍</td></tr>
+      <tr><td>엘리트 보스</td><td>장신구 직접 드랍, 장신구 세트 재료, 보스 토큰 드랍</td></tr>
+      <tr><td>보스 필드</td><td>마스터리북, 스킬북, 보스 코어, 보스 토큰, 해금 재료 중심</td></tr>
+      <tr><td>스타포스</td><td>별 하락 없음. 실패 유지. 고성 구간 파괴 확률 상승.</td></tr>
+      <tr><td>거래</td><td>순정 장비는 거래 가능. 투자 장비는 제한 거래 가능성을 남김.</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>최종 설계 문장</h3>
+      <p>유저의 목표는 <span class="underline">레전드리 장비 하나를 단순히 먹는 것</span>이 아니라, 동일 장비를 대량으로 모아 <span class="underline">컬렉션을 반복 완성</span>하고, 승급 재료를 만들고, 레전드리 장비에 장기 투자를 누적하는 것이다.</p>
+      <p>장신구는 보스가 아니라 <span class="underline">사냥 중 발생하는 엘리트 이벤트</span>에서 얻는다. 보스 필드는 장신구 공급처가 아니라 <span class="underline">스킬 성장, 해금, 특수 제작 재료</span>를 제공한다.</p>
+      <p>스타포스는 하락을 제거하여 스트레스를 줄이고, 파괴와 복구 재료를 통해 <span class="underline">시장 장비를 지속적으로 소모</span>한다.</p>
+      <div class="note">명칭 고정: 레벨 이동은 “장비 계승”, 보스 보상은 “보스 성장 재료”, 장신구 드랍은 “엘리트 보상”으로 부른다.</div>
+    </div>
+  </div>
+</section>
+
+<section id="loop" class="panel">
+  <div class="panelHead"><div><h2>02. 감성·루프</h2><p class="sub">옛메 감성은 이름과 드랍 기억에서, MMORPG 경제는 재료 부족에서, 방치형 편의성은 스택·일괄 처리에서 나온다.</p></div><span class="label">Loop Model</span></div>
+  <div class="grid3">
+    <div class="card"><h3>Micro: 10초 단위</h3><ul><li>몬스터 처치</li><li>장비 다량 획득</li><li>엘리트 몬스터 출현</li><li>드랍 로그에서 희귀 보상 확인</li></ul></div>
+    <div class="card"><h3>Meso: 10분 단위</h3><ul><li>인벤토리 스택 누적</li><li>승급 가능 알림</li><li>컬렉션 반복 등록</li><li>경매장 부족분 구매</li></ul></div>
+    <div class="card"><h3>Macro: 며칠 단위</h3><ul><li>레전드리 장비 제작</li><li>스타포스 고성 도전</li><li>보스 필드 마스터리북 획득</li><li>장신구 세트 완성</li></ul></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>루즈함 방지 장치</h3><table><tr><th>루즈해지는 원인</th><th>해결 장치</th></tr><tr><td>장비만 계속 먹음</td><td>엘리트 장신구, 마스터리북, 보스 코어가 다른 기대감을 제공</td></tr><tr><td>최종 목표가 너무 멂</td><td>컬렉션 반복 등록과 승급 가능 알림으로 중간 보상 제공</td></tr><tr><td>강화 실패 스트레스</td><td>하락 제거, 파괴 흔적 복구로 진행도 보존</td></tr><tr><td>거래 의미 약화</td><td>파괴 복구와 승급 재료 수요로 순정 장비 매물 지속 소모</td></tr></table></div>
+    <div class="card"><h3>플레이어가 매일 보는 화면</h3><div class="tree">오늘의 사냥 결과
+├─ 레어 장비 12,430개
+├─ 에픽 승급 가능 15회
+├─ 컬렉션 등록 가능 8회
+├─ 엘리트 몬스터 처치 12회
+├─ 장신구 조각 4개
+├─ 보스 토큰 18개
+└─ 경매장 부족 재료 추천 3건</div></div>
+  </div>
+</section>
+
+<section id="gear" class="panel">
+  <div class="panelHead"><div><h2>03. 장비 구조</h2><p class="sub">무기와 방어구는 레벨과 등급을 가진다. 장신구는 엘리트 보상 기반의 별도 성장 축이다.</p></div><span class="label">Item Taxonomy</span></div>
+  <div class="grid2">
+    <div class="card"><h3>레벨·등급</h3><table><tr><th>축</th><th>값</th><th>의미</th></tr><tr><td>레벨</td><td>Lv10, 20, 30 ... 200</td><td>20개 티어</td></tr><tr><td>등급</td><td>레어</td><td>대량 드랍, 컬렉션·승급 기본 재료</td></tr><tr><td>등급</td><td>에픽</td><td>중간 재료, 거래 수요</td></tr><tr><td>등급</td><td>유니크</td><td>희소 재료, 레전드리 제작 직전</td></tr><tr><td>등급</td><td>레전드리</td><td>착용 최종 후보, 스타포스·잠재·환불 가능</td></tr></table></div>
+    <div class="card"><h3>부위와 출처</h3><table><tr><th>출처</th><th>부위</th><th>목적</th></tr><tr><td>일반 필드</td><td>무기</td><td>공격력 성장 핵심</td></tr><tr><td>일반 필드</td><td>투구, 상의, 하의, 견장, 신발, 장갑</td><td>주스탯, HP, 드랍률 누적</td></tr><tr><td>엘리트 몬스터</td><td>반지, 팬던트, 얼굴장식, 눈장식, 벨트</td><td>장신구 세트와 특수 옵션</td></tr><tr><td>보스 필드</td><td>장비 직접 지급 없음</td><td>스킬·해금·특수 제작 재료</td></tr></table></div>
+  </div>
+  <div class="grid3" style="margin-top:12px">
+    <div class="card"><h3>무기 기본 수치</h3><p><span class="pill red">주스탯</span><span class="pill red">공/마</span><span class="pill navy">HP</span><span class="pill navy">크확</span><span class="pill navy">크뎀</span><span class="pill amber">아이템 드랍률 1,000%</span><span class="pill amber">메소 드랍률 100%</span></p></div>
+    <div class="card"><h3>방어구 기본 수치</h3><p><span class="pill red">주스탯</span><span class="pill navy">HP</span><span class="pill navy">MP</span><span class="pill amber">드랍률 10%</span><span class="pill red">공/마</span></p><p>방어구는 대량 파밍 체감과 스택 누적의 중심이다.</p></div>
+    <div class="card"><h3>장신구 기본 수치</h3><p><span class="pill navy">주스탯</span><span class="pill amber">드랍률</span><span class="pill red">공/마</span></p><p>장신구는 등급 승급 체계가 없다. 대신 세트효과, 잠재, 스타포스, 전용 성장 재료를 가진다.</p></div>
+  </div>
+  <div class="decision"><strong>드랍 장비 능력치는 절대값 고정이다.</strong> 같은 레벨·부위·등급·아이템은 동일한 StackKey로 합쳐진다. 랜덤성은 <span class="underline">레전드리 이후 투자 시스템</span>과 <span class="underline">엘리트 장신구</span>에서 발생한다.</div>
+</section>
+
+<section id="drop" class="panel">
+  <div class="panelHead"><div><h2>04. 드랍·인벤토리</h2><p class="sub">장비는 사냥으로만 공급된다. 이벤트로 장비를 직접 지급하지 않는다.</p></div><span class="label">Drop & Inventory</span></div>
+  <div class="grid3">
+    <div class="card"><h3>일반 몬스터</h3><table><tr><th>드랍</th><th>설계</th></tr><tr><td>레어 장비</td><td>대량 드랍. 도파민의 기본 단위.</td></tr><tr><td>에픽 장비</td><td>낮은 확률로 직접 드랍 가능. 단, 승급이 주 경로.</td></tr><tr><td>메소</td><td>100% 드랍. 강화·거래 수수료의 기본 재화.</td></tr><tr><td>장신구</td><td>드랍하지 않음.</td></tr></table></div>
+    <div class="card"><h3>엘리트 몬스터</h3><table><tr><th>드랍</th><th>설계</th></tr><tr><td>장신구 조각</td><td>장신구 제작/교환용 누적 재료.</td></tr><tr><td>장신구 상자</td><td>낮은 확률. 세트 완성 기대감 제공.</td></tr><tr><td>유니크 장비 묶음</td><td>사냥 중 작은 잭팟 역할.</td></tr><tr><td>엘리트 증표</td><td>엘리트 상점 또는 장신구 보정 재료.</td></tr></table></div>
+    <div class="card"><h3>엘리트 보스</h3><table><tr><th>드랍</th><th>설계</th></tr><tr><td>장신구 직접 드랍</td><td>핵심 보상. 필드에서 갑자기 뜨는 대박.</td></tr><tr><td>세트 촉매</td><td>장신구 세트효과 강화/전환 재료.</td></tr><tr><td>보스 토큰 소량</td><td>보스 필드와 연결되는 브릿지 재화.</td></tr><tr><td>파괴 복구 보조재</td><td>스타포스 파괴 부담을 완충.</td></tr></table></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>StackKey 정의</h3><div class="code">StackKey = ItemId + Level + Grade + Part + IsPristine
+
+예시
+Weapon_Axe_010_Rare_Prinstine
+Armor_Glove_080_Epic_Prinstine
+Armor_Hat_160_Legendary_Prinstine</div><p>스타포스, 잠재, 환생옵션, 계승 이력이 붙는 순간 StackKey 대상에서 빠지고 개별 인스턴스로 분리된다.</p></div>
+    <div class="card"><h3>인벤토리 UX</h3><table><tr><th>기능</th><th>기준</th></tr><tr><td>스택 표시</td><td>동일 StackKey는 한 줄로 표시</td></tr><tr><td>일괄 승급</td><td>가능한 최대 횟수와 결과 수량을 미리 표시</td></tr><tr><td>일괄 등록</td><td>컬렉션 등록 가능 횟수와 전투력 증가량 표시</td></tr><tr><td>거래 추천</td><td>부족한 재료를 경매장 검색으로 연결</td></tr></table></div>
+  </div>
+</section>
+
+<section id="upgrade" class="panel">
+  <div class="panelHead"><div><h2>05. 승급·컬렉션</h2><p class="sub">레전드리 1개를 만드는 레어 장비 원가를 명확히 표시한다.</p></div><span class="label">Upgrade Math</span></div>
+  <div class="grid2">
+    <div class="card"><h3>승급 비율</h3><table><tr><th>단계</th><th>필요 재료</th><th>결과</th><th>레어 환산</th></tr><tr><td>레어 → 에픽</td><td>동일 장비 레어 800개</td><td>에픽 1개</td><td>레어 800개</td></tr><tr><td>에픽 → 유니크</td><td>동일 장비 에픽 200개</td><td>유니크 1개</td><td>레어 160,000개</td></tr><tr><td>유니크 → 레전드리</td><td>동일 장비 유니크 20개</td><td>레전드리 1개</td><td>레어 3,200,000개</td></tr></table></div>
+    <div class="card"><h3>레전드리 제작 검산</h3><div class="code">1 Legendary
+= 20 Unique
+= 20 × 200 Epic
+= 4,000 Epic
+= 4,000 × 800 Rare
+= 3,200,000 Rare</div><div class="warn">이 수치는 같은 레벨·같은 부위·같은 아이템 기준이다. Lv10 레어 도끼는 Lv10 레전드리 도끼 재료로만 사용된다.</div></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>컬렉션 반복 등록</h3><table><tr><th>등급</th><th>등록 단위</th><th>레어 환산</th><th>역할</th></tr><tr><td>레어</td><td>800개</td><td>800개</td><td>가장 빠른 반복 성장</td></tr><tr><td>에픽</td><td>200개</td><td>160,000개</td><td>중기 누적 목표</td></tr><tr><td>유니크</td><td>20개</td><td>3,200,000개</td><td>장기 수집 목표</td></tr><tr><td>레전드리</td><td>1개</td><td>3,200,000개</td><td>고가치 등록 또는 착용 선택</td></tr></table></div>
+    <div class="card"><h3>선택 갈등 예시</h3><table><tr><th>상황</th><th>선택</th><th>결과</th></tr><tr><td>레전드리 무기 1개 제작</td><td>착용</td><td>스타포스·잠재 투자 시작</td></tr><tr><td>레전드리 무기 1개 제작</td><td>컬렉션 등록</td><td>영구 공격력 증가, 장비 소멸</td></tr><tr><td>레전드리 무기 1개 제작</td><td>거래 등록</td><td>메소 획득, 다른 성장 재료 구매</td></tr><tr><td>레전드리 무기 1개 제작</td><td>파괴 복구용 보관</td><td>고성 스타포스 리스크 대응</td></tr></table></div>
+  </div>
+</section>
+
+<section id="enhance" class="panel">
+  <div class="panelHead"><div><h2>06. 강화·잠재·환불</h2><p class="sub">레전드리 장비만 장기 투자 대상이다. 스타포스는 하락 없이 파괴로 장비 수요를 만든다.</p></div><span class="label">Investment System</span></div>
+  <div class="grid3">
+    <div class="card"><h3>스타포스</h3><p><span class="underline">레전드리 장비만 가능</span>.</p><ul><li>성공: 별 +1</li><li>실패: 별 유지</li><li>파괴: 장비 파괴 흔적 생성</li><li>하락: 없음</li></ul></div>
+    <div class="card"><h3>잠재능력</h3><p><span class="underline">레전드리 장비만 가능</span>.</p><ul><li>큐브로 잠재 등급과 옵션 변경</li><li>옵션은 장비 종류별 풀 사용</li><li>계승 시 등급 중심 보존</li></ul></div>
+    <div class="card"><h3>환생의 불꽃</h3><p><span class="underline">레전드리 장비만 가능</span>.</p><ul><li>고정 드랍 능력치와 별도</li><li>개별 장비 인스턴스에만 부여</li><li>계승하지 않는 현재 장비 고점</li></ul></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>스타포스 확률 테이블</h3><table><tr><th>목표</th><th>성공</th><th>실패 유지</th><th>파괴</th><th>성공당 기대 파괴</th><th>누적 기대 파괴</th></tr><tr><td>1성</td><td>100%</td><td>0%</td><td>0%</td><td>0.000개</td><td>0.000개</td></tr>
+<tr><td>5성</td><td>100%</td><td>0%</td><td>0%</td><td>0.000개</td><td>0.000개</td></tr>
+<tr><td>8성</td><td>50%</td><td>49%</td><td>1%</td><td>0.020개</td><td>0.020개</td></tr>
+<tr><td>10성</td><td>40%</td><td>58%</td><td>2%</td><td>0.050개</td><td>0.103개</td></tr>
+<tr><td>12성</td><td>32%</td><td>64%</td><td>4%</td><td>0.125개</td><td>0.314개</td></tr>
+<tr><td>15성</td><td>23%</td><td>68%</td><td>9%</td><td>0.391개</td><td>1.147개</td></tr>
+<tr><td>18성</td><td>16%</td><td>69%</td><td>15%</td><td>0.938개</td><td>3.357개</td></tr>
+<tr><td>20성</td><td>12%</td><td>66%</td><td>22%</td><td>1.833개</td><td>6.476개</td></tr></table></div>
+    <div class="card"><h3>기대값 공식</h3><div class="code">SuccessRate = p_s
+DestroyRate = p_d
+FailRate = 1 - p_s - p_d
+
+ExpectedAttemptsPerStar = 1 / p_s
+ExpectedDestroyedLegendaryPerStar = p_d / p_s
+
+ExpectedMesoCostPerStar
+= AttemptCost / p_s + RestoreCost × (p_d / p_s)
+
+ExpectedRareSinkPerStar
+= 3,200,000 × (p_d / p_s)</div><p>실패는 진행도를 깎지 않는다. 대신 파괴가 발생하면 같은 레벨·같은 부위·같은 아이템의 레전드리 순정 장비가 복구 재료로 필요하다.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>스타포스 파괴 복구</h3><table><tr><th>파괴 시</th><th>처리</th></tr><tr><td>생성물</td><td>파괴 흔적. 스타포스 수치, 잠재 등급, 투자 메타데이터 보존.</td></tr><tr><td>복구 재료</td><td>동일 레벨·동일 부위·동일 아이템 레전드리 순정 1개</td></tr><tr><td>복구 결과</td><td>하락 없이 기존 상태 복원</td></tr><tr><td>경제 효과</td><td>레전드리 순정 장비가 지속 소모되어 매물 부족 유지</td></tr></table></div>
+    <div class="card"><h3>레어 환산 소모 예시</h3><table><tr><th>목표</th><th>기본 레전드리</th><th>누적 기대 파괴</th><th>총 레전드리 기대</th><th>레어 환산</th></tr><tr><td>10성</td><td>1개</td><td>0.103개</td><td>1.103개</td><td>약 3,530,667개</td></tr><tr><td>12성</td><td>1개</td><td>0.314개</td><td>1.314개</td><td>약 4,204,952개</td></tr><tr><td>15성</td><td>1개</td><td>1.147개</td><td>2.147개</td><td>약 6,870,389개</td></tr><tr><td>20성</td><td>1개</td><td>6.476개</td><td>7.476개</td><td>약 23,922,452개</td></tr></table></div>
+  </div>
+</section>
+
+<section id="inherit" class="panel">
+  <div class="panelHead"><div><h2>07. 장비 계승</h2><p class="sub">환생이라는 단어는 혼동되므로 사용하지 않는다. 레벨 이동은 장비 계승으로 고정한다.</p></div><span class="label">Level Inheritance</span></div>
+  <div class="grid2">
+    <div class="card"><h3>계승 조건</h3><table><tr><th>조건</th><th>내용</th></tr><tr><td>대상</td><td>레전드리 장비만 가능</td></tr><tr><td>레벨</td><td>Lv10 → Lv20 → Lv30 ... 순차 계승</td></tr><tr><td>재료</td><td>목표 레벨의 동일 부위 레전드리 장비 보유 필요</td></tr><tr><td>기존 장비</td><td>계승 후 소멸</td></tr><tr><td>목표 장비</td><td>계승 상태의 개별 인스턴스로 생성</td></tr></table></div>
+    <div class="card"><h3>계승되는 것과 아닌 것</h3><table><tr><th>항목</th><th>계승</th><th>설계</th></tr><tr><td>스타포스</td><td>부분 계승</td><td>기대 비용 기준으로 목표 레벨 별 수치 재산정</td></tr><tr><td>잠재 등급</td><td>계승</td><td>등급 보존, 옵션 수치는 목표 레벨 기준 재감정</td></tr><tr><td>환생옵션</td><td>계승 안 함</td><td>현재 장비 고점으로만 작동</td></tr><tr><td>파괴 흔적</td><td>복구 후 가능</td><td>파괴 상태 자체는 계승 불가</td></tr></table></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>스타포스 계승 공식</h3><div class="code">SourceInvestmentValue = 기존 장비 스타포스 누적 기대 비용
+TargetStarCost(s) = 목표 레벨 장비에서 s성까지 필요한 기대 비용
+RecognizedValue = SourceInvestmentValue × 0.45
+
+InheritedStar = max s where TargetStarCost(s) ≤ RecognizedValue
+InheritanceFee = TargetStarCost(InheritedStar) × 0.15</div></div>
+    <div class="card"><h3>예시</h3><table><tr><th>상황</th><th>결과</th></tr><tr><td>Lv10 레전드리 10성 → Lv20 레전드리</td><td>Lv20 기준 기대 비용으로 환산되어 4~5성 수준으로 재산정</td></tr><tr><td>Lv80 레전드리 12성 → Lv90 레전드리</td><td>레벨 차이가 작아 더 많은 별 가치가 인정됨</td></tr><tr><td>레전드리 잠재 등급 유니크</td><td>계승 후 유니크 잠재 유지, 옵션 내용은 재감정</td></tr></table><div class="note">핵심: 계승은 저레벨 강화 꼼수가 아니라, 먼저 투자한 비용 일부를 다음 레벨에서 인정하는 장치다.</div></div>
+  </div>
+</section>
+
+<section id="accessory" class="panel">
+  <div class="panelHead"><div><h2>08. 장신구·엘리트</h2><p class="sub">장신구는 보스 전리품이 아니라 사냥 중 엘리트 이벤트의 핵심 잭팟이다.</p></div><span class="label">Elite Reward</span></div>
+  <div class="grid3">
+    <div class="card"><h3>장신구 부위</h3><ul><li>반지</li><li>팬던트</li><li>얼굴장식</li><li>눈장식</li><li>벨트</li></ul><p>장신구는 레어→레전드리 승급 체계를 사용하지 않는다.</p></div>
+    <div class="card"><h3>획득 경로</h3><table><tr><th>출처</th><th>보상</th></tr><tr><td>엘리트 몬스터</td><td>장신구 조각, 장신구 상자</td></tr><tr><td>엘리트 보스</td><td>장신구 직접 드랍, 세트 촉매</td></tr><tr><td>보스 토큰 상점</td><td>장신구 보정 재료, 선택 상자 가능성</td></tr></table></div>
+    <div class="card"><h3>성장 방식</h3><table><tr><th>시스템</th><th>적용</th></tr><tr><td>세트효과</td><td>있음</td></tr><tr><td>잠재능력</td><td>있음</td></tr><tr><td>스타포스</td><td>있음</td></tr><tr><td>환생의 불꽃</td><td>장신구 전용 재료 검토</td></tr></table></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>엘리트 출현 설계</h3><table><tr><th>이벤트</th><th>권장 기준</th><th>의도</th></tr><tr><td>엘리트 몬스터</td><td>일정 처치 수 또는 일정 시간마다 누적 게이지</td><td>방치 중 작은 긴장감</td></tr><tr><td>엘리트 보스</td><td>엘리트 몬스터 누적 처치 후 낮은 확률 출현</td><td>장신구 직접 드랍 기대감</td></tr><tr><td>엘리트 게이지</td><td>UI에 표시</td><td>완전 랜덤 스트레스 완화</td></tr></table></div>
+    <div class="card"><h3>드랍 예시</h3><table><tr><th>보상</th><th>엘리트 몬스터</th><th>엘리트 보스</th></tr><tr><td>장신구 조각</td><td>20~40%</td><td>100%</td></tr><tr><td>장신구 상자</td><td>1~3%</td><td>15~25%</td></tr><tr><td>장신구 직접 드랍</td><td>없음</td><td>5~12%</td></tr><tr><td>세트 촉매</td><td>0.5~1%</td><td>8~15%</td></tr></table></div>
+  </div>
+</section>
+
+<section id="boss" class="panel">
+  <div class="panelHead"><div><h2>09. 보스 필드</h2><p class="sub">보스 필드는 장신구 공급처가 아니라 스킬, 해금, 특수 성장 재료의 공급처다.</p></div><span class="label">Boss Reward</span></div>
+  <div class="grid3">
+    <div class="card"><h3>마스터리북</h3><p>옛메 감성을 살리는 핵심 보상.</p><ul><li>스킬 최대 레벨 해금</li><li>패시브 효과 강화</li><li>직업별 장기 목표</li></ul></div>
+    <div class="card"><h3>보스 코어</h3><p>장비가 아닌 전투 메타 성장.</p><ul><li>보스 피해</li><li>엘리트 피해</li><li>방어 관통</li><li>스킬 계수 강화</li></ul></div>
+    <div class="card"><h3>보스 토큰</h3><p>확률 실패를 보정하는 누적 재화.</p><ul><li>마스터리북 조각 교환</li><li>장신구 보정 재료 구매</li><li>파괴 복구 보조재 구매</li></ul></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>보스 보상 테이블 예시</h3><table><tr><th>보상</th><th>역할</th><th>거래 정책</th></tr><tr><td>마스터리북</td><td>스킬 최대 레벨 해금</td><td>초기 귀속, 추후 거래 가능성 검토</td></tr><tr><td>마스터리북 조각</td><td>천장형 누적 보상</td><td>거래 가능성 열어둠</td></tr><tr><td>보스 코어</td><td>보스/엘리트 특화 성장</td><td>귀속 또는 제한 거래</td></tr><tr><td>보스 토큰</td><td>보스 상점 재화</td><td>계정 귀속 권장</td></tr><tr><td>파괴 복구 보조재</td><td>스타포스 고성 부담 완화</td><td>거래 가능성 높음</td></tr></table></div>
+    <div class="card"><h3>보스 필드가 해결하는 문제</h3><table><tr><th>문제</th><th>해결</th></tr><tr><td>장비 파밍만 반복됨</td><td>스킬 해금과 스킬 계수 성장 목표 제공</td></tr><tr><td>장신구가 보스에 묶임</td><td>장신구는 사냥 엘리트로 이동, 보스는 다른 목표 담당</td></tr><tr><td>거래소 수요가 장비에만 집중</td><td>마스터리북 조각, 복구 보조재, 보스 제작 재료로 시장 확장</td></tr><tr><td>확률 스트레스</td><td>토큰 누적 교환으로 보정</td></tr></table></div>
+  </div>
+</section>
+
+<section id="trade" class="panel">
+  <div class="panelHead"><div><h2>10. 거래 경제</h2><p class="sub">거래는 닫지 않는다. 다만 투자 상태별로 시장에 풀리는 강도를 조절한다.</p></div><span class="label">Market Policy</span></div>
+  <div class="grid2">
+    <div class="card"><h3>거래 정책 단계</h3><table><tr><th>정책</th><th>의미</th><th>사용처</th></tr><tr><td>Tradable</td><td>자유 거래</td><td>순정 장비, 일반 재료</td></tr><tr><td>LimitedTrade</td><td>거래 횟수 제한</td><td>투자 장비 추후 해금안</td></tr><tr><td>TradeUnlock</td><td>거래 해제권 필요</td><td>고가 투자 장비 시장 개방안</td></tr><tr><td>BoundOnInvest</td><td>투자 시작 시 귀속</td><td>MVP 기본 정책</td></tr><tr><td>AccountBound</td><td>계정 내 이동만 가능</td><td>보스 토큰, 일부 흔적</td></tr></table></div>
+    <div class="card"><h3>아이템별 기본 정책</h3><table><tr><th>아이템</th><th>기본</th><th>추후 가능성</th></tr><tr><td>순정 레어~레전드리 장비</td><td>거래 가능</td><td>유지</td></tr><tr><td>스타포스 장비</td><td>투자 귀속</td><td>제한 거래 또는 거래 해제권 가능</td></tr><tr><td>잠재 장비</td><td>투자 귀속</td><td>거래 횟수 제한 가능</td></tr><tr><td>파괴 흔적</td><td>기본 귀속</td><td>계정 이동 또는 특수 거래 가능</td></tr><tr><td>마스터리북 조각</td><td>거래 가능성 열어둠</td><td>서버 경제 상황 따라 결정</td></tr></table></div>
+  </div>
+  <div class="grid3" style="margin-top:12px">
+    <div class="card"><h3>공급</h3><ul><li>장비는 사냥으로만 생성</li><li>장신구는 엘리트로만 생성</li><li>보스는 스킬/특수 재료 생성</li></ul></div>
+    <div class="card"><h3>소모</h3><ul><li>승급</li><li>컬렉션 반복 등록</li><li>스타포스 파괴 복구</li><li>계승 재료</li><li>거래 수수료</li></ul></div>
+    <div class="card"><h3>부족 유지</h3><ul><li>레전드리 제작 원가가 높음</li><li>고성 스타포스가 레전드리를 추가 소비</li><li>거래 수수료가 메소를 회수</li><li>투자 장비의 시장 복귀를 제한적으로 관리</li></ul></div>
+  </div>
+</section>
+
+<section id="combat" class="panel">
+  <div class="panelHead"><div><h2>11. 전투 공식</h2><p class="sub">전투력은 실제 사냥 속도와 생존 안정성을 설명해야 한다. 허수 전투력을 줄이기 위해 유효값 기준으로 계산한다.</p></div><span class="label">Combat Math</span></div>
+  <div class="grid2">
+    <div class="card"><h3>실제 피해 공식</h3><div class="code">AttackPower = WeaponAttack + BonusAttack
+MainStatMultiplier = 1 + MainStat / 200
+DamageBonusMultiplier = 1 + DamageBonusRate + BossDamageRate × IsBoss
+CriticalMultiplier = 1 + CriticalRate × CriticalDamage
+DefenseMultiplier = 100 / (100 + max(0, MonsterDefense - IgnoreDefense))
+
+ExpectedHitDamage
+= AttackPower
+× MainStatMultiplier
+× DamageBonusMultiplier
+× CriticalMultiplier
+× DefenseMultiplier
+
+ExpectedDPS
+= ExpectedHitDamage × AttackSpeed + SkillDPS</div></div>
+    <div class="card"><h3>전투력 공식</h3><div class="code">EffectiveDPS = ExpectedDPS × HitRate × Uptime
+EffectiveHP = HP / max(0.25, 1 - DamageReductionRate)
+SurvivalScore = min(1.25, EffectiveHP / RequiredSurvivalHP)
+ValidityFactor = min(1, HitRate + 0.15) × min(1, Uptime + 0.20)
+
+CombatPower
+= round((EffectiveDPS × 6 + EffectiveHP × 0.035) × SurvivalScore × ValidityFactor)</div><p>전투력은 피해량만이 아니라 오토 안정성을 포함한다. 명중률, 지속시간, 생존 기준을 넣어 허수 전투력을 줄인다.</p></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>스탯별 전투력 반영</h3><table><tr><th>스탯</th><th>반영 방식</th><th>주의</th></tr><tr><td>공/마</td><td>모든 피해 공식의 시작값</td><td>가장 강한 옵션</td></tr><tr><td>주스탯</td><td>공격력 효율 증폭</td><td>공격력이 낮으면 가치도 낮음</td></tr><tr><td>크확</td><td>크뎀과 곱연산</td><td>100% 초과 가치는 제외</td></tr><tr><td>크뎀</td><td>크확이 높을수록 가치 상승</td><td>초반 과대평가 방지 필요</td></tr><tr><td>보스 피해</td><td>보스 전투력에만 반영</td><td>일반 필드 CP에는 제외</td></tr><tr><td>드랍률</td><td>전투력 제외</td><td>경제 스탯이지 전투 스탯 아님</td></tr></table></div>
+    <div class="card"><h3>계산 예시</h3><table><tr><th>항목</th><th>값</th></tr><tr><td>공격력</td><td>100</td></tr><tr><td>주스탯</td><td>400 → 배율 3.0</td></tr><tr><td>크확/크뎀</td><td>30% / 80% → 기대 배율 1.24</td></tr><tr><td>공속</td><td>1.2</td></tr><tr><td>스킬DPS</td><td>180</td></tr><tr><td>기대DPS</td><td>100 × 3.0 × 1.24 × 1.2 + 180 = 626.4</td></tr><tr><td>HP</td><td>6,000</td></tr><tr><td>전투력</td><td>round(626.4 × 6 + 6,000 × 0.035) = 3,968</td></tr></table></div>
+  </div>
+</section>
+
+<section id="field" class="panel">
+  <div class="panelHead"><div><h2>12. 필드 권장 전투력 곡선</h2><p class="sub">단순 배율 곱셈을 반복하면 전투력이 금방 억 단위가 된다. 레벨 기반 완만 곡선과 내부 실전 DPS 검증을 분리한다.</p></div><span class="label">Power Curve</span></div>
+  <div class="grid2">
+    <div class="card"><h3>권장 전투력 공식</h3><div class="code">LevelTier = EquipmentLevel / 10
+BaseRecommendedCP = 250 × LevelTier^2.25
+
+FieldA = BaseRecommendedCP × 1.00
+FieldB = BaseRecommendedCP × 1.20
+FieldC = BaseRecommendedCP × 1.45
+BossField = BaseRecommendedCP × 2.40
+
+RequiredDPS = RecommendedCP / 6
+MonsterHP = RequiredDPS × TargetTTK</div><p>성장감은 유지하되, 매 필드마다 2배·3배로 튀는 구조를 피한다.</p></div>
+    <div class="card"><h3>왜 억 단위가 빨리 되는가</h3><table><tr><th>원인</th><th>문제</th><th>대응</th></tr><tr><td>필드마다 고정 배율 증가</td><td>20개 레벨 구간에서 기하급수 폭발</td><td>레벨 기반 거듭제곱 곡선</td></tr><tr><td>DPS와 CP를 같은 숫자로 표시</td><td>딜 숫자 증가가 CP 폭발로 연결</td><td>전투력은 요약 지표로 압축</td></tr><tr><td>보스 피해가 일반 CP에 반영</td><td>일반 사냥 허수 전투력 발생</td><td>보스 CP 별도 계산</td></tr><tr><td>드랍률이 CP에 반영</td><td>경제 스탯이 전투력 오염</td><td>전투력에서 제외</td></tr></table></div>
+  </div>
+  <div class="card" style="margin-top:12px"><h3>레벨별 권장 전투력 테이블</h3><table><tr><th>레벨</th><th>A필드</th><th>B필드</th><th>C필드</th><th>보스 필드</th><th>A필드 필요 DPS</th><th>일반 몬스터 HP 예시</th></tr><tr><td>Lv10</td><td>250</td><td>300</td><td>362</td><td>600</td><td>41.7</td><td>133</td></tr>
+<tr><td>Lv20</td><td>1,189</td><td>1,427</td><td>1,724</td><td>2,854</td><td>198.2</td><td>634</td></tr>
+<tr><td>Lv30</td><td>2,961</td><td>3,553</td><td>4,294</td><td>7,107</td><td>493.5</td><td>1,579</td></tr>
+<tr><td>Lv40</td><td>5,657</td><td>6,788</td><td>8,202</td><td>13,576</td><td>942.8</td><td>3,017</td></tr>
+<tr><td>Lv50</td><td>9,346</td><td>11,215</td><td>13,552</td><td>22,430</td><td>1,557.7</td><td>4,985</td></tr>
+<tr><td>Lv60</td><td>14,086</td><td>16,903</td><td>20,424</td><td>33,806</td><td>2,347.7</td><td>7,513</td></tr>
+<tr><td>Lv70</td><td>19,926</td><td>23,911</td><td>28,892</td><td>47,821</td><td>3,321.0</td><td>10,627</td></tr>
+<tr><td>Lv80</td><td>26,909</td><td>32,290</td><td>39,018</td><td>64,581</td><td>4,484.8</td><td>14,351</td></tr>
+<tr><td>Lv90</td><td>35,074</td><td>42,089</td><td>50,857</td><td>84,178</td><td>5,845.7</td><td>18,706</td></tr>
+<tr><td>Lv100</td><td>44,457</td><td>53,348</td><td>64,463</td><td>106,697</td><td>7,409.5</td><td>23,710</td></tr>
+<tr><td>Lv110</td><td>55,090</td><td>66,108</td><td>79,881</td><td>132,216</td><td>9,181.7</td><td>29,381</td></tr>
+<tr><td>Lv120</td><td>67,004</td><td>80,404</td><td>97,155</td><td>160,809</td><td>11,167.3</td><td>35,735</td></tr>
+<tr><td>Lv130</td><td>80,226</td><td>96,271</td><td>116,327</td><td>192,541</td><td>13,371.0</td><td>42,787</td></tr>
+<tr><td>Lv140</td><td>94,782</td><td>113,739</td><td>137,435</td><td>227,478</td><td>15,797.0</td><td>50,550</td></tr>
+<tr><td>Lv150</td><td>110,699</td><td>132,839</td><td>160,514</td><td>265,679</td><td>18,449.8</td><td>59,039</td></tr>
+<tr><td>Lv160</td><td>128,000</td><td>153,600</td><td>185,600</td><td>307,200</td><td>21,333.3</td><td>68,267</td></tr>
+<tr><td>Lv170</td><td>146,707</td><td>176,048</td><td>212,725</td><td>352,096</td><td>24,451.2</td><td>78,244</td></tr>
+<tr><td>Lv180</td><td>166,841</td><td>200,209</td><td>241,920</td><td>400,419</td><td>27,806.8</td><td>88,982</td></tr>
+<tr><td>Lv190</td><td>188,424</td><td>226,108</td><td>273,214</td><td>452,217</td><td>31,404.0</td><td>100,493</td></tr>
+<tr><td>Lv200</td><td>211,474</td><td>253,769</td><td>306,638</td><td>507,538</td><td>35,245.7</td><td>112,786</td></tr></table></div>
+</section>
+
+<section id="convention" class="panel">
+  <div class="panelHead"><div><h2>13. 컨벤션</h2><p class="sub">폴더, 스크립트, 데이터, UI 계층까지 한 번에 통일한다.</p></div><span class="label">Naming Convention</span></div>
+  <div class="grid2">
+    <div class="card"><h3>공통 네이밍 규칙</h3><table><tr><th>대상</th><th>규칙</th><th>예시</th></tr><tr><td>맵 폴더</td><td>Map + 3자리 번호 + 지역명</td><td>Map001_Amherst</td></tr><tr><td>오브젝트</td><td>역할 + 대상 + 번호</td><td>MonsterSpawn_Snail_01</td></tr><tr><td>스크립트</td><td>PascalCase + 역할 접미사</td><td>AutoAttackSystem, InventoryController</td></tr><tr><td>데이터</td><td>대상 + Data/Config/Table</td><td>MonsterData, ItemTable</td></tr><tr><td>매니저</td><td>도메인 + Manager</td><td>UIManager, MapSpawnManager</td></tr><tr><td>컴포넌트</td><td>대상 + Component</td><td>CharacterStatComponent</td></tr></table></div>
+    <div class="card"><h3>UI 네이밍 규칙</h3><table><tr><th>대상</th><th>규칙</th><th>예시</th></tr><tr><td>상시 HUD</td><td>UI + 기능 + View</td><td>UIHudView</td></tr><tr><td>팝업</td><td>UI + 기능 + Popup</td><td>UIInventoryPopup</td></tr><tr><td>패널</td><td>UI + 기능 + Panel</td><td>UIEquipmentEnhancePanel</td></tr><tr><td>반복 요소</td><td>UI + 기능 + Widget</td><td>UIEquipmentSlotWidget</td></tr><tr><td>버튼 오브젝트</td><td>기능 + Button</td><td>EnhanceButton</td></tr><tr><td>텍스트 오브젝트</td><td>기능 + Text</td><td>CombatPowerText</td></tr></table></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>Scripts 폴더 구조</h3><div class="tree">Workspace
+└─ Scripts
+   ├─ Data
+   │  ├─ ItemData
+   │  ├─ MonsterData
+   │  └─ FieldData
+   ├─ Defines
+   │  ├─ GameDefine
+   │  └─ StatDefine
+   ├─ Enums
+   │  ├─ ItemGrade
+   │  ├─ ItemPart
+   │  └─ TradePolicy
+   ├─ Managers
+   │  ├─ GameManager
+   │  ├─ UIManager
+   │  └─ DropManager
+   ├─ Systems
+   │  ├─ CombatPowerSystem
+   │  ├─ EquipmentUpgradeSystem
+   │  ├─ StarforceSystem
+   │  └─ AuctionSystem
+   ├─ Controllers
+   │  ├─ InventoryController
+   │  └─ EquipmentController
+   ├─ Components
+   │  ├─ CharacterStatComponent
+   │  └─ EquipmentSlotComponent
+   └─ UI
+      ├─ Views
+      ├─ Popups
+      ├─ Panels
+      └─ Widgets</div></div>
+    <div class="card"><h3>UI 하이어라키 구조</h3><div class="tree">Canvas_Root
+├─ SafeArea
+│  ├─ HudRoot
+│  │  ├─ UIHudView
+│  │  │  ├─ TopStatusGroup
+│  │  │  │  ├─ LevelText
+│  │  │  │  ├─ CombatPowerText
+│  │  │  │  └─ MesoText
+│  │  │  ├─ DropLogPanel
+│  │  │  └─ AutoBattleStatePanel
+│  ├─ PopupRoot
+│  │  ├─ UIInventoryPopup
+│  │  ├─ UIEquipmentEnhancePopup
+│  │  ├─ UIAuctionPopup
+│  │  └─ UIBossRewardPopup
+│  ├─ ToastRoot
+│  │  ├─ UIRewardToastWidget
+│  │  └─ UIWarningToastWidget
+│  └─ BlockerRoot
+│     └─ ModalBlocker
+└─ EventSystem</div></div>
+  </div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="card"><h3>UI 화면별 예시</h3><table><tr><th>화면</th><th>스크립트</th><th>주요 하위 오브젝트</th></tr><tr><td>인벤토리</td><td>UIInventoryPopup</td><td>EquipmentListPanel, FilterButtonGroup, BulkUpgradeButton</td></tr><tr><td>장비 강화</td><td>UIEquipmentEnhancePopup</td><td>SelectedEquipmentPanel, StarforcePanel, PotentialPanel</td></tr><tr><td>경매장</td><td>UIAuctionPopup</td><td>SearchPanel, PriceSortButton, AuctionItemWidget</td></tr><tr><td>필드 선택</td><td>UIFieldSelectPopup</td><td>FieldNodePanel, RecommendedPowerText, DropPreviewPanel</td></tr></table></div>
+    <div class="card"><h3>등급 Enum 고정</h3><div class="code">public enum ItemGrade
+{
+    Rare,
+    Epic,
+    Unique,
+    Legendary
+}
+
+public enum TradePolicy
+{
+    Tradable,
+    LimitedTrade,
+    TradeUnlock,
+    BoundOnInvest,
+    AccountBound
+}</div><p>문서, 데이터, UI, 코드에서 같은 용어만 사용한다.</p></div>
+  </div>
+</section>
+
+<section id="refs" class="panel">
+  <div class="panelHead"><div><h2>14. 레퍼런스</h2><p class="sub">참고 자료는 시스템 아이디어의 원천이며, 최종 수치는 우리 게임 경제에 맞게 재설계한다.</p></div><span class="label">References</span></div>
+  <div class="grid2">
+    <div class="card"><h3>메이플 계열 참고</h3><table><tr><th>자료</th><th>참고한 부분</th></tr><tr><td><a href="https://docs.maplestoryn.io/msn-101/beginners-guide/enhancement/star-force" target="_blank">MapleStory N Star Force</a></td><td>장비 강화와 스타포스 개념</td></tr><tr><td><a href="https://docs.maplestoryn.io/msn-101/beginners-guide/enhancement/potential-and-bonus-potential" target="_blank">MapleStory N Potential</a></td><td>잠재능력과 큐브형 옵션 구조</td></tr><tr><td><a href="https://maplestorywiki.net/w/Mastery_Book" target="_blank">MapleStory Mastery Book</a></td><td>보스 필드 보상으로 쓸 스킬 해금형 아이디어</td></tr></table></div>
+    <div class="card"><h3>방치형·루프 참고</h3><table><tr><th>자료</th><th>참고한 부분</th></tr><tr><td><a href="https://machinations.io/articles/idle-games-and-how-to-design-them" target="_blank">Machinations Idle Game Design</a></td><td>코어 루프와 메타 루프 분리</td></tr><tr><td><a href="https://machinations.io/articles/game-systems-feedback-loops-and-how-they-help-craft-player-experiences" target="_blank">Machinations Feedback Loops</a></td><td>긍정/부정 피드백 루프</td></tr><tr><td><a href="https://medium.com/@HAMSOFT/game-design-using-micro-macro-meta-grouping-bff507b1c77e" target="_blank">Micro/Macro/Meta Grouping</a></td><td>단기·중기·장기 목표 분리</td></tr></table></div>
+  </div>
+  <div class="decision"><strong>적용 원칙:</strong> 레퍼런스의 시스템을 그대로 복사하지 않는다. <span class="underline">옛메 감성</span>, <span class="underline">MMORPG 경제</span>, <span class="underline">방치형 편의성</span>, <span class="underline">사냥으로만 장비 생성</span>이라는 우리 기준에 맞춰 수치를 재설계한다.</div>
+</section>
+
+</div>
+<script>
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(item => item.classList.remove('active'));
+    panels.forEach(panel => panel.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>

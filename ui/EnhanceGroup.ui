@@ -1,0 +1,5292 @@
+{
+  "Id": "",
+  "GameId": "",
+  "EntryKey": "ui://96ba34bb-cc8b-4371-a7ad-af002d32cf93",
+  "ContentType": "x-mod/ui",
+  "Content": "",
+  "Usage": 0,
+  "UsePublish": 1,
+  "UseService": 0,
+  "CoreVersion": "26.5.0.0",
+  "StudioVersion": "0.1.0.0",
+  "DynamicLoading": 0,
+  "ContentProto": {
+    "Use": "Binary",
+    "Entities": [
+      {
+        "id": "96ba34bb-cc8b-4371-a7ad-af002d32cf93",
+        "path": "/ui/EnhanceGroup",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.UIGroupComponent,MOD.Core.CanvasGroupComponent",
+        "jsonString": {
+          "name": "EnhanceGroup",
+          "path": "/ui/EnhanceGroup",
+          "nameEditable": true,
+          "enable": false,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "//",
+          "revision": 0,
+          "origin": {
+            "type": "Model",
+            "entry_id": "UIGroup",
+            "sub_entity_id": null,
+            "root_entity_id": null,
+            "replaced_model_id": null
+          },
+          "modelId": "uigroup",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "ActivePlatform": 255,
+              "AlignmentOption": 15,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "Pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "RectSize": {
+                "x": 1920.0,
+                "y": 1080.0
+              },
+              "UIMode": 1,
+              "UIScale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              },
+              "UIVersion": 2,
+              "anchoredPosition": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "Position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Scale": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.UIGroupComponent",
+              "DefaultShow": true,
+              "GroupOrder": 3,
+              "GroupType": 1,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.CanvasGroupComponent",
+              "BlocksRaycasts": true,
+              "GroupAlpha": 1.0,
+              "Interactable": true,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "56ba6beb-0e43-409f-be28-890356979249",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "UIR_SimpleFantasy_Sample_StarForce",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": null,
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "869fb89b-9be8-43d8-8377-91a982545bab",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 957.2135,
+                "y": 540.0939
+              },
+              "OffsetMin": {
+                "x": -962.7865,
+                "y": -539.9061
+              },
+              "Pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "RectSize": {
+                "x": 1920.0,
+                "y": 1080.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "anchoredPosition": {
+                "x": -2.7865,
+                "y": 0.0939
+              },
+              "Position": {
+                "x": -2.7865,
+                "y": 0.0939,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "73fd5094-ed00-440b-a320-ef52149b3ed0",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Panel",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "60101be5-7212-4d67-b1eb-14337fed2ae3",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "60101be5-7212-4d67-b1eb-14337fed2ae3",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 396.7698,
+                "y": 446.316376
+              },
+              "OffsetMin": {
+                "x": -396.7698,
+                "y": -516.027344
+              },
+              "RectSize": {
+                "x": 793.5396,
+                "y": 962.34375
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "7530b60f-a22a-4744-ac18-38c23a6b82b8",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Text_Title",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Title",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Text_Title",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "099d4612-4920-40c0-bab6-aa32c1abc34f",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "099d4612-4920-40c0-bab6-aa32c1abc34f",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 36.54,
+                "y": -27.795
+              },
+              "OffsetMin": {
+                "x": -36.54,
+                "y": -72.205
+              },
+              "RectSize": {
+                "x": 73.08,
+                "y": 44.41
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "183ed995-6ac9-4f5e-a9fc-6cd067aa5ad1",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Btn_Info",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.ButtonComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Btn_Info",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Btn_Info",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "1bdae03b-ca11-46a9-a050-844519d1b13d",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "1bdae03b-ca11-46a9-a050-844519d1b13d",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 221.0,
+                "y": -16.0
+              },
+              "OffsetMin": {
+                "x": 21.0,
+                "y": -76.0
+              },
+              "RectSize": {
+                "x": 200.0,
+                "y": 60.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ButtonComponent",
+              "Colors": {
+                "NormalColor": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                },
+                "HighlightedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "PressedColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 1.0
+                },
+                "SelectedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "DisabledColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 0.5019608
+                },
+                "ColorMultiplier": 1.0,
+                "FadeDuration": 0.1
+              },
+              "ImageRUIDs": {
+                "HighlightedSprite": null,
+                "PressedSprite": {
+                  "DataId": "b6dc5346bcf044a99ba00a502e3c3f31"
+                },
+                "SelectedSprite": null,
+                "DisabledSprite": null
+              },
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "293e8b3d-9294-42b8-9037-42d1d683657b",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Btn_Close",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.ButtonComponent",
+        "jsonString": {
+          "name": "Btn_Close",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Btn_Close",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "9b4dfdbe-39af-4f26-a1ae-8bb5b12979c6",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "9b4dfdbe-39af-4f26-a1ae-8bb5b12979c6",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 381.6193,
+                "y": 467.621
+              },
+              "OffsetMin": {
+                "x": 309.6193,
+                "y": 395.621
+              },
+              "RectSize": {
+                "x": 72.0,
+                "y": 72.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ButtonComponent",
+              "Colors": {
+                "NormalColor": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                },
+                "HighlightedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "PressedColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 1.0
+                },
+                "SelectedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "DisabledColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 0.5019608
+                },
+                "ColorMultiplier": 1.0,
+                "FadeDuration": 0.1
+              },
+              "ImageRUIDs": {
+                "HighlightedSprite": null,
+                "PressedSprite": null,
+                "SelectedSprite": null,
+                "DisabledSprite": null
+              },
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "e817407a-2eb4-4dde-a2fe-e27e318acdd1",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Img_Deco",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Img_Deco",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Img_Deco",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "5ba30252-d9e0-4dfc-9889-28d7017a64cc",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "5ba30252-d9e0-4dfc-9889-28d7017a64cc",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 72.5,
+                "y": -145.0
+              },
+              "OffsetMin": {
+                "x": -72.5,
+                "y": -290.0
+              },
+              "RectSize": {
+                "x": 145.0,
+                "y": 145.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "85d88204-542d-442f-8090-5ca58f2ab27b",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Img_Deco/Deco_StarForce_L",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Deco_StarForce_L",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Img_Deco/Deco_StarForce_L",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "d32b6c35-c959-4433-b3af-3345369c725e",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "d32b6c35-c959-4433-b3af-3345369c725e",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 0.0,
+                "y": 122.0
+              },
+              "OffsetMin": {
+                "x": -284.0,
+                "y": -122.0
+              },
+              "RectSize": {
+                "x": 284.0,
+                "y": 244.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "20c88f16-43a8-4e8c-adf7-10f93fa40ab9",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Img_Deco/Deco_StarForce_R",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Deco_StarForce_R",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Img_Deco/Deco_StarForce_R",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "e5682e97-f758-407b-8328-6d7973662c34",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "e5682e97-f758-407b-8328-6d7973662c34",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 284.0,
+                "y": 122.0
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -122.0
+              },
+              "RectSize": {
+                "x": 284.0,
+                "y": 244.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "f802d049-57a3-4703-94f9-5eaee6664ecd",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Text_ItemName",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_ItemName",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Text_ItemName",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 4,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "64f134f2-1de5-4859-9f04-33f2fc79ae78",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "64f134f2-1de5-4859-9f04-33f2fc79ae78",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 366.7698,
+                "y": -261.890778
+              },
+              "OffsetMin": {
+                "x": -366.7698,
+                "y": -306.890778
+              },
+              "RectSize": {
+                "x": 733.5396,
+                "y": 45.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "f3aedcb9-258c-420a-9f64-025281d8aece",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "StarForceLevel",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 5,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "d24b5e36-de2b-4f50-abfa-a0d5d835e7ef",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "d24b5e36-de2b-4f50-abfa-a0d5d835e7ef",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 350.0,
+                "y": -328.4771
+              },
+              "OffsetMin": {
+                "x": -350.0,
+                "y": -383.5229
+              },
+              "RectSize": {
+                "x": 700.0,
+                "y": 55.0457458
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "8dd33cf3-1016-48e6-bcb8-adcd4aacc605",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Text_PrevLevel",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_PrevLevel",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Text_PrevLevel",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "9b6b4560-f867-40eb-93e5-fa97240be820",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "9b6b4560-f867-40eb-93e5-fa97240be820",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -62.0603027,
+                "y": 22.205
+              },
+              "OffsetMin": {
+                "x": -98.3603058,
+                "y": -22.205
+              },
+              "RectSize": {
+                "x": 36.3,
+                "y": 44.41
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "75f81e4d-dd45-4004-8665-3b6984c0bb56",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Model_IncreaseArrow",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "26dd36da-52dc-4af0-ac16-92e2f8f9cea5",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "26dd36da-52dc-4af0-ac16-92e2f8f9cea5",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 50.0,
+                "y": 18.0279427
+              },
+              "OffsetMin": {
+                "x": -50.0,
+                "y": -22.0279427
+              },
+              "RectSize": {
+                "x": 100.0,
+                "y": 40.0558853
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": false
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "f78a45e5-b9e1-45cc-a621-e6d864fc2d1e",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow/Arrow1",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Arrow1",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow/Arrow1",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "41f0d668-5cad-4d0f-bf6d-d70875c07c20",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "41f0d668-5cad-4d0f-bf6d-d70875c07c20",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -8.0,
+                "y": 12.0
+              },
+              "OffsetMin": {
+                "x": -22.0,
+                "y": -12.0
+              },
+              "RectSize": {
+                "x": 14.0,
+                "y": 24.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "44cfc48f-c0de-4757-a9d3-fa066ea788c6",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow/Arrow2",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Arrow2",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow/Arrow2",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "fc5c1e04-9d19-4ad9-8549-9917bce28185",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "fc5c1e04-9d19-4ad9-8549-9917bce28185",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 7.0,
+                "y": 12.0
+              },
+              "OffsetMin": {
+                "x": -7.0,
+                "y": -12.0
+              },
+              "RectSize": {
+                "x": 14.0,
+                "y": 24.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "61f3d81c-bc5f-47ce-8a4e-e36a7fda583b",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow/Arrow3",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Arrow3",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Model_IncreaseArrow/Arrow3",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "c54f9365-b119-4d7b-8245-d1ea99736f1f",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "c54f9365-b119-4d7b-8245-d1ea99736f1f",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 22.0,
+                "y": 12.0
+              },
+              "OffsetMin": {
+                "x": 8.0,
+                "y": -12.0
+              },
+              "RectSize": {
+                "x": 14.0,
+                "y": 24.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "debc9cc1-5291-457a-a25a-10013510adcf",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Text_NextLevel",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_NextLevel",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel/Text_NextLevel",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "4794acca-3016-4f26-a305-ee52be9fb961",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "4794acca-3016-4f26-a305-ee52be9fb961",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 87.11441,
+                "y": 22.205
+              },
+              "OffsetMin": {
+                "x": 50.8144073,
+                "y": -22.205
+              },
+              "RectSize": {
+                "x": 36.3,
+                "y": 44.41
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "b639b76c-0a3e-42cc-bc61-18004255b197",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Scroll_Stat",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.ScrollLayoutGroupComponent",
+        "jsonString": {
+          "name": "Scroll_Stat",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Scroll_Stat",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 6,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "196acafa-5621-41b7-8c76-e941e187deeb",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "196acafa-5621-41b7-8c76-e941e187deeb",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 382.700317,
+                "y": -388.925323
+              },
+              "OffsetMin": {
+                "x": -384.26532,
+                "y": -531.983032
+              },
+              "RectSize": {
+                "x": 766.965637,
+                "y": 143.057678
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ScrollLayoutGroupComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "10e50e27-9143-45ae-8512-ae9b44673c4a",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Item",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 7,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "7eabfcbd-7524-4683-8b10-b9268a9769d1",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "7eabfcbd-7524-4683-8b10-b9268a9769d1",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 772.686,
+                "y": -390.000275
+              },
+              "OffsetMin": {
+                "x": 17.5044556,
+                "y": -434.4537
+              },
+              "RectSize": {
+                "x": 755.1815,
+                "y": 44.4534454
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "16812b2a-a6e3-422b-bd5d-366c2710382d",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Deco",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Deco",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Deco",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "cf6f03e9-db93-468e-a04f-290fc379c3ce",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "cf6f03e9-db93-468e-a04f-290fc379c3ce",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 39.0,
+                "y": 9.0
+              },
+              "OffsetMin": {
+                "x": 21.0,
+                "y": -9.0
+              },
+              "RectSize": {
+                "x": 18.0,
+                "y": 18.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "8a6d1fad-8709-4ebf-916a-c6689da918d5",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Text_Stat",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Stat",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Text_Stat",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "606f0ff5-b56f-4980-90be-f6a546a5a54e",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "606f0ff5-b56f-4980-90be-f6a546a5a54e",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 122.45,
+                "y": 17.765
+              },
+              "OffsetMin": {
+                "x": 70.0,
+                "y": -17.765
+              },
+              "RectSize": {
+                "x": 52.45,
+                "y": 35.53
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "4486bae6-4f02-4bc2-9856-0b7734c1a8c2",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Text_Cur",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Cur",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Text_Cur",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "a7b5b054-00c2-4d2b-8935-12f85810dd29",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "a7b5b054-00c2-4d2b-8935-12f85810dd29",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 205.5703,
+                "y": 16.2849
+              },
+              "OffsetMin": {
+                "x": 178.9503,
+                "y": -16.285099
+              },
+              "RectSize": {
+                "x": 26.62,
+                "y": 32.57
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "b5beb055-b262-4cbe-9dc5-dd9caf3599ac",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Text_Next",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Next",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Text_Next",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "09f97c9f-f7bc-4be0-973f-75a0e0bf9730",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "09f97c9f-f7bc-4be0-973f-75a0e0bf9730",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -46.0498047,
+                "y": 16.2849
+              },
+              "OffsetMin": {
+                "x": -72.66981,
+                "y": -16.285099
+              },
+              "RectSize": {
+                "x": 26.62,
+                "y": 32.57
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "584a1765-61bf-4fac-a2b8-3b1615116784",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Layout_IncreaseArrow",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 4,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "4a3fc518-8cc4-41c9-8542-1b07f164eb7b",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "4a3fc518-8cc4-41c9-8542-1b07f164eb7b",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 308.1901,
+                "y": 20.0277424
+              },
+              "OffsetMin": {
+                "x": 208.1901,
+                "y": -20.0281429
+              },
+              "RectSize": {
+                "x": 100.0,
+                "y": 40.0558853
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "49271021-86ba-4b7f-9c2c-0e8d2b874db6",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow/Arrow1",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Arrow1",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow/Arrow1",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "053523b5-35e6-476c-8fdd-c53e3ac23934",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "053523b5-35e6-476c-8fdd-c53e3ac23934",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -8.0,
+                "y": 12.0
+              },
+              "OffsetMin": {
+                "x": -22.0,
+                "y": -12.0
+              },
+              "RectSize": {
+                "x": 14.0,
+                "y": 24.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "225bdc37-f0da-48f7-90b0-ca6c4092a77c",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow/Arrow2",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Arrow2",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow/Arrow2",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "2432ed1f-996b-4f55-bcc9-c8adae45520e",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "2432ed1f-996b-4f55-bcc9-c8adae45520e",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 7.0,
+                "y": 12.0
+              },
+              "OffsetMin": {
+                "x": -7.0,
+                "y": -12.0
+              },
+              "RectSize": {
+                "x": 14.0,
+                "y": 24.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "4a828362-0b65-4802-8d38-83d0a9d3b67b",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow/Arrow3",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Arrow3",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item/Layout_IncreaseArrow/Arrow3",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "2eb55a0d-95ad-46b3-8030-4839a68740ff",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "2eb55a0d-95ad-46b3-8030-4839a68740ff",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 22.0,
+                "y": 12.0
+              },
+              "OffsetMin": {
+                "x": 8.0,
+                "y": -12.0
+              },
+              "RectSize": {
+                "x": 14.0,
+                "y": 24.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "f0fad27f-43cb-4741-8eea-9971e74c2be5",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Deco_Line",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Deco_Line",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Deco_Line",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 8,
+          "pathConstraints": "/////f0fad27f-43cb-4741-8eea-9971e74c2be5",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "99fff577-49cf-4f95-8047-6a8c0bb7dbfd",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "99fff577-49cf-4f95-8047-6a8c0bb7dbfd",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 381.7698,
+                "y": -530.0
+              },
+              "OffsetMin": {
+                "x": -381.7698,
+                "y": -534.0
+              },
+              "RectSize": {
+                "x": 763.5396,
+                "y": 4.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "c7d7771d-58bf-4d81-835b-b7a486fbe4fd",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.ScrollLayoutGroupComponent",
+        "jsonString": {
+          "name": "Layout_Prob",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 9,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "93ce6fff-4bf2-48d6-b8c4-e2c45c0892cd",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "93ce6fff-4bf2-48d6-b8c4-e2c45c0892cd",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -60.5,
+                "y": -557.5
+              },
+              "OffsetMin": {
+                "x": -375.5,
+                "y": -772.5
+              },
+              "RectSize": {
+                "x": 315.0,
+                "y": 215.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ScrollLayoutGroupComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "a54ed9b1-f588-4744-b687-57bcc4fbdf5a",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Success",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "0a833b25-e70e-4be0-80c8-1b9c61c7423c",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "0a833b25-e70e-4be0-80c8-1b9c61c7423c",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 280.0,
+                "y": 0.0
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -45.0
+              },
+              "RectSize": {
+                "x": 280.0,
+                "y": 45.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "49e58e24-dc3a-4f50-83fd-3dfc07225771",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PrecentTitle",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "PrecentTitle",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PrecentTitle",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "97128afd-9391-4953-b3dc-731bfc5d056b",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "97128afd-9391-4953-b3dc-731bfc5d056b",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 135.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 135.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "23483472-2d34-4999-aaf8-3ee4fc887cbc",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PrecentTitle/Text_Label",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Label",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PrecentTitle/Text_Label",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "728fb96b-b8e7-40c9-bee4-f76ff9a56a33",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "728fb96b-b8e7-40c9-bee4-f76ff9a56a33",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 46.28,
+                "y": 16.285
+              },
+              "OffsetMin": {
+                "x": -46.28,
+                "y": -16.285
+              },
+              "RectSize": {
+                "x": 92.56,
+                "y": 32.57
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": -1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "b098c45e-d96f-4dd2-9760-667ae2c1a797",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PercentBG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "PercentBG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PercentBG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "4cd22281-7241-4770-a3c6-e1876528ee5c",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "4cd22281-7241-4770-a3c6-e1876528ee5c",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 0.0,
+                "y": 21.0
+              },
+              "OffsetMin": {
+                "x": -148.0,
+                "y": -21.0
+              },
+              "RectSize": {
+                "x": 148.0,
+                "y": 42.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "51098d8d-f379-4ae6-9e1c-8874d931a540",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PercentBG/Text_Percent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Percent",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Success/PercentBG/Text_Percent",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "044cc6ac-09a6-411b-8023-a7db632dc955",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "044cc6ac-09a6-411b-8023-a7db632dc955",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 60.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": -60.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 120.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "5cda3e20-2492-4542-8ba4-0ad9a039bf3a",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Keep",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "626c7668-ee6b-40dd-8d2d-78d736987163",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "626c7668-ee6b-40dd-8d2d-78d736987163",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 280.0,
+                "y": -50.0
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -95.0
+              },
+              "RectSize": {
+                "x": 280.0,
+                "y": 45.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "c5bd1515-c348-4b39-ab2e-b582bab3c8b5",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PrecentTitle",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "PrecentTitle",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PrecentTitle",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "ae67fe89-fc79-4b6d-8cc1-1aa41755d101",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "ae67fe89-fc79-4b6d-8cc1-1aa41755d101",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 135.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 135.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "ff06e416-ea14-4fe6-bc19-c31b9297b2db",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PrecentTitle/Text_Label",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Label",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PrecentTitle/Text_Label",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "00f2a845-bf0f-48e6-826f-2a8c447ce2d0",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "00f2a845-bf0f-48e6-826f-2a8c447ce2d0",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 28.965,
+                "y": 16.285
+              },
+              "OffsetMin": {
+                "x": -28.965,
+                "y": -16.285
+              },
+              "RectSize": {
+                "x": 57.93,
+                "y": 32.57
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": -1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "2daac47e-6b79-4d13-ba89-2c9fe64f042c",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PercentBG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "PercentBG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PercentBG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "f0ed2457-2032-45fc-b026-b6b22b3c355e",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "f0ed2457-2032-45fc-b026-b6b22b3c355e",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 0.0,
+                "y": 21.0
+              },
+              "OffsetMin": {
+                "x": -148.0,
+                "y": -21.0
+              },
+              "RectSize": {
+                "x": 148.0,
+                "y": 42.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "6d21fc9b-a5eb-4483-8a7c-1cf68fc69316",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PercentBG/Text_Percent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Percent",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Keep/PercentBG/Text_Percent",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "5aee38b5-442b-4d68-a66d-7da1914f193f",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "5aee38b5-442b-4d68-a66d-7da1914f193f",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 60.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": -60.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 120.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "6deb5f20-a39c-495d-aaa2-554bb5d289b0",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Decrease",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "d6379222-8667-415e-a362-b9876246cfd0",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "d6379222-8667-415e-a362-b9876246cfd0",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 280.0,
+                "y": -100.0
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -145.0
+              },
+              "RectSize": {
+                "x": 280.0,
+                "y": 45.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "59b67a73-ee09-4d56-8928-edf2ad5ea9bf",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PrecentTitle",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "PrecentTitle",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PrecentTitle",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "9747926b-7b2f-47fd-9b3b-a451e75a2884",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "9747926b-7b2f-47fd-9b3b-a451e75a2884",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 135.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 135.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "c8067f37-1255-4768-822d-872b4b7c817e",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PrecentTitle/Text_Label",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Label",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PrecentTitle/Text_Label",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "eecae6d7-5520-45fe-84d6-534856272123",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "eecae6d7-5520-45fe-84d6-534856272123",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 32.725,
+                "y": 16.285
+              },
+              "OffsetMin": {
+                "x": -32.725,
+                "y": -16.285
+              },
+              "RectSize": {
+                "x": 65.45,
+                "y": 32.57
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": -1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "31ab0c84-bbeb-43c6-8c91-73d739f4bccd",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PercentBG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "PercentBG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PercentBG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "f217c33a-01d6-4ee7-b600-e236d97834f8",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "f217c33a-01d6-4ee7-b600-e236d97834f8",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 0.0,
+                "y": 21.0
+              },
+              "OffsetMin": {
+                "x": -148.0,
+                "y": -21.0
+              },
+              "RectSize": {
+                "x": 148.0,
+                "y": 42.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "a792ab40-9778-448f-8691-c6496cc0a61e",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PercentBG/Text_Percent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Percent",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease/PercentBG/Text_Percent",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "83fe607a-5c83-4d74-9f56-df110541d9d8",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "83fe607a-5c83-4d74-9f56-df110541d9d8",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 60.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": -60.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 120.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "9f13e65e-99e1-4b0a-b4db-dbd82293bfdd",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Destroy",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "b63a0d4d-80ce-4ea0-beeb-b9eb610104c1",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "b63a0d4d-80ce-4ea0-beeb-b9eb610104c1",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 280.0,
+                "y": -150.0
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -195.0
+              },
+              "RectSize": {
+                "x": 280.0,
+                "y": 45.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "4249c45f-4704-4e5f-907d-52d127846673",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PrecentTitle",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "PrecentTitle",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PrecentTitle",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "0420e291-ef71-4ea3-87b1-38c6f07e628d",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "0420e291-ef71-4ea3-87b1-38c6f07e628d",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 135.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 135.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "38c91f27-3dec-44b1-a82b-2d27fc0aa781",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PrecentTitle/Text_Label",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Label",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PrecentTitle/Text_Label",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "02497876-cba2-4d57-9406-963a99bba1a3",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "02497876-cba2-4d57-9406-963a99bba1a3",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 45.4,
+                "y": 16.285
+              },
+              "OffsetMin": {
+                "x": -45.4,
+                "y": -16.285
+              },
+              "RectSize": {
+                "x": 90.8,
+                "y": 32.57
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": -1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "551a5f73-ceef-46db-a0dc-8239bdfef7b6",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PercentBG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "PercentBG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PercentBG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "1b49b243-0048-479c-bbb2-61e05ea66723",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "1b49b243-0048-479c-bbb2-61e05ea66723",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 0.0,
+                "y": 21.0
+              },
+              "OffsetMin": {
+                "x": -148.0,
+                "y": -21.0
+              },
+              "RectSize": {
+                "x": 148.0,
+                "y": 42.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "e3a1dab4-88ab-4951-9c5a-2546d46e802e",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PercentBG/Text_Percent",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Percent",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Destroy/PercentBG/Text_Percent",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "5c94e4f2-de6b-46a0-b423-230f06880c28",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "5c94e4f2-de6b-46a0-b423-230f06880c28",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 60.0,
+                "y": 17.5
+              },
+              "OffsetMin": {
+                "x": -60.0,
+                "y": -17.5
+              },
+              "RectSize": {
+                "x": 120.0,
+                "y": 35.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "afa70588-bb65-4fe1-a395-83aca841eab8",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.ScrollLayoutGroupComponent",
+        "jsonString": {
+          "name": "Layout_Item",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 10,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "0cfb8dc2-ed39-4d63-a75a-a10ec039e726",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "0cfb8dc2-ed39-4d63-a75a-a10ec039e726",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 373.490845,
+                "y": -542.5827
+              },
+              "OffsetMin": {
+                "x": -78.5772552,
+                "y": -764.4882
+              },
+              "RectSize": {
+                "x": 452.0681,
+                "y": 221.905518
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ScrollLayoutGroupComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "dba7e48c-aa11-4d94-9b01-61abd9b76c14",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.ButtonComponent",
+        "jsonString": {
+          "name": "Layout_Safety",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "4cc51c1f-4965-4082-8b16-9ff1ff239d7a",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "4cc51c1f-4965-4082-8b16-9ff1ff239d7a",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 419.0,
+                "y": -58.0
+              },
+              "OffsetMin": {
+                "x": 33.0,
+                "y": -108.0
+              },
+              "RectSize": {
+                "x": 386.0,
+                "y": 50.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ButtonComponent",
+              "Colors": {
+                "NormalColor": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                },
+                "HighlightedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "PressedColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 1.0
+                },
+                "SelectedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "DisabledColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 0.5019608
+                },
+                "ColorMultiplier": 1.0,
+                "FadeDuration": 0.1
+              },
+              "ImageRUIDs": {
+                "HighlightedSprite": null,
+                "PressedSprite": null,
+                "SelectedSprite": null,
+                "DisabledSprite": null
+              },
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "289480ed-92b9-42a2-a479-290b1ba2935f",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Type",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Type",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Type",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "f3b7d19a-d00f-402d-b9a0-5b9545b55ca8",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "f3b7d19a-d00f-402d-b9a0-5b9545b55ca8",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 51.0498,
+                "y": 46.303
+              },
+              "OffsetMin": {
+                "x": -36.9102,
+                "y": 7.812998
+              },
+              "RectSize": {
+                "x": 87.96,
+                "y": 38.49
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "c7ad0b41-f812-4c48-8748-b8067fecfdd3",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Type/DIa_Deco",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "DIa_Deco",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Type/DIa_Deco",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "4e46bbc3-f3ad-4a2b-a6b1-3fca9c204653",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "4e46bbc3-f3ad-4a2b-a6b1-3fca9c204653",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -17.0,
+                "y": 9.0
+              },
+              "OffsetMin": {
+                "x": -35.0,
+                "y": -9.0
+              },
+              "RectSize": {
+                "x": 18.0,
+                "y": 18.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "Position": {
+                "x": -60.98,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "57b6f934-eab3-464b-a61f-6bcd1c475102",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Type/DIa_Deco_1",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "DIa_Deco_1",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Type/DIa_Deco_1",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "261a7a9e-dc96-42eb-93e3-0b17da2fe589",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "261a7a9e-dc96-42eb-93e3-0b17da2fe589",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 35.0,
+                "y": 9.0
+              },
+              "OffsetMin": {
+                "x": 17.0,
+                "y": -9.0
+              },
+              "RectSize": {
+                "x": 18.0,
+                "y": 18.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "Position": {
+                "x": 60.98,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "32f12195-c124-4be1-a3d9-94110aa2f9c3",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Img_Item",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Img_Item",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Img_Item",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "35fbb87a-3855-433d-820c-09646729c820",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "35fbb87a-3855-433d-820c-09646729c820",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 27.0065613,
+                "y": -1.99671936
+              },
+              "OffsetMin": {
+                "x": -11.0,
+                "y": -40.00328
+              },
+              "RectSize": {
+                "x": 38.00656,
+                "y": 38.00656
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "3c5aa949-3dac-4e55-ab0c-92aa9d647756",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Count",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Count",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Count",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "27b94ac3-1744-4c8a-8bfa-f0ddb9982b4f",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "27b94ac3-1744-4c8a-8bfa-f0ddb9982b4f",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 7.41,
+                "y": 19.245
+              },
+              "OffsetMin": {
+                "x": -7.41,
+                "y": -19.245
+              },
+              "RectSize": {
+                "x": 14.82,
+                "y": 38.49
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "75d84ac1-361e-4663-9b73-6e1732179f14",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "SelectBG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "3bdcf1cb-f24d-4184-8eb7-01034263b8eb",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "3bdcf1cb-f24d-4184-8eb7-01034263b8eb",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -5.0,
+                "y": 20.0
+              },
+              "OffsetMin": {
+                "x": -45.0,
+                "y": -20.0
+              },
+              "RectSize": {
+                "x": 40.0,
+                "y": 40.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "f4e38165-0436-4a2e-8fbc-8e0538c95d96",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG/Icon_NotSelect",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Icon_NotSelect",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG/Icon_NotSelect",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "3e3610da-8142-4f18-8684-b255d453c4e1",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "3e3610da-8142-4f18-8684-b255d453c4e1",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 12.0,
+                "y": 14.0
+              },
+              "OffsetMin": {
+                "x": -12.0,
+                "y": -14.0
+              },
+              "RectSize": {
+                "x": 24.0,
+                "y": 28.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "0338b1ee-14bc-4cbd-859a-e9d3df577add",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG/Icon_Check",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Icon_Check",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG/Icon_Check",
+          "nameEditable": true,
+          "enable": false,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "89fcd24d-64ac-4963-b35a-e1974a198394",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "89fcd24d-64ac-4963-b35a-e1974a198394",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 32.0,
+                "y": 24.0
+              },
+              "OffsetMin": {
+                "x": -28.0,
+                "y": -24.0
+              },
+              "RectSize": {
+                "x": 60.0,
+                "y": 48.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "0838e1b6-2ba6-4237-9807-d2b83f7b6e7f",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.ButtonComponent",
+        "jsonString": {
+          "name": "Layout_Protect",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "734d49a5-ea9a-4c2a-bc41-04c74b878386",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "734d49a5-ea9a-4c2a-bc41-04c74b878386",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 419.0,
+                "y": -163.0
+              },
+              "OffsetMin": {
+                "x": 33.0,
+                "y": -213.0
+              },
+              "RectSize": {
+                "x": 386.0,
+                "y": 50.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ButtonComponent",
+              "Colors": {
+                "NormalColor": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                },
+                "HighlightedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "PressedColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 1.0
+                },
+                "SelectedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "DisabledColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 0.5019608
+                },
+                "ColorMultiplier": 1.0,
+                "FadeDuration": 0.1
+              },
+              "ImageRUIDs": {
+                "HighlightedSprite": null,
+                "PressedSprite": null,
+                "SelectedSprite": null,
+                "DisabledSprite": null
+              },
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "b8f7ac67-f5de-474c-a3d7-d5efd066bab2",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Type",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Type",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Type",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "a23629ba-ea0b-47cd-8d99-1496f1e71c6f",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "a23629ba-ea0b-47cd-8d99-1496f1e71c6f",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 58.6048,
+                "y": 46.303
+              },
+              "OffsetMin": {
+                "x": -44.4652,
+                "y": 7.812998
+              },
+              "RectSize": {
+                "x": 103.07,
+                "y": 38.49
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "ab463a2e-cae8-4986-ae3c-7f80e3777a5b",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Type/DIa_Deco",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "DIa_Deco",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Type/DIa_Deco",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "7035881a-2251-4c15-90fc-f6e538c1b979",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "7035881a-2251-4c15-90fc-f6e538c1b979",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -17.0,
+                "y": 9.0
+              },
+              "OffsetMin": {
+                "x": -35.0,
+                "y": -9.0
+              },
+              "RectSize": {
+                "x": 18.0,
+                "y": 18.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "Position": {
+                "x": -68.535,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "8b64eff4-a840-4729-9f5e-c281bc64b8dc",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Type/DIa_Deco_1",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "DIa_Deco_1",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Type/DIa_Deco_1",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "5cddd281-8347-4525-914e-f9806976eb63",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "5cddd281-8347-4525-914e-f9806976eb63",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 35.0,
+                "y": 9.0
+              },
+              "OffsetMin": {
+                "x": 17.0,
+                "y": -9.0
+              },
+              "RectSize": {
+                "x": 18.0,
+                "y": 18.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "Position": {
+                "x": 68.535,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "e51f2142-ec41-447f-b0e7-14f877bf3b0b",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Img_Item",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Img_Item",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Img_Item",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "294a1b7d-09b7-4ae7-a7fe-1e97f1789c59",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "294a1b7d-09b7-4ae7-a7fe-1e97f1789c59",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 27.0065613,
+                "y": -1.99671936
+              },
+              "OffsetMin": {
+                "x": -11.0,
+                "y": -40.00328
+              },
+              "RectSize": {
+                "x": 38.00656,
+                "y": 38.00656
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "07b7e3ca-da68-4926-a51c-a947f9810d72",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Count",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Count",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/Text_Count",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "3e4180c8-15ba-4f66-ac65-eb2387f223d6",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "3e4180c8-15ba-4f66-ac65-eb2387f223d6",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 40.69,
+                "y": 19.245
+              },
+              "OffsetMin": {
+                "x": -40.69,
+                "y": -19.245
+              },
+              "RectSize": {
+                "x": 81.38,
+                "y": 38.49
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "48c7f782-4fac-4d34-830e-a84c5e55620d",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "SelectBG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "d2dc2599-7ca9-42bc-87aa-63db48a69eae",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "d2dc2599-7ca9-42bc-87aa-63db48a69eae",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 2,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -5.0,
+                "y": 20.0
+              },
+              "OffsetMin": {
+                "x": -45.0,
+                "y": -20.0
+              },
+              "RectSize": {
+                "x": 40.0,
+                "y": 40.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "ea78c540-2627-412c-bbec-0bb857f532f4",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG/Icon_NotSelect",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Icon_NotSelect",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG/Icon_NotSelect",
+          "nameEditable": true,
+          "enable": false,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "97da4778-e968-4798-8417-52fc8c7d9e26",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "97da4778-e968-4798-8417-52fc8c7d9e26",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 12.0,
+                "y": 14.0
+              },
+              "OffsetMin": {
+                "x": -12.0,
+                "y": -14.0
+              },
+              "RectSize": {
+                "x": 24.0,
+                "y": 28.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "d190f68b-1b1e-4715-9d1e-a43b7a3b060c",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG/Icon_Check",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Icon_Check",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG/Icon_Check",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "////////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "d30f7dac-9667-4c01-8fdc-93d3f6e62922",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "d30f7dac-9667-4c01-8fdc-93d3f6e62922",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 32.0,
+                "y": 24.0
+              },
+              "OffsetMin": {
+                "x": -28.0,
+                "y": -24.0
+              },
+              "RectSize": {
+                "x": 60.0,
+                "y": 48.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "fc0ca2a7-77ed-424c-8640-15786e5d2a84",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Deco_Line",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Deco_Line",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Deco_Line",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 11,
+          "pathConstraints": "/////fc0ca2a7-77ed-424c-8640-15786e5d2a84",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "fecbf0ca-f3ef-4e74-ae2f-c31fb92d08b6",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "fecbf0ca-f3ef-4e74-ae2f-c31fb92d08b6",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 3,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 1.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 381.7698,
+                "y": -768.0
+              },
+              "OffsetMin": {
+                "x": -381.7698,
+                "y": -772.0
+              },
+              "RectSize": {
+                "x": 763.5396,
+                "y": 4.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "7ec6f384-07c4-48d4-98d0-8753fba5c7a6",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "Layout_Cost",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 12,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "2e7e0826-d6bc-4a09-a6b4-025ee25f0b06",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "2e7e0826-d6bc-4a09-a6b4-025ee25f0b06",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 10,
+              "AnchorsMax": {
+                "x": 1.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -0.00020219716,
+                "y": -301.882355
+              },
+              "OffsetMin": {
+                "x": -0.00020219716,
+                "y": -368.117645
+              },
+              "RectSize": {
+                "x": 793.5396,
+                "y": 66.23529
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "d477e565-55f7-4d63-8841-c449f2d5e752",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Img_BG",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Img_BG",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Img_BG",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "b0cb4d48-7ebd-4215-9175-0b246fba4488",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "b0cb4d48-7ebd-4215-9175-0b246fba4488",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 345.753937,
+                "y": 25.3169937
+              },
+              "OffsetMin": {
+                "x": -244.303329,
+                "y": -25.3169937
+              },
+              "RectSize": {
+                "x": 590.057251,
+                "y": 50.6339874
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "5f997a49-4e54-447a-bb82-6431d9029355",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Img_BG/Img_Cost",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Img_Cost",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Img_BG/Img_Cost",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "ed219283-4de4-4b86-b93d-741f5964ed89",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "ed219283-4de4-4b86-b93d-741f5964ed89",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 60.0,
+                "y": 29.9999
+              },
+              "OffsetMin": {
+                "x": 0.0,
+                "y": -30.0001
+              },
+              "RectSize": {
+                "x": 60.0,
+                "y": 60.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "6d21d1e7-06e9-4cf2-9a1a-83ef4cebb3c2",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Text_Cost",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Text_Cost",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Text_Cost",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 1,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "783af8d7-3683-4e95-8971-693f81d834a7",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "783af8d7-3683-4e95-8971-693f81d834a7",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 179.116608,
+                "y": 19.985
+              },
+              "OffsetMin": {
+                "x": -56.1534,
+                "y": -19.985
+              },
+              "RectSize": {
+                "x": 235.27,
+                "y": 39.97
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "61dfe3b7-1743-42f0-90f6-01604ce90eea",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Label_Cost",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Label_Cost",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Label_Cost",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "//////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "b0709c16-a835-4ccd-9fbd-5bb3d6eca1e6",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "b0709c16-a835-4ccd-9fbd-5bb3d6eca1e6",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -264.865723,
+                "y": 18.505
+              },
+              "OffsetMin": {
+                "x": -323.5257,
+                "y": -18.505
+              },
+              "RectSize": {
+                "x": 58.66,
+                "y": 37.01
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "4c85db6b-f6fe-4c84-97ba-cea778db5828",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Label_Cost/Deco",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent",
+        "jsonString": {
+          "name": "Deco",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Cost/Label_Cost/Deco",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 0,
+          "pathConstraints": "///////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "440b08dc-7f33-4d55-9bec-f0f4bb94c1f6",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "440b08dc-7f33-4d55-9bec-f0f4bb94c1f6",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 1,
+              "AnchorsMax": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.0,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": -11.0,
+                "y": 9.0
+              },
+              "OffsetMin": {
+                "x": -29.0,
+                "y": -9.0
+              },
+              "RectSize": {
+                "x": 18.0,
+                "y": 18.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "Position": {
+                "x": -49.33,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "cc9a39f4-83ef-4a3a-a424-4370413a73b7",
+        "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Btn_Enchant",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.ButtonComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "Btn_Enchant",
+          "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Btn_Enchant",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 13,
+          "pathConstraints": "/////",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "869fb89b-9be8-43d8-8377-91a982545bab",
+            "sub_entity_id": "cc5fdfac-88c3-4f9d-be52-63433c01cf5f",
+            "root_entity_id": "56ba6beb-0e43-409f-be28-890356979249",
+            "replaced_model_id": null
+          },
+          "modelId": "cc5fdfac-88c3-4f9d-be52-63433c01cf5f",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 6,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.0
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.0
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 125.0108,
+                "y": 110.097328
+              },
+              "OffsetMin": {
+                "x": -125.011,
+                "y": 26.49984
+              },
+              "RectSize": {
+                "x": 250.0218,
+                "y": 83.59749
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.ButtonComponent",
+              "Colors": {
+                "NormalColor": {
+                  "r": 1.0,
+                  "g": 1.0,
+                  "b": 1.0,
+                  "a": 1.0
+                },
+                "HighlightedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "PressedColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 1.0
+                },
+                "SelectedColor": {
+                  "r": 0.9607843,
+                  "g": 0.9607843,
+                  "b": 0.9607843,
+                  "a": 1.0
+                },
+                "DisabledColor": {
+                  "r": 0.784313738,
+                  "g": 0.784313738,
+                  "b": 0.784313738,
+                  "a": 0.5019608
+                },
+                "ColorMultiplier": 1.0,
+                "FadeDuration": 0.1
+              },
+              "ImageRUIDs": {
+                "HighlightedSprite": null,
+                "PressedSprite": null,
+                "SelectedSprite": null,
+                "DisabledSprite": null
+              },
+              "OverrideSorting": false,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      }
+    ]
+  }
+}
