@@ -10,7 +10,7 @@ script UIEquipmentSlotWidget extends Component
 	property Entity ownerWindow = nil
 
 	method Color ColorForGrade(integer g)
-		-- 등급별 색은 _ItemGrade로 중앙화(§13). 레어(하늘)/에픽(보라)/유니크(노랑)/레전드리(초록).
+		-- 등급별 색
 		return _ItemGrade:ColorOf(g)
 	end
 

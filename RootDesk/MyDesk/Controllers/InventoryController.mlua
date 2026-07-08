@@ -317,11 +317,10 @@ script InventoryController extends Component
 		return false
 	end
 
-	@ExecSpace("Server")
-	method void RequestEquip(string part, string itemName, integer star, integer grade)
-		-- 장착 -> 가방에서 (이름+성급+등급) 1개 꺼내 페이퍼돌로(가방 -1). 기존 장착품 있으면 가방 반환(+1, 교체).
+	@ExecSpace("ServerOnly")
+	method void EquipInternal(string part, string itemName, integer star, integer grade)
+		-- 장착: 가방 -1 → 페이퍼돌, 기존품 있으면 가방 반환(검증은 EquipmentController)
 		if part == nil or part == "" or itemName == nil or itemName == "" then return end
-		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
 		local st = star or 0
 		local gr = grade or _ItemGrade.Rare
 		if not self:ConsumeItem(itemName, st, gr) then
@@ -338,9 +337,9 @@ script InventoryController extends Component
 		log("[Inventory] Equip " .. tostring(part) .. " = " .. tostring(itemName) .. " G" .. tostring(gr) .. " ★" .. tostring(st) .. " (가방 -1)")
 	end
 
-	@ExecSpace("Server")
-	method void RequestUnequip(string part)
-		-- 장착 해제 -> 페이퍼돌에서 내려 가방으로 반환(+1). 성급·등급 보존.
+	@ExecSpace("ServerOnly")
+	method void UnequipInternal(string part)
+		-- 해제: 페이퍼돌 → 가방 +1(성급·등급 보존)
 		if part == nil or part == "" then return end
 		if self._T.equipped == nil or self._T.equipped[part] == nil then return end
 		local e = self._T.equipped[part]

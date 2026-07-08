@@ -1,6 +1,5 @@
 @Component
 script UIInventoryPopup extends Component
-	-- §13 rename: InventoryUI -> UIInventoryPopup (rebind touch)
 
 	property string OpenButtonPath = "/ui/DefaultGroup/Btn_Inventory"
 
@@ -44,9 +43,16 @@ script UIInventoryPopup extends Component
 		-- LocalPlayer의 Inventory 컴포넌트(없으면 nil).
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
-		---@type Inventory
-		local inv = lp:GetComponent("script.Inventory")
+		---@type InventoryController
+		local inv = lp:GetComponent("script.InventoryController")
 		return inv
+	end
+
+	method any GetEquip()
+		-- LocalPlayer의 EquipmentController
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.EquipmentController")
 	end
 
 	method boolean HasColumn(string col)
@@ -87,7 +93,7 @@ script UIInventoryPopup extends Component
 	end
 
 	method string GradeName(integer g)
-		-- 등급 표기는 _ItemGrade로 중앙화(§13).
+		-- 등급 → 한글
 		return _ItemGrade:Name(g)
 	end
 
@@ -143,20 +149,12 @@ script UIInventoryPopup extends Component
 			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_1"),   -- 방어력
 			_EntityService:GetEntityByPath(base .. "/DetailPopup/StatV_2"),   -- 최대HP
 		}
-		-- 전투력 바(캐릭터 아래) + 스탯 정보 팝업
-		self._T.pbValue   = _EntityService:GetEntityByPath(base .. "/EquipPanel/PowerBar/Value")
-		self._T.statPopup = _EntityService:GetEntityByPath(base .. "/StatPopup")
-		self._T.spPower   = _EntityService:GetEntityByPath(base .. "/StatPopup/PowerRow/PValue")
-		self._T.spStat    = {
-			_EntityService:GetEntityByPath(base .. "/StatPopup/StatVal_0"),   -- 공격력
-			_EntityService:GetEntityByPath(base .. "/StatPopup/StatVal_1"),   -- 방어력
-			_EntityService:GetEntityByPath(base .. "/StatPopup/StatVal_2"),   -- 최대HP
-		}
 		self._T.avatarEnt = _EntityService:GetEntityByPath(base .. "/EquipPanel/Char/Avatar")
 		self._T.mesoValue = _EntityService:GetEntityByPath(base .. "/BagPanel/MesoBar/Value")
 		self._T.evtHandlers = {}
 		
 		if self._T.template ~= nil then self._T.template:SetEnable(false) end
+		_UIManager:Register("inventory", function() self:SetOpen(false) end)
 		
 		-- 열기 버튼 = (DefaultGroup/Btn_Inventory). OpenButtonPath로 연결.
 		if self.OpenButtonPath ~= "" then
@@ -168,9 +166,6 @@ script UIInventoryPopup extends Component
 		self:Wire(base .. "/DetailPopup/BtnEquip", function() self:OnEquipClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnDrop", function() self:OnDropClicked() end)
 		self:Wire(base .. "/DetailPopup/BtnCloseDetail", function() self:HideDetail() end)
-		-- 전투력 바 🔍 → 스탯 팝업 토글 / 팝업 CloseBtn → 닫기
-		self:Wire(base .. "/EquipPanel/PowerBar/SearchBtn", function() self:ToggleStat() end)
-		self:Wire(base .. "/StatPopup/CloseBtn", function() self:CloseStat() end)
 		
 		-- 탭 버튼 6개 (BagPanel/Tab_0 .. Tab_5)
 		local tabs = self:TabCategories()
@@ -245,15 +240,14 @@ script UIInventoryPopup extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
+		if open then _UIManager:RequestOpen("inventory") else _UIManager:NotifyClose("inventory") end
 		if self._T.dimmer ~= nil then self._T.dimmer.Enable = open end
 		self:SetPanel(self._T.equipPanel, open)
 		self:SetPanel(self._T.bagPanel, open)
 		self:HideDetail()
-		self:CloseStat()
 		if open then
 			self:SelectTab(self._T.tab or 1)
 			self:RefreshWorn()
-			self:RefreshPower()
 			self:RefreshMeso()
 		end
 	end
@@ -486,7 +480,9 @@ script UIInventoryPopup extends Component
 			return
 		end
 		-- 승급 UI 연동 시 선택 슬롯의 star/grade를 추적해 전달. 현재는 star0·레어(1) 기준.
-		inv:RequestEquip(part, self._T.curName, 0, 1)
+		local eq = self:GetEquip()
+		if eq == nil then log_warning("[UIInventoryPopup] EquipmentController 미부착") return end
+		eq:RequestEquip(part, self._T.curName, 0, 1)
 		self:HideDetail()
 	end
 
@@ -506,7 +502,9 @@ script UIInventoryPopup extends Component
 		local inv = self:GetInv()
 		if inv == nil then return end
 		if inv:GetEquipped(part) == "" then return end
-		inv:RequestUnequip(part)
+		local eq = self:GetEquip()
+		if eq == nil then return end
+		eq:RequestUnequip(part)
 	end
 
 	@ExecSpace("ClientOnly")
@@ -557,16 +555,6 @@ script UIInventoryPopup extends Component
 		if e ~= nil and e.Type == 1 then self:RefreshMeso() end
 	end
 
-	@ExecSpace("ClientOnly")
-	method any GetStats()
-		-- LocalPlayer의 CombatPowerSystem 컴포넌트(구 CombatStats, 없으면 nil). 전투력/스탯 계산 담당(Inventory와 분리).
-		local lp = _UserService.LocalPlayer
-		if lp == nil then return nil end
-		---@type CombatPowerSystem
-		local cs = lp:GetComponent("script.CombatPowerSystem")
-		return cs
-	end
-
 	method string Comma(number n)
 		-- 정수로 반올림 후 천단위 콤마 문자열.
 		local i = math.floor((n or 0) + 0.5)
@@ -586,60 +574,12 @@ script UIInventoryPopup extends Component
 		return neg .. out
 	end
 
-	@ExecSpace("ClientOnly")
-	method void RefreshPower()
-		-- 전투력 바 + 스탯 팝업 값 갱신(CombatPowerSystem 합산). 컴포넌트 없으면 0.
-		local atk, def, hp, power = 0, 0, 0, 0
-		local cs = self:GetStats()
-		if cs ~= nil then
-			local s = cs:GetStatSummary()
-			if s ~= nil then
-				atk = s.atk or 0
-				def = s.def or 0
-				hp = s.hp or 0
-				power = s.power or 0
-			end
-		end
-		local pstr = self:Comma(power)
-		if self._T.pbValue ~= nil then self._T.pbValue.TextComponent.Text = pstr end
-		if self._T.spPower ~= nil then self._T.spPower.TextComponent.Text = pstr end
-		if self._T.spStat ~= nil then
-			local vals = { atk, def, hp }
-			for i = 1, 3 do
-				if self._T.spStat[i] ~= nil then
-					self._T.spStat[i].TextComponent.Text = self:Comma(vals[i])
-				end
-			end
-		end
-	end
-
-	@ExecSpace("ClientOnly")
-	method void OpenStat()
-		-- 스탯 정보 팝업 열기(값 갱신 후 표시).
-		self:RefreshPower()
-		if self._T.statPopup ~= nil then self._T.statPopup.Enable = true end
-	end
-
-	@ExecSpace("ClientOnly")
-	method void CloseStat()
-		-- 스탯 정보 팝업 닫기.
-		if self._T.statPopup ~= nil then self._T.statPopup.Enable = false end
-	end
-
-	@ExecSpace("ClientOnly")
-	method void ToggleStat()
-		-- 🔍 클릭: 열려 있으면 닫고, 아니면 연다.
-		if self._T.statPopup == nil then return end
-		if self._T.statPopup.Enable then self:CloseStat() else self:OpenStat() end
-	end
-
 	@EventSender("LocalPlayer")
 	handler HandleInventoryChangedEvent(InventoryChangedEvent event)
 		-- 인벤 변경 → 그리드 재구성 + 착용칸 갱신.
 		if self:IsOpen() then
 			self:Rebuild()
 			self:RefreshWorn()
-			self:RefreshPower()
 		end
 	end
 

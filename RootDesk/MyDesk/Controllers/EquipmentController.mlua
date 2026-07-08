@@ -1,0 +1,71 @@
+@Component
+script EquipmentController extends Component
+	-- 장착/해제 서버 검증 후 InventoryController에 위임. 세트효과 훅 보유.
+
+	method InventoryController GetInv()
+		-- 같은 엔티티의 InventoryController
+		---@type InventoryController
+		local inv = self.Entity:GetComponent("script.InventoryController")
+		return inv
+	end
+
+	method any DataRow(string itemName)
+		-- ItemData의 name 행(없으면 nil)
+		local t = _DataService:GetTable("ItemData")
+		if t == nil then return nil end
+		return t:FindRow("Name", itemName)
+	end
+
+	method boolean IsEquipItem(string itemName)
+		-- 장비 카테고리인지
+		local row = self:DataRow(itemName)
+		if row == nil then return false end
+		return row:GetItem("Category") == "장비"
+	end
+
+	method string PartOf(string itemName)
+		-- 아이템의 정규 부위(없으면 "")
+		local row = self:DataRow(itemName)
+		if row == nil then return "" end
+		local p = row:GetItem("Part")
+		return (p ~= nil) and tostring(p) or ""
+	end
+
+	@ExecSpace("Server")
+	method void RequestEquip(string part, string itemName, integer star, integer grade)
+		-- 소유자·장비여부·부위 일치 검증 후 장착 위임
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		if part == nil or part == "" or itemName == nil or itemName == "" then return end
+		if not self:IsEquipItem(itemName) then
+			log_warning("[EquipmentController] 장비 아님: " .. tostring(itemName))
+			return
+		end
+		if self:PartOf(itemName) ~= part then
+			log_warning("[EquipmentController] 부위 불일치: " .. tostring(itemName) .. " → " .. tostring(part))
+			return
+		end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		inv:EquipInternal(part, itemName, star or 0, grade or _ItemGrade.Rare)
+	end
+
+	@ExecSpace("Server")
+	method void RequestUnequip(string part)
+		-- 소유자 검증 후 해제 위임
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		if part == nil or part == "" then return end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		inv:UnequipInternal(part)
+	end
+
+	method table GetSetBonus()
+		-- 세트효과 보너스(미구현, 세트 데이터 확정 후)
+		return { atk = 0, def = 0, hp = 0 }
+	end
+
+	@ExecSpace("ServerOnly")
+	method void OnBeginPlay()
+		log("[EquipmentController] ready")
+	end
+end

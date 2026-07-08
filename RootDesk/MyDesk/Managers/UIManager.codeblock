@@ -1,14 +1,14 @@
 {
   "Id": "",
   "GameId": "",
-  "EntryKey": "codeblock://f8c70d13-c545-4623-9e79-1ea3fc94f330",
+  "EntryKey": "codeblock://dcbd1313-bb5c-4ac8-8c24-e225b51f42d5",
   "ContentType": "x-mod/codeblock",
   "Content": "",
   "Usage": 0,
   "UsePublish": 1,
   "UseService": 0,
   "CoreVersion": "26.5.0.0",
-  "StudioVersion": "0.1.0.0",
+  "StudioVersion": "",
   "DynamicLoading": 0,
   "ContentProto": {
     "Use": "Json",
@@ -22,10 +22,10 @@
         "Minor": 1
       },
       "Description": "",
-      "Id": "f8c70d13-c545-4623-9e79-1ea3fc94f330",
+      "Id": "dcbd1313-bb5c-4ac8-8c24-e225b51f42d5",
       "Language": 1,
-      "Name": "UIInventoryPopup",
-      "Type": 1,
+      "Name": "UIManager",
+      "Type": 5,
       "Source": 0,
       "Target": null
     }

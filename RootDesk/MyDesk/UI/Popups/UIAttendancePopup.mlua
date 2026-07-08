@@ -36,6 +36,7 @@ script UIAttendancePopup extends Component
 		-- 하위 엔티티 캐시 + 버튼 배선 + 초기 닫힘.
 		local base = self.Entity.Path
 		self._T.handlers = {}
+		_UIManager:Register("attendance", function() self:SetOpen(false) end)
 		self._T.dimmer = _EntityService:GetEntityByPath(base .. "/Dimmer")
 		self._T.board  = _EntityService:GetEntityByPath(base .. "/Board")
 		self._T.icon   = _EntityService:GetEntityByPath(base .. "/Board/RewardIcon")
@@ -80,6 +81,7 @@ script UIAttendancePopup extends Component
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
 		-- 열 때 보상/버튼 상태 갱신.
+		if open then _UIManager:RequestOpen("attendance") else _UIManager:NotifyClose("attendance") end
 		if self._T.dimmer ~= nil then self._T.dimmer.Enable = open end
 		if self._T.board ~= nil then self._T.board.Enable = open end
 		if open then self:RefreshBoard() end

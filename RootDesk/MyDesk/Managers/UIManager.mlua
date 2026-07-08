@@ -1,0 +1,56 @@
+@Logic
+script UIManager extends Logic
+	-- 메인 팝업 배타 관리(하나만 열림). 팝업이 Register 후 열 때 RequestOpen / 닫을 때 NotifyClose 호출.
+
+	method void EnsureState()
+		if self._T.reg == nil then self._T.reg = {} end
+	end
+
+	method void Register(string id, any closerFn)
+		-- 팝업 id → 닫기 함수 등록
+		self:EnsureState()
+		self._T.reg[id] = closerFn
+	end
+
+	method void RequestOpen(string id)
+		-- 열려있는 다른 메인 팝업을 닫고 현재 id 기록
+		self:EnsureState()
+		local cur = self._T.openId
+		if cur ~= nil and cur ~= id then
+			local closer = self._T.reg[cur]
+			if closer ~= nil then closer() end
+		end
+		self._T.openId = id
+	end
+
+	method void NotifyClose(string id)
+		-- 이 팝업이 닫혔음을 통지
+		self:EnsureState()
+		if self._T.openId == id then self._T.openId = nil end
+	end
+
+	method boolean IsOpen(string id)
+		return self._T.openId == id
+	end
+
+	method string CurrentOpen()
+		-- 열린 메인 팝업 id(없으면 "")
+		return self._T.openId or ""
+	end
+
+	method void CloseTop()
+		-- 열린 메인 팝업 닫기
+		self:EnsureState()
+		local cur = self._T.openId
+		if cur ~= nil then
+			local closer = self._T.reg[cur]
+			if closer ~= nil then closer() end
+			self._T.openId = nil
+		end
+	end
+
+	method void OnBeginPlay()
+		self:EnsureState()
+		log("[UIManager] ready")
+	end
+end

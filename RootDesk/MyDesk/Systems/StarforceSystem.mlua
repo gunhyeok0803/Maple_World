@@ -3,7 +3,7 @@ script StarforceSystem extends Component
 
 	property integer MaxStar = 20
 
-	-- 레전드리 등급 상수는 _ItemGrade.Legendary로 중앙화(§13). 스타포스는 레전드리 전용.
+	-- 스타포스는 레전드리 전용(등급은 _ItemGrade.Legendary)
 
 	method InventoryController GetInv()
 		-- 같은 엔티티의 InventoryController(없으면 nil).

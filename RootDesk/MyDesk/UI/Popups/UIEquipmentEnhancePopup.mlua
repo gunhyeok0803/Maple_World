@@ -48,12 +48,12 @@ script UIEquipmentEnhancePopup extends Component
 	end
 
 	method string GradeName(integer g)
-		-- 등급 표기는 _ItemGrade로 중앙화(§13).
+		-- 등급 → 한글
 		return _ItemGrade:Name(g)
 	end
 
 	method Color GradeColor(integer g)
-		-- 등급 색은 _ItemGrade로 중앙화(§13). 레어(하늘)/에픽(보라)/유니크(노랑)/레전드리(초록).
+		-- 등급별 색
 		return _ItemGrade:ColorOf(g)
 	end
 
@@ -84,6 +84,7 @@ script UIEquipmentEnhancePopup extends Component
 		self._T.listMap = {}
 		self._T.sel = nil
 		self._T.tab = 0
+		_UIManager:Register("enhance", function() self:Close() end)
 
 		local p = self._T.popup
 		self._T.eMidIcon  = _EntityService:GetEntityByPath(p .. "/MidIcon")
@@ -145,6 +146,7 @@ script UIEquipmentEnhancePopup extends Component
 
 	@ExecSpace("ClientOnly")
 	method void Open()
+		_UIManager:RequestOpen("enhance")
 		self:SetPopup(true)
 		self:BuildList()
 		self:SetTab(self._T.tab or 0)
@@ -154,6 +156,7 @@ script UIEquipmentEnhancePopup extends Component
 	@ExecSpace("ClientOnly")
 	method void Close()
 		self:SetPopup(false)
+		_UIManager:NotifyClose("enhance")
 	end
 
 	@ExecSpace("ClientOnly")
