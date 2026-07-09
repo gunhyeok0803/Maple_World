@@ -90,9 +90,6 @@ script UIPromotePanel extends Component
 		self:Wire(self.btnTabColl, function() self:SelectTab(2) end)
 		self:Wire(self.btnCloseMain, function() self:SetOpen(false) end)
 		_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
-		if isvalid(self.panelWindow) and self.panelWindow.UITransformComponent ~= nil then
-			_UILogic:SetSiblingIndex(self.panelWindow.UITransformComponent, 0)
-		end
 		self:ApplyVisibility(false)
 		log("[UIPromotePanel] OnBeginPlay ok")
 	end
@@ -140,6 +137,11 @@ script UIPromotePanel extends Component
 		-- 열기/닫기 + UIManager 통지. 열 때 목록 구축.
 		self:ApplyVisibility(open)
 		if open then
+			-- 창 프레임을 형제 맨 뒤로(1회) — OnBeginPlay 시점 호출은 타 그룹 초기화를 끊으므로 여기서.
+			if self._T.sibFixed ~= true and isvalid(self.panelWindow) and self.panelWindow.UITransformComponent ~= nil then
+				_UILogic:SetSiblingIndex(self.panelWindow.UITransformComponent, 0)
+				self._T.sibFixed = true
+			end
 			_UIManager:RequestOpen(self.PanelId)
 			self:BuildList()
 			self:RefreshInfo()

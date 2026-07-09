@@ -61,10 +61,6 @@ script UIEnhancePanel extends Component
 		self:Wire(self.btnCloseFlame, function() self:SetOpen(false) end)
 		self:Wire(self.btnCancelPot, function() self:SetOpen(false) end)
 		_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
-		-- 창 프레임을 형제 맨 뒤로(배경), 상세 콘텐츠가 위에 오도록
-		if isvalid(self.panelWindow) and self.panelWindow.UITransformComponent ~= nil then
-			_UILogic:SetSiblingIndex(self.panelWindow.UITransformComponent, 0)
-		end
 		self:ApplyVisibility(false)
 		log("[UIEnhancePanel] OnBeginPlay ok")
 	end
@@ -141,6 +137,11 @@ script UIEnhancePanel extends Component
 		-- 패널 열기/닫기 + UIManager 통지. 열 때 좌측 리스트 구축 + 자동 선택.
 		self:ApplyVisibility(open)
 		if open then
+			-- 창 프레임을 형제 맨 뒤로(1회) — OnBeginPlay 시점 호출은 타 그룹 초기화를 끊으므로 여기서.
+			if self._T.sibFixed ~= true and isvalid(self.panelWindow) and self.panelWindow.UITransformComponent ~= nil then
+				_UILogic:SetSiblingIndex(self.panelWindow.UITransformComponent, 0)
+				self._T.sibFixed = true
+			end
 			_UIManager:RequestOpen(self.PanelId)
 			self:BuildList()
 			if self._T.selected == nil then self:AutoSelect() end
