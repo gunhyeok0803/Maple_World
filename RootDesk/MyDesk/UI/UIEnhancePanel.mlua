@@ -137,7 +137,7 @@ script UIEnhancePanel extends Component
 		-- 패널 열기/닫기 + UIManager 통지. 열 때 좌측 리스트 구축 + 자동 선택.
 		self:ApplyVisibility(open)
 		if open then
-			-- 창 프레임을 형제 맨 뒤로(1회) — OnBeginPlay 시점 호출은 타 그룹 초기화를 끊으므로 여기서.
+			-- 창 프레임을 형제 맨 뒤로(1회). 엔진 sibling 순서는 .ui 배열이 아니라 이 호출로만 제어됨.
 			if self._T.sibFixed ~= true and isvalid(self.panelWindow) and self.panelWindow.UITransformComponent ~= nil then
 				_UILogic:SetSiblingIndex(self.panelWindow.UITransformComponent, 0)
 				self._T.sibFixed = true
