@@ -1,0 +1,103 @@
+@Component
+script UISideMenu extends Component
+
+	-- 사이드 메뉴(메이플키우기 메커니즘): 햄버거 토글 → 우측 도킹 다크 패널, 타일로 각 패널 진입.
+	-- UIManager 배타 관리에 "sidemenu"로 등록(메뉴 열면 다른 메인 팝업 닫힘).
+
+	property Entity panelSide = "3e1ed48c-973c-4980-91ea-af7ec0a159b9"
+
+	property ButtonComponent btnMenu = "a3c4995d-bc76-4e3c-a1ca-ac3dc09c1bcb"
+
+	property ButtonComponent btnClose = "efec9c9a-d427-4f9d-83f0-76f218c9977b"
+
+	property ButtonComponent tileEnhance = "fae9a143-6e45-4483-aaca-2807ad7acf1b"
+
+	property ButtonComponent tileUpgrade = "f2d3d1db-041f-4ffe-9c31-3e8d60428cf4"
+
+	property string MenuId = "sidemenu"
+
+	method void Wire(any btn, any clickFn)
+		-- 버튼 클릭 배선(없으면 경고). 핸들러는 _T.handlers에 보관.
+		if btn == nil or isvalid(btn) == false then
+			log_warning("[SideMenu] 배선 대상 없음")
+			return
+		end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		local h = btn.Entity:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = btn.Entity, h = h }
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 배선: 햄버거 토글 / X 닫기 / 타일 2개. UIManager 등록.
+		self._T.handlers = {}
+		self:Wire(self.btnMenu, function() self:Toggle() end)
+		self:Wire(self.btnClose, function() self:SetOpen(false) end)
+		self:Wire(self.tileEnhance, function() self:OnTileEnhance() end)
+		self:Wire(self.tileUpgrade, function() self:OnTileUpgrade() end)
+		_UIManager:Register(self.MenuId, function() self:SetOpen(false) end)
+		if isvalid(self.panelSide) then self.panelSide.Enable = false end
+		log("[UISideMenu] OnBeginPlay ok")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEndPlay()
+		-- 배선 해제
+		if self._T.handlers ~= nil then
+			for i, rec in ipairs(self._T.handlers) do
+				if isvalid(rec.e) then rec.e:DisconnectEvent(ButtonClickEvent, rec.h) end
+			end
+		end
+		self._T.handlers = nil
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean IsOpen()
+		-- 패널 열림 상태
+		return isvalid(self.panelSide) and self.panelSide.Enable == true
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetOpen(boolean open)
+		-- 패널 열기/닫기 + UIManager 통지
+		if isvalid(self.panelSide) == false then
+			log_warning("[SideMenu] panelSide 없음")
+			return
+		end
+		self.panelSide.Enable = open
+		if open then
+			_UIManager:RequestOpen(self.MenuId)
+		else
+			_UIManager:NotifyClose(self.MenuId)
+		end
+		log("[UISideMenu] " .. (open and "열림" or "닫힘"))
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Toggle()
+		-- 햄버거 토글
+		self:SetOpen(not self:IsOpen())
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnTileEnhance()
+		-- [장비 슬롯 강화] 진입 → 강화 패널 열기(스타포스 탭)
+		self:SetOpen(false)
+		local ctrl = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Controller")
+		if ctrl == nil then
+			log_warning("[UISideMenu] EnhanceGroup/Controller 없음")
+			return
+		end
+		---@type UIEnhancePanel
+		local panel = ctrl:GetComponent("script.UIEnhancePanel")
+		if panel ~= nil then panel:Open(1) end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnTileUpgrade()
+		-- [승급/컬렉션] 진입 — 3-c 패널 연결 예정(현재 placeholder)
+		log("[UISideMenu] 타일: 승급/컬렉션 (패널 연결 예정)")
+		self:SetOpen(false)
+	end
+
+end

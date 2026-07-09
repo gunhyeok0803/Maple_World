@@ -1,4 +1,4 @@
-OptionId,PartClass,Stat,MinValue,MaxValue,Weight
+﻿OptionId,PartClass,Stat,MinValue,MaxValue,Weight
 FW_ATK,무기,Attack,3,9,30
 FW_STAT,무기,MainStat,5,15,30
 FW_CDMG,무기,CritDmg,2,6,15

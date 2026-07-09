@@ -1,0 +1,134 @@
+@Component
+script UIEnhancePanel extends Component
+
+	-- 장비 슬롯 강화 패널(팀 레이아웃): 좌측 장비 선택 + 우측 탭 3(스타포스/잠재능력/환생의 불꽃).
+	-- 탭 콘텐츠 = 팩 샘플 3종(StarForce/PotentialSelect/PotentialReset) Enable 토글. UIManager "enhance" 배타 등록.
+
+	property Entity panelEquip = "e6dbebd9-705f-4202-a0b1-6cfa7f43dd91"
+
+	property Entity contentStar = "56ba6beb-0e43-409f-be28-890356979249"
+
+	property Entity contentPot = "c3686eec-3a1b-4872-96d5-81196bb3c888"
+
+	property Entity contentFlame = "b0f9b63a-b1bc-49ad-b1b6-4fce7c3b7b02"
+
+	property ButtonComponent btnTabStar = "ada8cf01-1bce-4562-8b71-56f24f604744"
+
+	property ButtonComponent btnTabPot = "03529469-2968-4d18-ab0b-4f50a979e1cf"
+
+	property ButtonComponent btnTabFlame = "5f474730-5b6a-45b5-909a-75615709aa11"
+
+	property ButtonComponent btnCloseStar = "293e8b3d-9294-42b8-9037-42d1d683657b"
+
+	property ButtonComponent btnCloseFlame = "c59df9fe-646d-4c85-9930-fd52c0ebd3b5"
+
+	property ButtonComponent btnCancelPot = "4ee142ac-2f3e-4fd5-a60a-6ab9484debd3"
+
+	property string PanelId = "enhance"
+
+	-- 탭 버튼 스프라이트(팩 W190 버튼: 선택/비선택)
+	property string TabOnRUID = "c2660e96661c4a6e8dc8eaa17eb0655c"
+
+	property string TabOffRUID = "50426b5b1ee44bc5a1c10355b0e9ad03"
+
+	method void Wire(any btn, any clickFn)
+		-- 버튼 클릭 배선(없으면 경고). 핸들러는 _T.handlers에 보관.
+		if btn == nil or isvalid(btn) == false then
+			log_warning("[Enhance] 배선 대상 없음")
+			return
+		end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		local h = btn.Entity:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = btn.Entity, h = h }
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 배선: 탭 3 / 닫기(스타포스·환생 X, 잠재 취소). UIManager 등록. 초기 전부 닫힘.
+		self._T.handlers = {}
+		self._T.tab = 1
+		self:Wire(self.btnTabStar, function() self:SelectTab(1) end)
+		self:Wire(self.btnTabPot, function() self:SelectTab(2) end)
+		self:Wire(self.btnTabFlame, function() self:SelectTab(3) end)
+		self:Wire(self.btnCloseStar, function() self:SetOpen(false) end)
+		self:Wire(self.btnCloseFlame, function() self:SetOpen(false) end)
+		self:Wire(self.btnCancelPot, function() self:SetOpen(false) end)
+		_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
+		self:ApplyVisibility(false)
+		log("[UIEnhancePanel] OnBeginPlay ok")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEndPlay()
+		-- 배선 해제
+		if self._T.handlers ~= nil then
+			for i, rec in ipairs(self._T.handlers) do
+				if isvalid(rec.e) then rec.e:DisconnectEvent(ButtonClickEvent, rec.h) end
+			end
+		end
+		self._T.handlers = nil
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ApplyVisibility(boolean open)
+		-- 좌측 패널/탭 버튼/탭 콘텐츠 Enable 일괄 반영(열림 시 현재 탭 콘텐츠만 켬).
+		if isvalid(self.panelEquip) then self.panelEquip.Enable = open end
+		local tabs = { self.btnTabStar, self.btnTabPot, self.btnTabFlame }
+		for i, btn in ipairs(tabs) do
+			if btn ~= nil and isvalid(btn) then btn.Entity.Enable = open end
+		end
+		local t = self._T.tab or 1
+		if isvalid(self.contentStar) then self.contentStar.Enable = (open and t == 1) end
+		if isvalid(self.contentPot) then self.contentPot.Enable = (open and t == 2) end
+		if isvalid(self.contentFlame) then self.contentFlame.Enable = (open and t == 3) end
+		self:RefreshTabVisual()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshTabVisual()
+		-- 선택 탭 = 파랑(primary), 비선택 = 회색 스프라이트.
+		local t = self._T.tab or 1
+		local tabs = { self.btnTabStar, self.btnTabPot, self.btnTabFlame }
+		for i, btn in ipairs(tabs) do
+			if btn ~= nil and isvalid(btn) then
+				local sr = btn.Entity.SpriteGUIRendererComponent
+				if isvalid(sr) then sr.ImageRUID = (i == t) and self.TabOnRUID or self.TabOffRUID end
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean IsOpen()
+		-- 패널 열림 상태(좌측 패널 기준)
+		return isvalid(self.panelEquip) and self.panelEquip.Enable == true
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetOpen(boolean open)
+		-- 패널 열기/닫기 + UIManager 통지
+		self:ApplyVisibility(open)
+		if open then
+			_UIManager:RequestOpen(self.PanelId)
+		else
+			_UIManager:NotifyClose(self.PanelId)
+		end
+		log("[UIEnhancePanel] " .. (open and "열림" or "닫힘") .. " (탭 " .. tostring(self._T.tab or 1) .. ")")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SelectTab(integer idx)
+		-- 탭 전환(1=스타포스, 2=잠재, 3=환생) — 열림 상태에서 콘텐츠 교체.
+		if idx == nil or idx < 1 or idx > 3 then idx = 1 end
+		self._T.tab = idx
+		self:ApplyVisibility(self:IsOpen())
+		log("[UIEnhancePanel] 탭 " .. tostring(idx))
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Open(integer tabIdx)
+		-- 외부(사이드 메뉴)에서 특정 탭으로 열기.
+		self._T.tab = (tabIdx ~= nil and tabIdx >= 1 and tabIdx <= 3) and tabIdx or 1
+		self:SetOpen(true)
+	end
+
+end

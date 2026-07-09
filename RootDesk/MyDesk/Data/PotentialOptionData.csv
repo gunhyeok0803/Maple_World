@@ -1,4 +1,4 @@
-OptionId,PartClass,PotGrade,Stat,Value,Weight
+﻿OptionId,PartClass,PotGrade,Stat,Value,Weight
 W1_ATK,무기,1,Attack,3,10
 W1_STAT,무기,1,MainStat,5,10
 W1_HP,무기,1,MaxHP,50,10

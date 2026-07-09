@@ -2,6 +2,14 @@
 script PotentialSystem extends Component
 
 	-- 잠재능력(§06): 레전드리 전용. 큐브(비용)로 잠재 등급·옵션 리롤. 옵션은 장비 종류별 풀(PotentialOptionData).
+	-- 선택형(확정 결정): 리롤 = 비용 소모 + 결과 pending 보관(아이템 불변) → 선택(적용)/취소(기존 유지). 재리롤 시 기존 pending 폐기.
+
+	-- 리롤 결과 동기화(클라 Before/After 표시용): PendingPot=""이면 대기 없음, PendingTarget="slot:인덱스"|"equip:부위"
+	@Sync
+	property string PendingPot = ""
+
+	@Sync
+	property string PendingTarget = ""
 
 	property integer OptionLines = 3
 
@@ -159,8 +167,30 @@ script PotentialSystem extends Component
 	end
 
 	@ExecSpace("ServerOnly")
+	method void SetPending(string mode, string key, table info)
+		-- 리롤 결과를 pending으로 보관(아이템 불변). 기존 pending은 자동 폐기(비용 환불 없음 — 메이플 표준).
+		self._T.pending = {
+			mode = mode, key = key,
+			name = info.name, star = info.star or 0, grade = info.grade or 1,
+			oldPot = info.pot or "", flame = info.flame or "",
+			newPot = self._T.lastPot,
+		}
+		self.PendingPot = self._T.lastPot
+		self.PendingTarget = mode .. ":" .. key
+		log("[Pot] 리롤 대기(" .. mode .. ":" .. key .. ") " .. tostring(info.name) .. " 잠재 G" .. tostring(self._T.lastGradeFrom) .. "→G" .. tostring(self._T.lastGradeTo) .. " [" .. self._T.lastPot .. "] (선택/취소 대기)")
+	end
+
+	@ExecSpace("ServerOnly")
+	method void ClearPending()
+		-- pending 폐기(취소 또는 적용 후).
+		self._T.pending = nil
+		self.PendingPot = ""
+		self.PendingTarget = ""
+	end
+
+	@ExecSpace("ServerOnly")
 	method void DoReroll(integer slotIndex)
-		-- 인벤 슬롯 잠재 리롤(권위): 검증·비용 후 해당 개체 1개를 새 pot으로 교체(환생옵션 보존).
+		-- 인벤 슬롯 잠재 리롤(권위): 검증·비용 소모 후 결과를 pending으로 보관(선택형 — 즉시 적용 안 함).
 		local inv = self:GetInv()
 		if inv == nil then return end
 		local info = inv:GetSlotInfo(slotIndex)
@@ -169,14 +199,12 @@ script PotentialSystem extends Component
 			return
 		end
 		if not self:RerollFor(info.name, info.star or 0, info.grade or 1, info.pot or "") then return end
-		inv:ConsumeItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "")
-		inv:AddItemEx(info.name, info.star or 0, info.grade or 1, self._T.lastPot, info.flame or "")
-		log("[Pot] 리롤(가방) " .. tostring(info.name) .. " 잠재 G" .. tostring(self._T.lastGradeFrom) .. "→G" .. tostring(self._T.lastGradeTo) .. " [" .. self._T.lastPot .. "]")
+		self:SetPending("slot", tostring(slotIndex), info)
 	end
 
 	@ExecSpace("ServerOnly")
 	method void DoRerollEquipped(string part)
-		-- 착용 중 장비 잠재 리롤(권위): 페이퍼돌 개체의 pot 갱신(환생옵션 보존).
+		-- 착용 중 장비 잠재 리롤(권위): 검증·비용 소모 후 결과를 pending으로 보관(선택형).
 		local inv = self:GetInv()
 		if inv == nil then return end
 		local e = inv:GetEquippedInfo(part)
@@ -185,8 +213,47 @@ script PotentialSystem extends Component
 			return
 		end
 		if not self:RerollFor(e.name, e.star or 0, e.grade or 1, e.pot or "") then return end
-		inv:SetEquippedInvest(part, self._T.lastPot, e.flame or "")
-		log("[Pot] 리롤(착용) " .. tostring(part) .. "/" .. tostring(e.name) .. " 잠재 G" .. tostring(self._T.lastGradeFrom) .. "→G" .. tostring(self._T.lastGradeTo) .. " [" .. self._T.lastPot .. "]")
+		self:SetPending("equip", part, e)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoApply()
+		-- [선택]: pending 결과를 대상 개체에 적용. 대상이 리롤 시점과 달라졌으면 안전 폐기.
+		local p = self._T.pending
+		if p == nil then
+			log("[Pot] 적용할 리롤 결과 없음")
+			return
+		end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		if p.mode == "slot" then
+			-- 인덱스 대신 (이름+성급+등급+구pot+환생) 완전 일치 개체를 소모/재지급 — 인덱스 변동에 안전
+			if inv:CountItemEx(p.name, p.star, p.grade, p.oldPot, p.flame) < 1 then
+				log_warning("[Pot] 적용 실패 — 대상 개체 없음(변경됨): " .. tostring(p.name))
+				self:ClearPending()
+				return
+			end
+			inv:ConsumeItemEx(p.name, p.star, p.grade, p.oldPot, p.flame)
+			inv:AddItemEx(p.name, p.star, p.grade, p.newPot, p.flame)
+		else
+			local e = inv:GetEquippedInfo(p.key)
+			if e == nil or e.name ~= p.name or (e.pot or "") ~= p.oldPot or (e.flame or "") ~= p.flame then
+				log_warning("[Pot] 적용 실패 — 장착 상태 변경됨: " .. tostring(p.key))
+				self:ClearPending()
+				return
+			end
+			inv:SetEquippedInvest(p.key, p.newPot, p.flame)
+		end
+		log("[Pot] 적용! " .. tostring(p.name) .. " [" .. p.newPot .. "]")
+		self:ClearPending()
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoDiscard()
+		-- [취소]: pending 폐기, 기존 잠재 유지(비용 환불 없음).
+		if self._T.pending == nil then return end
+		log("[Pot] 취소 — 기존 잠재 유지 (" .. tostring(self._T.pending.name) .. ")")
+		self:ClearPending()
 	end
 
 	@ExecSpace("Server")
@@ -201,6 +268,20 @@ script PotentialSystem extends Component
 		-- 클라 잠재 리롤 요청(착용) → 본인 검증 후 DoRerollEquipped.
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
 		self:DoRerollEquipped(part)
+	end
+
+	@ExecSpace("Server")
+	method void RequestApply()
+		-- 클라 [선택] 요청 → 본인 검증 후 DoApply.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoApply()
+	end
+
+	@ExecSpace("Server")
+	method void RequestDiscard()
+		-- 클라 [취소] 요청 → 본인 검증 후 DoDiscard.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoDiscard()
 	end
 
 	method void OnBeginPlay()
