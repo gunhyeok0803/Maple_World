@@ -1,0 +1,373 @@
+@Component
+script UIPromotePanel extends Component
+
+	-- 승급/컬렉션 패널(팀 레이아웃, 탭 2): 승급=§05 동일 장비 N개→상위 1개(100% 확정), 컬렉션=도감 등록.
+	-- 기능 뼈대 우선(UI 전면 수정은 기능 완료 후 일괄 — 사용자 지시). UIManager "promote" 배타 등록.
+
+	property Entity panelWindow = "e5868ad4-7804-4df0-abda-dd602a683f79"
+
+	property ButtonComponent btnCloseMain = "d88e7b21-ec12-4b1f-a843-ca0ffb743d1d"
+
+	property ButtonComponent btnTabPromote = "0960241c-a988-41c0-8dbb-84e4a664ca85"
+
+	property ButtonComponent btnTabColl = "b77b2e82-a495-46b6-9aa6-83056650781e"
+
+	property Entity panelPromote = "c315f66d-e282-4696-8425-d2e4b578ad39"
+
+	property Entity panelColl = "78ad3692-54f7-4343-ab89-1506dcb137f0"
+
+	property string PanelId = "promote"
+
+	property string TabOnRUID = "c2660e96661c4a6e8dc8eaa17eb0655c"
+
+	property string TabOffRUID = "50426b5b1ee44bc5a1c10355b0e9ad03"
+
+	method void Wire(any btn, any clickFn)
+		-- 버튼 클릭 배선(없으면 경고).
+		if btn == nil or isvalid(btn) == false then
+			log_warning("[Promote] 배선 대상 없음")
+			return
+		end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		local h = btn.Entity:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = btn.Entity, h = h }
+	end
+
+	method void WireEnt(any ent, any clickFn)
+		-- 엔티티(ButtonComponent 보유) 클릭 배선.
+		if ent == nil or isvalid(ent) == false then
+			log_warning("[Promote] 배선 대상 엔티티 없음")
+			return
+		end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		local h = ent:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = ent, h = h }
+	end
+
+	method InventoryController GetInv()
+		-- 로컬 플레이어의 InventoryController(없으면 nil).
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		---@type InventoryController
+		local inv = lp:GetComponent("script.InventoryController")
+		return inv
+	end
+
+	method any GetUpgrade()
+		-- 로컬 플레이어의 EquipmentUpgradeSystem.
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.EquipmentUpgradeSystem")
+	end
+
+	method any GetCollection()
+		-- 로컬 플레이어의 CollectionSystem.
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		return lp:GetComponent("script.CollectionSystem")
+	end
+
+	method integer HaveOf(string name, integer grade)
+		-- 클라 기준 ★0 순정 보유량(GetSlots 합산 — 서버 CountItem은 클라에서 못 씀).
+		local inv = self:GetInv()
+		if inv == nil then return 0 end
+		local total = 0
+		for i, s in ipairs(inv:GetSlots()) do
+			if s.name == name and (s.grade or 1) == grade and (s.star or 0) == 0 and (s.pot or "") == "" and (s.flame or "") == "" then
+				total = total + (s.count or 0)
+			end
+		end
+		return total
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 배선: 탭 2/닫기. UIManager 등록. 초기 닫힘.
+		self._T.handlers = {}
+		self._T.tab = 1
+		self._T.times = 1
+		self:Wire(self.btnTabPromote, function() self:SelectTab(1) end)
+		self:Wire(self.btnTabColl, function() self:SelectTab(2) end)
+		self:Wire(self.btnCloseMain, function() self:SetOpen(false) end)
+		_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
+		if isvalid(self.panelWindow) and self.panelWindow.UITransformComponent ~= nil then
+			_UILogic:SetSiblingIndex(self.panelWindow.UITransformComponent, 0)
+		end
+		self:ApplyVisibility(false)
+		log("[UIPromotePanel] OnBeginPlay ok")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEndPlay()
+		-- 배선 해제
+		if self._T.handlers ~= nil then
+			for i, rec in ipairs(self._T.handlers) do
+				if isvalid(rec.e) then rec.e:DisconnectEvent(ButtonClickEvent, rec.h) end
+			end
+		end
+		self._T.handlers = nil
+		if self._T.invHandler ~= nil and self._T.invHandlerOwner ~= nil and isvalid(self._T.invHandlerOwner) then
+			self._T.invHandlerOwner:DisconnectEvent(InventoryChangedEvent, self._T.invHandler)
+		end
+		self._T.invHandler = nil
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ApplyVisibility(boolean open)
+		-- 창/탭/탭 콘텐츠 Enable 반영.
+		if isvalid(self.panelWindow) then self.panelWindow.Enable = open end
+		local tabs = { self.btnTabPromote, self.btnTabColl }
+		for i, btn in ipairs(tabs) do
+			if btn ~= nil and isvalid(btn) then
+				btn.Entity.Enable = open
+				local sr = btn.Entity.SpriteGUIRendererComponent
+				if isvalid(sr) then sr.ImageRUID = (i == (self._T.tab or 1)) and self.TabOnRUID or self.TabOffRUID end
+			end
+		end
+		local t = self._T.tab or 1
+		if isvalid(self.panelPromote) then self.panelPromote.Enable = (open and t == 1) end
+		if isvalid(self.panelColl) then self.panelColl.Enable = (open and t == 2) end
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean IsOpen()
+		-- 열림 상태(창 기준)
+		return isvalid(self.panelWindow) and self.panelWindow.Enable == true
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetOpen(boolean open)
+		-- 열기/닫기 + UIManager 통지. 열 때 목록 구축.
+		self:ApplyVisibility(open)
+		if open then
+			_UIManager:RequestOpen(self.PanelId)
+			self:BuildList()
+			self:RefreshInfo()
+		else
+			_UIManager:NotifyClose(self.PanelId)
+		end
+		log("[UIPromotePanel] " .. (open and "열림" or "닫힘") .. " (탭 " .. tostring(self._T.tab or 1) .. ")")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SelectTab(integer idx)
+		-- 탭 전환(1=승급, 2=컬렉션). 목록 필터가 달라 재구축.
+		if idx == nil or idx < 1 or idx > 2 then idx = 1 end
+		self._T.tab = idx
+		self._T.sel = nil
+		self._T.times = 1
+		self:ApplyVisibility(self:IsOpen())
+		if self:IsOpen() then
+			self:BuildList()
+			self:RefreshInfo()
+		end
+		log("[UIPromotePanel] 탭 " .. tostring(idx))
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Open(integer tabIdx)
+		-- 외부(사이드 메뉴)에서 열기.
+		self._T.tab = (tabIdx == 2) and 2 or 1
+		self:SetOpen(true)
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean EnsureWiredTab()
+		-- 현재 탭 콘텐츠 노드 배선(그리드/셀 템플릿/버튼, 탭별 1회).
+		local root = (self._T.tab or 1) == 1 and self.panelPromote or self.panelColl
+		if root == nil or isvalid(root) == false then return false end
+		local key = "wired" .. tostring(self._T.tab or 1)
+		if self._T[key] then return true end
+		local grid = root:GetChildByName("Grid")
+		local tpl = root:GetChildByName("CellTemplate")
+		if grid == nil or tpl == nil then
+			log_warning("[Promote] Grid/CellTemplate 없음(탭 " .. tostring(self._T.tab) .. ")")
+			return false
+		end
+		local gv = grid.GridViewComponent
+		if gv ~= nil then
+			gv.ItemEntity = tpl
+			gv.CellSize = Vector2(118, 118)
+			gv.Spacing = Vector2(15, 15)
+			gv.FixedCount = 3
+			gv.OnRefresh = self.OnGridRefresh
+			gv.TotalCount = 0
+		end
+		self:WireEnt(root:GetChildByName("Btn_Minus"), function() self:AddTimes(-1) end)
+		self:WireEnt(root:GetChildByName("Btn_Plus"), function() self:AddTimes(1) end)
+		self:WireEnt(root:GetChildByName("Btn_Max"), function() self:SetTimesMax() end)
+		self:WireEnt(root:GetChildByName("Btn_Action"), function() self:OnActionClicked() end)
+		local lp = _UserService.LocalPlayer
+		if lp ~= nil and self._T.invHandler == nil then
+			self._T.invHandler = lp:ConnectEvent(InventoryChangedEvent, function()
+				if self:IsOpen() then
+					self:BuildList()
+					self:RefreshInfo()
+				end
+			end)
+			self._T.invHandlerOwner = lp
+		end
+		self._T[key] = true
+		return true
+	end
+
+	@ExecSpace("ClientOnly")
+	method void BuildList()
+		-- 현재 탭 대상 목록: 승급=★0 순정 장비(레전드리 미만), 컬렉션=도감 행 있는 ★0 순정 장비.
+		local inv = self:GetInv()
+		if inv == nil or not self:EnsureWiredTab() then return end
+		local cs = self:GetCollection()
+		local isColl = (self._T.tab or 1) == 2
+		local filtered = {}
+		for gi, s in ipairs(inv:GetSlots()) do
+			local ok = (s.star or 0) == 0 and (s.pot or "") == "" and (s.flame or "") == "" and inv:MetaCell(s.name, "Part") ~= ""
+			if ok then
+				if isColl then
+					ok = cs ~= nil and cs:RegUnitFor(s.name, s.grade or 1) > 0
+				else
+					ok = (s.grade or 1) < _ItemGrade.Legendary
+				end
+			end
+			if ok then filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade } end
+		end
+		self._T.filtered = filtered
+		local root = isColl and self.panelColl or self.panelPromote
+		local grid = root:GetChildByName("Grid")
+		if grid ~= nil and grid.GridViewComponent ~= nil then
+			grid.GridViewComponent.TotalCount = #filtered
+			grid.GridViewComponent:Refresh(true, true)
+		end
+		log("[UIPromotePanel] 목록 " .. tostring(#filtered) .. "개 (탭 " .. tostring(self._T.tab) .. ")")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnGridRefresh(integer index, Entity ent)
+		-- GridView 셀 콜백(0-기반).
+		local it = self._T.filtered[index + 1]
+		if it == nil then return end
+		---@type UIEquipmentSlotWidget
+		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
+		if w == nil then return end
+		w.ownerWindow = self.Entity
+		w:SetData(it.name, it.gi, it.count, it.grade)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnSlotClicked(Entity cell)
+		-- 대상 선택.
+		---@type UIEquipmentSlotWidget
+		local w = cell:GetComponent("script.UIEquipmentSlotWidget")
+		if w == nil or w.itemName == "" then return end
+		if self._T.selWidget ~= nil and isvalid(self._T.selWidget) then self._T.selWidget:SetSelected(false) end
+		w:SetSelected(true)
+		self._T.selWidget = w
+		self._T.sel = { name = w.itemName, grade = w.itemGrade }
+		self._T.times = 1
+		self:RefreshInfo()
+		log("[UIPromotePanel] 선택 " .. tostring(w.itemName) .. " G" .. tostring(w.itemGrade))
+	end
+
+	method integer MaxTimes()
+		-- 현재 선택의 최대 가능 횟수(승급=보유/비율, 컬렉션=보유/등록단위).
+		local sel = self._T.sel
+		if sel == nil then return 0 end
+		local unit = 0
+		if (self._T.tab or 1) == 1 then
+			local eu = self:GetUpgrade()
+			unit = eu ~= nil and eu:RatioFor(sel.grade) or 0
+		else
+			local cs = self:GetCollection()
+			unit = cs ~= nil and cs:RegUnitFor(sel.name, sel.grade) or 0
+		end
+		if unit <= 0 then return 0 end
+		return math.floor(self:HaveOf(sel.name, sel.grade) / unit)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void AddTimes(integer d)
+		-- 횟수 증감(1~최대 클램프).
+		local maxT = self:MaxTimes()
+		local t = (self._T.times or 1) + (d or 0)
+		if t < 1 then t = 1 end
+		if maxT > 0 and t > maxT then t = maxT end
+		self._T.times = t
+		self:RefreshInfo()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SetTimesMax()
+		-- 최대 횟수로.
+		local maxT = self:MaxTimes()
+		self._T.times = (maxT > 0) and maxT or 1
+		self:RefreshInfo()
+	end
+
+	method void SetText(any ent, string s)
+		-- 텍스트 갱신(겸용).
+		if ent == nil or isvalid(ent) == false then return end
+		if ent.TextComponent ~= nil then ent.TextComponent.Text = s
+		elseif ent.TextGUIRendererComponent ~= nil then ent.TextGUIRendererComponent.Text = s end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshInfo()
+		-- 우측 정보: 대상/변환(등급→등급 or 도감 슬롯)/필요·보유/횟수/결과 미리보기.
+		local root = (self._T.tab or 1) == 1 and self.panelPromote or self.panelColl
+		if root == nil or isvalid(root) == false then return end
+		local tTarget = root:GetChildByName("Text_Target")
+		local tNeed = root:GetChildByName("Text_Need")
+		local tTimes = root:GetChildByName("Text_Times")
+		local tResult = root:GetChildByName("Text_Result")
+		local sel = self._T.sel
+		if sel == nil then
+			self:SetText(tTarget, "대상을 선택하세요")
+			self:SetText(tNeed, "")
+			self:SetText(tTimes, "-")
+			self:SetText(tResult, "")
+			return
+		end
+		local inv = self:GetInv()
+		local have = self:HaveOf(sel.name, sel.grade)
+		local maxT = self:MaxTimes()
+		local t = self._T.times or 1
+		if maxT > 0 and t > maxT then t = maxT self._T.times = t end
+		self:SetText(tTimes, tostring(t))
+		if (self._T.tab or 1) == 1 then
+			local eu = self:GetUpgrade()
+			local unit = eu ~= nil and eu:RatioFor(sel.grade) or 0
+			self:SetText(tTarget, tostring(sel.name) .. "  " .. _ItemGrade:Name(sel.grade) .. " → " .. _ItemGrade:Name(sel.grade + 1))
+			self:SetText(tNeed, "필요 " .. tostring(unit) .. "개/회  ·  보유 " .. tostring(have) .. "개  ·  가능 " .. tostring(maxT) .. "회")
+			self:SetText(tResult, (maxT > 0) and (_ItemGrade:Name(sel.grade + 1) .. " " .. tostring(t) .. "개 생성 (" .. tostring((eu ~= nil and eu:RatioFor(sel.grade) or 0) * t) .. "개 소모)") or "재료 부족")
+		else
+			local cs = self:GetCollection()
+			local unit = cs ~= nil and cs:RegUnitFor(sel.name, sel.grade) or 0
+			local part = inv ~= nil and inv:MetaCell(sel.name, "Part") or ""
+			local level = inv ~= nil and inv:MetaCell(sel.name, "Level") or ""
+			local regCount = 0
+			if cs ~= nil then
+				for i, e in ipairs(cs:GetBookEntries()) do
+					if e.part == part and tostring(e.level) == level and e.grade == sel.grade then regCount = e.count end
+				end
+			end
+			self:SetText(tTarget, part .. " Lv" .. level .. " " .. _ItemGrade:Name(sel.grade) .. " 도감  (현재 " .. tostring(regCount) .. "회 등록)")
+			self:SetText(tNeed, "등록 단위 " .. tostring(unit) .. "개/회  ·  보유 " .. tostring(have) .. "개  ·  가능 " .. tostring(maxT) .. "회")
+			self:SetText(tResult, (maxT > 0) and (tostring(t) .. "회 등록 (" .. tostring(unit * t) .. "개 소멸 → 영구 보너스)") or "재료 부족")
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnActionClicked()
+		-- 실행: 승급하기 / 등록하기.
+		local sel = self._T.sel
+		if sel == nil then return end
+		local t = self._T.times or 1
+		if (self._T.tab or 1) == 1 then
+			local eu = self:GetUpgrade()
+			if eu ~= nil then eu:RequestPromote(sel.name, sel.grade, t) end
+		else
+			local cs = self:GetCollection()
+			if cs ~= nil then cs:RequestRegister(sel.name, sel.grade, t) end
+		end
+	end
+
+end

@@ -95,9 +95,16 @@ script UISideMenu extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnTileUpgrade()
-		-- [승급/컬렉션] 진입 — 3-c 패널 연결 예정(현재 placeholder)
-		log("[UISideMenu] 타일: 승급/컬렉션 (패널 연결 예정)")
+		-- [승급/컬렉션] 진입 → 승급 패널 열기(승급 탭)
 		self:SetOpen(false)
+		local ctrl = _EntityService:GetEntityByPath("/ui/PromoteGroup/Controller")
+		if ctrl == nil then
+			log_warning("[UISideMenu] PromoteGroup/Controller 없음")
+			return
+		end
+		---@type UIPromotePanel
+		local panel = ctrl:GetComponent("script.UIPromotePanel")
+		if panel ~= nil then panel:Open(1) end
 	end
 
 end
