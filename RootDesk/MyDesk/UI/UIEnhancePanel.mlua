@@ -715,101 +715,106 @@ script UIEnhancePanel extends Component
 		if layout == nil then return false end
 		local n = {}
 		self:UnifyCostIcon(layout, "Img_BG", "Img_Dia")
-		self:SetText(layout:GetChildByName("Text_Title"), "잠재 옵션")
-		local function card(nm)
-			local c = layout:GetChildByName(nm)
-			if c == nil then return nil, nil, nil end
-			local gradeT = nil
-			local ig = c:GetChildByName("Img_Grade")
-			if ig ~= nil then gradeT = ig:GetChildByName("Text_Grade") end
-			for i, hideName in ipairs({ "Item", "Scroll_Stat", "Layout_Score" }) do
-				local h = c:GetChildByName(hideName)
-				if h ~= nil then h.Enable = false end
-			end
-			return c, gradeT, c:GetChildByName("Text_Opts")
+		local before = layout:GetChildByName("Layout_Before")   -- 잠재 옵션 박스
+		local after = layout:GetChildByName("Layout_After")      -- 에디셔널 박스
+		if before ~= nil then
+			local ig = before:GetChildByName("Img_Grade")
+			n.gradeText = ig ~= nil and ig:GetChildByName("Text_Grade") or nil
+			n.opts = before:GetChildByName("Text_Opts")
 		end
-		n.before, n.beforeGrade, n.beforeOpts = card("Layout_Before")
-		n.after, n.afterGrade, n.afterOpts = card("Layout_After")
-		n.hdr = layout:GetChildByName("Img_ItemHdr")
-		n.hdrName = layout:GetChildByName("Text_ItemHdr")
-		local tc = layout:GetChildByName("Layout_TryCount")
-		if tc ~= nil then tc.Enable = false end
-		local dl = layout:GetChildByName("Deco_Line")
-		if dl ~= nil then dl.Enable = false end
+		if after ~= nil then
+			local ag = after:GetChildByName("Img_Grade")
+			if ag ~= nil then self:SetText(ag:GetChildByName("Text_Grade"), "에디셔널 옵션") end
+			self:SetText(after:GetChildByName("Text_Opts"), "스타포스 12단계 달성 시 개방 가능")
+		end
 		local costL = layout:GetChildByName("Layout_Cost")
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Dia") or nil
-		n.btnRoll = layout:GetChildByName("Btn_Cancel")
-		n.btnKeep = n.before ~= nil and n.before:GetChildByName("Btn_Select") or nil
-		n.btnApply = n.after ~= nil and n.after:GetChildByName("Btn_Select") or nil
-		-- 버튼 라벨(잠재 변경/유지하기/선택하기)은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
-		if n.btnRoll ~= nil then
-			local h = n.btnRoll:ConnectEvent(ButtonClickEvent, function() self:OnPotRerollClicked() end)
-			self._T.handlers[#self._T.handlers + 1] = { e = n.btnRoll, h = h }
+		n.chkX3 = layout:GetChildByName("Chk_X3")
+		n.chkKeep = layout:GetChildByName("Chk_Keep")
+		n.btnConvert = layout:GetChildByName("Btn_Convert")
+		n.btnOptInfo = layout:GetChildByName("Btn_OptInfo")
+		n.btnPrefer = layout:GetChildByName("Btn_Prefer")
+		local function wireBtn(ent, fn)
+			if ent == nil then return end
+			if ent.ButtonComponent == nil then ent:AddComponent("MOD.Core.ButtonComponent") end
+			if ent.SpriteGUIRendererComponent ~= nil then ent.SpriteGUIRendererComponent.RaycastTarget = true end
+			local h = ent:ConnectEvent(ButtonClickEvent, fn)
+			self._T.handlers[#self._T.handlers + 1] = { e = ent, h = h }
 		end
-		if n.btnKeep ~= nil then
-			local h = n.btnKeep:ConnectEvent(ButtonClickEvent, function() self:OnPotKeepClicked() end)
-			self._T.handlers[#self._T.handlers + 1] = { e = n.btnKeep, h = h }
-		end
-		if n.btnApply ~= nil then
-			local h = n.btnApply:ConnectEvent(ButtonClickEvent, function() self:OnPotApplyClicked() end)
-			self._T.handlers[#self._T.handlers + 1] = { e = n.btnApply, h = h }
-		end
+		wireBtn(n.btnConvert, function() self:OnPotConvertClicked() end)
+		wireBtn(n.btnOptInfo, function() self:OnPotOptInfoClicked() end)
+		wireBtn(n.btnPrefer, function() self:OnPotPreferClicked() end)
+		wireBtn(n.chkX3, function() self:TogglePotOpt("x3") end)
+		wireBtn(n.chkKeep, function() self:TogglePotOpt("keep") end)
 		self._T.pot = n
+		self._T.potX3 = false
+		self._T.potKeep = false
+		self:RefreshPotChecks()
 		return true
 	end
 
 	@ExecSpace("ClientOnly")
+	method void RefreshPotChecks()
+		-- 체크박스 상태 색(켜짐=파랑, 꺼짐=어두움).
+		local n = self._T.pot
+		if n == nil then return end
+		if n.chkX3 ~= nil and n.chkX3.SpriteGUIRendererComponent ~= nil then
+			n.chkX3.SpriteGUIRendererComponent.Color = (self._T.potX3 == true) and Color(0.16, 0.55, 0.92, 1) or Color(0.18, 0.20, 0.27, 1)
+		end
+		if n.chkKeep ~= nil and n.chkKeep.SpriteGUIRendererComponent ~= nil then
+			n.chkKeep.SpriteGUIRendererComponent.Color = (self._T.potKeep == true) and Color(0.16, 0.55, 0.92, 1) or Color(0.18, 0.20, 0.27, 1)
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void RefreshPotTab()
-		-- 잠재 탭: Before=현재 잠재, After=pending 결과(현재 선택 대상과 일치할 때만).
+		-- 잠재 탭(즉시형): 현재 잠재 등급/옵션 표시. 변환=즉시 리롤+적용.
 		if not self:EnsurePotWired() then return end
 		local n = self._T.pot
 		local ps = self:GetPotential()
 		local sel = self._T.selected
 		if ps ~= nil and n.cost ~= nil then self:SetText(n.cost, self:CostText(ps.RerollCost)) end
-		self:SetItemHdr(n.hdr, sel)
 		if sel == nil or sel.name == nil or sel.name == "" then
-			self:SetText(n.hdrName, "장비 선택")
-			self:SetText(n.beforeGrade, "-")
-			self:SetText(n.beforeOpts, "장비를 선택하세요")
-			self:SetText(n.afterGrade, "-")
-			self:SetText(n.afterOpts, "")
+			self:SetText(n.gradeText, "-")
+			self:SetText(n.opts, "장비를 선택하세요")
+			self:RefreshPotChecks()
 			return
 		end
-		self:SetText(n.hdrName, tostring(sel.name) .. " ★" .. tostring(sel.star or 0))
 		local inv = self:GetInv()
-		self:SetText(n.beforeGrade, (sel.pot ~= nil and sel.pot ~= "") and _ItemGrade:Name(inv:ParsePotGrade(sel.pot)) or "잠재 없음")
-		self:SetText(n.beforeOpts, self:OptSummary(sel.pot, "잠재 없음 — [잠재 변경]으로 개봉"))
-		local pendingHere = ps ~= nil and ps.PendingPot ~= "" and ps.PendingTarget == self:SelKey()
-		if pendingHere then
-			self:SetText(n.afterGrade, _ItemGrade:Name(inv:ParsePotGrade(ps.PendingPot)))
-			self:SetText(n.afterOpts, self:OptSummary(ps.PendingPot, ""))
-		else
-			self:SetText(n.afterGrade, "-")
-			self:SetText(n.afterOpts, "[잠재 변경]을 눌러 결과를 확인하세요")
-		end
+		local g = (sel.pot ~= nil and sel.pot ~= "") and inv:ParsePotGrade(sel.pot) or 0
+		self:SetText(n.gradeText, g > 0 and _ItemGrade:Name(g) or "잠재 없음")
+		self:SetText(n.opts, self:OptSummary(sel.pot, "잠재 없음 — [변환]으로 개봉"))
+		self:RefreshPotChecks()
 	end
 
 	@ExecSpace("ClientOnly")
-	method void OnPotRerollClicked()
-		-- 잠재 변경(리롤): 비용 소모 + pending 생성(§06, 선택형).
+	method void TogglePotOpt(string which)
+		-- 체크박스 토글: x3=연속 변환, keep=현재 옵션 기억하기(최고 등급 유지).
+		if which == "x3" then self._T.potX3 = not (self._T.potX3 == true)
+		else self._T.potKeep = not (self._T.potKeep == true) end
+		self:RefreshPotChecks()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnPotConvertClicked()
+		-- 변환: 즉시 리롤+적용(§06 큐브). 연속 변환 ON=3회, 기억하기 ON=최고 등급 유지.
 		local sel = self._T.selected
 		local ps = self:GetPotential()
 		if sel == nil or ps == nil then return end
-		if sel.mode == "equip" then ps:RequestRerollEquipped(sel.key) else ps:RequestReroll(sel.key) end
+		local times = (self._T.potX3 == true) and 3 or 1
+		ps:RequestConvert(sel.mode, tostring(sel.key), times, self._T.potKeep == true)
 	end
 
 	@ExecSpace("ClientOnly")
-	method void OnPotKeepClicked()
-		-- 유지하기: pending 폐기(기존 잠재 유지).
-		local ps = self:GetPotential()
-		if ps ~= nil then ps:RequestDiscard() end
+	method void OnPotOptInfoClicked()
+		-- 옵션 확률 정보 팝업(슬롯별 옵션/등장확률) — 추후 구현(B단계).
+		log("[Pot] 옵션 확률 정보 (추후 팝업)")
 	end
 
 	@ExecSpace("ClientOnly")
-	method void OnPotApplyClicked()
-		-- 선택하기: pending 적용.
-		local ps = self:GetPotential()
-		if ps ~= nil then ps:RequestApply() end
+	method void OnPotPreferClicked()
+		-- 선호 옵션 지정 — 추후 구현(B단계).
+		log("[Pot] 선호 옵션 지정 (추후)")
 	end
 
 	@ExecSpace("ClientOnly")

@@ -256,6 +256,51 @@ script PotentialSystem extends Component
 		self:ClearPending()
 	end
 
+	@ExecSpace("ServerOnly")
+	method void DoConvert(string mode, string key, integer times, boolean keepBest)
+		-- 즉시형 변환(§06 큐브): 대상 잠재를 즉시 리롤·적용. times회 독립 리롤(각 비용 소모),
+		-- keepBest=true면 최고 등급 결과 유지(하향 방지). pending 없음.
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local info = (mode == "slot") and inv:GetSlotInfo(tonumber(key) or 0) or inv:GetEquippedInfo(key)
+		if info == nil then
+			log_warning("[Pot] 변환 대상 없음(" .. tostring(mode) .. ":" .. tostring(key) .. ")")
+			return
+		end
+		local t = times or 1
+		if t < 1 then t = 1 end
+		local bestPot = nil
+		local bestGrade = -1
+		for i = 1, t do
+			if not self:RerollFor(info.name, info.star or 0, info.grade or 1, info.pot or "") then break end
+			local np = self._T.lastPot
+			local ng = self._T.lastGradeTo or 0
+			if bestPot == nil or (not keepBest) or ng > bestGrade then
+				bestPot = np
+				bestGrade = ng
+			end
+		end
+		if bestPot == nil then return end
+		if mode == "slot" then
+			if inv:CountItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "") < 1 then
+				log_warning("[Pot] 변환 적용 실패 — 대상 개체 없음")
+				return
+			end
+			inv:ConsumeItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "")
+			inv:AddItemEx(info.name, info.star or 0, info.grade or 1, bestPot, info.flame or "")
+		else
+			inv:SetEquippedInvest(key, bestPot, info.flame or "")
+		end
+		log("[Pot] 변환! " .. tostring(info.name) .. " [" .. bestPot .. "] (x" .. tostring(t) .. (keepBest and " 최고유지" or "") .. ")")
+	end
+
+	@ExecSpace("Server")
+	method void RequestConvert(string mode, string key, integer times, boolean keepBest)
+		-- 클라 변환 요청 → 본인 검증 후 즉시 DoConvert.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoConvert(mode, key, times, keepBest)
+	end
+
 	@ExecSpace("Server")
 	method void RequestReroll(integer slotIndex)
 		-- 클라 잠재 리롤 요청(가방) → 본인 검증 후 DoReroll.
