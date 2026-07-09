@@ -21,10 +21,10 @@
           "name": "AttendanceBoard",
           "path": "/ui/AttendanceBoard",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 4,
+          "displayOrder": 5,
           "pathConstraints": "//",
           "revision": 0,
           "origin": {
@@ -62,8 +62,8 @@
                 "y": 0.5
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 2076.923,
+                "y": 1021.84613
               },
               "UIMode": 1,
               "UIScale": {
@@ -97,7 +97,7 @@
             {
               "@type": "MOD.Core.UIGroupComponent",
               "DefaultShow": true,
-              "GroupOrder": 4,
+              "GroupOrder": 5,
               "GroupType": 1,
               "Enable": true
             },
@@ -160,8 +160,8 @@
                 "y": 0.5
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 2076.923,
+                "y": 1021.84613
               },
               "UIMode": 1,
               "UIVersion": 2,
@@ -170,8 +170,8 @@
                 "y": -7.219388
               },
               "Position": {
-                "x": -2.88934326,
-                "y": -7.21936035,
+                "x": -2.8894043,
+                "y": -7.219391,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -234,8 +234,8 @@
                 "y": 0.0
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 2076.923,
+                "y": 1021.84613
               },
               "UIMode": 1,
               "UIVersion": 2,

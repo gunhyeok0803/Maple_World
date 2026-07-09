@@ -62,8 +62,8 @@
                 "y": 0.5
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 2076.923,
+                "y": 1021.84613
               },
               "UIMode": 1,
               "UIScale": {
@@ -176,8 +176,8 @@
                 "y": 332.0
               },
               "Position": {
-                "x": 785.1,
-                "y": -208.0,
+                "x": 863.5615,
+                "y": -178.923065,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -505,8 +505,8 @@
                 "y": 193.57
               },
               "Position": {
-                "x": 568.0,
-                "y": -346.43,
+                "x": 646.461548,
+                "y": -317.353058,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -834,8 +834,8 @@
                 "y": 230.0
               },
               "Position": {
-                "x": -650.0,
-                "y": -310.0,
+                "x": -728.461548,
+                "y": -280.923065,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -981,8 +981,8 @@
                 "y": -251.805115
               },
               "Position": {
-                "x": -591.027466,
-                "y": 288.1949,
+                "x": -669.489,
+                "y": 259.11795,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -1101,12 +1101,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -210.000122,
-                "y": 1052.0
+                "x": -319.831177,
+                "y": 1048.9491
               },
               "OffsetMin": {
-                "x": -302.000122,
-                "y": 960.0
+                "x": -411.831177,
+                "y": 956.9491
               },
               "Pivot": {
                 "x": 1.0,
@@ -1119,12 +1119,12 @@
               "UIMode": 1,
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -210.000122,
-                "y": 960.0
+                "x": -319.831177,
+                "y": 956.9491
               },
               "Position": {
-                "x": 749.9999,
-                "y": 420.0,
+                "x": 718.6304,
+                "y": 446.026031,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -1137,6 +1137,9 @@
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "ImageRUID": {
+                "DataId": "70e9e5467c89410fbf000f1f1e4d0e1370e9e5467c89410fbf000f1f1e4d0e13"
+              },
               "OverrideSorting": false,
               "Enable": true
             },
@@ -1234,12 +1237,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 29.0,
-                "y": 31.0
+                "x": 30.5256,
+                "y": 34.051
               },
               "OffsetMin": {
-                "x": -29.0,
-                "y": -31.0
+                "x": -27.4744,
+                "y": -27.9490013
               },
               "RectSize": {
                 "x": 58.0,
@@ -1247,6 +1250,15 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
+              "anchoredPosition": {
+                "x": 1.52560043,
+                "y": 3.05099869
+              },
+              "Position": {
+                "x": -44.4744,
+                "y": 49.051,
+                "z": 0.0
+              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -1257,6 +1269,9 @@
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "ImageRUID": {
+                "DataId": "70e9e5467c89410fbf000f1f1e4d0e13"
+              },
               "OverrideSorting": false,
               "Enable": true
             }
@@ -1328,8 +1343,8 @@
                 "y": 960.0
               },
               "Position": {
-                "x": 642.0,
-                "y": 420.0,
+                "x": 720.461548,
+                "y": 449.076935,
                 "z": 0.0
               },
               "QuaternionRotation": {

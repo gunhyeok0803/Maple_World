@@ -37,6 +37,13 @@ script UISideMenu extends Component
 		self:Wire(self.tileUpgrade, function() self:OnTileUpgrade() end)
 		_UIManager:Register(self.MenuId, function() self:SetOpen(false) end)
 		if isvalid(self.panelSide) then self.panelSide.Enable = false end
+		-- 인벤 컨트롤러 부트 킥(모델 인스턴스 라이프사이클 미실행 케이스 대비 — 열기 버튼 배선 보장)
+		local invCtrl = _EntityService:GetEntityByPath("/ui/InventoryGroup/Controller")
+		if invCtrl ~= nil then
+			---@type UIInventoryPopup
+			local ip = invCtrl:GetComponent("script.UIInventoryPopup")
+			if ip ~= nil then ip:EnsureBoot() end
+		end
 		log("[UISideMenu] OnBeginPlay ok")
 	end
 
