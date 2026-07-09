@@ -616,6 +616,16 @@ script InventoryController extends Component
 	end
 
 	@ExecSpace("ServerOnly")
+	method void RemoveEquipped(string part)
+		-- 서버용: 착용 슬롯 비우기(가방 반환 없음 — 스타포스 파괴 등). 해제+반환은 UnequipInternal.
+		if self._T == nil or self._T.equipped == nil then return end
+		if self._T.equipped[part] == nil then return end
+		self._T.equipped[part] = nil
+		self:Publish()
+		self:MarkDirty()
+	end
+
+	@ExecSpace("ServerOnly")
 	method void SetEquippedStar(string part, integer star)
 		-- 서버용: 장착품의 성급 갱신(착용 상태 스타포스용). 장착품 없으면 무시.
 		if self._T == nil or self._T.equipped == nil then return end

@@ -150,6 +150,59 @@ script StarforceSystem extends Component
 	end
 
 	@ExecSpace("ServerOnly")
+	method void DoEnhanceEquipped(string part)
+		-- 착용 중 장비 스타포스(권위). 성공=성급+1, 실패=유지, 파괴=착용 해제→흔적(투자 메타 보존).
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local e = inv:GetEquippedInfo(part)
+		if e == nil then
+			log_warning("[SF] 장착품 없음 part=" .. tostring(part))
+			return
+		end
+		if (e.grade or 1) < _ItemGrade.Legendary then
+			log("[SF] 레전드리만 스타포스 가능: " .. tostring(e.name) .. " G" .. tostring(e.grade))
+			return
+		end
+		local star = e.star or 0
+		local target = star + 1
+		if target > self.MaxStar then
+			log("[SF] 최대 성급 도달: " .. tostring(e.name) .. " ★" .. tostring(star))
+			return
+		end
+		local row = self:FindStarRow(target)
+		if row == nil then
+			log_warning("[SF] 데이터 없음 star=" .. tostring(target))
+			return
+		end
+		local costs = self:ParseCost(row:GetItem("Cost"))
+		if not self:CanPay(costs) then
+			log("[SF] 메소 부족: " .. tostring(e.name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
+			return
+		end
+		self:PayCost(costs)
+		local success = tonumber(row:GetItem("SuccessRate")) or 0
+		local destroy = tonumber(row:GetItem("DestroyRate")) or 0
+		local roll = _UtilLogic:RandomDouble()
+		if roll < success then
+			inv:SetEquippedStar(part, target)
+			log("[SF] 성공!(착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
+		elseif roll < success + destroy then
+			inv:RemoveEquipped(part)
+			inv:AddTraceEx(e.name, star, e.grade, e.pot or "", e.flame or "")
+			log("[SF] 파괴!(착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
+		else
+			log("[SF] 실패(유지·착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
+		end
+	end
+
+	@ExecSpace("Server")
+	method void RequestEnhanceEquipped(string part)
+		-- 클라 착용 스타포스 요청 → 본인 검증 후 DoEnhanceEquipped.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoEnhanceEquipped(part)
+	end
+
+	@ExecSpace("ServerOnly")
 	method void DoRestore(integer traceIndex)
 		-- 파괴 흔적 복구: 동일 이름 레전드리 순정(★0,G4) 1개 소모 → 흔적을 원래 성급으로 복원.
 		local inv = self:GetInv()

@@ -74,7 +74,11 @@ script UIEquipmentSlotWidget extends Component
 		if self.ownerWindow == nil then return end
 		---@type UIInventoryPopup
 		local ctrl = self.ownerWindow:GetComponent("script.UIInventoryPopup")
-		if ctrl ~= nil then ctrl:OnSlotClicked(self.Entity) end
+		if ctrl ~= nil then ctrl:OnSlotClicked(self.Entity) return end
+		-- 강화 패널 소속 셀이면 그쪽으로 라우팅(공유 위젯 — 인벤/강화 겸용)
+		---@type UIEnhancePanel
+		local ep = self.ownerWindow:GetComponent("script.UIEnhancePanel")
+		if ep ~= nil then ep:OnSlotClicked(self.Entity) end
 	end
 
 end
