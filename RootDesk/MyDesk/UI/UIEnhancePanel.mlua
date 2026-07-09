@@ -746,6 +746,13 @@ script UIEnhancePanel extends Component
 		wireBtn(n.btnPrefer, function() self:OnPotPreferClicked() end)
 		wireBtn(n.chkX3, function() self:TogglePotOpt("x3") end)
 		wireBtn(n.chkKeep, function() self:TogglePotOpt("keep") end)
+		-- 옵션 확률 정보 팝업 닫기 배선(팝업은 EnhanceGroup 최상위)
+		local pop = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo")
+		if pop ~= nil then
+			local fr = pop:GetChildByName("Frame")
+			if fr ~= nil then wireBtn(fr:GetChildByName("Btn_Close"), function() self:ClosePotInfo() end) end
+			wireBtn(pop:GetChildByName("Dimmer"), function() self:ClosePotInfo() end)
+		end
 		self._T.pot = n
 		self._T.potX3 = false
 		self._T.potKeep = false
@@ -806,9 +813,45 @@ script UIEnhancePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void ClosePotInfo()
+		-- 확률 정보 팝업 닫기.
+		local pop = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo")
+		if pop ~= nil then pop.Enable = false end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void OnPotOptInfoClicked()
-		-- 옵션 확률 정보 팝업(슬롯별 옵션/등장확률) — 추후 구현(B단계).
-		log("[Pot] 옵션 확률 정보 (추후 팝업)")
+		-- 옵션 확률 정보 팝업: 선택 장비 종류별 풀(§06)의 옵션/수치/등장확률 + 등급업 확률 표시.
+		local pop = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo")
+		local sel = self._T.selected
+		local ps = self:GetPotential()
+		if pop == nil or sel == nil or sel.name == nil or sel.name == "" or ps == nil then return end
+		local frame = pop:GetChildByName("Frame")
+		if frame == nil then return end
+		local inv = self:GetInv()
+		local partClass = ps:PartClassOf(sel.name)
+		local curG = (sel.pot ~= nil and sel.pot ~= "") and inv:ParsePotGrade(sel.pot) or 0
+		local showG = (curG > 0) and curG or 1
+		local gu = 0
+		if showG == 1 then gu = ps.GradeUp1to2 elseif showG == 2 then gu = ps.GradeUp2to3 elseif showG == 3 then gu = ps.GradeUp3to4 end
+		self:SetText(frame:GetChildByName("Text_GradeUp"), "등급 업 (" .. _ItemGrade:Name(showG) .. " 기준)   " .. tostring(math.floor(gu * 100 + 0.5)) .. "%")
+		local rows = ps:PoolRows(partClass, showG)
+		local total = 0
+		for i, r in ipairs(rows) do total = total + (tonumber(r:GetItem("Weight")) or 0) end
+		for i = 1, 8 do
+			local r = rows[i]
+			if r ~= nil and total > 0 then
+				local w = tonumber(r:GetItem("Weight")) or 0
+				self:SetText(frame:GetChildByName("Opt_" .. i), self:StatLabel(r:GetItem("Stat")))
+				self:SetText(frame:GetChildByName("Val_" .. i), "+" .. tostring(r:GetItem("Value")))
+				self:SetText(frame:GetChildByName("Rate_" .. i), tostring(math.floor(w / total * 1000 + 0.5) / 10) .. "%")
+			else
+				self:SetText(frame:GetChildByName("Opt_" .. i), "")
+				self:SetText(frame:GetChildByName("Val_" .. i), "")
+				self:SetText(frame:GetChildByName("Rate_" .. i), "")
+			end
+		end
+		pop.Enable = true
 	end
 
 	@ExecSpace("ClientOnly")
