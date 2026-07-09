@@ -214,11 +214,11 @@ script UIEnhancePanel extends Component
 		local gv = self._T.gridEnt.GridViewComponent
 		if gv ~= nil then
 			gv.ItemEntity = self._T.cellTpl
-			gv.CellSize = Vector2(118, 118)
-			gv.Spacing = Vector2(15, 15)
-			gv.FixedCount = 3
+			gv.CellSize = Vector2(88, 88)
+			gv.Spacing = Vector2(12, 12)
+			gv.FixedCount = 2
 			local gw = self._T.gridEnt.UITransformComponent.RectSize.x
-			local content = 3 * gv.CellSize.x + 2 * gv.Spacing.x
+			local content = 2 * gv.CellSize.x + 1 * gv.Spacing.x
 			local half = math.floor(math.max(0, gw - content) / 2)
 			gv.Padding = RectOffset(half, half, gv.Padding.top, gv.Padding.bottom)
 			gv.OnRefresh = self.OnGridRefresh
@@ -335,6 +335,24 @@ script UIEnhancePanel extends Component
 		elseif ent.TextGUIRendererComponent ~= nil then ent.TextGUIRendererComponent.Text = s end
 	end
 
+	@ExecSpace("ClientOnly")
+	method void UnifyCostIcon(any layout, string hostName, string iconName)
+		-- 잠재/환생 비용 아이콘을 스타포스 코인(메소)으로 통일 — 실비용이 메소(res)이므로 다이아 표기는 오해 소지.
+		if layout == nil or isvalid(self.contentStar) == false then return end
+		local sp = self.contentStar:GetChildByName("Panel")
+		local coin = sp ~= nil and sp:GetChildByName("Layout_Cost") or nil
+		coin = coin ~= nil and coin:GetChildByName("Img_BG") or nil
+		coin = coin ~= nil and coin:GetChildByName("Img_Cost") or nil
+		if coin == nil or coin.SpriteGUIRendererComponent == nil then return end
+		local costL = layout:GetChildByName("Layout_Cost")
+		if costL == nil then return end
+		local host = hostName ~= "" and costL:GetChildByName(hostName) or costL
+		local target = host ~= nil and host:GetChildByName(iconName) or nil
+		if target ~= nil and target.SpriteGUIRendererComponent ~= nil then
+			target.SpriteGUIRendererComponent.ImageRUID = coin.SpriteGUIRendererComponent.ImageRUID
+		end
+	end
+
 	method any GetStarforce()
 		-- 로컬 플레이어의 StarforceSystem(없으면 nil).
 		local lp = _UserService.LocalPlayer
@@ -369,6 +387,7 @@ script UIEnhancePanel extends Component
 		if dec ~= nil then dec.Enable = false end   -- §06 하락 없음
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Cost") or nil
 		n.preview = panel:GetChildByName("Text_Preview")
+		n.deco = panel:GetChildByName("Img_Deco")
 		local oldItem = panel:GetChildByName("Item")
 		if oldItem ~= nil then oldItem.Enable = false end
 		local oldScroll = panel:GetChildByName("Scroll_Stat")
@@ -431,6 +450,13 @@ script UIEnhancePanel extends Component
 		end
 		local star = sel.star or 0
 		local target = star + 1
+		if n.deco ~= nil and n.deco.SpriteGUIRendererComponent ~= nil then
+			local irow = _DataService:GetTable("ItemData"):FindRow("Name", sel.name)
+			if irow ~= nil then
+				n.deco.SpriteGUIRendererComponent.ImageRUID = irow:GetItem("IconRUID")
+				n.deco.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 1)   -- 샘플 원본이 알파 0
+			end
+		end
 		local legend = (sel.grade or 1) >= _ItemGrade.Legendary
 		self:SetText(n.name, tostring(sel.name) .. " ★" .. tostring(star) .. (legend and "" or "  (레전드리 전용)"))
 		if not legend or target > sf.MaxStar then
@@ -559,11 +585,12 @@ script UIEnhancePanel extends Component
 	end
 
 	method any FirstTextChild(any ent)
-		-- 버튼 라벨용: 자식(2단계까지) 중 첫 텍스트 엔티티(TextComponent/TextGUIRenderer 겸용).
+		-- 버튼 라벨용: 자기 자신 → 자식(2단계까지) 순으로 첫 텍스트 엔티티(TextComponent/TextGUIRenderer 겸용).
 		if ent == nil then return nil end
 		local function isText(e)
 			return e.TextComponent ~= nil or e.TextGUIRendererComponent ~= nil
 		end
+		if isText(ent) then return ent end
 		local kids = ent.Children
 		for i = 1, #kids do
 			if isText(kids[i]) then return kids[i] end
@@ -625,6 +652,7 @@ script UIEnhancePanel extends Component
 		local layout = self.contentPot:GetChildByName("Layout")
 		if layout == nil then return false end
 		local n = {}
+		self:UnifyCostIcon(layout, "Img_BG", "Img_Dia")
 		self:SetText(layout:GetChildByName("Text_Title"), "잠재 옵션")
 		local function card(nm)
 			local c = layout:GetChildByName(nm)
@@ -727,6 +755,7 @@ script UIEnhancePanel extends Component
 		local layout = self.contentFlame:GetChildByName("Layout")
 		if layout == nil then return false end
 		local n = {}
+		self:UnifyCostIcon(layout, "Text_Cost", "Img_Cost")
 		self:SetText(layout:GetChildByName("Text_Title"), "환생의 불꽃")
 		n.name = layout:GetChildByName("Text_ItemName")
 		local info = layout:GetChildByName("Layout_PotenInfo")
@@ -805,15 +834,17 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshSummary()
-		-- 중앙 요약: 선택 장비의 아이콘/이름(★)/합산 스탯(기본+스타포스+잠재+환생, §03).
+		-- 중앙 요약: 선택 장비의 아이콘/이름(★)/합산 스탯(기본+스타포스+잠재+환생, §03) + 다음 성급 증가분 컬럼.
 		if isvalid(self.panelSummary) == false then return end
 		local slotImg = self.panelSummary:GetChildByName("Img_ItemSlot")
 		local nameText = self.panelSummary:GetChildByName("Text_Name")
 		local statsText = self.panelSummary:GetChildByName("Text_Stats")
+		local nextText = self.panelSummary:GetChildByName("Text_StatsNext")
 		local sel = self._T.selected
 		if sel == nil or sel.name == nil or sel.name == "" then
 			if nameText ~= nil and nameText.TextComponent ~= nil then nameText.TextComponent.Text = "장비를 선택하세요" end
 			if statsText ~= nil and statsText.TextComponent ~= nil then statsText.TextComponent.Text = "" end
+			if nextText ~= nil and nextText.TextComponent ~= nil then nextText.TextComponent.Text = "" end
 			if slotImg ~= nil then
 				local icon = slotImg:GetChildByName("Icon")
 				if icon ~= nil then icon.Enable = false end
@@ -838,14 +869,31 @@ script UIEnhancePanel extends Component
 		if statsText ~= nil and statsText.TextComponent ~= nil then
 			local cp = self:GetCombat()
 			local lines = {}
+			local nextLines = {}
 			if cp ~= nil then
-				local t = cp:GetItemStats(sel.name, sel.star or 0, sel.pot or "", sel.flame or "")
+				local star = sel.star or 0
+				local t = cp:GetItemStats(sel.name, star, sel.pot or "", sel.flame or "")
+				local sf = self:GetStarforce()
+				local canNext = sf ~= nil and star < sf.MaxStar
+				local t2 = nil
+				if canNext then
+					t2 = cp:GetItemStats(sel.name, star + 1, sel.pot or "", sel.flame or "")
+				end
 				for i, k in ipairs(cp:StatKeys()) do
 					local v = t[k] or 0
-					if v ~= 0 then lines[#lines + 1] = self:StatLabel(k) .. "  +" .. tostring(v) end
+					if v ~= 0 then
+						lines[#lines + 1] = self:StatLabel(k) .. "  +" .. tostring(v)
+						if t2 ~= nil then
+							local d = (t2[k] or 0) - v
+							nextLines[#nextLines + 1] = d ~= 0 and ("+" .. tostring(d)) or ""
+						end
+					end
 				end
 			end
 			statsText.TextComponent.Text = table.concat(lines, "\n")
+			if nextText ~= nil and nextText.TextComponent ~= nil then
+				nextText.TextComponent.Text = table.concat(nextLines, "\n")
+			end
 		end
 	end
 

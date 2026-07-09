@@ -95,6 +95,20 @@ script UIPromotePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void OnUpdate(number delta)
+		-- 도감 탭 열림 중 BookCsv 동기화 감지 → 그리드/정보 갱신(등록 직후 @Sync 지연 대응).
+		if not self:IsOpen() or (self._T.tab or 1) ~= 2 then return end
+		local cs = self:GetCollection()
+		if cs == nil then return end
+		local csv = cs.BookCsv or ""
+		if self._T.lastBookCsv ~= csv then
+			self._T.lastBookCsv = csv
+			self:RefreshBook()
+			self:RefreshInfo()
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void OnEndPlay()
 		-- 배선 해제
 		if self._T.handlers ~= nil then
@@ -175,25 +189,56 @@ script UIPromotePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method boolean EnsureWiredTab()
-		-- 현재 탭 콘텐츠 노드 배선(그리드/셀 템플릿/버튼, 탭별 1회).
-		local root = (self._T.tab or 1) == 1 and self.panelPromote or self.panelColl
+		-- 현재 탭 콘텐츠 노드 배선(탭별 1회): 승급=그리드, 컬렉션=부위 탭+도감 셀 12개.
+		local isColl = (self._T.tab or 1) == 2
+		local root = isColl and self.panelColl or self.panelPromote
 		if root == nil or isvalid(root) == false then return false end
 		local key = "wired" .. tostring(self._T.tab or 1)
 		if self._T[key] then return true end
-		local grid = root:GetChildByName("Grid")
-		local tpl = root:GetChildByName("CellTemplate")
-		if grid == nil or tpl == nil then
-			log_warning("[Promote] Grid/CellTemplate 없음(탭 " .. tostring(self._T.tab) .. ")")
-			return false
+		-- 카드 배경을 형제 맨 뒤로(반투명 카드가 텍스트를 덮지 않게, 탭별 1회)
+		local cardA = root:GetChildByName(isColl and "Card_Book" or "Card_List")
+		if cardA ~= nil and cardA.UITransformComponent ~= nil then
+			_UILogic:SetSiblingIndex(cardA.UITransformComponent, 0)
 		end
-		local gv = grid.GridViewComponent
-		if gv ~= nil then
-			gv.ItemEntity = tpl
-			gv.CellSize = Vector2(118, 118)
-			gv.Spacing = Vector2(15, 15)
-			gv.FixedCount = 3
-			gv.OnRefresh = self.OnGridRefresh
-			gv.TotalCount = 0
+		local cardInfo = root:GetChildByName("Card_Info")
+		if cardInfo ~= nil and cardInfo.UITransformComponent ~= nil then
+			_UILogic:SetSiblingIndex(cardInfo.UITransformComponent, 1)
+		end
+		if isColl then
+			for i = 1, 6 do
+				local tabBtn = root:GetChildByName("PartTab_" .. tostring(i))
+				local idx = i
+				if tabBtn ~= nil then self:WireEnt(tabBtn, function() self:SelectPart(idx) end) end
+			end
+			for r = 1, 3 do
+				for g = 1, 4 do
+					local cell = root:GetChildByName("BookCell_" .. tostring(r) .. "_" .. tostring(g))
+					local rr = r
+					local gg = g
+					if cell ~= nil then self:WireEnt(cell, function() self:OnBookCellClicked(rr, gg) end) end
+				end
+			end
+			if self._T.bookPart == nil then self._T.bookPart = 1 end
+		else
+			local grid = root:GetChildByName("Grid")
+			local tpl = root:GetChildByName("CellTemplate")
+			if grid == nil or tpl == nil then
+				log_warning("[Promote] Grid/CellTemplate 없음(탭 " .. tostring(self._T.tab) .. ")")
+				return false
+			end
+			local gv = grid.GridViewComponent
+			if gv ~= nil then
+				gv.ItemEntity = tpl
+				gv.CellSize = Vector2(88, 88)
+				gv.Spacing = Vector2(12, 12)
+				gv.FixedCount = 2
+				local gw = grid.UITransformComponent.RectSize.x
+				local content = 2 * gv.CellSize.x + 1 * gv.Spacing.x
+				local half = math.floor(math.max(0, gw - content) / 2)
+				gv.Padding = RectOffset(half, half, gv.Padding.top, gv.Padding.bottom)
+				gv.OnRefresh = self.OnGridRefresh
+				gv.TotalCount = 0
+			end
 		end
 		self:WireEnt(root:GetChildByName("Btn_Minus"), function() self:AddTimes(-1) end)
 		self:WireEnt(root:GetChildByName("Btn_Plus"), function() self:AddTimes(1) end)
@@ -213,28 +258,126 @@ script UIPromotePanel extends Component
 		return true
 	end
 
+	method string PartName(integer idx)
+		-- 도감 부위 탭 인덱스 → 부위명(CollectionBookData Part 순서).
+		local parts = { "무기", "모자", "상의", "하의", "신발", "장갑" }
+		return parts[idx] or "무기"
+	end
+
+	method string ItemNameFor(string part, integer level)
+		-- (부위, 레벨) → ItemData 장비 이름(첫 매칭, 없으면 ""). 도감 슬롯 역매핑용.
+		local t = _DataService:GetTable("ItemData")
+		if t == nil then return "" end
+		for i = 1, t:GetRowCount() do
+			local row = t:GetRow(i)
+			if row:GetItem("Part") == part and row:GetItem("Level") == tostring(level) then
+				return row:GetItem("Name")
+			end
+		end
+		return ""
+	end
+
+	@ExecSpace("ClientOnly")
+	method void SelectPart(integer idx)
+		-- 도감 부위 탭 전환(선택 해제 + 그리드 갱신).
+		self._T.bookPart = idx
+		self._T.sel = nil
+		self._T.selCell = nil
+		self._T.times = 1
+		self:RefreshBook()
+		self:RefreshInfo()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RefreshBook()
+		-- 도감 그리드 12칸 갱신: 등급 슬롯 배경/아이콘/보유 뱃지/누적 등록/선택 하이라이트 + 부위 탭 토글.
+		local root = self.panelColl
+		if root == nil or isvalid(root) == false then return end
+		local part = self:PartName(self._T.bookPart or 1)
+		for i = 1, 6 do
+			local tabBtn = root:GetChildByName("PartTab_" .. tostring(i))
+			local sr = tabBtn ~= nil and tabBtn.SpriteGUIRendererComponent or nil
+			if sr ~= nil then sr.ImageRUID = (i == (self._T.bookPart or 1)) and self.TabOnRUID or self.TabOffRUID end
+		end
+		local cs = self:GetCollection()
+		local entries = cs ~= nil and cs:GetBookEntries() or {}
+		for r = 1, 3 do
+			local level = 10 * r
+			local name = self:ItemNameFor(part, level)
+			for g = 1, 4 do
+				local cell = root:GetChildByName("BookCell_" .. tostring(r) .. "_" .. tostring(g))
+				if cell ~= nil then
+					local sr = cell.SpriteGUIRendererComponent
+					if sr ~= nil then
+						sr.ImageRUID = _ItemGrade:SlotRUID(g)
+						sr.Color = Color(1, 1, 1, name ~= "" and 1 or 0.45)
+					end
+					local icon = cell:GetChildByName("Icon")
+					if icon ~= nil then
+						if name == "" then
+							icon.Enable = false
+						else
+							local row = _DataService:GetTable("ItemData"):FindRow("Name", name)
+							if row ~= nil and icon.SpriteGUIRendererComponent ~= nil then
+								icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+								icon.Enable = true
+							end
+						end
+					end
+					local have = name ~= "" and self:HaveOf(name, g) or 0
+					self:SetText(cell:GetChildByName("Count"), have > 0 and ("x" .. tostring(have)) or "")
+					local reg = 0
+					for j, e in ipairs(entries) do
+						if e.part == part and tostring(e.level) == tostring(level) and e.grade == g then reg = e.count end
+					end
+					self:SetText(cell:GetChildByName("Reg"), reg > 0 and (tostring(reg) .. "회") or "")
+					local sel = cell:GetChildByName("Sel")
+					if sel ~= nil then
+						local sc = self._T.selCell
+						sel.Enable = (sc ~= nil and sc.r == r and sc.g == g)
+					end
+				end
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBookCellClicked(integer r, integer g)
+		-- 도감 슬롯 선택(부위×레벨×등급).
+		local part = self:PartName(self._T.bookPart or 1)
+		local level = 10 * r
+		local name = self:ItemNameFor(part, level)
+		self._T.selCell = { r = r, g = g }
+		if name ~= "" then
+			self._T.sel = { name = name, grade = g, part = part, level = level }
+		else
+			self._T.sel = nil
+		end
+		self._T.times = 1
+		self:RefreshBook()
+		self:RefreshInfo()
+		log("[UIPromotePanel] 도감 선택 " .. part .. " Lv" .. tostring(level) .. " G" .. tostring(g) .. " (" .. (name ~= "" and name or "장비 없음") .. ")")
+	end
+
 	@ExecSpace("ClientOnly")
 	method void BuildList()
-		-- 현재 탭 대상 목록: 승급=★0 순정 장비(레전드리 미만), 컬렉션=도감 행 있는 ★0 순정 장비.
+		-- 현재 탭 콘텐츠 구축: 승급=★0 순정 장비 목록(레전드리 미만), 컬렉션=도감 그리드 갱신.
 		local inv = self:GetInv()
 		if inv == nil or not self:EnsureWiredTab() then return end
-		local cs = self:GetCollection()
-		local isColl = (self._T.tab or 1) == 2
+		if (self._T.tab or 1) == 2 then
+			self:RefreshBook()
+			return
+		end
 		local filtered = {}
 		for gi, s in ipairs(inv:GetSlots()) do
 			local ok = (s.star or 0) == 0 and (s.pot or "") == "" and (s.flame or "") == "" and inv:MetaCell(s.name, "Part") ~= ""
 			if ok then
-				if isColl then
-					ok = cs ~= nil and cs:RegUnitFor(s.name, s.grade or 1) > 0
-				else
-					ok = (s.grade or 1) < _ItemGrade.Legendary
-				end
+				ok = (s.grade or 1) < _ItemGrade.Legendary
 			end
 			if ok then filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade } end
 		end
 		self._T.filtered = filtered
-		local root = isColl and self.panelColl or self.panelPromote
-		local grid = root:GetChildByName("Grid")
+		local grid = self.panelPromote:GetChildByName("Grid")
 		if grid ~= nil and grid.GridViewComponent ~= nil then
 			grid.GridViewComponent.TotalCount = #filtered
 			grid.GridViewComponent:Refresh(true, true)
@@ -312,6 +455,28 @@ script UIPromotePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void SetSlotIcon(any ent, integer grade, string name)
+		-- 변환 슬롯: 등급 슬롯 배경 + 아이템 아이콘(name 빈 문자열이면 아이콘 숨김).
+		if ent == nil or isvalid(ent) == false then return end
+		local sr = ent.SpriteGUIRendererComponent
+		if sr ~= nil then
+			sr.ImageRUID = _ItemGrade:SlotRUID(grade)
+			sr.Color = Color(1, 1, 1, 1)
+		end
+		local icon = ent:GetChildByName("Icon")
+		if icon == nil then return end
+		if name == "" then
+			icon.Enable = false
+			return
+		end
+		local row = _DataService:GetTable("ItemData"):FindRow("Name", name)
+		if row ~= nil and icon.SpriteGUIRendererComponent ~= nil then
+			icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+			icon.Enable = true
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void RefreshInfo()
 		-- 우측 정보: 대상/변환(등급→등급 or 도감 슬롯)/필요·보유/횟수/결과 미리보기.
 		local root = (self._T.tab or 1) == 1 and self.panelPromote or self.panelColl
@@ -320,12 +485,27 @@ script UIPromotePanel extends Component
 		local tNeed = root:GetChildByName("Text_Need")
 		local tTimes = root:GetChildByName("Text_Times")
 		local tResult = root:GetChildByName("Text_Result")
+		local isColl = (self._T.tab or 1) == 2
+		local fromSlot = root:GetChildByName("Img_From")
+		local toSlot = root:GetChildByName("Img_To")
+		local bookSlot = root:GetChildByName("Img_BookSlot")
+		local tBonus = root:GetChildByName("Text_BookBonus")
 		local sel = self._T.sel
 		if sel == nil then
-			self:SetText(tTarget, "대상을 선택하세요")
+			local sc = self._T.selCell
+			if isColl and sc ~= nil then
+				self:SetText(tTarget, self:PartName(self._T.bookPart or 1) .. " Lv" .. tostring(10 * sc.r) .. " — 해당 장비 미구현")
+				self:SetSlotIcon(bookSlot, sc.g, "")
+			else
+				self:SetText(tTarget, isColl and "도감 슬롯을 선택하세요" or "대상을 선택하세요")
+				self:SetSlotIcon(bookSlot, 1, "")
+			end
 			self:SetText(tNeed, "")
 			self:SetText(tTimes, "-")
 			self:SetText(tResult, "")
+			self:SetText(tBonus, "")
+			self:SetSlotIcon(fromSlot, 1, "")
+			self:SetSlotIcon(toSlot, 2, "")
 			return
 		end
 		local inv = self:GetInv()
@@ -337,23 +517,41 @@ script UIPromotePanel extends Component
 		if (self._T.tab or 1) == 1 then
 			local eu = self:GetUpgrade()
 			local unit = eu ~= nil and eu:RatioFor(sel.grade) or 0
+			self:SetSlotIcon(fromSlot, sel.grade, sel.name)
+			self:SetSlotIcon(toSlot, sel.grade + 1, sel.name)
 			self:SetText(tTarget, tostring(sel.name) .. "  " .. _ItemGrade:Name(sel.grade) .. " → " .. _ItemGrade:Name(sel.grade + 1))
 			self:SetText(tNeed, "필요 " .. tostring(unit) .. "개/회  ·  보유 " .. tostring(have) .. "개  ·  가능 " .. tostring(maxT) .. "회")
 			self:SetText(tResult, (maxT > 0) and (_ItemGrade:Name(sel.grade + 1) .. " " .. tostring(t) .. "개 생성 (" .. tostring((eu ~= nil and eu:RatioFor(sel.grade) or 0) * t) .. "개 소모)") or "재료 부족")
 		else
 			local cs = self:GetCollection()
 			local unit = cs ~= nil and cs:RegUnitFor(sel.name, sel.grade) or 0
-			local part = inv ~= nil and inv:MetaCell(sel.name, "Part") or ""
-			local level = inv ~= nil and inv:MetaCell(sel.name, "Level") or ""
+			local part = sel.part or ""
+			local level = sel.level or 0
 			local regCount = 0
 			if cs ~= nil then
 				for i, e in ipairs(cs:GetBookEntries()) do
-					if e.part == part and tostring(e.level) == level and e.grade == sel.grade then regCount = e.count end
+					if e.part == part and tostring(e.level) == tostring(level) and e.grade == sel.grade then regCount = e.count end
 				end
 			end
-			self:SetText(tTarget, part .. " Lv" .. level .. " " .. _ItemGrade:Name(sel.grade) .. " 도감  (현재 " .. tostring(regCount) .. "회 등록)")
+			self:SetSlotIcon(bookSlot, sel.grade, sel.name)
+			self:SetText(tTarget, part .. " Lv" .. tostring(level) .. " " .. _ItemGrade:Name(sel.grade) .. " 도감")
 			self:SetText(tNeed, "등록 단위 " .. tostring(unit) .. "개/회  ·  보유 " .. tostring(have) .. "개  ·  가능 " .. tostring(maxT) .. "회")
-			self:SetText(tResult, (maxT > 0) and (tostring(t) .. "회 등록 (" .. tostring(unit * t) .. "개 소멸 → 영구 보너스)") or "재료 부족")
+			local ba = 0
+			local bd = 0
+			local bh = 0
+			local bt = _DataService:GetTable("CollectionBookData")
+			if bt ~= nil then
+				for i = 1, bt:GetRowCount() do
+					local row = bt:GetRow(i)
+					if row:GetItem("Part") == part and row:GetItem("Level") == tostring(level) and row:GetItem("Grade") == tostring(sel.grade) then
+						ba = tonumber(row:GetItem("Atk")) or 0
+						bd = tonumber(row:GetItem("Def")) or 0
+						bh = tonumber(row:GetItem("Hp")) or 0
+					end
+				end
+			end
+			self:SetText(tBonus, "회당 보너스  공+" .. tostring(ba) .. "  방+" .. tostring(bd) .. "  HP+" .. tostring(bh) .. "\n누적 등록 " .. tostring(regCount) .. "회")
+			self:SetText(tResult, (maxT > 0) and (tostring(t) .. "회 등록 → 공+" .. tostring(ba * t) .. " 방+" .. tostring(bd * t) .. " HP+" .. tostring(bh * t) .. " (영구, " .. tostring(unit * t) .. "개 소멸)") or "재료 부족")
 		end
 	end
 
