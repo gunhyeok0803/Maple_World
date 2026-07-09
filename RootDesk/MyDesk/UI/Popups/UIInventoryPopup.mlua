@@ -126,7 +126,8 @@ script UIInventoryPopup extends Component
 
 	@ExecSpace("ClientOnly")
 	method void Wire(string path, any fn)
-		-- 경로의 버튼에 클릭 핸들러 연결.
+		-- 경로의 버튼에 클릭 핸들러 연결. (handlers는 OnBeginPlay 미실행 대비 지연 초기화)
+		if self._T.handlers == nil then self._T.handlers = {} end
 		local e = _EntityService:GetEntityByPath(path)
 		if e == nil then log_warning("[UIInventoryPopup] Wire 대상 없음: " .. path) return end
 		if e.ButtonComponent == nil then e:AddComponent("MOD.Core.ButtonComponent") end
@@ -135,38 +136,54 @@ script UIInventoryPopup extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void EnsureBoot()
+		-- 1회 부트스트랩(멱등): 상태 초기화/UIManager 등록/열기 버튼·메소 이벤트 배선.
+		-- OnBeginPlay 미실행 케이스(같은 엔티티에서 타 컴포넌트 제거 후 초기화 꼬임) 대비 OnUpdate에서도 보정 호출.
+		if self._T.booted then return end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		if self._T.evtHandlers == nil then self._T.evtHandlers = {} end
+		if self._T.filtered == nil then self._T.filtered = {} end
+		if self._T.tab == nil then self._T.tab = 1 end
+		if self._T.sortMode == nil then self._T.sortMode = 0 end   -- 0=습득순 1=등급순 2=수량순
+		if self._T.wired == nil then self._T.wired = false end
+		if self._T.window == nil then self._T.window = _EntityService:GetEntityByPath(self.WindowPath) end
+		if self._T.registered ~= true then
+			_UIManager:Register("inventory", function() self:SetOpen(false) end)
+			self._T.registered = true
+		end
+		-- 열기 버튼은 외부(DefaultGroup)라 처음부터 존재.
+		if self.OpenButtonPath ~= "" and self._T.openWired ~= true then
+			self:Wire(self.OpenButtonPath, function() self:Toggle() end)
+			self._T.openWired = true
+		end
+		-- 메소 이벤트(LocalPlayer 기반 — 늦게 뜨면 다음 보정 때 재시도)
+		if self._T.evtWired ~= true then
+			local lp = _UserService.LocalPlayer
+			if lp ~= nil then
+				local h1 = lp:ConnectEvent(ResourceValueChangedEvent, function(e) self:OnResourceChanged(e) end)
+				local h2 = lp:ConnectEvent(ClientResourceInitializedEvent, function() self:RefreshMeso() end)
+				self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ResourceValueChangedEvent, hnd = h1 }
+				self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ClientResourceInitializedEvent, hnd = h2 }
+				self._T.evtWired = true
+			end
+		end
+		if self._T.registered and (self.OpenButtonPath == "" or self._T.openWired == true) and self._T.evtWired == true then
+			self._T.booted = true
+			log("[UIInventoryPopup] EnsureBoot ok")
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnUpdate(number delta)
+		-- OnBeginPlay 미실행 대비 부트 보정(완료 후엔 즉시 반환).
+		self:EnsureBoot()
+	end
+
+	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
 		-- 창 내부 배선은 첫 열기 때 지연 실행(EnsureWired). 이유: 그룹월드에선 UI_Inventory가
 		-- 모델 인스턴스라 자식이 늦게 스폰됨 → OnBeginPlay 시점엔 자식 경로가 아직 없어 배선 실패.
-		self._T.handlers = {}
-		self._T.evtHandlers = {}
-		self._T.filtered = {}
-		self._T.curIndex = nil
-		self._T.curName  = nil
-		self._T.curCat   = nil
-		self._T.selSlot  = nil
-		self._T.tab      = 1
-		self._T.sortMode = 0   -- 0=습득순 1=등급순 2=수량순
-		self._T.wired    = false
-
-		self._T.window = _EntityService:GetEntityByPath(self.WindowPath)
-
-		_UIManager:Register("inventory", function() self:SetOpen(false) end)
-
-		-- 열기 버튼은 외부(DefaultGroup)라 처음부터 존재 → 여기서 바로 연결.
-		if self.OpenButtonPath ~= "" then
-			self:Wire(self.OpenButtonPath, function() self:Toggle() end)
-		end
-
-		-- 메소 이벤트(LocalPlayer 기반, 처음부터 존재)
-		local lp = _UserService.LocalPlayer
-		if lp ~= nil then
-			local h1 = lp:ConnectEvent(ResourceValueChangedEvent, function(e) self:OnResourceChanged(e) end)
-			local h2 = lp:ConnectEvent(ClientResourceInitializedEvent, function() self:RefreshMeso() end)
-			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ResourceValueChangedEvent, hnd = h1 }
-			self._T.evtHandlers[#self._T.evtHandlers + 1] = { entity = lp, evt = ClientResourceInitializedEvent, hnd = h2 }
-		end
-
+		self:EnsureBoot()
 		self:SetOpen(false)
 		log("[UIInventoryPopup] OnBeginPlay ok (lazy wire)")
 	end
@@ -279,6 +296,7 @@ script UIInventoryPopup extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
+		self:EnsureBoot()   -- 라이프사이클 미실행 대비 안전망
 		if open then
 			-- 창 내부 배선 지연 실행. 아직 자식 미스폰이면 이번 열기는 취소(다음 클릭 때 재시도).
 			if self:EnsureWired() == false then return end
