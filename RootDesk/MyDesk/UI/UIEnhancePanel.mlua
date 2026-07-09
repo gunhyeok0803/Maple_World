@@ -432,14 +432,14 @@ script UIEnhancePanel extends Component
 		if itemL ~= nil then
 			local protect = itemL:GetChildByName("Layout_Protect")
 			if protect ~= nil then
-				self:SetText(protect:GetChildByName("Text_Type"), "파괴 흔적")
+				local _p = protect  -- "파괴 흔적" 라벨은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
 				n.traceCount = protect:GetChildByName("Text_Count")
 				local sb = protect:GetChildByName("SelectBG")
 				if sb ~= nil then sb.Enable = false end
 			end
 			local safety = itemL:GetChildByName("Layout_Safety")
 			if safety ~= nil then
-				self:SetText(safety:GetChildByName("Text_Type"), "복구하기 (순정 1개 소모)")
+				local _s = safety  -- "복구하기" 라벨은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
 				local sc = safety:GetChildByName("Text_Count")
 				if sc ~= nil then sc.Enable = false end
 				local sb = safety:GetChildByName("SelectBG")
@@ -720,9 +720,7 @@ script UIEnhancePanel extends Component
 		n.btnRoll = layout:GetChildByName("Btn_Cancel")
 		n.btnKeep = n.before ~= nil and n.before:GetChildByName("Btn_Select") or nil
 		n.btnApply = n.after ~= nil and n.after:GetChildByName("Btn_Select") or nil
-		self:SetText(self:FirstTextChild(n.btnRoll), "잠재 변경")
-		self:SetText(self:FirstTextChild(n.btnKeep), "유지하기")
-		self:SetText(self:FirstTextChild(n.btnApply), "선택하기")
+		-- 버튼 라벨(잠재 변경/유지하기/선택하기)은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
 		if n.btnRoll ~= nil then
 			local h = n.btnRoll:ConnectEvent(ButtonClickEvent, function() self:OnPotRerollClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnRoll, h = h }
@@ -807,7 +805,7 @@ script UIEnhancePanel extends Component
 		local info = layout:GetChildByName("Layout_PotenInfo")
 		if info ~= nil then
 			local ig = info:GetChildByName("Img_Grade")
-			if ig ~= nil then self:SetText(ig:GetChildByName("Text_Grade"), "추가 옵션 (§06 개별 인스턴스 귀속)") end
+			-- 헤더 라벨(추가 옵션…)은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
 			for i, hideName in ipairs({ "Item", "Scroll_Stat", "Star", "Star_1" }) do
 				local h = info:GetChildByName(hideName)
 				if h ~= nil then h.Enable = false end
@@ -820,7 +818,7 @@ script UIEnhancePanel extends Component
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Cost") or nil
 		n.hdr = layout:GetChildByName("Img_ItemHdr")
 		n.btnOk = layout:GetChildByName("Btn_Ok")
-		self:SetText(self:FirstTextChild(n.btnOk), "환생의 불꽃 사용")
+		-- 버튼 라벨(환생의 불꽃 사용)은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
 		if n.btnOk ~= nil then
 			local h = n.btnOk:ConnectEvent(ButtonClickEvent, function() self:OnFlameClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnOk, h = h }

@@ -918,7 +918,7 @@
           "name": "StarForceLevel",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/StarForceLevel",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 5,
@@ -1392,7 +1392,7 @@
           "name": "Scroll_Stat",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Scroll_Stat",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 6,
@@ -1463,7 +1463,7 @@
           "name": "Item",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Item",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 7,
@@ -2863,7 +2863,7 @@
           "name": "Decrease",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Prob/Decrease",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 2,
@@ -3764,7 +3764,8 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "복구하기 (순정 1개 소모)"
             }
           ],
           "@version": 1
@@ -3986,7 +3987,7 @@
           "name": "Text_Count",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/Text_Count",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 2,
@@ -4058,7 +4059,7 @@
           "name": "SelectBG",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Safety/SelectBG",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 3,
@@ -4425,7 +4426,8 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "파괴 흔적"
             }
           ],
           "@version": 1
@@ -4719,7 +4721,7 @@
           "name": "SelectBG",
           "path": "/ui/EnhanceGroup/UIR_SimpleFantasy_Sample_StarForce/Panel/Layout_Item/Layout_Protect/SelectBG",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 3,
@@ -7593,7 +7595,8 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "추가 옵션 (§06 개별 인스턴스 귀속)"
             }
           ],
           "@version": 1
@@ -9700,7 +9703,7 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Text": "부여하기",
+              "Text": "환생의 불꽃 사용",
               "Enable": true
             }
           ],
@@ -12031,7 +12034,8 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "유지하기"
             },
             {
               "@type": "MOD.Core.ButtonComponent",
@@ -13806,7 +13810,8 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "선택하기"
             },
             {
               "@type": "MOD.Core.ButtonComponent",
@@ -15544,7 +15549,8 @@
                 "a": 1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "잠재 변경"
             }
           ],
           "@version": 1
