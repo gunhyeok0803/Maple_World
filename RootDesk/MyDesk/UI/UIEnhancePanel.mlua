@@ -384,6 +384,22 @@ script UIEnhancePanel extends Component
 		end
 	end
 
+	@ExecSpace("ClientOnly")
+	method void SetStarRow(integer cur, boolean legend)
+		-- 별은 텍스트 게이지(★ 채움/☆ 빈칸) 사용 — 그래픽 별 스프라이트는 숨김.
+		local n = self._T.sf
+		if n == nil then return end
+		if n.stars ~= nil then
+			for i = 1, 20 do
+				if n.stars[i] ~= nil and isvalid(n.stars[i]) then n.stars[i].Enable = false end
+			end
+		end
+		if n.gauge ~= nil and isvalid(n.gauge) then
+			n.gauge.Enable = legend
+			self:SetText(n.gauge, legend and self:StarGauge(cur, 20) or "")
+		end
+	end
+
 	method string StarGauge(integer cur, integer max)
 		-- ★ 채움 게이지 문자열(5개 단위 그룹, 채움=★ 빈칸=☆).
 		local out = ""
@@ -423,7 +439,14 @@ script UIEnhancePanel extends Component
 		n.preview = panel:GetChildByName("Text_Preview")
 		n.deco = panel:GetChildByName("Img_Deco")
 		n.gauge = panel:GetChildByName("Text_StarGauge")
-		if lvl ~= nil then lvl.Enable = false end   -- "0 >> 1" 숫자 행 숨김(별 게이지로 대체)
+		n.stars = {}
+		for i = 1, 20 do n.stars[i] = panel:GetChildByName("Star_" .. tostring(i)) end
+		local restore = panel:GetChildByName("Btn_Restore")
+		if restore ~= nil then
+			local h = restore:ConnectEvent(ButtonClickEvent, function() self:OnRestoreClicked() end)
+			self._T.handlers[#self._T.handlers + 1] = { e = restore, h = h }
+		end
+		if lvl ~= nil then lvl.Enable = true end   -- "0 >> 1" 숫자 행 숨김(별 게이지로 대체)
 		local oldItem = panel:GetChildByName("Item")
 		if oldItem ~= nil then oldItem.Enable = false end
 		local oldScroll = panel:GetChildByName("Scroll_Stat")
@@ -482,7 +505,7 @@ script UIEnhancePanel extends Component
 			self:SetText(n.des, "-")
 			self:SetText(n.cost, "-")
 			self:SetText(n.preview, "")
-			self:SetText(n.gauge, "")
+			self:SetStarRow(0, false)
 			if n.deco ~= nil and n.deco.SpriteGUIRendererComponent ~= nil then n.deco.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 0) end
 			return
 		end
@@ -496,9 +519,7 @@ script UIEnhancePanel extends Component
 			end
 		end
 		local legend = (sel.grade or 1) >= _ItemGrade.Legendary
-		if n.gauge ~= nil then
-			self:SetText(n.gauge, legend and self:StarGauge(star, sf.MaxStar) or "")
-		end
+		self:SetStarRow(star, legend)
 		self:SetText(n.name, tostring(sel.name) .. " ★" .. tostring(star) .. (legend and "" or "  (레전드리 전용)"))
 		if not legend or target > sf.MaxStar then
 			self:SetText(n.prev, tostring(star))
@@ -911,6 +932,7 @@ script UIEnhancePanel extends Component
 		if nameText ~= nil and nameText.TextComponent ~= nil then
 			local star = sel.star or 0
 			nameText.TextComponent.Text = tostring(sel.name) .. (star > 0 and (" ★" .. tostring(star)) or "")
+			nameText.TextComponent.FontColor = _ItemGrade:ColorOf(sel.grade or 1)   -- 등급색
 		end
 		if statsText ~= nil and statsText.TextComponent ~= nil then
 			local cp = self:GetCombat()
