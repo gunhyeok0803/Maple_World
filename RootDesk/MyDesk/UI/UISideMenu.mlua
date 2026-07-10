@@ -90,7 +90,9 @@ script UISideMenu extends Component
 	method void OnTileEnhance()
 		-- [장비 슬롯 강화] 진입 → 강화 패널 열기(스타포스 탭)
 		self:SetOpen(false)
-		local ctrl = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Controller")
+		-- EnhanceRoot 재부모화 전/후 모두 대응(새 경로 먼저, 없으면 기존).
+		local ctrl = _EntityService:GetEntityByPath("/ui/EnhanceGroup/EnhanceRoot/Controller")
+		if ctrl == nil then ctrl = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Controller") end
 		if ctrl == nil then
 			log_warning("[UISideMenu] EnhanceGroup/Controller 없음")
 			return
@@ -104,7 +106,9 @@ script UISideMenu extends Component
 	method void OnTileUpgrade()
 		-- [승급/컬렉션] 진입 → 승급 패널 열기(승급 탭)
 		self:SetOpen(false)
-		local ctrl = _EntityService:GetEntityByPath("/ui/PromoteGroup/Controller")
+		-- PromoteRoot 재부모화 전/후 모두 대응(새 경로 먼저, 없으면 기존).
+		local ctrl = _EntityService:GetEntityByPath("/ui/PromoteGroup/PromoteRoot/Controller")
+		if ctrl == nil then ctrl = _EntityService:GetEntityByPath("/ui/PromoteGroup/Controller") end
 		if ctrl == nil then
 			log_warning("[UISideMenu] PromoteGroup/Controller 없음")
 			return

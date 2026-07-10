@@ -697,7 +697,7 @@ script UIEnhancePanel extends Component
 		wireBtn(n.chkX3, function() self:TogglePotOpt("x3") end)
 		wireBtn(n.chkKeep, function() self:TogglePotOpt("keep") end)
 		-- 옵션 확률 정보 팝업 닫기 배선(팝업은 EnhanceGroup 최상위)
-		local pop = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo")
+		local pop = self:GetPotInfoPop()
 		if pop ~= nil then
 			local fr = pop:GetChildByName("Frame")
 			if fr ~= nil then wireBtn(fr:GetChildByName("Btn_Close"), function() self:ClosePotInfo() end) end
@@ -766,17 +766,24 @@ script UIEnhancePanel extends Component
 		ps:RequestConvert(sel.mode, tostring(sel.key), times, self._T.potKeep == true)
 	end
 
+	method any GetPotInfoPop()
+		-- Popup_PotInfo 조회. EnhanceRoot 재부모화 전/후 모두 대응(새 경로 먼저, 없으면 기존).
+		local p = _EntityService:GetEntityByPath("/ui/EnhanceGroup/EnhanceRoot/Popup_PotInfo")
+		if p == nil then p = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo") end
+		return p
+	end
+
 	@ExecSpace("ClientOnly")
 	method void ClosePotInfo()
 		-- 확률 정보 팝업 닫기.
-		local pop = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo")
+		local pop = self:GetPotInfoPop()
 		if pop ~= nil then pop.Enable = false end
 	end
 
 	@ExecSpace("ClientOnly")
 	method void OnPotOptInfoClicked()
 		-- 옵션 확률 정보 팝업: 선택 장비 종류별 풀(§06)의 옵션/수치/등장확률 + 등급업 확률 표시.
-		local pop = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo")
+		local pop = self:GetPotInfoPop()
 		local sel = self._T.selected
 		local ps = self:GetPotential()
 		if pop == nil or sel == nil or sel.name == nil or sel.name == "" or ps == nil then return end

@@ -2627,6 +2627,7 @@
               "FontSize": 16,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 116,
@@ -2655,8 +2656,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -3788,6 +3788,7 @@
               "FontSize": 16,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 116,
@@ -3816,8 +3817,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -5804,6 +5804,7 @@
               "FontSize": 16,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 216,
@@ -5832,8 +5833,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -6965,6 +6965,7 @@
               "FontSize": 15,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 216,
@@ -6993,8 +6994,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -21938,6 +21938,7 @@
               "FontSize": 15,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 216,
@@ -21966,8 +21967,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -22056,6 +22056,91 @@
             },
             {
               "@type": "script.UIPromotePanel",
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "17eecaba-6a70-4dd8-83ba-dfc43a9704bb",
+        "path": "/ui/PromoteGroup/PromoteRoot",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "PromoteRoot",
+          "path": "/ui/PromoteGroup/PromoteRoot",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 6,
+          "pathConstraints": "///",
+          "revision": 0,
+          "origin": {
+            "type": "Model",
+            "entry_id": "UIEmpty",
+            "sub_entity_id": null,
+            "root_entity_id": null,
+            "replaced_model_id": null
+          },
+          "modelId": "uiempty",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "ActivePlatform": 255,
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 960,
+                "y": 540
+              },
+              "OffsetMin": {
+                "x": -960,
+                "y": -540
+              },
+              "Pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "RectSize": {
+                "x": 1920,
+                "y": 1080
+              },
+              "UIMode": 1,
+              "UIScale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "UIVersion": 2,
+              "anchoredPosition": {
+                "x": 0,
+                "y": 0
+              },
+              "Position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "QuaternionRotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "Scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
               "Enable": true
             }
           ],
