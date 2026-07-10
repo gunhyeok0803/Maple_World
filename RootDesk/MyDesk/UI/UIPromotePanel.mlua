@@ -454,6 +454,19 @@ script UIPromotePanel extends Component
 		elseif ent.TextGUIRendererComponent ~= nil then ent.TextGUIRendererComponent.Text = s end
 	end
 
+	method string Comma(number v)
+		-- 1234567 → "1,234,567" (표준 표기 규칙 — 강화 창과 동일).
+		local s = tostring(math.floor(v + 0.5))
+		local out = ""
+		local cnt = 0
+		for i = #s, 1, -1 do
+			out = string.sub(s, i, i) .. out
+			cnt = cnt + 1
+			if cnt % 3 == 0 and i > 1 then out = "," .. out end
+		end
+		return out
+	end
+
 	@ExecSpace("ClientOnly")
 	method void SetSlotIcon(any ent, integer grade, string name)
 		-- 변환 슬롯: 등급 슬롯 배경 + 아이템 아이콘(name 빈 문자열이면 아이콘 숨김).
@@ -520,8 +533,8 @@ script UIPromotePanel extends Component
 			self:SetSlotIcon(fromSlot, sel.grade, sel.name)
 			self:SetSlotIcon(toSlot, sel.grade + 1, sel.name)
 			self:SetText(tTarget, tostring(sel.name) .. "  " .. _ItemGrade:Name(sel.grade) .. " → " .. _ItemGrade:Name(sel.grade + 1))
-			self:SetText(tNeed, "필요 " .. tostring(unit) .. "개/회  ·  보유 " .. tostring(have) .. "개  ·  가능 " .. tostring(maxT) .. "회")
-			self:SetText(tResult, (maxT > 0) and (_ItemGrade:Name(sel.grade + 1) .. " " .. tostring(t) .. "개 생성 (" .. tostring((eu ~= nil and eu:RatioFor(sel.grade) or 0) * t) .. "개 소모)") or "재료 부족")
+			self:SetText(tNeed, "필요 재료  " .. self:Comma(unit) .. "개\n보유  " .. self:Comma(have) .. "개\n승급 가능  " .. tostring(maxT) .. "회")
+			self:SetText(tResult, (maxT > 0) and (_ItemGrade:Name(sel.grade + 1) .. " " .. tostring(t) .. "개 생성 (" .. self:Comma(unit * t) .. "개 소모)") or "재료가 부족합니다")
 		else
 			local cs = self:GetCollection()
 			local unit = cs ~= nil and cs:RegUnitFor(sel.name, sel.grade) or 0
@@ -535,7 +548,7 @@ script UIPromotePanel extends Component
 			end
 			self:SetSlotIcon(bookSlot, sel.grade, sel.name)
 			self:SetText(tTarget, part .. " Lv" .. tostring(level) .. " " .. _ItemGrade:Name(sel.grade) .. " 도감")
-			self:SetText(tNeed, "등록 단위 " .. tostring(unit) .. "개/회  ·  보유 " .. tostring(have) .. "개  ·  가능 " .. tostring(maxT) .. "회")
+			self:SetText(tNeed, "등록 단위  " .. self:Comma(unit) .. "개\n보유  " .. self:Comma(have) .. "개\n등록 가능  " .. tostring(maxT) .. "회")
 			local ba = 0
 			local bd = 0
 			local bh = 0
@@ -551,7 +564,7 @@ script UIPromotePanel extends Component
 				end
 			end
 			self:SetText(tBonus, "회당 보너스  공+" .. tostring(ba) .. "  방+" .. tostring(bd) .. "  HP+" .. tostring(bh) .. "\n누적 등록 " .. tostring(regCount) .. "회")
-			self:SetText(tResult, (maxT > 0) and (tostring(t) .. "회 등록 → 공+" .. tostring(ba * t) .. " 방+" .. tostring(bd * t) .. " HP+" .. tostring(bh * t) .. " (영구, " .. tostring(unit * t) .. "개 소멸)") or "재료 부족")
+			self:SetText(tResult, (maxT > 0) and (tostring(t) .. "회 등록 시  공+" .. tostring(ba * t) .. " 방+" .. tostring(bd * t) .. " HP+" .. tostring(bh * t) .. " (영구)\n소모: " .. tostring(sel.name) .. " " .. self:Comma(unit * t) .. "개") or "재료가 부족합니다")
 		end
 	end
 

@@ -429,6 +429,7 @@ script UIEnhancePanel extends Component
 		n.des = pct("Destroy")
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Cost") or nil
 		n.gauge = panel:GetChildByName("Text_StarGauge")
+		n.legendOnly = panel:GetChildByName("Text_LegendOnly")
 		local restore = panel:GetChildByName("Btn_Restore")
 		if restore ~= nil then
 			local h = restore:ConnectEvent(ButtonClickEvent, function() self:OnRestoreClicked() end)
@@ -463,12 +464,14 @@ script UIEnhancePanel extends Component
 			self:SetText(n.des, "-")
 			self:SetText(n.cost, "-")
 			self:SetStarRow(0, false)
+			if n.legendOnly ~= nil then n.legendOnly.Enable = false end
 			return
 		end
 		local star = sel.star or 0
 		local target = star + 1
 		local legend = (sel.grade or 1) >= _ItemGrade.Legendary
 		self:SetStarRow(star, legend)
+		if n.legendOnly ~= nil then n.legendOnly.Enable = not legend end
 		if not legend or target > sf.MaxStar then
 			self:SetText(n.prev, tostring(star))
 			self:SetText(n.next, target > sf.MaxStar and "MAX" or "-")
@@ -729,7 +732,11 @@ script UIEnhancePanel extends Component
 		local inv = self:GetInv()
 		local g = (sel.pot ~= nil and sel.pot ~= "") and inv:ParsePotGrade(sel.pot) or 0
 		self:SetText(n.gradeText, g > 0 and (_ItemGrade:PotGradeName(g) .. " 잠재") or "잠재 없음")
-		self:SetText(n.opts, self:OptSummary(sel.pot, "잠재 없음 — [변환]으로 개봉"))
+		if (sel.grade or 1) < _ItemGrade.Legendary then
+			self:SetText(n.opts, "레전드리 장비만 잠재를 사용할 수 있습니다")
+		else
+			self:SetText(n.opts, self:OptSummary(sel.pot, "[변환]을 누르면 잠재 옵션이 개방됩니다"))
+		end
 		self:RefreshPotChecks()
 	end
 
@@ -841,7 +848,11 @@ script UIEnhancePanel extends Component
 			return
 		end
 		self:SetText(n.name, tostring(sel.name) .. " ★" .. tostring(sel.star or 0))
-		self:SetText(n.opts, self:OptSummary(sel.flame, "추가 옵션 없음 — 불꽃 사용으로 부여"))
+		if (sel.grade or 1) < _ItemGrade.Legendary then
+			self:SetText(n.opts, "레전드리 장비만 환생의 불꽃을 사용할 수 있습니다")
+		else
+			self:SetText(n.opts, self:OptSummary(sel.flame, "환생의 불꽃을 사용하면 이 장비에만 적용되는 추가 옵션이 부여됩니다"))
+		end
 	end
 
 	@ExecSpace("ClientOnly")
