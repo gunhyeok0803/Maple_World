@@ -625,9 +625,9 @@ script UIEnhancePanel extends Component
 		local inv = self:GetInv()
 		if inv == nil then return "" end
 		if pot == nil or pot == "" then return "잠재 없음" end
-		local lines = { "등급: " .. _ItemGrade:Name(inv:ParsePotGrade(pot)) }
+		local lines = { "등급: " .. _ItemGrade:PotGradeName(inv:ParsePotGrade(pot)) }
 		for i, p in ipairs(inv:ParseOptPairs(pot)) do
-			lines[#lines + 1] = self:StatLabel(p.stat) .. "  +" .. tostring(p.value)
+			lines[#lines + 1] = self:StatLabel(p.stat) .. "  " .. self:FmtVal(p.stat, tonumber(p.value) or 0)
 		end
 		return table.concat(lines, "\n")
 	end
@@ -640,7 +640,7 @@ script UIEnhancePanel extends Component
 		if #pairsT == 0 then return emptyMsg end
 		local lines = {}
 		for i, p in ipairs(pairsT) do
-			lines[#lines + 1] = self:StatLabel(p.stat) .. "  +" .. tostring(p.value)
+			lines[#lines + 1] = self:StatLabel(p.stat) .. "  " .. self:FmtVal(p.stat, tonumber(p.value) or 0)
 		end
 		return table.concat(lines, "\n")
 	end
@@ -728,7 +728,7 @@ script UIEnhancePanel extends Component
 		end
 		local inv = self:GetInv()
 		local g = (sel.pot ~= nil and sel.pot ~= "") and inv:ParsePotGrade(sel.pot) or 0
-		self:SetText(n.gradeText, g > 0 and _ItemGrade:Name(g) or "잠재 없음")
+		self:SetText(n.gradeText, g > 0 and (_ItemGrade:PotGradeName(g) .. " 잠재") or "잠재 없음")
 		self:SetText(n.opts, self:OptSummary(sel.pot, "잠재 없음 — [변환]으로 개봉"))
 		self:RefreshPotChecks()
 	end
@@ -773,7 +773,7 @@ script UIEnhancePanel extends Component
 		local showG = (curG > 0) and curG or 1
 		local gu = 0
 		if showG == 1 then gu = ps.GradeUp1to2 elseif showG == 2 then gu = ps.GradeUp2to3 elseif showG == 3 then gu = ps.GradeUp3to4 end
-		self:SetText(frame:GetChildByName("Text_GradeUp"), "등급 업 (" .. _ItemGrade:Name(showG) .. " 기준)   " .. tostring(math.floor(gu * 100 + 0.5)) .. "%")
+		self:SetText(frame:GetChildByName("Text_GradeUp"), "등급 업 (" .. _ItemGrade:PotGradeName(showG) .. " 기준)   " .. tostring(math.floor(gu * 100 + 0.5)) .. "%")
 		local rows = ps:PoolRows(partClass, showG)
 		local total = 0
 		for i, r in ipairs(rows) do total = total + (tonumber(r:GetItem("Weight")) or 0) end
@@ -781,8 +781,9 @@ script UIEnhancePanel extends Component
 			local r = rows[i]
 			if r ~= nil and total > 0 then
 				local w = tonumber(r:GetItem("Weight")) or 0
-				self:SetText(frame:GetChildByName("Opt_" .. i), self:StatLabel(r:GetItem("Stat")))
-				self:SetText(frame:GetChildByName("Val_" .. i), "+" .. tostring(r:GetItem("Value")))
+				local statKey = r:GetItem("Stat")
+				self:SetText(frame:GetChildByName("Opt_" .. i), self:StatLabel(statKey))
+				self:SetText(frame:GetChildByName("Val_" .. i), self:FmtVal(statKey, tonumber(r:GetItem("Value")) or 0))
 				self:SetText(frame:GetChildByName("Rate_" .. i), tostring(math.floor(w / total * 1000 + 0.5) / 10) .. "%")
 			else
 				self:SetText(frame:GetChildByName("Opt_" .. i), "")
@@ -866,14 +867,41 @@ script UIEnhancePanel extends Component
 	end
 
 	method string StatLabel(string key)
-		-- 스탯 키 → 표시 라벨(§03).
+		-- 스탯 키 → 표시 라벨(표준화: 단위는 라벨이 아니라 값 뒤에 붙임 — FmtVal 참조).
 		local map = {
 			Attack = "공격력", MainStat = "주스탯", Defense = "방어력", MaxHP = "최대 HP", MP = "MP",
-			CritRate = "크리티컬 확률 %", CritDmg = "크리티컬 데미지 %", ItemDropRate = "아이템 드랍률 %",
-			MesoDropRate = "메소 획득 %", BossDmg = "보스 데미지 %", AttackPct = "공격력 %",
-			MainStatPct = "주스탯 %", MaxHPPct = "최대 HP %",
+			CritRate = "크리티컬 확률", CritDmg = "크리티컬 데미지", ItemDropRate = "아이템 드랍률",
+			MesoDropRate = "메소 획득", BossDmg = "보스 데미지", AttackPct = "공격력",
+			MainStatPct = "주스탯", MaxHPPct = "최대 HP",
 		}
 		return map[key] or key
+	end
+
+	method boolean IsPctStat(string key)
+		-- 값 뒤에 %를 붙이는 스탯인지.
+		local pct = {
+			CritRate = true, CritDmg = true, ItemDropRate = true, MesoDropRate = true,
+			BossDmg = true, AttackPct = true, MainStatPct = true, MaxHPPct = true,
+		}
+		return pct[key] == true
+	end
+
+	method string Comma(number v)
+		-- 1234567 → "1,234,567" (음수/소수 미사용 전제).
+		local s = tostring(math.floor(v + 0.5))
+		local out = ""
+		local cnt = 0
+		for i = #s, 1, -1 do
+			out = string.sub(s, i, i) .. out
+			cnt = cnt + 1
+			if cnt % 3 == 0 and i > 1 then out = "," .. out end
+		end
+		return out
+	end
+
+	method string FmtVal(string key, number v)
+		-- 표준 값 표기: "+1,000" / "+25%" (단위 뒤, 천단위 콤마).
+		return "+" .. self:Comma(v) .. (self:IsPctStat(key) and "%" or "")
 	end
 
 	@ExecSpace("ClientOnly")
@@ -927,10 +955,10 @@ script UIEnhancePanel extends Component
 				for i, k in ipairs(cp:StatKeys()) do
 					local v = t[k] or 0
 					if v ~= 0 then
-						lines[#lines + 1] = self:StatLabel(k) .. "  +" .. tostring(v)
+						lines[#lines + 1] = self:StatLabel(k) .. "  " .. self:FmtVal(k, v)
 						if t2 ~= nil then
 							local d = (t2[k] or 0) - v
-							nextLines[#nextLines + 1] = d ~= 0 and ("+" .. tostring(d)) or ""
+							nextLines[#nextLines + 1] = d ~= 0 and self:FmtVal(k, d) or ""
 						end
 					end
 				end

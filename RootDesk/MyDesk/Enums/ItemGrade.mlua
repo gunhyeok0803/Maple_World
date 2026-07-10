@@ -16,6 +16,15 @@ script ItemGrade extends Logic
 		return "-"
 	end
 
+	method string PotGradeName(integer g)
+		-- 잠재(옵션) 등급 → 한글. 장비 등급(레어~레전드리)과 이름이 겹치지 않도록 별도 체계(사용자 확정).
+		if g == 4 then return "최상급" end
+		if g == 3 then return "상급" end
+		if g == 2 then return "중급" end
+		if g == 1 then return "하급" end
+		return "-"
+	end
+
 	method string Key(integer g)
 		-- 등급 → 영문 키
 		if g == 4 then return "Legendary" end
