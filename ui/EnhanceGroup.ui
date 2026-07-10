@@ -149,12 +149,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 913.5747,
-                "y": 482.4348
+                "x": 960,
+                "y": 479.6496275
               },
               "OffsetMin": {
-                "x": -1006.42529,
-                "y": -476.864441
+                "x": -960,
+                "y": -479.6496275
               },
               "Pivot": {
                 "x": 0.5,
@@ -172,12 +172,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -46.4253,
-                "y": 2.7852
+                "x": 0,
+                "y": 0
               },
               "Position": {
-                "x": -46.4253,
-                "y": 2.7852,
+                "x": 0,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -241,12 +241,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 657.744263,
-                "y": 366.1691
+                "x": 670,
+                "y": 345
               },
               "OffsetMin": {
-                "x": -92.25571,
-                "y": -383.8309
+                "x": -80,
+                "y": -405
               },
               "Pivot": {
                 "x": 0.5,
@@ -264,12 +264,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 282.7443,
-                "y": -8.8309
+                "x": 295,
+                "y": -30
               },
               "Position": {
-                "x": 282.7443,
-                "y": -8.8309,
+                "x": 0,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -4469,12 +4469,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 628.8687,
-                "y": 421.7656
+                "x": 680,
+                "y": 430
               },
               "OffsetMin": {
-                "x": -731.1313,
-                "y": -438.2344
+                "x": -680,
+                "y": -430
               },
               "Pivot": {
                 "x": 0.5,
@@ -4492,12 +4492,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -51.1313,
-                "y": -8.2344
+                "x": 0,
+                "y": 0
               },
               "Position": {
-                "x": -51.1313,
-                "y": -8.2344,
+                "x": 0,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -4760,7 +4760,7 @@
                 "y": 1
               },
               "MaterialId": "",
-              "OrderInLayer": 13,
+              "OrderInLayer": 950,
               "OverrideSorting": false,
               "PlayRate": 1,
               "PreserveSprite": 0,
@@ -4832,7 +4832,7 @@
               "IsLocalizationKey": false,
               "MaxSize": 40,
               "MinSize": 10,
-              "OrderInLayer": 16,
+              "OrderInLayer": 950,
               "OutlineColor": {
                 "r": 0.698039234,
                 "g": 0.698039234,
@@ -4962,7 +4962,7 @@
                 "y": 1
               },
               "MaterialId": "",
-              "OrderInLayer": 13,
+              "OrderInLayer": 950,
               "OverrideSorting": false,
               "PlayRate": 1,
               "PreserveSprite": 0,
@@ -5084,7 +5084,7 @@
               "IsLocalizationKey": false,
               "MaxSize": 40,
               "MinSize": 10,
-              "OrderInLayer": 16,
+              "OrderInLayer": 950,
               "OutlineColor": {
                 "r": 0.698039234,
                 "g": 0.698039234,
@@ -5154,11 +5154,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 960,
-                "y": 484.2918
+                "y": 480.5781
               },
               "OffsetMin": {
                 "x": -960,
-                "y": -476.86438
+                "y": -480.5781
               },
               "Pivot": {
                 "x": 0.5,
@@ -5177,11 +5177,11 @@
               "UIVersion": 2,
               "anchoredPosition": {
                 "x": 0,
-                "y": 3.7137
+                "y": 0
               },
               "Position": {
                 "x": 0,
-                "y": 3.7137,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5272,8 +5272,8 @@
                 "y": -30
               },
               "Position": {
-                "x": 295,
-                "y": -30,
+                "x": 0,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6841,12 +6841,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 913.5745,
-                "y": 495.432922
+                "x": 960,
+                "y": 485.2204285
               },
               "OffsetMin": {
-                "x": -1006.42548,
-                "y": -475.007935
+                "x": -960,
+                "y": -485.2204285
               },
               "Pivot": {
                 "x": 0.5,
@@ -6864,12 +6864,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -46.4255,
-                "y": 10.2125
+                "x": 0,
+                "y": 0
               },
               "Position": {
-                "x": -46.4255,
-                "y": 10.2125,
+                "x": 0,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6960,8 +6960,8 @@
                 "y": -30
               },
               "Position": {
-                "x": 295,
-                "y": -30,
+                "x": 0,
+                "y": 0,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -10296,11 +10296,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 120,
-                "y": -20
+                "y": -135
               },
               "OffsetMin": {
                 "x": -120,
-                "y": -350
+                "y": -365
               },
               "Pivot": {
                 "x": 0.5,
@@ -10308,7 +10308,7 @@
               },
               "RectSize": {
                 "x": 240,
-                "y": 330
+                "y": 230
               },
               "UIMode": 1,
               "UIScale": {
@@ -10319,7 +10319,7 @@
               "UIVersion": 2,
               "anchoredPosition": {
                 "x": 0,
-                "y": -185
+                "y": -250
               },
               "Position": {
                 "x": 0,
@@ -13397,11 +13397,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 125,
-                "y": 12
+                "y": -98
               },
               "OffsetMin": {
                 "x": -125,
-                "y": -12
+                "y": -122
               },
               "Pivot": {
                 "x": 0.5,
@@ -13420,7 +13420,7 @@
               "UIVersion": 2,
               "anchoredPosition": {
                 "x": 0,
-                "y": 0
+                "y": -110
               },
               "Position": {
                 "x": 0,
@@ -14139,20 +14139,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -46,
-                "y": 112
+                "x": -4,
+                "y": 110
               },
               "OffsetMin": {
-                "x": -130,
-                "y": 28
+                "x": -92,
+                "y": 22
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 84,
-                "y": 84
+                "x": 88,
+                "y": 88
               },
               "UIMode": 1,
               "UIScale": {
@@ -14162,8 +14162,8 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -88,
-                "y": 70
+                "x": -48,
+                "y": 66
               },
               "Position": {
                 "x": 0,
@@ -14429,20 +14429,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 42,
-                "y": 112
+                "x": 92,
+                "y": 110
               },
               "OffsetMin": {
-                "x": -42,
-                "y": 28
+                "x": 4,
+                "y": 22
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 84,
-                "y": 84
+                "x": 88,
+                "y": 88
               },
               "UIMode": 1,
               "UIScale": {
@@ -14452,8 +14452,8 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 0,
-                "y": 70
+                "x": 48,
+                "y": 66
               },
               "Position": {
                 "x": 0,
@@ -14719,20 +14719,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 130,
-                "y": 112
+                "x": -4,
+                "y": 18
               },
               "OffsetMin": {
-                "x": 46,
-                "y": 28
+                "x": -92,
+                "y": -70
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 84,
-                "y": 84
+                "x": 88,
+                "y": 88
               },
               "UIMode": 1,
               "UIScale": {
@@ -14742,8 +14742,8 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 88,
-                "y": 70
+                "x": -48,
+                "y": -26
               },
               "Position": {
                 "x": 0,
