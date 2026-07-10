@@ -2655,7 +2655,8 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true
+              "Enable": true,
+              "LineSpacing": 1.5
             }
           ],
           "@version": 1
@@ -3815,7 +3816,8 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true
+              "Enable": true,
+              "LineSpacing": 1.5
             }
           ],
           "@version": 1
@@ -5830,7 +5832,8 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true
+              "Enable": true,
+              "LineSpacing": 1.5
             }
           ],
           "@version": 1
@@ -6990,7 +6993,8 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true
+              "Enable": true,
+              "LineSpacing": 1.5
             }
           ],
           "@version": 1
@@ -21962,7 +21966,8 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true
+              "Enable": true,
+              "LineSpacing": 1.5
             }
           ],
           "@version": 1
