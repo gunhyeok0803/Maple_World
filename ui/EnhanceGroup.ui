@@ -120,7 +120,7 @@
           "name": "Tab_StarForce",
           "path": "/ui/EnhanceGroup/Tab_StarForce",
           "nameEditable": true,
-          "enable": false,
+          "enable": true,
           "visible": true,
           "localize": true,
           "displayOrder": 0,
@@ -150,11 +150,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 960,
-                "y": 479.6496275
+                "y": 479.649628
               },
               "OffsetMin": {
                 "x": -960,
-                "y": -479.6496275
+                "y": -479.649628
               },
               "Pivot": {
                 "x": 0.5,
@@ -268,8 +268,8 @@
                 "y": -30
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 295,
+                "y": -30,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1972,11 +1972,11 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 676,
+                "x": 224,
                 "y": -5
               },
               "OffsetMin": {
-                "x": 466,
+                "x": 14,
                 "y": -125
               },
               "Pivot": {
@@ -1995,11 +1995,11 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 571,
+                "x": 119,
                 "y": -65
               },
               "Position": {
-                "x": 571,
+                "x": 119,
                 "y": -65,
                 "z": 0
               },
@@ -4231,208 +4231,6 @@
         }
       },
       {
-        "id": "8e9ee981-07bb-482c-8554-b2152458f8ce",
-        "path": "/ui/EnhanceGroup/Tab_StarForce/Panel/Text_LegendOnly",
-        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.TextComponent",
-        "jsonString": {
-          "name": "Text_LegendOnly",
-          "path": "/ui/EnhanceGroup/Tab_StarForce/Panel/Text_LegendOnly",
-          "nameEditable": true,
-          "enable": false,
-          "visible": true,
-          "localize": true,
-          "displayOrder": 13,
-          "pathConstraints": "/////",
-          "revision": 0,
-          "origin": {
-            "type": "Model",
-            "entry_id": "UIText",
-            "sub_entity_id": null,
-            "root_entity_id": null,
-            "replaced_model_id": null
-          },
-          "modelId": "uitext",
-          "@components": [
-            {
-              "@type": "MOD.Core.UITransformComponent",
-              "ActivePlatform": 255,
-              "AlignmentOption": 3,
-              "AnchorsMax": {
-                "x": 0.5,
-                "y": 1
-              },
-              "AnchorsMin": {
-                "x": 0.5,
-                "y": 1
-              },
-              "MobileOnly": false,
-              "OffsetMax": {
-                "x": 340,
-                "y": -350
-              },
-              "OffsetMin": {
-                "x": -340,
-                "y": -380
-              },
-              "Pivot": {
-                "x": 0.5,
-                "y": 0.5
-              },
-              "RectSize": {
-                "x": 680,
-                "y": 30
-              },
-              "UIMode": 1,
-              "UIScale": {
-                "x": 1,
-                "y": 1,
-                "z": 1
-              },
-              "UIVersion": 2,
-              "anchoredPosition": {
-                "x": 0,
-                "y": -365
-              },
-              "Position": {
-                "x": 0,
-                "y": 10,
-                "z": 0
-              },
-              "QuaternionRotation": {
-                "x": 0,
-                "y": 0,
-                "z": 0,
-                "w": 1
-              },
-              "Scale": {
-                "x": 1,
-                "y": 1,
-                "z": 1
-              },
-              "Enable": true
-            },
-            {
-              "@type": "MOD.Core.SpriteGUIRendererComponent",
-              "AnimClipPlayType": 0,
-              "EndFrameIndex": 2147483647,
-              "IgnoreMapLayerCheck": false,
-              "ImageRUID": {
-                "DataId": ""
-              },
-              "LocalPosition": {
-                "x": 0,
-                "y": 0
-              },
-              "LocalScale": {
-                "x": 1,
-                "y": 1
-              },
-              "MaterialId": "",
-              "OrderInLayer": 323,
-              "OverrideSorting": false,
-              "PlayRate": 1,
-              "PreserveSprite": 0,
-              "SortingLayer": "UI",
-              "StartFrameIndex": 0,
-              "Color": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
-                "a": 0
-              },
-              "DropShadow": false,
-              "DropShadowAngle": 120,
-              "DropShadowColor": {
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 0.72
-              },
-              "DropShadowDistance": 3,
-              "FillAmount": 1,
-              "FillCenter": true,
-              "FillClockWise": true,
-              "FillMethod": 0,
-              "FillOrigin": 0,
-              "FlipX": false,
-              "FlipY": false,
-              "FrameColumn": 1,
-              "FrameRate": 0,
-              "FrameRow": 1,
-              "Outline": false,
-              "OutlineColor": {
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 1
-              },
-              "OutlineWidth": 3,
-              "RaycastTarget": false,
-              "Type": 0,
-              "Enable": true
-            },
-            {
-              "@type": "MOD.Core.TextComponent",
-              "Alignment": 4,
-              "AllowAutomaticTranslation": true,
-              "BestFit": false,
-              "Bold": false,
-              "ConstraintX": 100,
-              "ConstraintY": 100,
-              "DropShadow": false,
-              "DropShadowAngle": 120,
-              "DropShadowColor": {
-                "r": 0,
-                "g": 0,
-                "b": 0,
-                "a": 0.72
-              },
-              "DropShadowDistance": 3,
-              "Font": 0,
-              "FontColor": {
-                "r": 0.9019608,
-                "g": 0.721568644,
-                "b": 0.3019608,
-                "a": 1
-              },
-              "FontSize": 20,
-              "IgnoreMapLayerCheck": false,
-              "IsLocalizationKey": false,
-              "MaxSize": 40,
-              "MinSize": 10,
-              "OrderInLayer": 326,
-              "OutlineColor": {
-                "r": 0.698039234,
-                "g": 0.698039234,
-                "b": 0.698039234,
-                "a": 1
-              },
-              "OutlineDistance": {
-                "x": 1,
-                "y": -1
-              },
-              "OutlineWidth": 1,
-              "Overflow": 0,
-              "OverrideSorting": false,
-              "Padding": {
-                "left": 0,
-                "right": 0,
-                "top": 0,
-                "bottom": 0
-              },
-              "SizeFit": false,
-              "SortingLayer": "UI",
-              "Text": "최상급 장비만 강화할 수 있습니다",
-              "UseConstraintX": false,
-              "UseConstraintY": false,
-              "UseOutLine": false,
-              "Enable": true
-            }
-          ],
-          "@version": 1
-        }
-      },
-      {
         "id": "feaa6d64-4b7f-44ef-a6f6-91bf1c142674",
         "path": "/ui/EnhanceGroup/Window",
         "componentNames": "MOD.Core.UITransformComponent",
@@ -5124,7 +4922,7 @@
           "name": "Tab_Flame",
           "path": "/ui/EnhanceGroup/Tab_Flame",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 2,
@@ -5272,8 +5070,8 @@
                 "y": -30
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 295,
+                "y": -30,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5881,6 +5679,7 @@
               "FontSize": 18,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 536,
@@ -5909,8 +5708,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -6842,11 +6640,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 960,
-                "y": 485.2204285
+                "y": 485.220428
               },
               "OffsetMin": {
                 "x": -960,
-                "y": -485.2204285
+                "y": -485.220428
               },
               "Pivot": {
                 "x": 0.5,
@@ -6960,8 +6758,8 @@
                 "y": -30
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 295,
+                "y": -30,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -7428,6 +7226,7 @@
               "FontSize": 17,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 436,
@@ -7456,8 +7255,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -10323,7 +10121,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": -250,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -13424,7 +13222,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": -110,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14166,8 +13964,8 @@
                 "y": 66
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -48,
+                "y": 66,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14456,8 +14254,8 @@
                 "y": 66
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 48,
+                "y": 66,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14746,8 +14544,8 @@
                 "y": -26
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -48,
+                "y": -26,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -18897,9 +18695,10 @@
                 "b": 0.94,
                 "a": 1
               },
-              "FontSize": 16,
+              "FontSize": 14,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.6,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 216,
@@ -18928,8 +18727,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.6
+              "Enable": true
             }
           ],
           "@version": 1
@@ -19144,8 +18942,8 @@
                 "y": 144
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -60,
+                "y": 144,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -19245,7 +19043,7 @@
                 "b": 0.82,
                 "a": 1
               },
-              "FontSize": 14,
+              "FontSize": 20,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
               "MaxSize": 40,
@@ -19346,8 +19144,8 @@
                 "y": 144
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 90,
+                "y": 144,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -19447,7 +19245,7 @@
                 "b": 0.55,
                 "a": 1
               },
-              "FontSize": 14,
+              "FontSize": 20,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
               "MaxSize": 40,
@@ -19649,9 +19447,10 @@
                 "b": 0.5,
                 "a": 1
               },
-              "FontSize": 16,
+              "FontSize": 14,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.6,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 216,
@@ -19680,8 +19479,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.6
+              "Enable": true
             }
           ],
           "@version": 1
