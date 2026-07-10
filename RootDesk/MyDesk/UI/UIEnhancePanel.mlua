@@ -205,6 +205,14 @@ script UIEnhancePanel extends Component
 			end
 			self._T.equipCells[i] = cell
 		end
+		-- 부위 수(#parts)를 넘는 잔여 착용칸은 끔 — 팩/구버전 잔재 EquipCell_5+ 가 잠금칸 위에 겹치는 문제 방지.
+		local extra = #parts + 1
+		while true do
+			local c = self.panelEquip:GetChildByName("EquipCell_" .. tostring(extra))
+			if c == nil then break end
+			c.Enable = false
+			extra = extra + 1
+		end
 		self._T.gridEnt = self.panelEquip:GetChildByName("Grid")
 		self._T.cellTpl = self.panelEquip:GetChildByName("CellTemplate")
 		if self._T.gridEnt == nil or self._T.cellTpl == nil then
