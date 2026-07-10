@@ -386,14 +386,9 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SetStarRow(integer cur, boolean legend)
-		-- 별은 텍스트 게이지(★ 채움/☆ 빈칸) 사용 — 그래픽 별 스프라이트는 숨김.
+		-- 별 게이지(★ 채움/☆ 빈칸) 갱신. 레전드리만 표시(스타포스 §06 레전드리 전용).
 		local n = self._T.sf
 		if n == nil then return end
-		if n.stars ~= nil then
-			for i = 1, 20 do
-				if n.stars[i] ~= nil and isvalid(n.stars[i]) then n.stars[i].Enable = false end
-			end
-		end
 		if n.gauge ~= nil and isvalid(n.gauge) then
 			n.gauge.Enable = legend
 			self:SetText(n.gauge, legend and self:StarGauge(cur, 20) or "")
@@ -412,7 +407,8 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method boolean EnsureStarWired()
-		-- 스타포스 탭 노드 캐시(1회) + 하락 행/참고게임 잔재 숨김 + 강화·복구 버튼 배선.
+		-- 스타포스 탭(Tab_StarForce/Panel) 노드 캐시(1회) + 강화·복구 버튼 배선.
+		-- 구성: Text_StarGauge(별) / StarForceLevel(현재▶다음) / Layout_Prob(성공·유지·파괴 3박스) / Layout_Cost / Chk_Protect / Btn_Restore·Btn_Enchant.
 		if self._T.sf ~= nil then return true end
 		if isvalid(self.contentStar) == false then return false end
 		local panel = self.contentStar:GetChildByName("Panel")
@@ -420,9 +416,7 @@ script UIEnhancePanel extends Component
 		local prob = panel:GetChildByName("Layout_Prob")
 		local lvl = panel:GetChildByName("StarForceLevel")
 		local costL = panel:GetChildByName("Layout_Cost")
-		local itemL = panel:GetChildByName("Layout_Item")
 		local n = {}
-		n.name = panel:GetChildByName("Text_ItemName")
 		n.prev = lvl ~= nil and lvl:GetChildByName("Text_PrevLevel") or nil
 		n.next = lvl ~= nil and lvl:GetChildByName("Text_NextLevel") or nil
 		local function pct(rowName)
@@ -433,45 +427,12 @@ script UIEnhancePanel extends Component
 		n.suc = pct("Success")
 		n.keep = pct("Keep")
 		n.des = pct("Destroy")
-		local dec = prob ~= nil and prob:GetChildByName("Decrease") or nil
-		if dec ~= nil then dec.Enable = false end   -- §06 하락 없음
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Cost") or nil
-		n.preview = panel:GetChildByName("Text_Preview")
-		n.deco = panel:GetChildByName("Img_Deco")
 		n.gauge = panel:GetChildByName("Text_StarGauge")
-		n.stars = {}
-		for i = 1, 20 do n.stars[i] = panel:GetChildByName("Star_" .. tostring(i)) end
 		local restore = panel:GetChildByName("Btn_Restore")
 		if restore ~= nil then
 			local h = restore:ConnectEvent(ButtonClickEvent, function() self:OnRestoreClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = restore, h = h }
-		end
-		if lvl ~= nil then lvl.Enable = true end   -- "0 >> 1" 숫자 행 숨김(별 게이지로 대체)
-		local oldItem = panel:GetChildByName("Item")
-		if oldItem ~= nil then oldItem.Enable = false end
-		local oldScroll = panel:GetChildByName("Scroll_Stat")
-		if oldScroll ~= nil then oldScroll.Enable = false end
-		-- Safety/Protect 영역 → 파괴 흔적/복구(확정 결정)
-		if itemL ~= nil then
-			local protect = itemL:GetChildByName("Layout_Protect")
-			if protect ~= nil then
-				local _p = protect  -- "파괴 흔적" 라벨은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
-				n.traceCount = protect:GetChildByName("Text_Count")
-				local sb = protect:GetChildByName("SelectBG")
-				if sb ~= nil then sb.Enable = false end
-			end
-			local safety = itemL:GetChildByName("Layout_Safety")
-			if safety ~= nil then
-				local _s = safety  -- "복구하기" 라벨은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
-				local sc = safety:GetChildByName("Text_Count")
-				if sc ~= nil then sc.Enable = false end
-				local sb = safety:GetChildByName("SelectBG")
-				if sb ~= nil then sb.Enable = false end
-				if safety.ButtonComponent ~= nil then
-					local h = safety:ConnectEvent(ButtonClickEvent, function() self:OnRestoreClicked() end)
-					self._T.handlers[#self._T.handlers + 1] = { e = safety, h = h }
-				end
-			end
 		end
 		local enchant = panel:GetChildByName("Btn_Enchant")
 		if enchant ~= nil then
@@ -489,38 +450,25 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshStarTab()
-		-- 스타포스 탭 데이터 갱신: 선택 장비의 성급/확률(§06)/비용/스탯 미리보기/흔적 수.
+		-- 스타포스 탭 데이터 갱신: 선택 장비의 별 게이지/현재▶다음/확률(§06)/비용.
 		if not self:EnsureStarWired() then return end
 		local n = self._T.sf
-		local inv = self:GetInv()
 		local sf = self:GetStarforce()
-		if n.traceCount ~= nil and inv ~= nil then self:SetText(n.traceCount, tostring(#inv:GetTraces()) .. "개") end
 		local sel = self._T.selected
 		if sel == nil or sel.name == nil or sel.name == "" or sf == nil then
-			self:SetText(n.name, "장비를 선택하세요")
 			self:SetText(n.prev, "-")
 			self:SetText(n.next, "-")
 			self:SetText(n.suc, "-")
 			self:SetText(n.keep, "-")
 			self:SetText(n.des, "-")
 			self:SetText(n.cost, "-")
-			self:SetText(n.preview, "")
 			self:SetStarRow(0, false)
-			if n.deco ~= nil and n.deco.SpriteGUIRendererComponent ~= nil then n.deco.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 0) end
 			return
 		end
 		local star = sel.star or 0
 		local target = star + 1
-		if n.deco ~= nil and n.deco.SpriteGUIRendererComponent ~= nil then
-			local irow = _DataService:GetTable("ItemData"):FindRow("Name", sel.name)
-			if irow ~= nil then
-				n.deco.SpriteGUIRendererComponent.ImageRUID = irow:GetItem("IconRUID")
-				n.deco.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 1)   -- 샘플 원본이 알파 0
-			end
-		end
 		local legend = (sel.grade or 1) >= _ItemGrade.Legendary
 		self:SetStarRow(star, legend)
-		self:SetText(n.name, tostring(sel.name) .. " ★" .. tostring(star) .. (legend and "" or "  (레전드리 전용)"))
 		if not legend or target > sf.MaxStar then
 			self:SetText(n.prev, tostring(star))
 			self:SetText(n.next, target > sf.MaxStar and "MAX" or "-")
@@ -528,7 +476,6 @@ script UIEnhancePanel extends Component
 			self:SetText(n.keep, "-")
 			self:SetText(n.des, "-")
 			self:SetText(n.cost, "-")
-			self:SetText(n.preview, "")
 			return
 		end
 		self:SetText(n.prev, tostring(star))
@@ -548,14 +495,6 @@ script UIEnhancePanel extends Component
 			end
 			self:SetText(n.cost, tostring(meso))
 		end
-		local cur = sf:GetEnhanceBonus(sel.name, star)
-		local nxt = sf:GetEnhanceBonus(sel.name, target)
-		local lines = {
-			"공격력  +" .. tostring(cur.atk) .. "  →  +" .. tostring(nxt.atk),
-			"방어력  +" .. tostring(cur.def) .. "  →  +" .. tostring(nxt.def),
-			"최대 HP  +" .. tostring(cur.hp) .. "  →  +" .. tostring(nxt.hp),
-		}
-		self:SetText(n.preview, table.concat(lines, "\n"))
 	end
 
 	@ExecSpace("ClientOnly")
@@ -862,27 +801,17 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method boolean EnsureFlameWired()
-		-- 환생 탭 노드 캐시(1회) + 잔재 숨김 + 사용 버튼 배선.
+		-- 환생 탭(Tab_Flame/Layout) 노드 캐시(1회) + 사용 버튼 배선.
+		-- 구성: Img_ItemHdr(아이템) / Text_ItemName / Layout_PotenInfo(추가 옵션) / Layout_Cost / Btn_Ok.
 		if self._T.fl ~= nil then return true end
 		if isvalid(self.contentFlame) == false then return false end
 		local layout = self.contentFlame:GetChildByName("Layout")
 		if layout == nil then return false end
 		local n = {}
 		self:UnifyCostIcon(layout, "Text_Cost", "Img_Cost")
-		self:SetText(layout:GetChildByName("Text_Title"), "환생의 불꽃")
 		n.name = layout:GetChildByName("Text_ItemName")
 		local info = layout:GetChildByName("Layout_PotenInfo")
-		if info ~= nil then
-			local ig = info:GetChildByName("Img_Grade")
-			-- 헤더 라벨(추가 옵션…)은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
-			for i, hideName in ipairs({ "Item", "Scroll_Stat", "Star", "Star_1" }) do
-				local h = info:GetChildByName(hideName)
-				if h ~= nil then h.Enable = false end
-			end
-			n.opts = info:GetChildByName("Text_Opts")
-		end
-		local tc = layout:GetChildByName("Layout_TryCount")
-		if tc ~= nil then tc.Enable = false end
+		if info ~= nil then n.opts = info:GetChildByName("Text_Opts") end
 		local costL = layout:GetChildByName("Layout_Cost")
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Cost") or nil
 		n.hdr = layout:GetChildByName("Img_ItemHdr")
