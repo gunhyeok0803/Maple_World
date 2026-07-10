@@ -406,8 +406,8 @@
                 "y": -14
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -555,
+                "y": 416,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -608,8 +608,8 @@
                 "y": -6.28601074
               },
               "Position": {
-                "x": 782.0002,
-                "y": 493.714,
+                "x": 662.0002,
+                "y": 423.714,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -860,8 +860,8 @@
                 "y": 385
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -355,
+                "y": 385,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1112,8 +1112,8 @@
                 "y": 385
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -160,
+                "y": 385,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1365,7 +1365,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": -40,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1449,8 +1449,8 @@
                 "y": 322
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -470,
+                "y": 322,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1651,8 +1651,8 @@
                 "y": -25
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -470,
+                "y": -25,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2321,8 +2321,8 @@
                 "y": 105
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": 105,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2523,8 +2523,8 @@
                 "y": -15
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": -15,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2725,8 +2725,8 @@
                 "y": -130
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 60,
+                "y": -130,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2977,8 +2977,8 @@
                 "y": -130
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": -130,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -3179,8 +3179,8 @@
                 "y": -130
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 280,
+                "y": -130,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -3431,8 +3431,8 @@
                 "y": -130
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 380,
+                "y": -130,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -3683,8 +3683,8 @@
                 "y": -205
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": -205,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -3885,8 +3885,8 @@
                 "y": -285
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": -285,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -4137,7 +4137,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -470,
                 "y": 0,
                 "z": 0
               },
@@ -4282,7 +4282,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": 170,
                 "y": 0,
                 "z": 0
               },
@@ -4427,8 +4427,8 @@
                 "y": 200
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -10,
+                "y": 200,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -4717,8 +4717,8 @@
                 "y": 200
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": 200,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -4919,8 +4919,8 @@
                 "y": 200
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 350,
+                "y": 200,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5209,8 +5209,8 @@
                 "y": 60
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 170,
+                "y": 60,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5412,7 +5412,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": -40,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5496,8 +5496,8 @@
                 "y": 135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": 135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5698,8 +5698,8 @@
                 "y": 30
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": 30,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5900,8 +5900,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 330,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6152,8 +6152,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 405,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6354,8 +6354,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 473,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6606,8 +6606,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 540,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6858,8 +6858,8 @@
                 "y": -210
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": -210,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -7060,8 +7060,8 @@
                 "y": -285
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": -285,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -7312,7 +7312,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -225,
                 "y": 0,
                 "z": 0
               },
@@ -7457,7 +7457,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": 415,
                 "y": 0,
                 "z": 0
               },
@@ -7602,8 +7602,8 @@
                 "y": 292
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -545,
+                "y": 292,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -7854,8 +7854,8 @@
                 "y": 292
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -423,
+                "y": 292,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8106,8 +8106,8 @@
                 "y": 292
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -301,
+                "y": 292,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8358,8 +8358,8 @@
                 "y": 292
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -179,
+                "y": 292,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8610,8 +8610,8 @@
                 "y": 292
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -57,
+                "y": 292,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8862,8 +8862,8 @@
                 "y": 292
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 65,
+                "y": 292,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9114,8 +9114,8 @@
                 "y": 212
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -470,
+                "y": 212,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9242,7 +9242,7 @@
               },
               "SizeFit": false,
               "SortingLayer": "UI",
-              "Text": "레어",
+              "Text": "하급",
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
@@ -9316,8 +9316,8 @@
                 "y": 212
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -325,
+                "y": 212,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9444,7 +9444,7 @@
               },
               "SizeFit": false,
               "SortingLayer": "UI",
-              "Text": "에픽",
+              "Text": "중급",
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
@@ -9518,8 +9518,8 @@
                 "y": 212
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -180,
+                "y": 212,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9646,7 +9646,7 @@
               },
               "SizeFit": false,
               "SortingLayer": "UI",
-              "Text": "유니크",
+              "Text": "상급",
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
@@ -9720,8 +9720,8 @@
                 "y": 212
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -35,
+                "y": 212,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9848,7 +9848,7 @@
               },
               "SizeFit": false,
               "SortingLayer": "UI",
-              "Text": "레전드리",
+              "Text": "최상급",
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
@@ -9922,8 +9922,8 @@
                 "y": 135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -580,
+                "y": 135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -10124,7 +10124,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -580,
                 "y": 0,
                 "z": 0
               },
@@ -10326,8 +10326,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -580,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -10528,8 +10528,8 @@
                 "y": 135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -470,
+                "y": 135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -10719,7 +10719,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -11008,8 +11008,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -11210,8 +11210,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -11412,8 +11412,8 @@
                 "y": 135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -325,
+                "y": 135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -11603,7 +11603,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -11892,8 +11892,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -12094,8 +12094,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -12296,8 +12296,8 @@
                 "y": 135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -180,
+                "y": 135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -12487,7 +12487,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -12776,8 +12776,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -12978,8 +12978,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -13180,8 +13180,8 @@
                 "y": 135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -35,
+                "y": 135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -13371,7 +13371,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -13660,8 +13660,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -13862,8 +13862,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14064,7 +14064,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -470,
                 "y": 0,
                 "z": 0
               },
@@ -14255,7 +14255,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14544,8 +14544,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14746,8 +14746,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -14948,7 +14948,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -325,
                 "y": 0,
                 "z": 0
               },
@@ -15139,7 +15139,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -15428,8 +15428,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -15630,8 +15630,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -15832,7 +15832,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -180,
                 "y": 0,
                 "z": 0
               },
@@ -16023,7 +16023,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -16312,8 +16312,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -16514,8 +16514,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -16716,7 +16716,7 @@
                 "y": 0
               },
               "Position": {
-                "x": 0,
+                "x": -35,
                 "y": 0,
                 "z": 0
               },
@@ -16907,7 +16907,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -17196,8 +17196,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -17398,8 +17398,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -17600,8 +17600,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -470,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -17791,7 +17791,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -18080,8 +18080,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -18282,8 +18282,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -18484,8 +18484,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -325,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -18675,7 +18675,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -18964,8 +18964,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -19166,8 +19166,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -19368,8 +19368,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -180,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -19559,7 +19559,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -19848,8 +19848,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -20050,8 +20050,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -20252,8 +20252,8 @@
                 "y": -135
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -35,
+                "y": -135,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -20443,7 +20443,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 4,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -20732,8 +20732,8 @@
                 "y": -36
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 22,
+                "y": -36,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -20934,8 +20934,8 @@
                 "y": 38
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -22,
+                "y": 38,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -21136,8 +21136,8 @@
                 "y": -305
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -225,
+                "y": -305,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -21338,8 +21338,8 @@
                 "y": 235
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": 235,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -21628,8 +21628,8 @@
                 "y": 98
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": 98,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -21830,8 +21830,8 @@
                 "y": -55
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 415,
+                "y": -55,
                 "z": 0
               },
               "QuaternionRotation": {

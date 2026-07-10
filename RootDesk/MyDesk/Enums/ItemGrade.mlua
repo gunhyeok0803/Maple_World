@@ -8,21 +8,18 @@ script ItemGrade extends Logic
 	property integer Legendary = 4
 
 	method string Name(integer g)
-		-- 등급 → 한글
-		if g == 4 then return "레전드리" end
-		if g == 3 then return "유니크" end
-		if g == 2 then return "에픽" end
-		if g == 1 then return "레어" end
-		return "-"
-	end
-
-	method string PotGradeName(integer g)
-		-- 잠재(옵션) 등급 → 한글. 장비 등급(레어~레전드리)과 이름이 겹치지 않도록 별도 체계(사용자 확정).
+		-- 등급 → 한글(하급/중급/상급/최상급). 한 라인 안에서의 4단계 세부 등급(메이플키우기 기준, 사용자 확정).
+		-- 승급 = 하급→중급→상급→최상급. 내부 상수명(Rare/Epic/Unique/Legendary)·Key()·CSV는 그대로 유지.
 		if g == 4 then return "최상급" end
 		if g == 3 then return "상급" end
 		if g == 2 then return "중급" end
 		if g == 1 then return "하급" end
 		return "-"
+	end
+
+	method string PotGradeName(integer g)
+		-- 하위호환 별칭 — 잠재/장비 모두 동일 표기(하급~최상급). Name으로 위임.
+		return self:Name(g)
 	end
 
 	method string Key(integer g)
@@ -35,15 +32,15 @@ script ItemGrade extends Logic
 	end
 
 	method integer FromKey(string s)
-		-- 문자열(영/한) → 등급, 미상은 레어
-		if s == "Legendary" or s == "레전드리" then return 4 end
-		if s == "Unique" or s == "유니크" then return 3 end
-		if s == "Epic" or s == "에픽" then return 2 end
+		-- 문자열(영문키/신·구 한글표기) → 등급, 미상은 1
+		if s == "Legendary" or s == "최상급" or s == "레전드리" then return 4 end
+		if s == "Unique" or s == "상급" or s == "유니크" then return 3 end
+		if s == "Epic" or s == "중급" or s == "에픽" then return 2 end
 		return 1
 	end
 
 	method Color ColorOf(integer g)
-		-- 레어 하늘 / 에픽 보라 / 유니크 노랑 / 레전드리 초록
+		-- 하급 하늘 / 중급 보라 / 상급 노랑 / 최상급 초록
 		if g == 4 then return Color(0.40, 0.85, 0.45, 1) end
 		if g == 3 then return Color(0.98, 0.82, 0.25, 1) end
 		if g == 2 then return Color(0.66, 0.42, 0.92, 1) end

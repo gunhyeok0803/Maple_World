@@ -730,10 +730,10 @@ script UIEnhancePanel extends Component
 			return
 		end
 		local inv = self:GetInv()
-		local g = (sel.pot ~= nil and sel.pot ~= "") and inv:ParsePotGrade(sel.pot) or 0
-		self:SetText(n.gradeText, g > 0 and (_ItemGrade:PotGradeName(g) .. " 잠재") or "잠재 없음")
+		-- 잠재는 그냥 옵션(사용자 확정) — 등급 라벨 없이 옵션만 표시. 밴드는 정적 헤더로.
+		self:SetText(n.gradeText, "잠재 옵션")
 		if (sel.grade or 1) < _ItemGrade.Legendary then
-			self:SetText(n.opts, "레전드리 장비만 잠재를 사용할 수 있습니다")
+			self:SetText(n.opts, "최상급 장비만 잠재를 사용할 수 있습니다")
 		else
 			self:SetText(n.opts, self:OptSummary(sel.pot, "[변환]을 누르면 잠재 옵션이 개방됩니다"))
 		end
@@ -849,7 +849,7 @@ script UIEnhancePanel extends Component
 		end
 		self:SetText(n.name, tostring(sel.name) .. " ★" .. tostring(sel.star or 0))
 		if (sel.grade or 1) < _ItemGrade.Legendary then
-			self:SetText(n.opts, "레전드리 장비만 환생의 불꽃을 사용할 수 있습니다")
+			self:SetText(n.opts, "최상급 장비만 환생의 불꽃을 사용할 수 있습니다")
 		else
 			self:SetText(n.opts, self:OptSummary(sel.flame, "환생의 불꽃을 사용하면 이 장비에만 적용되는 추가 옵션이 부여됩니다"))
 		end
