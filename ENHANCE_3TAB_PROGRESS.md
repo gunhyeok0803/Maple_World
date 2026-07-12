@@ -119,6 +119,20 @@
 - HTML(MVP_v11) 최우선. 레퍼런스는 UX/흐름 참고용. 충돌 시 차이 설명 후 제안.
 - 추측 금지 — 코드/데이터/HTML 근거 제시.
 
+---
+
+## 6. 진행 상태 · 블로커 (2026-07-13)
+
+**커밋:** `ded902d`(백엔드+.mlua) · `29c663a`(잠재탭 옛 위젯 제거) · `992e5d1`(라벨·재화 종류명). working tree clean.
+
+- ✅ **백엔드 완료+동작검증(server_main 로그)+커밋**: 재화 큐브(7)/불꽃(8)@`Data/ResourceDataSet.csv`, PotentialSystem 큐브가챠(옵션롤+확률등급업 res:7), FlameSystem 불꽃(res:8), UIEnhancePanel 잠재/환생 로직.
+- ✅ **UI 안전 개선(커밋)**: 잠재탭 옛 옵션-롤 위젯 제거(180→140), "인벤 장비" 라벨, 비용 라인 재화 종류명(수상한 큐브 / 강력한 환생의 불꽃).
+- ⚠ **블로커 — 목업-정확 레이아웃 재배치 실패(3회)**: `Tab_*/Layout` **하위 중첩** 노드는 UIBuilder `patchComponent(OffsetMin/Max/RectSize)`로 값이 저장돼도 **렌더가 계산 좌표와 불일치**(부모체인/앵커 해석 블라인드로 못 맞춤). 반면 `Panel_Summary`(EnhanceGroup **직속**)는 오프셋대로 정확 렌더. → **중첩 노드 프로그래밍 재배치는 신뢰 불가.**
+  - **권장 경로**: (a) **Maker 에디터 캔버스 시각 드래그**(원래 UI 제작 방식, 신뢰), 또는 (b) 중앙 콘텐츠를 **EnhanceGroup 직속 노드로 재구성**(직속은 좌표 정확) + 탭별 표시 토글. **신뢰되는 것**: 기존 노드 **텍스트/라벨 수정**(위치 불변).
+- **구조 확정(정정)**: 현재 `EnhanceGroup 직속`(탭/패널이 `/ui/EnhanceGroup/` 직속, `EnhanceRoot`는 빈 컨테이너) = **그룹월드 이관 정본**. §4의 "루트 `/ui/EnhanceGroup/EnhanceRoot`" 표기는 폐기 — 실제 경로는 `/ui/EnhanceGroup/Tab_Potential` 등. **EnhanceRoot 재-nest 금지**(reparent는 UIBuilder 불가=Maker Hierarchy 작업). **옛 `Resource/` 복원 금지**(재화는 Components/Data 등에 정리됨).
+- ⏳ **남은 목업 요소**(현 배치 유지 전제): 큐브/불꽃 **종류 드롭다운 위젯**, 인라인 **아이템 헤더+[정보]버튼**(중앙 합산스탯 대체), 환생 **[확률 정보 제공][선호 옵션 저장] 버튼**, 스타포스 **대실패방지 위젯 숨김**. 위치가 필요한 신규 요소는 위 (a)/(b) 방식으로.
+- 검증 재화지급: play 후 server_main에서 `pe:GetComponent("script.PlayerResource"):AddResource(7/8, N)`.
+
 ### 진행 상태 요약
 - ✅ tasks 1–3(백엔드) 완료, 빌드 0에러. ✅ task 4 잠재 탭 위젯 제거.
 - ⏳ task 4 나머지(잠재 큐브 드롭다운/라벨, 환생 결과박스·드롭다운·2버튼, 스타포스 방지위젯 숨김, 공통 헤더+정보버튼) → task 5(UIEnhancePanel 재작성) → task 6(검증).
