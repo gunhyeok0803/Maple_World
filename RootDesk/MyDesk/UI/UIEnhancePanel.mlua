@@ -480,6 +480,53 @@ script UIEnhancePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void StyleText(any ent, number size, any color)
+		-- 텍스트 노드 폰트 크기/색 조정(TextGUIRenderer). nil-safe.
+		if ent == nil or isvalid(ent) == false then return end
+		local t = ent.TextGUIRendererComponent
+		if t == nil then return end
+		t.FontSize = size
+		t.FontColor = color
+	end
+
+	method string CostOwnNeed(number have)
+		-- 비용 줄 값(리치텍스트): 회색 라벨 + 밝은 숫자 강조. "보유 N개   필요 1개".
+		local g = "<color=#9198A2>"
+		local e = "</color>"
+		return g .. "보유 " .. e .. tostring(math.floor(have or 0)) .. g .. "개      필요 " .. e .. "1" .. g .. "개" .. e
+	end
+
+	@ExecSpace("ClientOnly")
+	method void CompactCostLine(any host)
+		-- 비용 줄 가독성/컴팩트화(위치 불변): "비용" 라벨 축소·흐림 + ✦ 데코 숨김 + 통화 아이콘 60→30 + 값 폰트 축소.
+		if host == nil or isvalid(host) == false then return end
+		local costL = host:GetChildByName("Layout_Cost")
+		if costL == nil then return end
+		local label = costL:GetChildByName("Label_Cost")
+		self:StyleText(label, 15, Color(0.60, 0.64, 0.70, 1))
+		if label ~= nil then
+			local deco = label:GetChildByName("Deco")
+			if deco ~= nil and isvalid(deco) then deco.Enable = false end
+		end
+		local val = costL:GetChildByName("Text_Cost")
+		if val == nil then val = costL:GetChildByName("Text_Dia") end
+		self:StyleText(val, 16, Color(0.92, 0.94, 0.98, 1))
+		-- 통화 아이콘 축소: 부모가 Img_BG(스타/잠재) 또는 Text_Cost(환생)로 상이 → 후보 순회.
+		local hosts = { costL:GetChildByName("Img_BG"), costL:GetChildByName("Text_Cost") }
+		for i = 1, #hosts do
+			local h = hosts[i]
+			if h ~= nil and isvalid(h) then
+				for j, nm in ipairs({ "Img_Cost", "Img_Dia" }) do
+					local ic = h:GetChildByName(nm)
+					if ic ~= nil and isvalid(ic) and ic.UITransformComponent ~= nil then
+						ic.UITransformComponent.RectSize = Vector2(30, 30)
+					end
+				end
+			end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method boolean EnsureStarWired()
 		-- 스타포스 탭(Tab_StarForce/Panel) 노드 캐시(1회) + 강화·복구 버튼 배선.
 		-- 구성: Text_StarGauge(별) / StarForceLevel(현재▶다음) / Layout_Prob(성공·유지·파괴 3박스) / Layout_Cost / Chk_Protect / Btn_Restore·Btn_Enchant.
@@ -516,6 +563,7 @@ script UIEnhancePanel extends Component
 			self._T.handlers[#self._T.handlers + 1] = { e = enchant, h = h }
 			self:TintCta(enchant)
 		end
+		self:CompactCostLine(panel)
 		self._T.sf = n
 		return true
 	end
@@ -758,6 +806,7 @@ script UIEnhancePanel extends Component
 		end
 		-- 항목4: 재료 토글(공용) — 잠재=수상한 큐브(res 7).
 		self:WireMatToggle(layout, "matTogglePot", "수상한 큐브", 7)
+		self:CompactCostLine(layout)
 		self._T.pot = n
 		return true
 	end
@@ -769,8 +818,7 @@ script UIEnhancePanel extends Component
 		local n = self._T.pot
 		local sel = self._T.selected
 		if n.cost ~= nil then
-			local have = self:GetWalletRes(7)
-			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. "개      필요 1개")
+			self:SetText(n.cost, self:CostOwnNeed(self:GetWalletRes(7)))
 		end
 		if sel == nil or sel.name == nil or sel.name == "" then
 			self:SetText(n.curGrade, "-")
@@ -867,6 +915,7 @@ script UIEnhancePanel extends Component
 		self:WireProbClose()
 		-- 항목4: 재료 토글(공용) — 환생=환생의 불꽃(res 8).
 		self:WireMatToggle(layout, "matToggleFlame", "환생의 불꽃", 8)
+		self:CompactCostLine(layout)
 		self._T.fl = n
 		return true
 	end
@@ -877,8 +926,7 @@ script UIEnhancePanel extends Component
 		if not self:EnsureFlameWired() then return end
 		local n = self._T.fl
 		if n.cost ~= nil then
-			local have = self:GetWalletRes(8)
-			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. "개      필요 1개")
+			self:SetText(n.cost, self:CostOwnNeed(self:GetWalletRes(8)))
 		end
 		local sel = self._T.selected
 		self:SetItemHdr(n.hdr, sel)
