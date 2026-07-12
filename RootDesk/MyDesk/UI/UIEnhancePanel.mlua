@@ -211,19 +211,22 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void AutoSelect()
-		-- 첫 착용 장비(없으면 인벤 첫 레전드리) 자동 선택 — 레퍼런스 UX.
+		-- 첫 착용 장비(없으면 인벤 첫 레전드리) 자동 선택 — 레퍼런스 UX. (착용=EquipGrid라 셀 클릭 대신 선택 데이터 직접 설정)
 		local inv = self:GetInv()
-		if inv == nil or self._T.equipCells == nil then return end
+		if inv == nil then return end
 		local parts = _ItemPart:All()
 		for i = 1, #parts do
-			if inv:GetEquipped(parts[i]) ~= "" then
-				self:OnSlotClicked(self._T.equipCells[i])
+			local nm = inv:GetEquipped(parts[i])
+			if nm ~= "" then
+				self._T.selected = { mode = "equip", key = parts[i], name = nm,
+					star = inv:GetEquippedStar(parts[i]), grade = inv:GetEquippedGrade(parts[i]),
+					pg = inv:GetEquippedPg(parts[i]), pot = inv:GetEquippedPot(parts[i]), flame = inv:GetEquippedFlame(parts[i]) }
 				return
 			end
 		end
 		if self._T.filtered ~= nil and #self._T.filtered > 0 then
 			local it = self._T.filtered[1]
-			self._T.selected = { mode = "slot", key = it.gi, name = it.name, star = it.star, grade = it.grade, pot = it.pot, flame = it.flame }
+			self._T.selected = { mode = "slot", key = it.gi, name = it.name, star = it.star, grade = it.grade, pg = it.pg, pot = it.pot, flame = it.flame }
 		end
 	end
 
@@ -251,52 +254,22 @@ script UIEnhancePanel extends Component
 		-- 좌측 리스트 배선(1회): 착용 셀 4개 + 그리드 셀 프리팹 주입 + 인벤 변경 이벤트 연결.
 		if self._T.listWired then return true end
 		if isvalid(self.panelEquip) == false then return false end
-		self._T.equipCells = {}
-		local parts = _ItemPart:All()
-		for i = 1, #parts do
-			local cell = self.panelEquip:GetChildByName("EquipCell_" .. tostring(i))
-			if cell == nil then
-				log_warning("[Enhance] EquipCell_" .. tostring(i) .. " 없음")
-				return false
-			end
-			self._T.equipCells[i] = cell
-		end
-		-- 부위 수(#parts)를 넘는 잔여 착용칸은 끔 — 팩/구버전 잔재 EquipCell_5+ 가 잠금칸 위에 겹치는 문제 방지.
-		local extra = #parts + 1
-		while true do
-			local c = self.panelEquip:GetChildByName("EquipCell_" .. tostring(extra))
-			if c == nil then break end
-			c.Enable = false
-			extra = extra + 1
-		end
-		-- 착용 블록을 채우는 상단 잠금칸 2개(LockCell_1·2)만 남기고 나머지는 끔.
-		-- LockCell_3~8은 "인벤 장비" 헤더/그리드 영역까지 내려와 착용부가 패널 아래로 넘쳐 보이던 원인(정적 장식칸, 코드 미사용).
-		local lk = 3
-		while true do
-			local lc = self.panelEquip:GetChildByName("LockCell_" .. tostring(lk))
-			if lc == nil then break end
-			lc.Enable = false
-			lk = lk + 1
+		-- 옛 고정 착용/잠금칸(EquipCell_1~8, LockCell_1~8) 전부 끔 — 착용은 EquipGrid(27슬롯 스크롤)로 대체.
+		for i = 1, 8 do
+			local ec = self.panelEquip:GetChildByName("EquipCell_" .. tostring(i))
+			if ec ~= nil then ec.Enable = false end
+			local lc = self.panelEquip:GetChildByName("LockCell_" .. tostring(i))
+			if lc ~= nil then lc.Enable = false end
 		end
 		self._T.gridEnt = self.panelEquip:GetChildByName("Grid")
 		self._T.cellTpl = self.panelEquip:GetChildByName("CellTemplate")
+		self._T.equipGridEnt = self.panelEquip:GetChildByName("EquipGrid")
 		if self._T.gridEnt == nil or self._T.cellTpl == nil then
 			log_warning("[Enhance] Grid/CellTemplate 없음")
 			return false
 		end
-		local gv = self._T.gridEnt.GridViewComponent
-		if gv ~= nil then
-			gv.ItemEntity = self._T.cellTpl
-			gv.CellSize = Vector2(88, 88)
-			gv.Spacing = Vector2(12, 12)
-			gv.FixedCount = 2
-			local gw = self._T.gridEnt.UITransformComponent.RectSize.x
-			local content = 2 * gv.CellSize.x + 1 * gv.Spacing.x
-			local half = math.floor(math.max(0, gw - content) / 2)
-			gv.Padding = RectOffset(half, half, gv.Padding.top, gv.Padding.bottom)
-			gv.OnRefresh = self.OnGridRefresh
-			gv.TotalCount = 0
-		end
+		self:SetupGrid(self._T.gridEnt, self.OnGridRefresh)       -- 인벤 그리드
+		self:SetupGrid(self._T.equipGridEnt, self.OnEquipRefresh)  -- 착용 27슬롯 그리드
 		local lp = _UserService.LocalPlayer
 		if lp ~= nil and self._T.invHandler == nil then
 			self._T.invHandler = lp:ConnectEvent(InventoryChangedEvent, function()
@@ -320,26 +293,11 @@ script UIEnhancePanel extends Component
 		-- 좌측 리스트 채우기: 착용 4부위 + 인벤 전체 장비(강화 대상). 잠재=pg 상승/환생=추가옵션은 모든 장비, 스타포스만 pg 레전드리(서버 차단).
 		local inv = self:GetInv()
 		if inv == nil or not self:EnsureListWired() then return end
-		local parts = _ItemPart:All()
-		for i = 1, #parts do
-			local cell = self._T.equipCells[i]
-			---@type UIEquipmentSlotWidget
-			local w = cell:GetComponent("script.UIEquipmentSlotWidget")
-			if w ~= nil then
-				w.ownerWindow = self.Entity
-				local name = inv:GetEquipped(parts[i])
-				if name ~= "" then
-					w:SetData(name, -i, 1, inv:GetEquippedGrade(parts[i]))
-				else
-					w.itemName = ""
-					w.itemGrade = 0
-					w:RefreshBorder()
-					local icon = cell:GetChildByName("Icon")
-					if icon ~= nil then icon.Enable = false end
-					local cnt = cell:GetChildByName("Count")
-					if cnt ~= nil then cnt.Enable = false end
-				end
-			end
+		-- 착용 27슬롯 그리드(SlotDefs) 갱신 — 인벤과 동일한 슬롯 구성.
+		local eg = self._T.equipGridEnt ~= nil and self._T.equipGridEnt.GridViewComponent or nil
+		if eg ~= nil then
+			eg.TotalCount = #self:SlotDefs()
+			eg:Refresh(true, true)
 		end
 		local filtered = {}
 		local slots = inv:GetSlots()
@@ -372,11 +330,83 @@ script UIEnhancePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void SetupGrid(any gridEnt, any onRefresh)
+		-- GridView 공통 셋업(인벤/착용 그리드 공용): 셀 프리팹·크기·간격·중앙패딩·콜백.
+		if gridEnt == nil or gridEnt.GridViewComponent == nil then return end
+		local gv = gridEnt.GridViewComponent
+		gv.ItemEntity = self._T.cellTpl
+		gv.CellSize = Vector2(88, 88)
+		gv.Spacing = Vector2(12, 12)
+		gv.FixedCount = 2
+		local gw = gridEnt.UITransformComponent.RectSize.x
+		local content = 2 * gv.CellSize.x + 1 * gv.Spacing.x
+		local half = math.floor(math.max(0, gw - content) / 2)
+		gv.Padding = RectOffset(half, half, gv.Padding.top, gv.Padding.bottom)
+		gv.OnRefresh = onRefresh
+		gv.TotalCount = 0
+	end
+
+	method table SlotDefs()
+		-- 착용 27슬롯(인벤과 동일 개수·잠금 8개). 강화창 특성상 성장 4부위(무기/모자/신발/반지1)를 맨 앞에 배치해 즉시 선택 가능.
+		-- 나머지 23부위는 시각 일관성용(비성장=선택 불가). 잠금: 뱃지/안드로이드/보조무기/엠블렘/포켓/기계심장/펫/미정.
+		return {
+			{ part = "무기", locked = false }, { part = "모자", locked = false },
+			{ part = "신발", locked = false }, { part = "반지1", locked = false },
+			{ part = "얼굴장식", locked = false }, { part = "반지2", locked = false },
+			{ part = "눈장식", locked = false }, { part = "반지3", locked = false },
+			{ part = "귀고리", locked = false }, { part = "반지4", locked = false },
+			{ part = "펜던트1", locked = false }, { part = "훈장", locked = false },
+			{ part = "펜던트2", locked = false }, { part = "어깨장식", locked = false },
+			{ part = "상의", locked = false }, { part = "벨트", locked = false },
+			{ part = "하의", locked = false }, { part = "장갑", locked = false },
+			{ part = "망토", locked = false }, { part = "뱃지", locked = true },
+			{ part = "안드로이드", locked = true }, { part = "보조무기", locked = true },
+			{ part = "엠블렘", locked = true }, { part = "포켓", locked = true },
+			{ part = "기계심장", locked = true }, { part = "펫", locked = true },
+			{ part = "미정", locked = true },
+		}
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnEquipRefresh(integer index, Entity ent)
+		-- 착용 그리드 셀(0-기반): SlotDefs 부위별 착용 아이템/잠금/등급 표시. 성장 4부위만 선택 가능(비성장/잠금=slotIndex 0→클릭 무시).
+		local defs = self:SlotDefs()
+		local def = defs[index + 1]
+		if def == nil then return end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		---@type UIEquipmentSlotWidget
+		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
+		if w == nil then return end
+		w.ownerWindow = self.Entity
+		local locked = def.locked and (inv:IsUnlocked(def.part) == false)
+		local lockIcon = ent:GetChildByName("Lock")
+		if lockIcon ~= nil then lockIcon.Enable = locked end
+		local parts = _ItemPart:All()
+		local pidx = 0
+		for i = 1, #parts do if parts[i] == def.part then pidx = i break end end
+		local name = (locked == false) and inv:GetEquipped(def.part) or ""
+		if name ~= "" then
+			w.itemPg = inv:GetEquippedPg(def.part)
+			w:SetData(name, pidx > 0 and -pidx or 0, 1, inv:GetEquippedGrade(def.part))
+		else
+			w.itemName = ""
+			w.itemPg = 1
+			w:RefreshBorder()
+			local icon = ent:GetChildByName("Icon")
+			if icon ~= nil then icon.Enable = false end
+			local cnt = ent:GetChildByName("Count")
+			if cnt ~= nil then cnt.Enable = false end
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void OnSlotClicked(Entity cell)
 		-- 좌측 셀 클릭 → 강화 대상 선택(음수 인덱스=착용 부위, 양수=인벤 슬롯).
 		---@type UIEquipmentSlotWidget
 		local w = cell:GetComponent("script.UIEquipmentSlotWidget")
 		if w == nil or w.itemName == "" then return end
+		if w.slotIndex == 0 then return end   -- 착용 그리드의 비성장/잠금 슬롯(무기/모자/신발/반지1 외)은 선택 불가
 		local inv = self:GetInv()
 		if inv == nil then return end
 		if self._T.selWidget ~= nil and isvalid(self._T.selWidget) then self._T.selWidget:SetSelected(false) end
