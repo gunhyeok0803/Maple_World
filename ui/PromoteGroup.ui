@@ -9319,7 +9319,8 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "Text": "실패 없는 확정 승급 · 재료만 소모"
             }
           ],
           "@version": 1
