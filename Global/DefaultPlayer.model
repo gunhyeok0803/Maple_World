@@ -29,7 +29,8 @@
         "script.InventoryController",
         "script.EquipmentController",
         "script.PotentialSystem",
-        "script.FlameSystem"
+        "script.FlameSystem",
+        "script.PlayerMagnet"
       ],
       "Properties": [],
       "Values": [
@@ -777,6 +778,24 @@
             "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
           },
           "Value": true
+        },
+        {
+          "TargetType": "script.PlayerMagnet",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
+        },
+        {
+          "TargetType": "script.PlayerMagnet",
+          "Name": "MagnetRadius",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": 4.0
         }
       ],
       "EventLinks": [],

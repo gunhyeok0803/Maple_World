@@ -1,0 +1,52 @@
+@Component
+script PlayerMagnet extends Component
+
+	-- 플레이어 자석(MVC의 Controller): 매 프레임 맵의 ItemDrop 중 반경 내 "전부"를 부드럽게 끌어당기고,
+	-- 수집 거리 안으로 들어오면 획득한다. 특정 아이템을 dataset에서 지정하지 않음 — 범위 내 모든 드랍이 대상.
+
+	@Sync
+	property number MagnetRadius = 2.5
+
+	@Sync
+	property number CollectRadius = 0.4
+
+	@Sync
+	property number MinSpeed = 1.5
+
+	@Sync
+	property number MaxSpeed = 9
+
+	@Sync
+	property number Steer = 8
+
+	method number Dist2D(Vector3 a, Vector3 b)
+		-- x,y 평면 거리(z 무시).
+		local dx = a.x - b.x
+		local dy = a.y - b.y
+		return math.sqrt(dx * dx + dy * dy)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void OnUpdate(number delta)
+		-- 반경 내 모든 ItemDrop 감지 → 끌어당김/수집(서버 권위). 클라는 엔진 보간으로 부드럽게 표시.
+		local map = self.Entity.CurrentMap
+		if isvalid(map) == false then return end
+		local myPos = self.Entity.TransformComponent.WorldPosition
+		local items = map:GetChildComponentsByTypeName("script.ItemDrop", true)
+		if items == nil then return end
+		for i = 1, #items do
+			---@type ItemDrop
+			local it = items[i]
+			if it ~= nil and it:IsCollected() == false then
+				local ipos = it.Entity.TransformComponent.WorldPosition
+				local d = self:Dist2D(myPos, ipos)
+				if d <= self.CollectRadius then
+					it:Collect(self.Entity)
+				elseif d <= self.MagnetRadius then
+					it:MagnetStep(myPos, self.MagnetRadius, self.MinSpeed, self.MaxSpeed, self.Steer, delta)
+				end
+			end
+		end
+	end
+
+end

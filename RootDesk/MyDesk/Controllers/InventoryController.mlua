@@ -52,15 +52,15 @@ script InventoryController extends Component
 					local cnt = tonumber(kv[2]) or 1     -- 구버전(이름만)은 개수 1
 					local st = tonumber(kv[3]) or 0      -- 구버전(성급 없음)은 0
 					local gr = tonumber(kv[4]) or _ItemGrade.Rare      -- 구버전(등급 없음)은 레어(1)
-					local po = self:OptField(kv[5])      -- 잠재("등급|스탯=값|...", ""=없음)
-					local fl = self:OptField(kv[6])      -- 환생 추가옵션("스탯=값|...", ""=없음)
-					if nm ~= nil and nm ~= "" then self._T.slots[#self._T.slots + 1] = { name = nm, count = cnt, star = st, grade = gr, pot = po, flame = fl } end
+					local pi = self:ParsePgInvest(kv[5], kv[6], kv[7])   -- 잠재등급(pg)/잠재(pot)/환생(flame) 통합 파싱(구버전 호환)
+					-- pg/pot/flame는 위 pi로 통합 파싱됨
+					if nm ~= nil and nm ~= "" then self._T.slots[#self._T.slots + 1] = { name = nm, count = cnt, star = st, grade = gr, pg = pi.pg, pot = pi.pot, flame = pi.flame } end
 				end
 			end
 			for i, pair in ipairs(_UtilLogic:Split(equipPart, ",")) do
 				local kv = _UtilLogic:Split(pair, ":")
 				if kv[1] ~= nil and kv[1] ~= "" and kv[2] ~= nil then
-					self._T.equipped[kv[1]] = { name = kv[2], star = tonumber(kv[3]) or 0, grade = tonumber(kv[4]) or _ItemGrade.Rare, pot = self:OptField(kv[5]), flame = self:OptField(kv[6]) }
+					local pi = self:ParsePgInvest(kv[5], kv[6], kv[7]); self._T.equipped[kv[1]] = { name = kv[2], star = tonumber(kv[3]) or 0, grade = tonumber(kv[4]) or _ItemGrade.Rare, pg = pi.pg, pot = pi.pot, flame = pi.flame }
 				end
 			end
 			for i, part in ipairs(_UtilLogic:Split(unlockPart, ",")) do
@@ -72,7 +72,7 @@ script InventoryController extends Component
 					local kv = _UtilLogic:Split(entry, ":")
 					local nm = kv[1]
 					if nm ~= nil and nm ~= "" then
-						self._T.traces[#self._T.traces + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or _ItemGrade.Legendary, pot = self:OptField(kv[4]), flame = self:OptField(kv[5]) }
+						local pi = self:ParsePgInvest(kv[4], kv[5], kv[6]); self._T.traces[#self._T.traces + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or _ItemGrade.Legendary, pg = pi.pg, pot = pi.pot, flame = pi.flame }
 					end
 				end
 			end
@@ -117,13 +117,33 @@ script InventoryController extends Component
 		return ":" .. (po == "" and "-" or po) .. ":" .. (fl == "" and "-" or fl)
 	end
 
+	method table ParsePgInvest(string f1, string f2, string f3)
+		-- grade 뒤 필드들(f1,f2,f3)에서 {pg, pot, flame} 해석 — 구버전 세이브 호환.
+		-- 구버전: grade 뒤가 바로 pot("등급|..."·"|"/"="포함)/flame → pg 없음(기본 레어).
+		-- 신버전: grade 뒤 첫 필드가 pg(순수 정수) → 그 뒤가 pot/flame.
+		local pg = _PotentialGrade.Rare
+		local po, fl
+		if f1 == nil or f1 == "" then
+			po = self:OptField(f1)
+			fl = self:OptField(f2)
+		elseif string.find(f1, "|") ~= nil or string.find(f1, "=") ~= nil then
+			po = self:OptField(f1)
+			fl = self:OptField(f2)
+		else
+			pg = tonumber(f1) or _PotentialGrade.Rare
+			po = self:OptField(f2)
+			fl = self:OptField(f3)
+		end
+		return { pg = pg, pot = po, flame = fl }
+	end
+
 	method string SerializeEquipped()
 		-- _T.equipped → "part:name:star:grade[:pot:flame],..."
 		local out = {}
 		if self._T ~= nil and self._T.equipped ~= nil then
 			for part, e in pairs(self._T.equipped) do
 				if e ~= nil and e.name ~= nil and e.name ~= "" then
-					out[#out + 1] = part .. ":" .. e.name .. ":" .. tostring(e.star or 0) .. ":" .. tostring(e.grade or _ItemGrade.Rare) .. self:InvestSuffix(e.pot, e.flame)
+					out[#out + 1] = part .. ":" .. e.name .. ":" .. tostring(e.star or 0) .. ":" .. tostring(e.grade or _ItemGrade.Rare) .. ":" .. tostring(e.pg or _PotentialGrade.Rare) .. self:InvestSuffix(e.pot, e.flame)
 				end
 			end
 		end
@@ -164,7 +184,7 @@ script InventoryController extends Component
 		return (v ~= nil) and tostring(v) or ""
 	end
 
-	method string StackKeyOf(string name, integer star, integer grade, string pot, string flame)
+	method string StackKeyOf(string name, integer star, integer grade, string pot, string flame, integer pg)
 		-- 스펙 StackKey = ItemId + Level + Grade + Part + IsPristine(§04: 스타포스/잠재/환생 붙으면 스택에서 분리).
 		-- 투자 상태가 완전히 동일한 개체끼리만 같은 키(무손실이므로 한 칸 누적 허용 — 기존 star 처리와 동일 원칙).
 		local itemId = self:MetaCell(name, "ItemId")
@@ -178,7 +198,7 @@ script InventoryController extends Component
 		local pristine = (st == 0 and po == "" and fl == "")   -- IsPristine = ★0 + 잠재/환생 없음
 		local suffix = "P"
 		if not pristine then suffix = "S" .. tostring(st) .. "\1" .. po .. "\1" .. fl end
-		return itemId .. "\1" .. level .. "\1" .. part .. "\1" .. tostring(grade or _ItemGrade.Rare) .. "\1" .. suffix
+		return itemId .. "\1" .. level .. "\1" .. part .. "\1" .. tostring(grade or _ItemGrade.Rare) .. "\1" .. tostring(pg or _PotentialGrade.Rare) .. "\1" .. suffix
 	end
 
 	method boolean IsPristineEntry(integer star, string pot, string flame)
@@ -196,11 +216,11 @@ script InventoryController extends Component
 				local gr = s.grade or _ItemGrade.Rare
 				local po = s.pot or ""
 				local fl = s.flame or ""
-				local key = self:StackKeyOf(s.name, st, gr, po, fl)   -- 스펙 구조화 키
+				local key = self:StackKeyOf(s.name, st, gr, po, fl, s.pg or _PotentialGrade.Rare)   -- 스펙 구조화 키
 				if byKey[key] ~= nil then
 					byKey[key].count = byKey[key].count + s.count
 				else
-					local e = { name = s.name, count = s.count, star = st, grade = gr, pot = po, flame = fl }
+					local e = { name = s.name, count = s.count, star = st, grade = gr, pg = s.pg or _PotentialGrade.Rare, pot = po, flame = fl }
 					byKey[key] = e
 					merged[#merged + 1] = e
 				end
@@ -214,7 +234,7 @@ script InventoryController extends Component
 		local out = {}
 		if self._T ~= nil and self._T.slots ~= nil then
 			for i, s in ipairs(self._T.slots) do
-				out[#out + 1] = s.name .. ":" .. tostring(s.count) .. ":" .. tostring(s.star or 0) .. ":" .. tostring(s.grade or _ItemGrade.Rare) .. self:InvestSuffix(s.pot, s.flame)
+				out[#out + 1] = s.name .. ":" .. tostring(s.count) .. ":" .. tostring(s.star or 0) .. ":" .. tostring(s.grade or _ItemGrade.Rare) .. ":" .. tostring(s.pg or _PotentialGrade.Rare) .. self:InvestSuffix(s.pot, s.flame)
 			end
 		end
 		return table.concat(out, ",")
@@ -225,7 +245,7 @@ script InventoryController extends Component
 		local out = {}
 		if self._T ~= nil and self._T.traces ~= nil then
 			for i, t in ipairs(self._T.traces) do
-				out[#out + 1] = t.name .. ":" .. tostring(t.star or 0) .. ":" .. tostring(t.grade or _ItemGrade.Legendary) .. self:InvestSuffix(t.pot, t.flame)
+				out[#out + 1] = t.name .. ":" .. tostring(t.star or 0) .. ":" .. tostring(t.grade or _ItemGrade.Legendary) .. ":" .. tostring(t.pg or _PotentialGrade.Rare) .. self:InvestSuffix(t.pot, t.flame)
 			end
 		end
 		return table.concat(out, ",")
@@ -288,18 +308,26 @@ script InventoryController extends Component
 
 	@ExecSpace("ServerOnly")
 	method boolean AddItemEx(string itemName, integer star, integer grade, string pot, string flame)
-		-- 같은 StackKey(투자 상태 포함 동일)면 한 칸 누적, 없으면 새 칸. pot="잠재등급|스탯=값|..." flame="스탯=값|..." (""=없음).
+		-- 잠재등급 미지정 획득(pg=레어 기본). 드랍/투자 승계 시 pg 지정은 AddItemPg 사용.
+		return self:AddItemPg(itemName, star, grade, pot, flame, _PotentialGrade.Rare)
+	end
+
+	@ExecSpace("ServerOnly")
+	method boolean AddItemPg(string itemName, integer star, integer grade, string pot, string flame, integer pg)
+		-- 같은 StackKey(투자 상태+잠재등급 포함 동일)면 한 칸 누적, 없으면 새 칸. pg=잠재등급(_PotentialGrade).
+		-- 다른 pg는 별도 버킷으로 분리(StackKey 포함). 드랍 롤(팀원)은 이 메서드로 pg를 지정한다.
 		local st = star or 0
 		local gr = grade or _ItemGrade.Rare
+		local pgv = pg or _PotentialGrade.Rare
 		local po = pot or ""
 		local fl = flame or ""
-		local key = self:StackKeyOf(itemName, st, gr, po, fl)
+		local key = self:StackKeyOf(itemName, st, gr, po, fl, pgv)
 		for i, s in ipairs(self._T.slots) do
-			if self:StackKeyOf(s.name, s.star or 0, s.grade or _ItemGrade.Rare, s.pot or "", s.flame or "") == key then
+			if self:StackKeyOf(s.name, s.star or 0, s.grade or _ItemGrade.Rare, s.pot or "", s.flame or "", s.pg or _PotentialGrade.Rare) == key then
 				s.count = s.count + 1
 				self:Publish()
 				self:MarkDirty()
-				log("[Inventory] AddItem(stack): " .. tostring(itemName) .. " G" .. tostring(gr) .. " ★" .. tostring(st) .. " x" .. tostring(s.count))
+				log("[Inventory] AddItem(stack): " .. tostring(itemName) .. " G" .. tostring(gr) .. " P" .. tostring(pgv) .. " ★" .. tostring(st) .. " x" .. tostring(s.count))
 				return true
 			end
 		end
@@ -307,10 +335,10 @@ script InventoryController extends Component
 			log_warning("[Inventory] 가득 참 — " .. tostring(itemName) .. " 미획득")
 			return false
 		end
-		self._T.slots[#self._T.slots + 1] = { name = itemName, count = 1, star = st, grade = gr, pot = po, flame = fl }
+		self._T.slots[#self._T.slots + 1] = { name = itemName, count = 1, star = st, grade = gr, pg = pgv, pot = po, flame = fl }
 		self:Publish()
 		self:MarkDirty()
-		log("[Inventory] AddItem: " .. tostring(itemName) .. " G" .. tostring(gr) .. " ★" .. tostring(st) .. " (슬롯 " .. tostring(#self._T.slots) .. ")")
+		log("[Inventory] AddItem: " .. tostring(itemName) .. " G" .. tostring(gr) .. " P" .. tostring(pgv) .. " ★" .. tostring(st) .. " (슬롯 " .. tostring(#self._T.slots) .. ")")
 		return true
 	end
 
@@ -363,29 +391,30 @@ script InventoryController extends Component
 	@ExecSpace("ServerOnly")
 	method void EquipInternal(string part, string itemName, integer star, integer grade)
 		-- 투자 옵션 없는 개체 장착. 잠재/환생 붙은 개체는 EquipInternalEx 사용.
-		self:EquipInternalEx(part, itemName, star, grade, "", "")
+		self:EquipInternalEx(part, itemName, star, grade, "", "", _PotentialGrade.Rare)
 	end
 
 	@ExecSpace("ServerOnly")
-	method void EquipInternalEx(string part, string itemName, integer star, integer grade, string pot, string flame)
-		-- 장착: 가방 -1 → 페이퍼돌(잠재/환생 보존), 기존품 있으면 투자 상태 그대로 가방 반환(검증은 EquipmentController)
+	method void EquipInternalEx(string part, string itemName, integer star, integer grade, string pot, string flame, integer pg)
+		-- 장착: 가방 -1 → 페이퍼돌(성급·등급·잠재등급·잠재·환생 보존), 기존품 있으면 투자 상태 그대로 가방 반환(검증은 EquipmentController)
 		if part == nil or part == "" or itemName == nil or itemName == "" then return end
 		local st = star or 0
 		local gr = grade or _ItemGrade.Rare
+		local pgv = pg or _PotentialGrade.Rare
 		local po = pot or ""
 		local fl = flame or ""
-		if not self:ConsumeItemEx(itemName, st, gr, po, fl) then
-			log_warning("[Inventory] 장착 실패(가방에 없음): " .. tostring(itemName) .. " G" .. tostring(gr) .. " ★" .. tostring(st))
+		if not self:ConsumeItemPg(itemName, st, gr, po, fl, pgv) then
+			log_warning("[Inventory] 장착 실패(가방에 없음): " .. tostring(itemName) .. " G" .. tostring(gr) .. " P" .. tostring(pgv) .. " ★" .. tostring(st))
 			return
 		end
 		local prev = self._T.equipped[part]
 		if prev ~= nil and prev.name ~= nil and prev.name ~= "" then
-			self:AddItemEx(prev.name, prev.star or 0, prev.grade or _ItemGrade.Rare, prev.pot or "", prev.flame or "")   -- 교체: 기존 장착품 가방으로 반환(+1)
+			self:AddItemPg(prev.name, prev.star or 0, prev.grade or _ItemGrade.Rare, prev.pot or "", prev.flame or "", prev.pg or _PotentialGrade.Rare)   -- 교체: 기존 장착품 가방으로 반환(+1)
 		end
-		self._T.equipped[part] = { name = itemName, star = st, grade = gr, pot = po, flame = fl }
+		self._T.equipped[part] = { name = itemName, star = st, grade = gr, pg = pgv, pot = po, flame = fl }
 		self:Publish()
 		self:MarkDirty()
-		log("[Inventory] Equip " .. tostring(part) .. " = " .. tostring(itemName) .. " G" .. tostring(gr) .. " ★" .. tostring(st) .. " (가방 -1)")
+		log("[Inventory] Equip " .. tostring(part) .. " = " .. tostring(itemName) .. " G" .. tostring(gr) .. " P" .. tostring(pgv) .. " ★" .. tostring(st) .. " (가방 -1)")
 	end
 
 	@ExecSpace("ServerOnly")
@@ -395,7 +424,7 @@ script InventoryController extends Component
 		if self._T.equipped == nil or self._T.equipped[part] == nil then return end
 		local e = self._T.equipped[part]
 		self._T.equipped[part] = nil
-		if e.name ~= nil and e.name ~= "" then self:AddItemEx(e.name, e.star or 0, e.grade or _ItemGrade.Rare, e.pot or "", e.flame or "") end   -- 가방으로 반환(+1)
+		if e.name ~= nil and e.name ~= "" then self:AddItemPg(e.name, e.star or 0, e.grade or _ItemGrade.Rare, e.pot or "", e.flame or "", e.pg or _PotentialGrade.Rare) end   -- 가방으로 반환(잠재등급 포함 보존)
 		self:Publish()
 		self:MarkDirty()
 		log("[Inventory] Unequip " .. tostring(part) .. " -> 가방 +1 (" .. tostring(e.name) .. " G" .. tostring(e.grade or _ItemGrade.Rare) .. " ★" .. tostring(e.star or 0) .. ")")
@@ -463,7 +492,7 @@ script InventoryController extends Component
 					local cnt = tonumber(kv[2]) or 1
 					local st = tonumber(kv[3]) or 0
 					local gr = tonumber(kv[4]) or _ItemGrade.Rare
-					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, count = cnt, star = st, grade = gr, pot = self:OptField(kv[5]), flame = self:OptField(kv[6]) } end
+					if nm ~= nil and nm ~= "" then local pi = self:ParsePgInvest(kv[5], kv[6], kv[7]); t[#t + 1] = { name = nm, count = cnt, star = st, grade = gr, pg = pi.pg, pot = pi.pot, flame = pi.flame } end
 				end
 			end
 		end
@@ -500,12 +529,22 @@ script InventoryController extends Component
 		return 1
 	end
 
+	method integer GetEquippedPg(string part)
+		-- 해당 부위 장착품의 잠재등급(_PotentialGrade, 없으면 레어). 신포맷 kv[5]=pg(구버전은 pot이라 ParsePgInvest로 판별).
+		if self.EquippedCsv == nil or self.EquippedCsv == "" then return _PotentialGrade.Rare end
+		for i, pair in ipairs(_UtilLogic:Split(self.EquippedCsv, ",")) do
+			local kv = _UtilLogic:Split(pair, ":")
+			if kv[1] == part then return self:ParsePgInvest(kv[5], kv[6], kv[7]).pg end
+		end
+		return _PotentialGrade.Rare
+	end
+
 	method string GetEquippedPot(string part)
 		-- 해당 부위 장착품의 잠재 문자열("등급|스탯=값|...", 없으면 "").
 		if self.EquippedCsv == nil or self.EquippedCsv == "" then return "" end
 		for i, pair in ipairs(_UtilLogic:Split(self.EquippedCsv, ",")) do
 			local kv = _UtilLogic:Split(pair, ":")
-			if kv[1] == part then return self:OptField(kv[5]) end
+			if kv[1] == part then return self:ParsePgInvest(kv[5], kv[6], kv[7]).pot end
 		end
 		return ""
 	end
@@ -515,7 +554,7 @@ script InventoryController extends Component
 		if self.EquippedCsv == nil or self.EquippedCsv == "" then return "" end
 		for i, pair in ipairs(_UtilLogic:Split(self.EquippedCsv, ",")) do
 			local kv = _UtilLogic:Split(pair, ":")
-			if kv[1] == part then return self:OptField(kv[6]) end
+			if kv[1] == part then return self:ParsePgInvest(kv[5], kv[6], kv[7]).flame end
 		end
 		return ""
 	end
@@ -525,7 +564,7 @@ script InventoryController extends Component
 		if self._T == nil or self._T.slots == nil then return nil end
 		if index == nil or index < 1 or index > #self._T.slots then return nil end
 		local s = self._T.slots[index]
-		return { name = s.name, count = s.count, star = s.star or 0, grade = s.grade or _ItemGrade.Rare, pot = s.pot or "", flame = s.flame or "" }
+		return { name = s.name, count = s.count, star = s.star or 0, grade = s.grade or _ItemGrade.Rare, pg = s.pg or _PotentialGrade.Rare, pot = s.pot or "", flame = s.flame or "" }
 	end
 
 	method integer CountItem(string itemName, integer star, integer grade)
@@ -534,16 +573,17 @@ script InventoryController extends Component
 	end
 
 	method integer CountItemEx(string itemName, integer star, integer grade, string pot, string flame)
-		-- 서버용: (이름+성급+등급+잠재+환생) 완전 일치 보유 개수.
+		-- 서버용: (이름+성급+등급+잠재+환생) 완전 일치 보유 개수. 잠재등급(pg)은 무관하게 모든 버킷 합산(승급·컬렉션 재료 집계용).
 		local st = star or 0
 		local gr = grade or _ItemGrade.Rare
 		local po = pot or ""
 		local fl = flame or ""
 		if self._T == nil or self._T.slots == nil then return 0 end
+		local total = 0
 		for i, s in ipairs(self._T.slots) do
-			if s.name == itemName and (s.star or 0) == st and (s.grade or _ItemGrade.Rare) == gr and (s.pot or "") == po and (s.flame or "") == fl then return s.count end
+			if s.name == itemName and (s.star or 0) == st and (s.grade or _ItemGrade.Rare) == gr and (s.pot or "") == po and (s.flame or "") == fl then total = total + s.count end
 		end
-		return 0
+		return total
 	end
 
 	@ExecSpace("ServerOnly")
@@ -563,12 +603,54 @@ script InventoryController extends Component
 	end
 
 	@ExecSpace("ServerOnly")
+	method boolean ConsumeItemPg(string itemName, integer star, integer grade, string pot, string flame, integer pg)
+		-- 가방에서 (이름+성급+등급+잠재등급+잠재+환생) 완전 일치 1개 차감. 강화 승계용(특정 pg 개체 정확 소모).
+		local st = star or 0
+		local gr = grade or _ItemGrade.Rare
+		local pgv = pg or _PotentialGrade.Rare
+		local po = pot or ""
+		local fl = flame or ""
+		for i, s in ipairs(self._T.slots) do
+			if s.name == itemName and (s.star or 0) == st and (s.grade or _ItemGrade.Rare) == gr and (s.pg or _PotentialGrade.Rare) == pgv and (s.pot or "") == po and (s.flame or "") == fl then
+				s.count = s.count - 1
+				if s.count <= 0 then table.remove(self._T.slots, i) end
+				return true
+			end
+		end
+		return false
+	end
+
+	method integer CountItemPg(string itemName, integer star, integer grade, string pot, string flame, integer pg)
+		-- 서버용: (이름+성급+등급+잠재등급+잠재+환생) 완전 일치 보유 개수(특정 pg 버킷).
+		local st = star or 0
+		local gr = grade or _ItemGrade.Rare
+		local pgv = pg or _PotentialGrade.Rare
+		local po = pot or ""
+		local fl = flame or ""
+		if self._T == nil or self._T.slots == nil then return 0 end
+		for i, s in ipairs(self._T.slots) do
+			if s.name == itemName and (s.star or 0) == st and (s.grade or _ItemGrade.Rare) == gr and (s.pg or _PotentialGrade.Rare) == pgv and (s.pot or "") == po and (s.flame or "") == fl then return s.count end
+		end
+		return 0
+	end
+
+	@ExecSpace("ServerOnly")
+	method void AddTracePg(string itemName, integer star, integer grade, string pot, string flame, integer pg)
+		-- 파괴 흔적 추가(성급·등급·잠재등급·잠재·환생 보존). 스타포스 파괴 승계용.
+		if self._T.traces == nil then self._T.traces = {} end
+		self._T.traces[#self._T.traces + 1] = { name = itemName, star = star or 0, grade = grade or _ItemGrade.Legendary, pg = pg or _PotentialGrade.Rare, pot = pot or "", flame = flame or "" }
+		self:Publish()
+		self:MarkDirty()
+		log("[Inventory] AddTracePg: " .. tostring(itemName) .. " ★" .. tostring(star or 0) .. " P" .. tostring(pg or _PotentialGrade.Rare) .. " (흔적 " .. tostring(#self._T.traces) .. ")")
+	end
+
+	@ExecSpace("ServerOnly")
 	method table GetTraceAt(integer index)
 		-- 서버용: index(1-based) 흔적의 {name,star,grade,pot,flame}(없으면 nil).
 		if self._T == nil or self._T.traces == nil then return nil end
 		if index == nil or index < 1 or index > #self._T.traces then return nil end
 		local t = self._T.traces[index]
-		return { name = t.name, star = t.star or 0, grade = t.grade or _ItemGrade.Legendary, pot = t.pot or "", flame = t.flame or "" }
+		return { name = t.name, star = t.star or 0, grade = t.grade or _ItemGrade.Legendary, pg = t.pg or _PotentialGrade.Rare, pot = t.pot or "", flame = t.flame or "" }
 	end
 
 	@ExecSpace("ServerOnly")
@@ -588,7 +670,7 @@ script InventoryController extends Component
 				if entry ~= "" then
 					local kv = _UtilLogic:Split(entry, ":")
 					local nm = kv[1]
-					if nm ~= nil and nm ~= "" then t[#t + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or _ItemGrade.Legendary, pot = self:OptField(kv[4]), flame = self:OptField(kv[5]) } end
+					if nm ~= nil and nm ~= "" then local pi = self:ParsePgInvest(kv[4], kv[5], kv[6]); t[#t + 1] = { name = nm, star = tonumber(kv[2]) or 0, grade = tonumber(kv[3]) or _ItemGrade.Legendary, pg = pi.pg, pot = pi.pot, flame = pi.flame } end
 				end
 			end
 		end
@@ -600,7 +682,7 @@ script InventoryController extends Component
 		if self._T == nil or self._T.equipped == nil then return nil end
 		local e = self._T.equipped[part]
 		if e == nil or e.name == nil or e.name == "" then return nil end
-		return { name = e.name, star = e.star or 0, grade = e.grade or _ItemGrade.Rare, pot = e.pot or "", flame = e.flame or "" }
+		return { name = e.name, star = e.star or 0, grade = e.grade or _ItemGrade.Rare, pg = e.pg or _PotentialGrade.Rare, pot = e.pot or "", flame = e.flame or "" }
 	end
 
 	@ExecSpace("ServerOnly")
@@ -632,6 +714,17 @@ script InventoryController extends Component
 		local e = self._T.equipped[part]
 		if e == nil then return end
 		e.star = star or 0
+		self:Publish()
+		self:MarkDirty()
+	end
+
+	@ExecSpace("ServerOnly")
+	method void SetEquippedPg(string part, integer pg)
+		-- 서버용: 장착품의 잠재등급(_PotentialGrade) 갱신(잠재 등급 상승용). 장착품 없으면 무시.
+		if self._T == nil or self._T.equipped == nil then return end
+		local e = self._T.equipped[part]
+		if e == nil then return end
+		e.pg = pg or _PotentialGrade.Rare
 		self:Publish()
 		self:MarkDirty()
 	end

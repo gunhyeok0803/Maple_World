@@ -22,15 +22,29 @@ script UIPromotePanel extends Component
 
 	property string TabOffRUID = "50426b5b1ee44bc5a1c10355b0e9ad03"
 
-	method void Wire(any btn, any clickFn)
-		-- 버튼 클릭 배선(없으면 경고).
-		if btn == nil or isvalid(btn) == false then
-			log_warning("[Promote] 배선 대상 없음")
-			return
-		end
+	method boolean WireOnce(string key, any btn, any clickFn)
+		-- 키 기준 1회 배선(멱등): 이미 배선됐으면 true, 대상 미스폰이면 false(다음 킥 때 재시도).
+		if self._T.wiredKeys == nil then self._T.wiredKeys = {} end
+		if self._T.wiredKeys[key] then return true end
+		if btn == nil or isvalid(btn) == false then return false end
 		if self._T.handlers == nil then self._T.handlers = {} end
 		local h = btn.Entity:ConnectEvent(ButtonClickEvent, clickFn)
 		self._T.handlers[#self._T.handlers + 1] = { e = btn.Entity, h = h }
+		self._T.wiredKeys[key] = true
+		return true
+	end
+
+	method boolean WireEntOnce(string key, any ent, any clickFn)
+		-- 키 기준 1회 배선(멱등): 엔티티 대상. ButtonComponent 없으면 부착(TEXT 버튼 대응). 모델 인스턴스 안전.
+		if self._T.wiredKeys == nil then self._T.wiredKeys = {} end
+		if self._T.wiredKeys[key] then return true end
+		if ent == nil or isvalid(ent) == false then return false end
+		if ent.ButtonComponent == nil then ent:AddComponent("MOD.Core.ButtonComponent") end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		local h = ent:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = ent, h = h }
+		self._T.wiredKeys[key] = true
+		return true
 	end
 
 	method void WireEnt(any ent, any clickFn)
@@ -81,21 +95,46 @@ script UIPromotePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void EnsureBoot()
+		-- 멱등 부트(사이드메뉴/인벤과 동일 패턴): 탭 2/닫기 배선(키 기준 재시도) + UIManager 등록 + 초기 닫힘.
+		-- @Component 라이프사이클(OnBeginPlay)이 그룹월드에서 안 뛰거나 버튼이 늦게 스폰되는 케이스 대비.
+		if self._T.booted then return end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		if self._T.tab == nil then self._T.tab = 1 end
+		if self._T.times == nil then self._T.times = 1 end
+		if self._T.registered ~= true then
+			_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
+			self._T.registered = true
+		end
+		-- 탭 2/닫기는 PromoteRoot(부모) 기준 상대 이름탐색 — 그룹월드 모델 인스턴스에서 property UUID가 깨지므로.
+		local root = self.Entity.Parent
+		local ok = (root ~= nil and isvalid(root))
+		if ok then
+			if self:WireEntOnce("tabPromote", root:GetChildByName("Btn_TabPromote", true), function() self:SelectTab(1) end) == false then ok = false end
+			if self:WireEntOnce("tabColl", root:GetChildByName("Btn_TabColl", true), function() self:SelectTab(2) end) == false then ok = false end
+			if self:WireEntOnce("closeMain", root:GetChildByName("Btn_CloseMain", true), function() self:SetOpen(false) end) == false then ok = false end
+		end
+		-- 초기 숨김은 1회만. (OnUpdate가 매 프레임 EnsureBoot를 부르므로 매번 닫으면 창을 열자마자 닫혀 깜빡임)
+		if self._T.initHidden ~= true then
+			self:ApplyVisibility(false)
+			self._T.initHidden = true
+		end
+		if self._T.registered and ok then
+			self._T.booted = true
+			log("[UIPromotePanel] EnsureBoot ok")
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
-		-- 배선: 탭 2/닫기. UIManager 등록. 초기 닫힘.
-		self._T.handlers = {}
-		self._T.tab = 1
-		self._T.times = 1
-		self:Wire(self.btnTabPromote, function() self:SelectTab(1) end)
-		self:Wire(self.btnTabColl, function() self:SelectTab(2) end)
-		self:Wire(self.btnCloseMain, function() self:SetOpen(false) end)
-		_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
-		self:ApplyVisibility(false)
-		log("[UIPromotePanel] OnBeginPlay ok")
+		-- 부트는 멱등 EnsureBoot로 위임(UIManager @Logic + OnUpdate가 함께 보정).
+		self:EnsureBoot()
 	end
 
 	@ExecSpace("ClientOnly")
 	method void OnUpdate(number delta)
+		-- OnBeginPlay 미실행/버튼 지연 스폰 대비 부트 보정(완료 후 즉시 반환).
+		self:EnsureBoot()
 		-- 도감 탭 열림 중 BookCsv 동기화 감지 → 그리드/정보 갱신(등록 직후 @Sync 지연 대응).
 		if not self:IsOpen() or (self._T.tab or 1) ~= 2 then return end
 		local cs = self:GetCollection()
@@ -149,6 +188,15 @@ script UIPromotePanel extends Component
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
 		-- 열기/닫기 + UIManager 통지. 열 때 목록 구축.
+		-- 열 때 조상(PromoteRoot/PromoteGroup)이 disable이면 창을 켜도 부모 disable로 안 보임 — 이관 자가치유.
+		if open then
+			local root = self.Entity.Parent
+			if isvalid(root) then
+				if root.Enable == false then root.Enable = true end
+				local grp = root.Parent
+				if isvalid(grp) and grp.Enable == false then grp.Enable = true end
+			end
+		end
 		self:ApplyVisibility(open)
 		if open then
 			-- 창 프레임을 형제 맨 뒤로(1회) — OnBeginPlay 시점 호출은 타 그룹 초기화를 끊으므로 여기서.
@@ -374,7 +422,7 @@ script UIPromotePanel extends Component
 			if ok then
 				ok = (s.grade or 1) < _ItemGrade.Legendary
 			end
-			if ok then filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade } end
+			if ok then filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pg = s.pg } end
 		end
 		self._T.filtered = filtered
 		local grid = self.panelPromote:GetChildByName("Grid")
@@ -394,6 +442,7 @@ script UIPromotePanel extends Component
 		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
 		if w == nil then return end
 		w.ownerWindow = self.Entity
+		w.itemPg = it.pg or 1
 		w:SetData(it.name, it.gi, it.count, it.grade)
 	end
 
@@ -473,7 +522,7 @@ script UIPromotePanel extends Component
 		if ent == nil or isvalid(ent) == false then return end
 		local sr = ent.SpriteGUIRendererComponent
 		if sr ~= nil then
-			sr.ImageRUID = _ItemGrade:SlotRUID(grade)
+			sr.ImageRUID = "aa931a755e5949699233b817029a3e36"   -- 중립 슬롯(품질은 텍스트로 표시 — 색 의미는 잠재 전용)
 			sr.Color = Color(1, 1, 1, 1)
 		end
 		local icon = ent:GetChildByName("Icon")

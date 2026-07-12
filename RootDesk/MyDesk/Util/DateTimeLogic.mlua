@@ -67,7 +67,7 @@ script DateTimeLogic extends Logic
 	end
 
 	method integer GetElapsedFromDateString(string dateTimeStr)
-		if _Util:IsNilorEmptyString(dateTimeStr) then
+		if _ResourceUtil:IsNilorEmptyString(dateTimeStr) then
 			return 0
 		end
 		

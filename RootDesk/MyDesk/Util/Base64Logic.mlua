@@ -64,7 +64,7 @@ script Base64Logic extends Logic
 			self:Init()
 		end
 		
-		if _Util:IsNilorEmptyString(str) then
+		if _ResourceUtil:IsNilorEmptyString(str) then
 			return nil
 		end
 		

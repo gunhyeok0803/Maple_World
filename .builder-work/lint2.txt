@@ -1,0 +1,128 @@
+Loaded 346 entities from C:/Users/rnsgu/MSW_ProjectAI00/ui/InventoryGroup.ui
+  Patched component MOD.Core.UITransformComponent on UIR_SimpleFantasy_Sample_Inventory
+Written 346 entities to C:/Users/rnsgu/MSW_ProjectAI00/ui/InventoryGroup.ui
+[ERROR  ] L013 /ui/InventoryGroup/Controller/EquipPanel/Title
+        Entity is fully off-canvas: left by 430px (bbox=(-1390,344)-(-1090,376), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/EquipPanel/PresetLabel
+        Entity is fully off-canvas: left by 330px (bbox=(-1290,-373)-(-1190,-347), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/EquipPanel/Preset_0
+        Entity is fully off-canvas: left by 297px (bbox=(-1257,-377)-(-1223,-343), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/EquipPanel/Preset_1
+        Entity is fully off-canvas: left by 297px (bbox=(-1257,-377)-(-1223,-343), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/EquipPanel/Preset_2
+        Entity is fully off-canvas: left by 297px (bbox=(-1257,-377)-(-1223,-343), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/BagPanel/Count
+        Entity is fully off-canvas: right by 330px (bbox=(1150,347)-(1290,373), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/BagPanel/CloseBtn
+        Entity is fully off-canvas: right by 280px (bbox=(1200,340)-(1240,380), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/BagPanel/SlotTemplate/Count
+        Entity is fully off-canvas: right by 64px (bbox=(974,-50)-(1024,-28), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/BagPanel/MesoBar/Value
+        Entity is fully off-canvas: right by 328px (bbox=(1108,-374)-(1288,-346), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/Controller/BagPanel/PointBar/Value
+        Entity is fully off-canvas: right by 328px (bbox=(1108,-374)-(1288,-346), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Btn_CharName
+        Entity is fully off-canvas: left by 640px (bbox=(-1600,395)-(-1220,435), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Exp_Bar_Bg
+        Entity is fully off-canvas: left by 698px (bbox=(-1658,412)-(-1163,418), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Exp_Text
+        Entity is fully off-canvas: left by 511px (bbox=(-1471,400)-(-1349,430), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Text_CharLevel
+        Entity is fully off-canvas: left by 499px (bbox=(-1459,393)-(-1361,437), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Text_JobName
+        Entity is fully off-canvas: left by 505px (bbox=(-1465,399)-(-1355,431), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Btn_Card1/Deco
+        Entity is fully off-canvas: left by 142px, top by 11px (bbox=(-1102,279)-(-1022,551), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Btn_CharName/CharNameEdit
+        Entity is fully off-canvas: left by 278px (bbox=(-1238,397)-(-1202,433), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Btn_CharName/Text_CharName
+        Entity is fully off-canvas: left by 802px (bbox=(-1762,394)-(-1439,435), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Exp_Bar_Bg/Exp_Bar
+        Entity is fully off-canvas: left by 698px (bbox=(-1658,412)-(-1163,418), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Cap
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Cape
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/EarAcc
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Glove
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/LongCoat
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Mustache
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Necklace
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Shoes
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Shoulder
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Weapon
+        Entity is fully off-canvas: left by 319px, top by 34px (bbox=(-1279,476)-(-1181,574), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Btn_CharName/CharNameEdit/Img_CharNameEdit
+        Entity is fully off-canvas: left by 270px (bbox=(-1230,405)-(-1210,425), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/CharPower/Text_Power/Img_Icon
+        Entity is fully off-canvas: left by 48px (bbox=(-1008,399)-(-988,431), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Cap/Img_EquipIcon
+        Entity is fully off-canvas: left by 306px, top by 21px (bbox=(-1266,489)-(-1194,561), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Cape/Img_Cape
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/EarAcc/Img_EarAcc
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Glove/Img_Glove
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/LongCoat/Img_LongCoat
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Mustache/Img_Mustache
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Necklace/Img_Necklace
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Shoes/Img_Shoes
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Shoulder/Img_Shoulder
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+[ERROR  ] L013 /ui/InventoryGroup/UIR_SimpleFantasy_Sample_Inventory/Layout_PlayerInfo/Scroll_EquipSlot/Weapon/Img_Weapon
+        Entity is fully off-canvas: left by 300px, top by 15px (bbox=(-1260,495)-(-1200,555), canvas=1920x1080)
+        hint: Edge formula: anchoredPosition = sign * (margin + RectSize/2) for center-pivot. For stretch axes, use OffsetMin/OffsetMax (anchoredPosition is ignored). Verify Pivot - non-center pivots shift the bbox.
+x ui_lint: 41 error(s), 1410 warning(s) in C:/Users/rnsgu/MSW_ProjectAI00/ui/InventoryGroup.ui
+root offsets zeroed

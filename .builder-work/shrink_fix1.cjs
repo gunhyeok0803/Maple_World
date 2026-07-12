@@ -1,0 +1,13 @@
+const { UIBuilder } = require("C:/Users/rnsgu/MSW_ProjectAI00/.claude/skills/msw-ui-system/scripts/msw_ui_builder.cjs");
+const UI = "C:/Users/rnsgu/MSW_ProjectAI00/ui/EnhanceGroup.ui";
+const b = UIBuilder.read(UI);
+const BC = { anchor:"bottom-center", pivot:[0.5,0.5] };
+const S="Tab_StarForce/Panel";
+b.patch(S+"/Layout_Cost", Object.assign({ pos:[0,195], rect_size:[700,60] }, BC));
+b.patch(S+"/Chk_Protect", Object.assign({ pos:[-92,150], rect_size:[28,28] }, BC));
+b.patch(S+"/Text_Protect", Object.assign({ pos:[52,150], rect_size:[250,30] }, BC));
+b.patch(S+"/Btn_Enchant", Object.assign({ pos:[135,78], rect_size:[240,80] }, BC));
+b.patch(S+"/Btn_Restore", Object.assign({ pos:[-135,78], rect_size:[240,80] }, BC));
+b.patch(S+"/Text_Footer", Object.assign({ pos:[0,24], rect_size:[720,26] }, BC));
+b.write(UI,{strict:false});
+console.log("bottom spacing fixed");

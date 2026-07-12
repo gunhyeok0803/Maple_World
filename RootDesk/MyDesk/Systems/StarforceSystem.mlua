@@ -3,7 +3,7 @@ script StarforceSystem extends Component
 
 	property integer MaxStar = 20
 
-	-- 스타포스는 레전드리 전용(등급은 _ItemGrade.Legendary)
+	-- 스타포스는 레전드리(잠재) 전용 — 게이트는 pg == _PotentialGrade.Legendary. 품질(_ItemGrade)과 무관.
 
 	method InventoryController GetInv()
 		-- 같은 엔티티의 InventoryController(없으면 nil).
@@ -106,8 +106,9 @@ script StarforceSystem extends Component
 		local grade = info.grade or 1
 		local pot = info.pot or ""
 		local flame = info.flame or ""
-		if grade < _ItemGrade.Legendary then
-			log("[SF] 레전드리만 스타포스 가능: " .. tostring(name) .. " G" .. tostring(grade))
+		local pg = info.pg or _PotentialGrade.Rare
+		if pg < _PotentialGrade.Legendary then
+			log("[SF] 레전드리(잠재) 전용 스타포스: " .. tostring(name) .. " pg" .. tostring(pg))
 			return
 		end
 		local target = star + 1
@@ -130,12 +131,12 @@ script StarforceSystem extends Component
 		local destroy = tonumber(row:GetItem("DestroyRate")) or 0
 		local roll = _UtilLogic:RandomDouble()
 		if roll < success then
-			inv:ConsumeItemEx(name, star, grade, pot, flame)
-			inv:AddItemEx(name, target, grade, pot, flame)   -- 잠재/환생 보존 승계
+			inv:ConsumeItemPg(name, star, grade, pot, flame, pg)
+			inv:AddItemPg(name, target, grade, pot, flame, pg)   -- 잠재등급/잠재/환생 보존 승계
 			log("[SF] 성공! " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
 		elseif roll < success + destroy then
-			inv:ConsumeItemEx(name, star, grade, pot, flame)
-			inv:AddTraceEx(name, star, grade, pot, flame)   -- §06 흔적에 투자 메타 보존
+			inv:ConsumeItemPg(name, star, grade, pot, flame, pg)
+			inv:AddTracePg(name, star, grade, pot, flame, pg)   -- §06 흔적에 투자 메타(잠재등급 포함) 보존
 			log("[SF] 파괴! " .. tostring(name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
 		else
 			log("[SF] 실패(유지) " .. tostring(name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
@@ -159,8 +160,8 @@ script StarforceSystem extends Component
 			log_warning("[SF] 장착품 없음 part=" .. tostring(part))
 			return
 		end
-		if (e.grade or 1) < _ItemGrade.Legendary then
-			log("[SF] 레전드리만 스타포스 가능: " .. tostring(e.name) .. " G" .. tostring(e.grade))
+		if (e.pg or _PotentialGrade.Rare) < _PotentialGrade.Legendary then
+			log("[SF] 레전드리(잠재) 전용 스타포스: " .. tostring(e.name) .. " pg" .. tostring(e.pg))
 			return
 		end
 		local star = e.star or 0
@@ -188,7 +189,7 @@ script StarforceSystem extends Component
 			log("[SF] 성공!(착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
 		elseif roll < success + destroy then
 			inv:RemoveEquipped(part)
-			inv:AddTraceEx(e.name, star, e.grade, e.pot or "", e.flame or "")
+			inv:AddTracePg(e.name, star, e.grade, e.pot or "", e.flame or "", e.pg or _PotentialGrade.Rare)
 			log("[SF] 파괴!(착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
 		else
 			log("[SF] 실패(유지·착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
@@ -212,13 +213,14 @@ script StarforceSystem extends Component
 			log_warning("[SF] 잘못된 흔적 index=" .. tostring(traceIndex))
 			return
 		end
-		if inv:CountItem(tr.name, 0, _ItemGrade.Legendary) < 1 then
-			log("[SF] 복구 재료 부족(레전드리 순정 필요): " .. tostring(tr.name))
+		local mgrade = tr.grade or _ItemGrade.Legendary
+		if inv:CountItemPg(tr.name, 0, mgrade, "", "", _PotentialGrade.Legendary) < 1 then
+			log("[SF] 복구 재료 부족(레전드리(잠재) 순정 필요): " .. tostring(tr.name))
 			return
 		end
-		inv:ConsumeItem(tr.name, 0, _ItemGrade.Legendary)
+		inv:ConsumeItemPg(tr.name, 0, mgrade, "", "", _PotentialGrade.Legendary)
 		inv:RemoveTraceAt(traceIndex)
-		inv:AddItemEx(tr.name, tr.star or 0, tr.grade or _ItemGrade.Legendary, tr.pot or "", tr.flame or "")   -- §06 하락 없이 기존 상태(투자 포함) 복원
+		inv:AddItemPg(tr.name, tr.star or 0, mgrade, tr.pot or "", tr.flame or "", tr.pg or _PotentialGrade.Legendary)   -- §06 하락 없이 기존 상태(투자·잠재등급 포함) 복원
 		log("[SF] 복구! " .. tostring(tr.name) .. " ★" .. tostring(tr.star or 0) .. " (레전드리 순정 1 소모)")
 	end
 

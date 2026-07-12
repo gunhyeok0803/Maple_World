@@ -118,7 +118,7 @@ script CombatPowerSystem extends Component
 				local kv = _UtilLogic:Split(pair, ":")
 				local name = kv[2]
 				if name ~= nil and name ~= "" then
-					local it = self:GetItemStats(name, tonumber(kv[3]) or 0, inv:OptField(kv[5]), inv:OptField(kv[6]))
+					local pi = inv:ParsePgInvest(kv[5], kv[6], kv[7]); local it = self:GetItemStats(name, tonumber(kv[3]) or 0, pi.pot, pi.flame)
 					for k, v in pairs(it) do self:AddStat(total, k, v) end
 				end
 			end

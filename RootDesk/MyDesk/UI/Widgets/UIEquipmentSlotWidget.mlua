@@ -7,6 +7,8 @@ script UIEquipmentSlotWidget extends Component
 
 	property integer itemGrade = 1
 
+	property integer itemPg = 1
+
 	property Entity ownerWindow = nil
 
 	method Color ColorForGrade(integer g)
@@ -31,11 +33,20 @@ script UIEquipmentSlotWidget extends Component
 		self.slotIndex = slotIndex
 		self.itemGrade = grade or 1
 		self:RefreshBorder()
+		local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
 		local iconEntity = self.Entity:GetChildByName("Icon")
-		if iconEntity ~= nil then
-			local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
-			if row ~= nil then
-				iconEntity.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+		if iconEntity ~= nil and row ~= nil then
+			iconEntity.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+		end
+		-- 좌상단 품질등급 배지: 장비만 [하급/중급/상급/최상급] 표시, 그 외 숨김. (슬롯 배경색=잠재등급과 축 분리)
+		local q = self.Entity:GetChildByName("QBadge")
+		if q ~= nil then
+			local isEquip = (row ~= nil and tostring(row:GetItem("Category")) == "장비")
+			if isEquip and q.TextGUIRendererComponent ~= nil then
+				q.TextGUIRendererComponent.Text = _ItemGrade:Name(self.itemGrade)
+				q.Enable = true
+			else
+				q.Enable = false
 			end
 		end
 		-- 개수 라벨(Count 자식): 2개 이상일 때만 표시. 없으면 스킵.
@@ -58,10 +69,10 @@ script UIEquipmentSlotWidget extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshBorder()
-		-- 등급 배경 = 팩 슬롯 이미지 그대로 교체(색 틴트 아님). 선택 시 밝게, 비선택은 약간 어둡게.
+		-- 슬롯 배경 = 잠재등급(PotentialGrade) 색 슬롯. 품질등급은 별도 [등급] 배지로 표시(색 충돌 분리).
 		local sr = self.Entity.SpriteGUIRendererComponent
 		if sr == nil then return end
-		sr.ImageRUID = _ItemGrade:SlotRUID(self.itemGrade)
+		sr.ImageRUID = _PotentialGrade:SlotRUID(self.itemPg)
 		if self._T.selected then sr.Color = Color(1, 1, 1, 1) else sr.Color = Color(0.82, 0.82, 0.82, 1) end
 		-- 옛 프레임 오버레이(Body=MapleFrameSlot)는 등급 슬롯을 가리므로 끔.
 		local body = self.Entity:GetChildByName("Body")

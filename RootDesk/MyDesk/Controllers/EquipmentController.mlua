@@ -32,8 +32,8 @@ script EquipmentController extends Component
 	end
 
 	@ExecSpace("Server")
-	method void RequestEquip(string part, string itemName, integer star, integer grade)
-		-- 소유자·장비여부·부위 일치 검증 후 장착 위임
+	method void RequestEquip(string part, string itemName, integer star, integer grade, string pot, string flame, integer pg)
+		-- 소유자·장비여부·부위 일치 검증 후 장착 위임(성급·등급·잠재등급·잠재·환생 보존)
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
 		if part == nil or part == "" or itemName == nil or itemName == "" then return end
 		if not self:IsEquipItem(itemName) then
@@ -46,7 +46,7 @@ script EquipmentController extends Component
 		end
 		local inv = self:GetInv()
 		if inv == nil then return end
-		inv:EquipInternal(part, itemName, star or 0, grade or _ItemGrade.Rare)
+		inv:EquipInternalEx(part, itemName, star or 0, grade or _ItemGrade.Rare, pot or "", flame or "", pg or _PotentialGrade.Rare)
 	end
 
 	@ExecSpace("Server")

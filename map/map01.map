@@ -6358,7 +6358,7 @@
       {
         "id": "b6facb55-8a9f-40a3-a5fc-3c059993db00",
         "path": "/maps/map01/item-21604",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-21604",
           "path": "/maps/map01/item-21604",
@@ -6417,9 +6417,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 1.0
+              "ItemIndex": 1.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6428,7 +6430,7 @@
       {
         "id": "1b5a946c-8d10-401a-a44b-36d982cd962f",
         "path": "/maps/map01/item-2345",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-2345",
           "path": "/maps/map01/item-2345",
@@ -6487,9 +6489,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 2.0
+              "ItemIndex": 2.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6498,7 +6502,7 @@
       {
         "id": "2ad6222b-b61a-4a13-a243-0100caa8ddb5",
         "path": "/maps/map01/item-2345_1",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-2345_1",
           "path": "/maps/map01/item-2345_1",
@@ -6557,9 +6561,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 2.0
+              "ItemIndex": 2.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6568,7 +6574,7 @@
       {
         "id": "4ec4b455-f3d4-42ab-9ad5-73146db7f13d",
         "path": "/maps/map01/item-11472",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-11472",
           "path": "/maps/map01/item-11472",
@@ -6627,9 +6633,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 3.0
+              "ItemIndex": 3.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6638,7 +6646,7 @@
       {
         "id": "a7e0a259-aecf-41d0-b000-2abc40237162",
         "path": "/maps/map01/item-17553",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-17553",
           "path": "/maps/map01/item-17553",
@@ -6697,9 +6705,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 4.0
+              "ItemIndex": 4.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6708,7 +6718,7 @@
       {
         "id": "a547530b-b05d-47cb-ab54-9a5996e496fb",
         "path": "/maps/map01/item-17553_1",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-17553_1",
           "path": "/maps/map01/item-17553_1",
@@ -6767,9 +6777,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 4.0
+              "ItemIndex": 4.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6778,7 +6790,7 @@
       {
         "id": "6f342313-5f9b-4a08-8d5f-cc4ee3cc8799",
         "path": "/maps/map01/item-17694",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-17694",
           "path": "/maps/map01/item-17694",
@@ -6837,9 +6849,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 6.0
+              "ItemIndex": 6.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6848,7 +6862,7 @@
       {
         "id": "5974a94d-6f27-4302-b8eb-d0f801ba9e8c",
         "path": "/maps/map01/item-1036",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-1036",
           "path": "/maps/map01/item-1036",
@@ -6871,8 +6885,8 @@
             {
               "@type": "MOD.Core.TransformComponent",
               "Position": {
-                "x": -1.20388842,
-                "y": -0.059442848,
+                "x": -1.33496475,
+                "y": -0.07847056,
                 "z": 999.998047
               },
               "QuaternionRotation": {
@@ -6907,9 +6921,9 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 5.0
+              "ItemName": "빨간물약"
             }
           ],
           "@version": 1
@@ -6918,7 +6932,7 @@
       {
         "id": "17cc35ca-54e9-46d5-992b-9cdecfd8ed0b",
         "path": "/maps/map01/item-1061",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-1061",
           "path": "/maps/map01/item-1061",
@@ -6977,9 +6991,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 7.0
+              "ItemIndex": 7.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -6988,7 +7004,7 @@
       {
         "id": "7d75fa7f-c8ea-417c-b33f-2f64765477fb",
         "path": "/maps/map01/item-1061_1",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-1061_1",
           "path": "/maps/map01/item-1061_1",
@@ -7047,9 +7063,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 7.0
+              "ItemIndex": 7.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -7058,7 +7076,7 @@
       {
         "id": "d6d18a5d-0414-4b2c-ac61-67e2dbe0f37c",
         "path": "/maps/map01/item-132",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-132",
           "path": "/maps/map01/item-132",
@@ -7117,9 +7135,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 8.0
+              "ItemIndex": 8.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -7128,7 +7148,7 @@
       {
         "id": "dc287fb6-7415-43ea-997d-596c04e01f15",
         "path": "/maps/map01/item-77",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-77",
           "path": "/maps/map01/item-77",
@@ -7187,9 +7207,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 9.0
+              "ItemIndex": 9.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -7198,7 +7220,7 @@
       {
         "id": "dcb7e676-fef2-4003-838f-7350c06a845f",
         "path": "/maps/map01/item-20464",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-20464",
           "path": "/maps/map01/item-20464",
@@ -7257,9 +7279,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 10.0
+              "ItemIndex": 10.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -7268,7 +7292,7 @@
       {
         "id": "d7af4f24-dcae-4a38-8f9a-d65b50216424",
         "path": "/maps/map01/item-5593",
-        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemPickupComponent",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent,MOD.Core.TriggerComponent,script.ItemDrop",
         "jsonString": {
           "name": "item-5593",
           "path": "/maps/map01/item-5593",
@@ -7327,9 +7351,11 @@
               "Enable": true
             },
             {
-              "@type": "script.ItemPickupComponent",
+              "@type": "script.ItemDrop",
               "Enable": true,
-              "ItemIndex": 11.0
+              "ItemIndex": 11.0,
+              "ItemGrade": 1.0,
+              "ItemStar": 0.0
             }
           ],
           "@version": 1
@@ -7361,8 +7387,8 @@
             {
               "@type": "MOD.Core.TransformComponent",
               "Position": {
-                "x": 0.6456339,
-                "y": 0.0237728581,
+                "x": 0.696464241,
+                "y": -0.00410212576,
                 "z": 999.999
               },
               "QuaternionRotation": {
@@ -7498,6 +7524,110 @@
               },
               "RaycastTarget": false,
               "Type": 0,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "733c9a82-c682-4246-b452-85881031f52c",
+        "path": "/maps/map01/item-6392",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent",
+        "jsonString": {
+          "name": "item-6392",
+          "path": "/maps/map01/item-6392",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": false,
+          "displayOrder": 20,
+          "pathConstraints": "///",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "ItemAsset",
+            "sub_entity_id": null,
+            "root_entity_id": "733c9a82-c682-4246-b452-85881031f52c",
+            "replaced_model_id": null
+          },
+          "modelId": "itemasset",
+          "@components": [
+            {
+              "@type": "MOD.Core.TransformComponent",
+              "Position": {
+                "x": -2.496777,
+                "y": 0.0249616653,
+                "z": 999.998047
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteRendererComponent",
+              "ActionSheet": {},
+              "EndFrameIndex": 2147483647,
+              "RenderSetting": 0,
+              "SortingLayer": "MapLayer0",
+              "SpriteRUID": "b3a871993f6b472aaf95a1e23f838e2d",
+              "StartFrameIndex": 0,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "3cba6bcb-3723-4cd1-b7db-2c020edbd2f7",
+        "path": "/maps/map01/item-16591",
+        "componentNames": "MOD.Core.TransformComponent,MOD.Core.SpriteRendererComponent",
+        "jsonString": {
+          "name": "item-16591",
+          "path": "/maps/map01/item-16591",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": false,
+          "displayOrder": 21,
+          "pathConstraints": "///",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "ItemAsset",
+            "sub_entity_id": null,
+            "root_entity_id": "3cba6bcb-3723-4cd1-b7db-2c020edbd2f7",
+            "replaced_model_id": null
+          },
+          "modelId": "itemasset",
+          "@components": [
+            {
+              "@type": "MOD.Core.TransformComponent",
+              "Position": {
+                "x": 3.1106658,
+                "y": -0.007825613,
+                "z": 999.9971
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteRendererComponent",
+              "ActionSheet": {},
+              "EndFrameIndex": 2147483647,
+              "RenderSetting": 0,
+              "SortingLayer": "MapLayer0",
+              "SpriteRUID": "3645abe12ce44e8b8a7c0084dc240166",
+              "StartFrameIndex": 0,
               "Enable": true
             }
           ],

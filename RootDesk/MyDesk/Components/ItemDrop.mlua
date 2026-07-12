@@ -1,0 +1,110 @@
+@Component
+script ItemDrop extends Component
+
+	-- 드랍 아이템(수동적, MVC View/Model): 정체성 + 아이콘 + 자석 이동 상태.
+	-- 감지/수집 트리거는 PlayerMagnet(플레이어 부착)가 담당. 스스로 플레이어를 찾지 않음.
+
+	-- 어떤 아이템인지: ItemName(권장, ItemData의 Name과 일치. 한글 OK) 우선.
+	-- ItemIndex(ItemData 행번호)는 레거시 폴백 — ItemName이 비었을 때만 사용.
+	@Sync
+	property string ItemName = ""
+
+	@Sync
+	property number ItemIndex = 0
+
+	@Sync
+	property number ItemGrade = 1
+
+	@Sync
+	property number ItemStar = 0
+
+	method string ResolveName()
+		-- ItemName 우선, 없으면 ItemIndex(행번호)로 폴백 조회.
+		if self.ItemName ~= nil and self.ItemName ~= "" then return self.ItemName end
+		local ds = _DataService:GetTable("ItemData")
+		local idx = math.tointeger(self.ItemIndex) or 0
+		if idx < 1 or idx > ds:GetRowCount() then return "" end
+		return ds:GetRow(idx):GetItem("Name")
+	end
+
+	method any Row()
+		-- 이름으로 ItemData 행(없으면 nil).
+		local name = self:ResolveName()
+		if name == "" then return nil end
+		return _DataService:GetTable("ItemData"):FindRow("Name", name)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnBeginPlay()
+		-- 아이콘(IconRUID) 표시. 비어있으면 스킵(빈 SpriteRUID=투명).
+		local row = self:Row()
+		if row == nil then return end
+		local ruid = row:GetItem("IconRUID")
+		if self.Entity.SpriteRendererComponent ~= nil and ruid ~= nil and ruid ~= "" then
+			self.Entity.SpriteRendererComponent.SpriteRUID = ruid
+		end
+	end
+
+	method string GetItemName()
+		-- 수집 시 인벤에 넣을 이름.
+		return self:ResolveName()
+	end
+
+	method boolean IsCollected()
+		-- 이미 수집됐는지(중복 방지용).
+		return self._T.collected == true
+	end
+
+	@ExecSpace("ServerOnly")
+	method void MagnetStep(Vector3 playerPos, number magnetRadius, number minSpeed, number maxSpeed, number steer, number delta)
+		-- PlayerMagnet가 매 프레임 호출: 속도-스티어링(Lerp) 곡선 추적. Transform 기반(Rigidbody X).
+		-- 처음(멀리)엔 느리게 → 가까울수록 가속. 방향이 속도 lerp라 플레이어가 움직이면 곡선이 생김.
+		if self._T.collected then return end
+		local myPos = self.Entity.TransformComponent.WorldPosition
+		local dx = playerPos.x - myPos.x
+		local dy = playerPos.y - myPos.y
+		local dist = math.sqrt(dx * dx + dy * dy)
+		if dist < 0.0001 then return end
+		local t = 1 - math.min(1, dist / magnetRadius)
+		local desiredSpeed = minSpeed + (maxSpeed - minSpeed) * t
+		local desiredVx = dx / dist * desiredSpeed
+		local desiredVy = dy / dist * desiredSpeed
+		local vx = self._T.vx or 0
+		local vy = self._T.vy or 0
+		local k = math.min(1, steer * delta)
+		vx = vx + (desiredVx - vx) * k
+		vy = vy + (desiredVy - vy) * k
+		self._T.vx = vx
+		self._T.vy = vy
+		self.Entity.TransformComponent.WorldPosition = Vector3(myPos.x + vx * delta, myPos.y + vy * delta, myPos.z)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void Collect(Entity playerEntity)
+		-- 수집(서버 권위): 인벤 추가 성공 시 제거. 가득 차면 남김. 중복 가드.
+		if self._T.collected then return end
+		if isvalid(playerEntity) == false then return end
+		---@type InventoryController
+		local inv = playerEntity:GetComponent("script.InventoryController")
+		if inv == nil then return end
+		local name = self:GetItemName()
+		if name == "" then
+			log_warning("[ItemDrop] 아이템 정체 없음 (ItemName/ItemIndex 확인)")
+			return
+		end
+		local grade = math.tointeger(self.ItemGrade) or 1
+		local star = math.tointeger(self.ItemStar) or 0
+		if inv:AddItem(name, star, grade) then
+			self._T.collected = true
+			self.Entity:Destroy()
+		end
+	end
+
+	@ExecSpace("ServerOnly")
+	@EventSender("Self")
+	handler HandleTriggerEnterEvent(TriggerEnterEvent event)
+		-- 직접 닿아도 습득(자석 백업).
+		self:Collect(event.TriggerBodyEntity)
+	end
+
+end

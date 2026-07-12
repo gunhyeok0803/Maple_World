@@ -16,35 +16,73 @@ script UISideMenu extends Component
 
 	property string MenuId = "sidemenu"
 
-	method void Wire(any btn, any clickFn)
-		-- 버튼 클릭 배선(없으면 경고). 핸들러는 _T.handlers에 보관.
-		if btn == nil or isvalid(btn) == false then
-			log_warning("[SideMenu] 배선 대상 없음")
-			return
-		end
+	method any Panel()
+		-- 사이드 패널(Panel_Side) = 이 컨트롤러(Controller)의 부모. 그룹월드는 모델 인스턴스라 하드코딩
+		-- UUID(panelSide)가 깨지므로 부모로 해석한다. 폴백: property UUID(개인월드) → 절대경로.
+		if self._T.panel ~= nil and isvalid(self._T.panel) then return self._T.panel end
+		local p = self.Entity.Parent
+		if p ~= nil and isvalid(p) then self._T.panel = p return p end
+		if isvalid(self.panelSide) then return self.panelSide end
+		return _EntityService:GetEntityByPath("/ui/SideMenuGroup/Panel_Side")
+	end
+
+	method boolean WireEntOnce(string key, any ent, any clickFn)
+		-- 키 기준 1회 배선(멱등): 엔티티 대상. ButtonComponent 없으면 부착(TEXT 버튼 대응, 인벤 Wire와 동일 관용).
+		-- 모델 인스턴스 안전 — UUID가 아닌 엔티티 참조로 배선.
+		if self._T.wiredKeys == nil then self._T.wiredKeys = {} end
+		if self._T.wiredKeys[key] then return true end
+		if ent == nil or isvalid(ent) == false then return false end
+		if ent.ButtonComponent == nil then ent:AddComponent("MOD.Core.ButtonComponent") end
 		if self._T.handlers == nil then self._T.handlers = {} end
-		local h = btn.Entity:ConnectEvent(ButtonClickEvent, clickFn)
-		self._T.handlers[#self._T.handlers + 1] = { e = btn.Entity, h = h }
+		local h = ent:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = ent, h = h }
+		self._T.wiredKeys[key] = true
+		return true
+	end
+
+	@ExecSpace("ClientOnly")
+	method void EnsureBoot()
+		-- 멱등 부트(인벤과 동일 패턴): UIManager 등록 / 버튼 배선 / 초기 닫힘.
+		-- @Component 라이프사이클(OnBeginPlay)이 그룹월드에서 안 뛰는 케이스 대비 — UIManager(@Logic)와 OnUpdate가 킥.
+		if self._T.booted then return end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		-- UIManager 배타 등록(1회)
+		if self._T.registered ~= true then
+			_UIManager:Register(self.MenuId, function() self:SetOpen(false) end)
+			self._T.registered = true
+		end
+		-- 버튼 배선(모델 인스턴스 안전): 햄버거는 DefaultGroup 절대경로, 나머지는 Panel_Side(부모) 상대 이름탐색.
+		-- TEXT 엔티티라 WireEntOnce가 ButtonComponent를 부착한다. 하나라도 미스폰이면 미완료로 두고 재시도.
+		local menu = _EntityService:GetEntityByPath("/ui/DefaultGroup/Btn_Menu")
+		local okMenu = self:WireEntOnce("menu", menu, function() self:Toggle() end)
+		local panel = self:Panel()
+		local okClose, okEnh, okUpg = false, false, false
+		if panel ~= nil and isvalid(panel) then
+			-- 컨테이너 그룹(SideMenuGroup)은 항상 켜둔다(표시는 Panel_Side가 토글). 그룹이 꺼져 있으면
+			-- 패널을 Enable 해도 부모가 disable이라 안 보인다 — 이관 시 그룹 Enable 저장 누락 자가치유.
+			local grp = panel.Parent
+			if isvalid(grp) and grp.Enable == false then grp.Enable = true end
+			okClose = self:WireEntOnce("close", panel:GetChildByName("Btn_Close", true), function() self:SetOpen(false) end)
+			okEnh   = self:WireEntOnce("tileEnh", panel:GetChildByName("Tile_Enhance", true), function() self:OnTileEnhance() end)
+			okUpg   = self:WireEntOnce("tileUpg", panel:GetChildByName("Tile_Upgrade", true), function() self:OnTileUpgrade() end)
+			if self._T.initHidden ~= true then panel.Enable = false self._T.initHidden = true end
+		end
+		if self._T.registered and okMenu and okClose and okEnh and okUpg then
+			self._T.booted = true
+			log("[UISideMenu] EnsureBoot ok")
+		end
 	end
 
 	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
-		-- 배선: 햄버거 토글 / X 닫기 / 타일 2개. UIManager 등록.
-		self._T.handlers = {}
-		self:Wire(self.btnMenu, function() self:Toggle() end)
-		self:Wire(self.btnClose, function() self:SetOpen(false) end)
-		self:Wire(self.tileEnhance, function() self:OnTileEnhance() end)
-		self:Wire(self.tileUpgrade, function() self:OnTileUpgrade() end)
-		_UIManager:Register(self.MenuId, function() self:SetOpen(false) end)
-		if isvalid(self.panelSide) then self.panelSide.Enable = false end
-		-- 인벤 컨트롤러 부트 킥(모델 인스턴스 라이프사이클 미실행 케이스 대비 — 열기 버튼 배선 보장)
-		local invCtrl = _EntityService:GetEntityByPath("/ui/InventoryGroup/Controller")
-		if invCtrl ~= nil then
-			---@type UIInventoryPopup
-			local ip = invCtrl:GetComponent("script.UIInventoryPopup")
-			if ip ~= nil then ip:EnsureBoot() end
-		end
-		log("[UISideMenu] OnBeginPlay ok")
+		-- 부트는 멱등 EnsureBoot로 위임(UIManager @Logic + OnUpdate가 함께 보정).
+		self:EnsureBoot()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnUpdate(number delta)
+		-- OnBeginPlay 미실행/지연 스폰 대비 부트 보정(완료 후 즉시 반환).
+		self:EnsureBoot()
 	end
 
 	@ExecSpace("ClientOnly")
@@ -61,17 +99,24 @@ script UISideMenu extends Component
 	@ExecSpace("ClientOnly")
 	method boolean IsOpen()
 		-- 패널 열림 상태
-		return isvalid(self.panelSide) and self.panelSide.Enable == true
+		local p = self:Panel()
+		return p ~= nil and isvalid(p) and p.Enable == true
 	end
 
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
 		-- 패널 열기/닫기 + UIManager 통지
-		if isvalid(self.panelSide) == false then
-			log_warning("[SideMenu] panelSide 없음")
+		local p = self:Panel()
+		if p == nil or isvalid(p) == false then
+			log_warning("[SideMenu] panel 없음")
 			return
 		end
-		self.panelSide.Enable = open
+		-- 열 때 부모 그룹(SideMenuGroup)도 확실히 켠다. 그룹이 꺼져 있으면 패널을 켜도 부모 disable로 안 보임.
+		if open then
+			local grp = p.Parent
+			if isvalid(grp) and grp.Enable == false then grp.Enable = true end
+		end
+		p.Enable = open
 		if open then
 			_UIManager:RequestOpen(self.MenuId)
 		else

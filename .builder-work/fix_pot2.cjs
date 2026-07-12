@@ -1,0 +1,11 @@
+const { UIBuilder } = require("C:/Users/rnsgu/MSW_ProjectAI00/.claude/skills/msw-ui-system/scripts/msw_ui_builder.cjs");
+const UI = "C:/Users/rnsgu/MSW_ProjectAI00/ui/EnhanceGroup.ui";
+const b = UIBuilder.read(UI);
+const SEL = "UIR_SimpleFantasy_Sample_PotentialSelect/Layout";
+b.patch(SEL + "/Layout_Before", { anchor: "top-center", pivot: [0.5, 0.5], pos: [0, -235] });
+b.patch(SEL + "/Layout_After", { anchor: "top-center", pivot: [0.5, 0.5], pos: [0, -615] });
+b.patch(SEL + "/Img_Arrow", { anchor: "top-center", pivot: [0.5, 0.5], pos: [0, -425] });
+b.patch(SEL + "/Layout_Before/Layout_Top", { enable: false });
+b.patch(SEL + "/Layout_After/Layout_Top", { enable: false });
+b.write(UI, { strict: false });
+console.log("pot2 done");

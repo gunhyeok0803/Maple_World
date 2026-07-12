@@ -1,0 +1,11 @@
+const { UIBuilder } = require("C:/Users/rnsgu/MSW_ProjectAI00/.claude/skills/msw-ui-system/scripts/msw_ui_builder.cjs");
+const UI = "C:/Users/rnsgu/MSW_ProjectAI00/ui/EnhanceGroup.ui";
+const b = UIBuilder.read(UI);
+const MC = { anchor: "top-center", pivot: [0.5, 0.5] };
+const POT = "UIR_SimpleFantasy_Sample_PotentialSelect/Layout";
+const FLAME = "UIR_SimpleFantasy_Sample_PotentialReset/Layout";
+b.patch(POT + "/Img_ItemHdr", Object.assign({ pos: [-150, -108] }, MC));
+b.patch(POT + "/Text_ItemHdr", Object.assign({ pos: [40, -108] }, MC));
+b.patch(FLAME + "/Img_ItemHdr", Object.assign({ pos: [0, -112] }, MC));
+b.write(UI, { strict: false });
+console.log("headers nudged down");

@@ -26,6 +26,8 @@ script UIEnhancePanel extends Component
 
 	property ButtonComponent btnCloseStar = "293e8b3d-9294-42b8-9037-42d1d683657b"
 
+	-- btnCloseStar/btnCloseFlame는 현재 .ui에 대응 엔티티가 없어(UI 리팩터 잔재) 배선하지 않는다.
+	-- 창 프레임의 메인 X(Btn_CloseMain)가 어느 탭에서든 창을 닫으므로 탭 전용 close는 불필요.
 	property ButtonComponent btnCloseFlame = "c59df9fe-646d-4c85-9930-fd52c0ebd3b5"
 
 	property ButtonComponent btnCancelPot = "4ee142ac-2f3e-4fd5-a60a-6ab9484debd3"
@@ -37,32 +39,77 @@ script UIEnhancePanel extends Component
 
 	property string TabOffRUID = "50426b5b1ee44bc5a1c10355b0e9ad03"
 
-	method void Wire(any btn, any clickFn)
-		-- 버튼 클릭 배선(없으면 경고). 핸들러는 _T.handlers에 보관.
-		if btn == nil or isvalid(btn) == false then
-			log_warning("[Enhance] 배선 대상 없음")
-			return
-		end
+	method boolean WireOnce(string key, any btn, any clickFn)
+		-- 키 기준 1회 배선(멱등): 이미 배선됐으면 true, 대상 미스폰이면 false(다음 킥 때 재시도).
+		if self._T.wiredKeys == nil then self._T.wiredKeys = {} end
+		if self._T.wiredKeys[key] then return true end
+		if btn == nil or isvalid(btn) == false then return false end
 		if self._T.handlers == nil then self._T.handlers = {} end
 		local h = btn.Entity:ConnectEvent(ButtonClickEvent, clickFn)
 		self._T.handlers[#self._T.handlers + 1] = { e = btn.Entity, h = h }
+		self._T.wiredKeys[key] = true
+		return true
+	end
+
+	method boolean WireEntOnce(string key, any ent, any clickFn)
+		-- 키 기준 1회 배선(멱등): 엔티티 대상. ButtonComponent 없으면 부착(인벤/잠재탭과 동일 관용) 후 클릭 연결.
+		if self._T.wiredKeys == nil then self._T.wiredKeys = {} end
+		if self._T.wiredKeys[key] then return true end
+		if ent == nil or isvalid(ent) == false then return false end
+		if ent.ButtonComponent == nil then ent:AddComponent("MOD.Core.ButtonComponent") end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		local h = ent:ConnectEvent(ButtonClickEvent, clickFn)
+		self._T.handlers[#self._T.handlers + 1] = { e = ent, h = h }
+		self._T.wiredKeys[key] = true
+		return true
+	end
+
+	@ExecSpace("ClientOnly")
+	method boolean WireCloseMain()
+		-- 메인 창 X(Btn_CloseMain)는 ButtonComponent 없는 텍스트라 경로로 찾아 버튼 부착 후 배선.
+		-- EnhanceRoot 재부모화 전/후 모두 대응(새 경로 먼저, 없으면 기존).
+		if self._T.wiredKeys ~= nil and self._T.wiredKeys["closeMain"] then return true end
+		local e = _EntityService:GetEntityByPath("/ui/EnhanceGroup/EnhanceRoot/Window/Btn_CloseMain")
+		if e == nil then e = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Window/Btn_CloseMain") end
+		return self:WireEntOnce("closeMain", e, function() self:SetOpen(false) end)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void EnsureBoot()
+		-- 멱등 부트(사이드메뉴/인벤과 동일 패턴): 최상위 버튼 배선(키 기준 재시도) + UIManager 등록 + 초기 닫힘.
+		-- @Component 라이프사이클(OnBeginPlay)이 그룹월드에서 안 뛰거나 버튼이 늦게 스폰되는 케이스 대비.
+		if self._T.booted then return end
+		if self._T.handlers == nil then self._T.handlers = {} end
+		if self._T.tab == nil then self._T.tab = 1 end
+		if self._T.registered ~= true then
+			_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
+			self._T.registered = true
+		end
+		-- 탭 3은 EnhanceRoot(부모) 기준 상대 이름탐색 — 그룹월드 모델 인스턴스에서 property UUID가 깨지므로.
+		-- 닫기는 WireCloseMain(경로+버튼부착). cancelPot은 stale UUID라 제외(메인 X가 닫기 담당).
+		local root = self.Entity.Parent
+		local ok = (root ~= nil and isvalid(root))
+		if ok then
+			if self:WireEntOnce("tabStar", root:GetChildByName("Btn_TabStar", true), function() self:SelectTab(1) end) == false then ok = false end
+			if self:WireEntOnce("tabPot", root:GetChildByName("Btn_TabPot", true), function() self:SelectTab(2) end) == false then ok = false end
+			if self:WireEntOnce("tabFlame", root:GetChildByName("Btn_TabFlame", true), function() self:SelectTab(3) end) == false then ok = false end
+		end
+		if self:WireCloseMain() == false then ok = false end
+		-- 초기 숨김은 1회만. (OnUpdate가 매 프레임 EnsureBoot를 부르므로 매번 닫으면 창을 열자마자 닫혀 깜빡임)
+		if self._T.initHidden ~= true then
+			self:ApplyVisibility(false)
+			self._T.initHidden = true
+		end
+		if self._T.registered and ok then
+			self._T.booted = true
+			log("[UIEnhancePanel] EnsureBoot ok")
+		end
 	end
 
 	@ExecSpace("ClientOnly")
 	method void OnBeginPlay()
-		-- 배선: 탭 3 / 닫기(스타포스·환생 X, 잠재 취소). UIManager 등록. 초기 전부 닫힘.
-		self._T.handlers = {}
-		self._T.tab = 1
-		self:Wire(self.btnTabStar, function() self:SelectTab(1) end)
-		self:Wire(self.btnTabPot, function() self:SelectTab(2) end)
-		self:Wire(self.btnTabFlame, function() self:SelectTab(3) end)
-		self:Wire(self.btnCloseMain, function() self:SetOpen(false) end)
-		self:Wire(self.btnCloseStar, function() self:SetOpen(false) end)
-		self:Wire(self.btnCloseFlame, function() self:SetOpen(false) end)
-		self:Wire(self.btnCancelPot, function() self:SetOpen(false) end)
-		_UIManager:Register(self.PanelId, function() self:SetOpen(false) end)
-		self:ApplyVisibility(false)
-		log("[UIEnhancePanel] OnBeginPlay ok")
+		-- 부트는 멱등 EnsureBoot로 위임(UIManager @Logic + OnUpdate가 함께 보정).
+		self:EnsureBoot()
 	end
 
 	@ExecSpace("ClientOnly")
@@ -135,6 +182,15 @@ script UIEnhancePanel extends Component
 	@ExecSpace("ClientOnly")
 	method void SetOpen(boolean open)
 		-- 패널 열기/닫기 + UIManager 통지. 열 때 좌측 리스트 구축 + 자동 선택.
+		-- 열 때 조상(EnhanceRoot/EnhanceGroup)이 disable이면 창을 켜도 부모 disable로 안 보임 — 이관 자가치유.
+		if open then
+			local root = self.Entity.Parent
+			if isvalid(root) then
+				if root.Enable == false then root.Enable = true end
+				local grp = root.Parent
+				if isvalid(grp) and grp.Enable == false then grp.Enable = true end
+			end
+		end
 		self:ApplyVisibility(open)
 		if open then
 			-- 창 프레임을 형제 맨 뒤로(1회). 엔진 sibling 순서는 .ui 배열이 아니라 이 호출로만 제어됨.
@@ -252,7 +308,7 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void BuildList()
-		-- 좌측 리스트 채우기: 착용 4부위 + 인벤 레전드리 장비(§06 강화 대상).
+		-- 좌측 리스트 채우기: 착용 4부위 + 인벤 전체 장비(강화 대상). 잠재=pg 상승/환생=추가옵션은 모든 장비, 스타포스만 pg 레전드리(서버 차단).
 		local inv = self:GetInv()
 		if inv == nil or not self:EnsureListWired() then return end
 		local parts = _ItemPart:All()
@@ -280,8 +336,8 @@ script UIEnhancePanel extends Component
 		local slots = inv:GetSlots()
 		for gi = 1, #slots do
 			local s = slots[gi]
-			if (s.grade or 1) >= _ItemGrade.Legendary and inv:MetaCell(s.name, "Part") ~= "" then
-				filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pot = s.pot, flame = s.flame }
+			if inv:MetaCell(s.name, "Part") ~= "" then
+				filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pg = s.pg, pot = s.pot, flame = s.flame }
 			end
 		end
 		self._T.filtered = filtered
@@ -290,7 +346,7 @@ script UIEnhancePanel extends Component
 			gv.TotalCount = #filtered
 			gv:Refresh(true, true)
 		end
-		log("[UIEnhancePanel] 리스트 갱신 — 인벤 레전드리 " .. tostring(#filtered) .. "개")
+		log("[UIEnhancePanel] 리스트 갱신 — 인벤 장비 " .. tostring(#filtered) .. "개")
 	end
 
 	@ExecSpace("ClientOnly")
@@ -302,6 +358,7 @@ script UIEnhancePanel extends Component
 		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
 		if w == nil then return end
 		w.ownerWindow = self.Entity
+		w.itemPg = it.pg or 1
 		w:SetData(it.name, it.gi, it.count, it.grade)
 	end
 
@@ -322,12 +379,13 @@ script UIEnhancePanel extends Component
 			self._T.selected = {
 				mode = "equip", key = part, name = inv:GetEquipped(part),
 				star = inv:GetEquippedStar(part), grade = inv:GetEquippedGrade(part),
+				pg = inv:GetEquippedPg(part),
 				pot = inv:GetEquippedPot(part), flame = inv:GetEquippedFlame(part),
 			}
 		else
 			local s = inv:GetSlots()[idx]
 			if s == nil then return end
-			self._T.selected = { mode = "slot", key = idx, name = s.name, star = s.star, grade = s.grade, pot = s.pot, flame = s.flame }
+			self._T.selected = { mode = "slot", key = idx, name = s.name, star = s.star, grade = s.grade, pg = s.pg, pot = s.pot, flame = s.flame }
 		end
 		self:RefreshSummary()
 		self:RefreshStarTab()
@@ -380,7 +438,7 @@ script UIEnhancePanel extends Component
 			return
 		end
 		if sr ~= nil then
-			sr.ImageRUID = _ItemGrade:SlotRUID(sel.grade or 1)
+			sr.ImageRUID = _PotentialGrade:SlotRUID(sel.pg or 1)
 			sr.Color = Color(1, 1, 1, 1)
 		end
 		if icon ~= nil and icon.SpriteGUIRendererComponent ~= nil then
@@ -477,7 +535,7 @@ script UIEnhancePanel extends Component
 		end
 		local star = sel.star or 0
 		local target = star + 1
-		local legend = (sel.grade or 1) >= _ItemGrade.Legendary
+		local legend = (sel.pg or _PotentialGrade.Rare) >= _PotentialGrade.Legendary
 		self:SetStarRow(star, legend)
 		if n.legendOnly ~= nil then n.legendOnly.Enable = not legend end
 		if not legend or target > sf.MaxStar then
@@ -636,7 +694,7 @@ script UIEnhancePanel extends Component
 		local inv = self:GetInv()
 		if inv == nil then return "" end
 		if pot == nil or pot == "" then return "잠재 없음" end
-		local lines = { "등급: " .. _ItemGrade:PotGradeName(inv:ParsePotGrade(pot)) }
+		local lines = { "등급: " .. _PotentialGrade:Name(inv:ParsePotGrade(pot)) }
 		for i, p in ipairs(inv:ParseOptPairs(pot)) do
 			lines[#lines + 1] = self:StatLabel(p.stat) .. "  " .. self:FmtVal(p.stat, tonumber(p.value) or 0)
 		end
@@ -658,168 +716,113 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method boolean EnsurePotWired()
-		-- 잠재 탭 노드 캐시(1회) + 참고게임 잔재 숨김 + 버튼 재라벨·배선(잠재 변경/유지/선택).
+		-- 잠재 탭 노드 캐시(1회): 현재(Layout_Before)/가챠결과(Layout_After) 박스 + 큐브 비용 + [큐브 사용] 버튼.
 		if self._T.pot ~= nil then return true end
 		if isvalid(self.contentPot) == false then return false end
 		local layout = self.contentPot:GetChildByName("Layout")
 		if layout == nil then return false end
 		local n = {}
 		self:UnifyCostIcon(layout, "Img_BG", "Img_Dia")
-		local before = layout:GetChildByName("Layout_Before")   -- 잠재 옵션 박스
-		local after = layout:GetChildByName("Layout_After")      -- 에디셔널 박스
+		local before = layout:GetChildByName("Layout_Before")   -- 현재 잠재옵션 박스
+		local after = layout:GetChildByName("Layout_After")      -- 가챠 결과 박스
 		if before ~= nil then
 			local ig = before:GetChildByName("Img_Grade")
-			n.gradeText = ig ~= nil and ig:GetChildByName("Text_Grade") or nil
-			n.opts = before:GetChildByName("Text_Opts")
+			n.curGrade = ig ~= nil and ig:GetChildByName("Text_Grade") or nil
+			n.curOpts = before:GetChildByName("Text_Opts")
 		end
 		if after ~= nil then
 			local ag = after:GetChildByName("Img_Grade")
-			if ag ~= nil then self:SetText(ag:GetChildByName("Text_Grade"), "에디셔널 옵션") end
-			self:SetText(after:GetChildByName("Text_Opts"), "스타포스 12단계 달성 시 개방 가능")
+			n.resGrade = ag ~= nil and ag:GetChildByName("Text_Grade") or nil
+			n.resOpts = after:GetChildByName("Text_Opts")
 		end
 		local costL = layout:GetChildByName("Layout_Cost")
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Dia") or nil
-		n.chkX3 = layout:GetChildByName("Chk_X3")
-		n.chkKeep = layout:GetChildByName("Chk_Keep")
 		n.btnConvert = layout:GetChildByName("Btn_Convert")
-		n.btnOptInfo = layout:GetChildByName("Btn_OptInfo")
-		n.btnPrefer = layout:GetChildByName("Btn_Prefer")
-		local function wireBtn(ent, fn)
-			if ent == nil then return end
-			if ent.ButtonComponent == nil then ent:AddComponent("MOD.Core.ButtonComponent") end
-			if ent.SpriteGUIRendererComponent ~= nil then ent.SpriteGUIRendererComponent.RaycastTarget = true end
-			local h = ent:ConnectEvent(ButtonClickEvent, fn)
-			self._T.handlers[#self._T.handlers + 1] = { e = ent, h = h }
-		end
-		wireBtn(n.btnConvert, function() self:OnPotConvertClicked() end)
-		wireBtn(n.btnOptInfo, function() self:OnPotOptInfoClicked() end)
-		wireBtn(n.btnPrefer, function() self:OnPotPreferClicked() end)
-		wireBtn(n.chkX3, function() self:TogglePotOpt("x3") end)
-		wireBtn(n.chkKeep, function() self:TogglePotOpt("keep") end)
-		-- 옵션 확률 정보 팝업 닫기 배선(팝업은 EnhanceGroup 최상위)
-		local pop = self:GetPotInfoPop()
-		if pop ~= nil then
-			local fr = pop:GetChildByName("Frame")
-			if fr ~= nil then wireBtn(fr:GetChildByName("Btn_Close"), function() self:ClosePotInfo() end) end
-			wireBtn(pop:GetChildByName("Dimmer"), function() self:ClosePotInfo() end)
+		if n.btnConvert ~= nil then
+			if n.btnConvert.ButtonComponent == nil then n.btnConvert:AddComponent("MOD.Core.ButtonComponent") end
+			if n.btnConvert.SpriteGUIRendererComponent ~= nil then n.btnConvert.SpriteGUIRendererComponent.RaycastTarget = true end
+			self:SetText(self:FirstTextChild(n.btnConvert), "큐브 사용")
+			local h = n.btnConvert:ConnectEvent(ButtonClickEvent, function() self:OnPotCubeClicked() end)
+			self._T.handlers[#self._T.handlers + 1] = { e = n.btnConvert, h = h }
 		end
 		self._T.pot = n
-		self._T.potX3 = false
-		self._T.potKeep = false
-		self:RefreshPotChecks()
 		return true
 	end
 
 	@ExecSpace("ClientOnly")
-	method void RefreshPotChecks()
-		-- 체크박스 상태 색(켜짐=파랑, 꺼짐=어두움).
-		local n = self._T.pot
-		if n == nil then return end
-		if n.chkX3 ~= nil and n.chkX3.SpriteGUIRendererComponent ~= nil then
-			n.chkX3.SpriteGUIRendererComponent.Color = (self._T.potX3 == true) and Color(0.16, 0.55, 0.92, 1) or Color(0.18, 0.20, 0.27, 1)
-		end
-		if n.chkKeep ~= nil and n.chkKeep.SpriteGUIRendererComponent ~= nil then
-			n.chkKeep.SpriteGUIRendererComponent.Color = (self._T.potKeep == true) and Color(0.16, 0.55, 0.92, 1) or Color(0.18, 0.20, 0.27, 1)
-		end
-	end
-
-	@ExecSpace("ClientOnly")
 	method void RefreshPotTab()
-		-- 잠재 탭(즉시형): 현재 잠재 등급/옵션 표시. 변환=즉시 리롤+적용.
+		-- 잠재 탭(큐브 가챠): 현재 잠재옵션(등급+3줄) | 가챠 결과. 큐브 보유/필요 + 등급 상승 확률.
 		if not self:EnsurePotWired() then return end
 		local n = self._T.pot
-		local ps = self:GetPotential()
 		local sel = self._T.selected
-		if ps ~= nil and n.cost ~= nil then self:SetText(n.cost, self:CostText(ps.RerollCost)) end
+		if n.cost ~= nil then
+			local have = self:GetWalletRes(7)
+			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+		end
 		if sel == nil or sel.name == nil or sel.name == "" then
-			self:SetText(n.gradeText, "-")
-			self:SetText(n.opts, "장비를 선택하세요")
-			self:RefreshPotChecks()
+			self:SetText(n.curGrade, "-")
+			self:SetText(n.curOpts, "장비를 선택하세요")
+			self:SetText(n.resGrade, "가챠 결과")
+			self:SetText(n.resOpts, "")
 			return
 		end
-		local inv = self:GetInv()
-		-- 잠재는 그냥 옵션(사용자 확정) — 등급 라벨 없이 옵션만 표시. 밴드는 정적 헤더로.
-		self:SetText(n.gradeText, "잠재 옵션")
-		if (sel.grade or 1) < _ItemGrade.Legendary then
-			self:SetText(n.opts, "최상급 장비만 잠재를 사용할 수 있습니다")
-		else
-			self:SetText(n.opts, self:OptSummary(sel.pot, "[변환]을 누르면 잠재 옵션이 개방됩니다"))
+		-- 큐브 사용 직후 결과 캡처(인벤 변경 후 sel이 새 상태로 갱신됨).
+		if self._T.potAwait == true then
+			self._T.potResPg = sel.pg or _PotentialGrade.Rare
+			self._T.potResOpt = sel.pot or ""
+			self._T.potUp = (self._T.potResPg > (self._T.potPrevPg or 0))
+			self._T.potRolled = true
+			self._T.potAwait = false
 		end
-		self:RefreshPotChecks()
+		local pg = sel.pg or _PotentialGrade.Rare
+		self:SetText(n.curGrade, "현재 · " .. _PotentialGrade:Name(pg))
+		if n.curGrade ~= nil and n.curGrade.TextComponent ~= nil then n.curGrade.TextComponent.FontColor = _PotentialGrade:ColorOf(pg) end
+		self:SetText(n.curOpts, self:OptSummary(sel.pot, "잠재 옵션 없음 — 큐브를 사용하세요"))
+		if self._T.potRolled == true then
+			local rpg = self._T.potResPg or pg
+			self:SetText(n.resGrade, "결과 · " .. _PotentialGrade:Name(rpg) .. (self._T.potUp and "  등급업!" or ""))
+			if n.resGrade ~= nil and n.resGrade.TextComponent ~= nil then n.resGrade.TextComponent.FontColor = _PotentialGrade:ColorOf(rpg) end
+			self:SetText(n.resOpts, self:OptSummary(self._T.potResOpt or "", ""))
+		else
+			self:SetText(n.resGrade, "등급 상승 확률 " .. self:PotUpPct(pg))
+			if n.resGrade ~= nil and n.resGrade.TextComponent ~= nil then n.resGrade.TextComponent.FontColor = Color(0.40, 0.85, 0.45, 1) end
+			self:SetText(n.resOpts, "큐브를 사용하면 결과가 표시됩니다")
+		end
+	end
+
+	method number GetWalletRes(integer resType)
+		-- 로컬 플레이어 재화 잔량(없으면 nil). PlayerResource:GetResource(type).Value.
+		local lp = _UserService.LocalPlayer
+		if lp == nil then return nil end
+		---@type any
+		local w = lp:GetComponent("script.PlayerResource")
+		if w == nil then return nil end
+		local r = w:GetResource(resType)
+		if r == nil then return nil end
+		return r.Value
+	end
+
+	method string PotUpPct(integer pg)
+		-- 현재 pg에서 다음 등급으로의 상승 확률 표기("10%"). 레전더리면 "MAX".
+		local ps = self:GetPotential()
+		if ps == nil then return "-" end
+		local p = 0
+		if pg == 1 then p = ps.GradeUp1to2
+		elseif pg == 2 then p = ps.GradeUp2to3
+		elseif pg == 3 then p = ps.GradeUp3to4
+		else return "MAX" end
+		return tostring(math.floor(p * 100 + 0.5)) .. "%"
 	end
 
 	@ExecSpace("ClientOnly")
-	method void TogglePotOpt(string which)
-		-- 체크박스 토글: x3=연속 변환, keep=현재 옵션 기억하기(최고 등급 유지).
-		if which == "x3" then self._T.potX3 = not (self._T.potX3 == true)
-		else self._T.potKeep = not (self._T.potKeep == true) end
-		self:RefreshPotChecks()
-	end
-
-	@ExecSpace("ClientOnly")
-	method void OnPotConvertClicked()
-		-- 변환: 즉시 리롤+적용(§06 큐브). 연속 변환 ON=3회, 기억하기 ON=최고 등급 유지.
+	method void OnPotCubeClicked()
+		-- 큐브 사용: 직전 등급 스냅샷 후 서버에 큐브 가챠 요청(즉시 리롤 + 확률 등급업).
 		local sel = self._T.selected
 		local ps = self:GetPotential()
 		if sel == nil or ps == nil then return end
-		local times = (self._T.potX3 == true) and 3 or 1
-		ps:RequestConvert(sel.mode, tostring(sel.key), times, self._T.potKeep == true)
-	end
-
-	method any GetPotInfoPop()
-		-- Popup_PotInfo 조회. EnhanceRoot 재부모화 전/후 모두 대응(새 경로 먼저, 없으면 기존).
-		local p = _EntityService:GetEntityByPath("/ui/EnhanceGroup/EnhanceRoot/Popup_PotInfo")
-		if p == nil then p = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_PotInfo") end
-		return p
-	end
-
-	@ExecSpace("ClientOnly")
-	method void ClosePotInfo()
-		-- 확률 정보 팝업 닫기.
-		local pop = self:GetPotInfoPop()
-		if pop ~= nil then pop.Enable = false end
-	end
-
-	@ExecSpace("ClientOnly")
-	method void OnPotOptInfoClicked()
-		-- 옵션 확률 정보 팝업: 선택 장비 종류별 풀(§06)의 옵션/수치/등장확률 + 등급업 확률 표시.
-		local pop = self:GetPotInfoPop()
-		local sel = self._T.selected
-		local ps = self:GetPotential()
-		if pop == nil or sel == nil or sel.name == nil or sel.name == "" or ps == nil then return end
-		local frame = pop:GetChildByName("Frame")
-		if frame == nil then return end
-		local inv = self:GetInv()
-		local partClass = ps:PartClassOf(sel.name)
-		local curG = (sel.pot ~= nil and sel.pot ~= "") and inv:ParsePotGrade(sel.pot) or 0
-		local showG = (curG > 0) and curG or 1
-		local gu = 0
-		if showG == 1 then gu = ps.GradeUp1to2 elseif showG == 2 then gu = ps.GradeUp2to3 elseif showG == 3 then gu = ps.GradeUp3to4 end
-		self:SetText(frame:GetChildByName("Text_GradeUp"), "등급 업 (" .. _ItemGrade:PotGradeName(showG) .. " 기준)   " .. tostring(math.floor(gu * 100 + 0.5)) .. "%")
-		local rows = ps:PoolRows(partClass, showG)
-		local total = 0
-		for i, r in ipairs(rows) do total = total + (tonumber(r:GetItem("Weight")) or 0) end
-		for i = 1, 8 do
-			local r = rows[i]
-			if r ~= nil and total > 0 then
-				local w = tonumber(r:GetItem("Weight")) or 0
-				local statKey = r:GetItem("Stat")
-				self:SetText(frame:GetChildByName("Opt_" .. i), self:StatLabel(statKey))
-				self:SetText(frame:GetChildByName("Val_" .. i), self:FmtVal(statKey, tonumber(r:GetItem("Value")) or 0))
-				self:SetText(frame:GetChildByName("Rate_" .. i), tostring(math.floor(w / total * 1000 + 0.5) / 10) .. "%")
-			else
-				self:SetText(frame:GetChildByName("Opt_" .. i), "")
-				self:SetText(frame:GetChildByName("Val_" .. i), "")
-				self:SetText(frame:GetChildByName("Rate_" .. i), "")
-			end
-		end
-		pop.Enable = true
-	end
-
-	@ExecSpace("ClientOnly")
-	method void OnPotPreferClicked()
-		-- 선호 옵션 지정 — 추후 구현(B단계).
-		log("[Pot] 선호 옵션 지정 (추후)")
+		self._T.potPrevPg = sel.pg or _PotentialGrade.Rare
+		self._T.potAwait = true
+		ps:RequestCube(sel.mode, tostring(sel.key))
 	end
 
 	@ExecSpace("ClientOnly")
@@ -839,8 +842,8 @@ script UIEnhancePanel extends Component
 		n.cost = costL ~= nil and costL:GetChildByName("Text_Cost") or nil
 		n.hdr = layout:GetChildByName("Img_ItemHdr")
 		n.btnOk = layout:GetChildByName("Btn_Ok")
-		-- 버튼 라벨(환생의 불꽃 사용)은 EnhanceGroup.ui에서 설정(Maker 편집 가능)
 		if n.btnOk ~= nil then
+			self:SetText(self:FirstTextChild(n.btnOk), "환생의 불꽃 사용")
 			local h = n.btnOk:ConnectEvent(ButtonClickEvent, function() self:OnFlameClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnOk, h = h }
 		end
@@ -850,11 +853,13 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshFlameTab()
-		-- 환생 탭: 선택 장비의 현재 추가 옵션 + 비용(즉시 적용형).
+		-- 환생 탭(불꽃 재조정): 현재 추가옵션 + 불꽃 보유/필요. 등급 제한 없음(불꽃=전 장비).
 		if not self:EnsureFlameWired() then return end
 		local n = self._T.fl
-		local fs = self:GetFlame()
-		if fs ~= nil and n.cost ~= nil then self:SetText(n.cost, self:CostText(fs.FlameCost)) end
+		if n.cost ~= nil then
+			local have = self:GetWalletRes(8)
+			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+		end
 		local sel = self._T.selected
 		self:SetItemHdr(n.hdr, sel)
 		if sel == nil or sel.name == nil or sel.name == "" then
@@ -863,11 +868,7 @@ script UIEnhancePanel extends Component
 			return
 		end
 		self:SetText(n.name, tostring(sel.name) .. " ★" .. tostring(sel.star or 0))
-		if (sel.grade or 1) < _ItemGrade.Legendary then
-			self:SetText(n.opts, "최상급 장비만 환생의 불꽃을 사용할 수 있습니다")
-		else
-			self:SetText(n.opts, self:OptSummary(sel.flame, "환생의 불꽃을 사용하면 이 장비에만 적용되는 추가 옵션이 부여됩니다"))
-		end
+		self:SetText(n.opts, self:OptSummary(sel.flame, "환생의 불꽃을 사용하면 이 장비에 추가 옵션이 부여됩니다(스탯 변환)"))
 	end
 
 	@ExecSpace("ClientOnly")
@@ -881,6 +882,8 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnUpdate(number delta)
+		-- OnBeginPlay 미실행/버튼 지연 스폰 대비 부트 보정(완료 후 즉시 반환).
+		self:EnsureBoot()
 		-- 잠재 pending 동기화 감지(탭2 열림 시만): PendingPot 변경 → After 갱신.
 		if self._T.tab ~= 2 or not self:IsOpen() then return end
 		local ps = self:GetPotential()
@@ -950,7 +953,7 @@ script UIEnhancePanel extends Component
 			return
 		end
 		if slotImg ~= nil and slotImg.SpriteGUIRendererComponent ~= nil then
-			slotImg.SpriteGUIRendererComponent.ImageRUID = _ItemGrade:SlotRUID(sel.grade or 1)
+			slotImg.SpriteGUIRendererComponent.ImageRUID = _PotentialGrade:SlotRUID(sel.pg or 1)
 			local icon = slotImg:GetChildByName("Icon")
 			if icon ~= nil then
 				local row = _DataService:GetTable("ItemData"):FindRow("Name", sel.name)
@@ -963,7 +966,7 @@ script UIEnhancePanel extends Component
 		if nameText ~= nil and nameText.TextComponent ~= nil then
 			local star = sel.star or 0
 			nameText.TextComponent.Text = tostring(sel.name) .. (star > 0 and (" ★" .. tostring(star)) or "")
-			nameText.TextComponent.FontColor = _ItemGrade:ColorOf(sel.grade or 1)   -- 등급색
+			nameText.TextComponent.FontColor = _PotentialGrade:ColorOf(sel.pg or 1)   -- 잠재등급 색(인벤과 일치)
 		end
 		if statsText ~= nil and statsText.TextComponent ~= nil then
 			local cp = self:GetCombat()

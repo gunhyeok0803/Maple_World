@@ -214,11 +214,11 @@ script UIInventoryPopup extends Component
 		self._T.dDesc    = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/Desc")
 		self._T.btnEquip = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/BtnEquip")
 		self._T.dPower   = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/PowerVal")
-		self._T.dStat    = {
-			_EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatV_0"),
-			_EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatV_1"),
-			_EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatV_2"),
-		}
+		self._T.dStatL   = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatL_0")   -- 능력치 라벨열(다행)
+		self._T.dStatV   = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/StatV_0")   -- 능력치 값열(다행)
+		self._T.dPotGrade= _EntityService:GetEntityByPath(WIN .. "/DetailPopup/PotGrade")  -- 잠재등급(색)
+		self._T.dOptLines= _EntityService:GetEntityByPath(WIN .. "/DetailPopup/OptLines")  -- 추가옵션 라인
+		self._T.dEffLbl  = _EntityService:GetEntityByPath(WIN .. "/DetailPopup/EffLbl")    -- 추가옵션 헤더
 
 		-- GridView 셀 프리팹 주입 + 그리드 파라미터 + 좌우 대칭 패딩
 		local gv = self._T.gridEnt.GridViewComponent
@@ -373,7 +373,7 @@ script UIInventoryPopup extends Component
 			local st = names[gi]
 			local row = ds:FindRow("Name", st.name)
 			if row ~= nil and self:MatchesTab(row, self._T.tab) then
-				filtered[#filtered + 1] = { gi = gi, name = st.name, count = st.count, grade = st.grade or 1 }
+				filtered[#filtered + 1] = { gi = gi, name = st.name, count = st.count, grade = st.grade or 1, pg = st.pg or 1 }
 			end
 		end
 		-- 정렬: 1=등급↓(동급이면 수량↓) 2=수량↓ 0=습득순(원래 순서)
@@ -411,6 +411,7 @@ script UIInventoryPopup extends Component
 		local us = ent:GetComponent("script.UIEquipmentSlotWidget")
 		if us == nil then return end
 		us.ownerWindow = self.Entity
+		us.itemPg = it.pg or 1
 		us:SetData(it.name, it.gi, it.count, it.grade)
 	end
 
@@ -425,29 +426,48 @@ script UIInventoryPopup extends Component
 			local def = defs[i]
 			local slotPath = base .. tostring(i - 1)
 			local locked = def.locked and (inv:IsUnlocked(def.part) == false)
-			self:SetWorn(slotPath, inv:GetEquipped(def.part), locked)
+			self:SetWorn(slotPath, def.part, inv:GetEquipped(def.part), locked)
 		end
 	end
 
 	@ExecSpace("ClientOnly")
-	method void SetWorn(string slotPath, string itemName, boolean locked)
+	method void SetWorn(string slotPath, string part, string itemName, boolean locked)
+		-- 장착 슬롯: 잠재색 배경(장착 시) + 품질 배지([등급], 장비만) + 아이콘. 빈 칸은 기본 슬롯.
 		local slot = _EntityService:GetEntityByPath(slotPath)
 		if slot == nil then return end
 		local icon = slot:GetChildByName("Icon")
 		local lockIcon = slot:GetChildByName("Lock")
+		local badge = slot:GetChildByName("QBadge")
+		local inv = self:GetInv()
 		if lockIcon ~= nil then lockIcon.Enable = locked end
-		if locked then
+		local has = (locked == false) and itemName ~= nil and itemName ~= ""
+		-- 슬롯 배경 = 잠재색(장착) / 기본 슬롯(빈칸)
+		if slot.SpriteGUIRendererComponent ~= nil then
+			if has and inv ~= nil then
+				slot.SpriteGUIRendererComponent.ImageRUID = _PotentialGrade:SlotRUID(inv:GetEquippedPg(part))
+			else
+				slot.SpriteGUIRendererComponent.ImageRUID = "aa931a755e5949699233b817029a3e36"
+			end
+		end
+		if not has then
 			if icon ~= nil then icon.Enable = false end
+			if badge ~= nil then badge.Enable = false end
 			return
 		end
-		if itemName ~= nil and itemName ~= "" then
-			local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
-			if row ~= nil and icon ~= nil then
-				icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
-				icon.Enable = true
+		local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
+		if row ~= nil and icon ~= nil then
+			icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+			icon.Enable = true
+		end
+		-- 품질 배지: 장비만 [하급~최상급]
+		if badge ~= nil then
+			local isEquip = (row ~= nil and tostring(row:GetItem("Category")) == "장비")
+			if isEquip and inv ~= nil and badge.TextGUIRendererComponent ~= nil then
+				badge.TextGUIRendererComponent.Text = _ItemGrade:Name(inv:GetEquippedGrade(part))
+				badge.Enable = true
+			else
+				badge.Enable = false
 			end
-		else
-			if icon ~= nil then icon.Enable = false end
 		end
 	end
 
@@ -480,10 +500,19 @@ script UIInventoryPopup extends Component
 		end
 		self._T.curStar = 0
 		self._T.curGrade = 1
+		local dPg = _PotentialGrade.Rare
+		local dPot = ""
+		local dFlame = ""
 		local inv0 = self:GetInv()
 		if inv0 ~= nil and self._T.curIndex ~= nil then
 			local si = inv0:GetSlots()[self._T.curIndex]
-			if si ~= nil then self._T.curStar = si.star or 0; self._T.curGrade = si.grade or 1 end
+			if si ~= nil then
+				self._T.curStar = si.star or 0
+				self._T.curGrade = si.grade or 1
+				dPg = si.pg or _PotentialGrade.Rare
+				dPot = si.pot or ""
+				dFlame = si.flame or ""
+			end
 		end
 		local dStar = self._T.curStar
 		local dGrade = self._T.curGrade
@@ -500,29 +529,66 @@ script UIInventoryPopup extends Component
 		end
 		if self._T.dTag ~= nil then
 			local part = self:Cell(row, "Part")
-			local tag = self:GradeName(dGrade)
+			local tag = self:GradeName(dGrade)   -- 품질(하급~최상급) · 부위
 			if part ~= "" then tag = tag .. " · " .. part end
 			self._T.dTag.TextComponent.Text = tag
 		end
-		if self._T.dExpiry ~= nil then
-			local lv = self:Cell(row, "ReqLevel")
-			local tradable = self:Cell(row, "Tradable")
-			local parts = {}
-			if lv ~= "" then parts[#parts + 1] = "Lv." .. lv end
-			if tradable == "X" then parts[#parts + 1] = "교환 불가"
-			elseif tradable ~= "" then parts[#parts + 1] = "교환 가능" end
-			self._T.dExpiry.TextComponent.Text = table.concat(parts, "  ·  ")
-		end
-		if self._T.dStat ~= nil then
-			local base = { tonumber(self:Cell(row, "Attack")) or 0, tonumber(self:Cell(row, "Defense")) or 0, tonumber(self:Cell(row, "MaxHP")) or 0 }
-			local bon = { dBonus.atk or 0, dBonus.def or 0, dBonus.hp or 0 }
-			for i = 1, 3 do
-				if self._T.dStat[i] ~= nil then
-					local txt = tostring(base[i])
-					if bon[i] > 0 then txt = txt .. " (+" .. tostring(bon[i]) .. ")" end
-					self._T.dStat[i].TextComponent.Text = txt
-				end
+		local isEquip = self:IsEquipCategory(self._T.curCat)
+		if self._T.dPotGrade ~= nil and self._T.dPotGrade.TextGUIRendererComponent ~= nil then
+			-- 잠재등급(색) — 장비만 표시
+			if isEquip then
+				self._T.dPotGrade.TextGUIRendererComponent.Text = _PotentialGrade:Name(dPg)
+				self._T.dPotGrade.TextGUIRendererComponent.FontColor = _PotentialGrade:ColorOf(dPg)
+				self._T.dPotGrade.Enable = true
+			else
+				self._T.dPotGrade.Enable = false
 			end
+		end
+		if self._T.dExpiry ~= nil and self._T.dExpiry.TextComponent ~= nil then
+			-- 교환 여부만(요구레벨 미사용) — 거래 시스템 대비 유지
+			local tradable = self:Cell(row, "Tradable")
+			if tradable == "X" then self._T.dExpiry.TextComponent.Text = "교환 불가"
+			elseif tradable ~= "" then self._T.dExpiry.TextComponent.Text = "교환 가능"
+			else self._T.dExpiry.TextComponent.Text = "" end
+		end
+		-- 기본 능력치: 부위별 값 0이 아닌 스탯만 라벨열/값열 다행. 공/방/HP엔 스타포스 보너스 (+n).
+		if self._T.dStatL ~= nil and self._T.dStatV ~= nil then
+			local labs = {}
+			local vals = {}
+			local function addStat(lab, base, bonus, pct)
+				local b0 = base or 0
+				local bo = bonus or 0
+				if b0 == 0 and bo == 0 then return end
+				local suf = ""
+				if pct then suf = "%" end
+				local v = "+" .. tostring(b0) .. suf
+				if bo > 0 then v = v .. " <color=#7fe08a>(+" .. tostring(bo) .. suf .. ")</color>" end
+				labs[#labs + 1] = lab
+				vals[#vals + 1] = v
+			end
+			addStat("주스탯", tonumber(self:Cell(row, "MainStat")) or 0, 0, false)
+			addStat("공격력", tonumber(self:Cell(row, "Attack")) or 0, dBonus.atk or 0, false)
+			addStat("방어력", tonumber(self:Cell(row, "Defense")) or 0, dBonus.def or 0, false)
+			addStat("HP", tonumber(self:Cell(row, "MaxHP")) or 0, dBonus.hp or 0, false)
+			addStat("MP", tonumber(self:Cell(row, "MP")) or 0, 0, false)
+			addStat("크리티컬 확률", tonumber(self:Cell(row, "CritRate")) or 0, 0, true)
+			addStat("크리티컬 데미지", tonumber(self:Cell(row, "CritDmg")) or 0, 0, true)
+			if self._T.dStatL.TextComponent ~= nil then self._T.dStatL.TextComponent.Text = table.concat(labs, "\n") end
+			if self._T.dStatV.TextComponent ~= nil then self._T.dStatV.TextComponent.Text = table.concat(vals, "\n") end
+		end
+		-- 추가 옵션: 환생의 불꽃(flame) 라인만. 잠재는 등급 축(PotGrade)으로만 표시(옵션 롤 폐지). 없으면 헤더/라인 숨김.
+		local optLines = {}
+		if inv0 ~= nil then
+			for i, p in ipairs(inv0:ParseOptPairs(dFlame)) do optLines[#optLines + 1] = "<color=#6fd6c8>· " .. tostring(p.stat) .. " +" .. tostring(p.value) .. "</color>" end
+		end
+		local hasOpt = #optLines > 0
+		if self._T.dOptLines ~= nil and self._T.dOptLines.TextGUIRendererComponent ~= nil then
+			self._T.dOptLines.TextGUIRendererComponent.Text = table.concat(optLines, "\n")
+			self._T.dOptLines.Enable = hasOpt
+		end
+		if self._T.dEffLbl ~= nil then
+			if hasOpt and self._T.dEffLbl.TextComponent ~= nil then self._T.dEffLbl.TextComponent.Text = "추가 옵션" end
+			self._T.dEffLbl.Enable = hasOpt
 		end
 		if self._T.dDesc ~= nil then self._T.dDesc.TextComponent.Text = self:Cell(row, "Description") end
 		if self._T.btnEquip ~= nil then self._T.btnEquip.Enable = self:IsEquipCategory(self._T.curCat) end
@@ -553,7 +619,13 @@ script UIInventoryPopup extends Component
 		end
 		local eq = self:GetEquip()
 		if eq == nil then log_warning("[UIInventoryPopup] EquipmentController 미부착") return end
-		eq:RequestEquip(part, self._T.curName, 0, 1)
+		-- 선택 개체의 실제 투자값(성급/등급/잠재등급/잠재/환생) 그대로 장착
+		local st, gr, pg, po, fl = 0, _ItemGrade.Rare, _PotentialGrade.Rare, "", ""
+		if self._T.curIndex ~= nil then
+			local si = inv:GetSlots()[self._T.curIndex]
+			if si ~= nil then st = si.star or 0; gr = si.grade or _ItemGrade.Rare; pg = si.pg or _PotentialGrade.Rare; po = si.pot or ""; fl = si.flame or "" end
+		end
+		eq:RequestEquip(part, self._T.curName, st, gr, po, fl, pg)
 		self:HideDetail()
 	end
 

@@ -1,0 +1,65 @@
+@Logic
+script PotentialGrade extends Logic
+	-- 잠재 등급 상수(1-기반, 0=없음) + 표기/색 헬퍼. 아이템 품질(_ItemGrade)과 독립된 별도 축.
+	-- 레어→에픽→유니크→레전더리. 드랍 시 확률 롤(하이브리드), 실제 잠재옵션/큐브는 최상급(품질) 전용.
+	property integer None = 0
+	property integer Rare = 1
+	property integer Epic = 2
+	property integer Unique = 3
+	property integer Legendary = 4
+
+	method string Name(integer g)
+		-- 등급 → 한글(레어/에픽/유니크/레전더리). 잠재 축 표기.
+		if g == 4 then return "레전더리" end
+		if g == 3 then return "유니크" end
+		if g == 2 then return "에픽" end
+		if g == 1 then return "레어" end
+		return "-"
+	end
+
+	method string Key(integer g)
+		-- 등급 → 영문 키
+		if g == 4 then return "Legendary" end
+		if g == 3 then return "Unique" end
+		if g == 2 then return "Epic" end
+		if g == 1 then return "Rare" end
+		return "None"
+	end
+
+	method integer FromKey(string s)
+		-- 문자열(영문키/한글표기) → 등급, 미상은 0(없음).
+		if s == "Legendary" or s == "레전더리" then return 4 end
+		if s == "Unique" or s == "유니크" then return 3 end
+		if s == "Epic" or s == "에픽" then return 2 end
+		if s == "Rare" or s == "레어" then return 1 end
+		return 0
+	end
+
+	method Color ColorOf(integer g)
+		-- 레어 파랑 / 에픽 보라 / 유니크 노랑 / 레전더리 연두 (친숙한 등급색, 사용자 확정). None=흰색.
+		if g == 4 then return Color(0.40, 0.85, 0.45, 1) end
+		if g == 3 then return Color(0.98, 0.82, 0.25, 1) end
+		if g == 2 then return Color(0.66, 0.42, 0.92, 1) end
+		if g == 1 then return Color(0.30, 0.55, 0.98, 1) end
+		return Color(1, 1, 1, 1)
+	end
+
+	method string SlotRUID(integer g)
+		-- 잠재등급 → 슬롯 배경 스프라이트 RUID(UIResourceSimpleFantasy 등급 슬롯). 레어/에픽/유니크/레전드리 + None(일반).
+		if g == 4 then return "70565cb756634ae7a168975f7a18fb1d" end
+		if g == 3 then return "74d4021ef1794501acb73b78d267574e" end
+		if g == 2 then return "90c4bb16c95a4ae3916098b6ffb4d0e4" end
+		if g == 1 then return "dcbbede8a7a0478b97e2ffa23b7fc14a" end
+		return "aa931a755e5949699233b817029a3e36"
+	end
+
+	method boolean IsMax(integer g)
+		-- 최고 등급(레전더리)
+		return g >= 4
+	end
+
+	method void OnBeginPlay()
+		-- 부팅 확인 로그.
+		log("[PotentialGrade] ready")
+	end
+end

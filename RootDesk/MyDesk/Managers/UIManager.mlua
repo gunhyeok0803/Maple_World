@@ -52,5 +52,65 @@ script UIManager extends Logic
 	method void OnBeginPlay()
 		self:EnsureState()
 		log("[UIManager] ready")
+		-- @Logic은 세션당 OnBeginPlay가 엔진 보장으로 1회 실행 → 그룹월드에서 모델 인스턴스
+		-- @Component 라이프사이클이 안 뛰어도 여기서 UI 컨트롤러들의 멱등 EnsureBoot를 킥한다.
+		if self:IsClient() then
+			self:KickBoot()
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void KickBoot()
+		-- 신뢰 부트 소스 시작. UI는 그룹월드에서 늦게 스폰되므로 타이머로 폴링하며 재시도.
+		if self._T.bootTimer ~= nil then return end
+		self._T.bootPolls = 0
+		self._T.bootTimer = _TimerService:SetTimerRepeat(self.BootTick, 0.1)
+	end
+
+	method table BootSpecs()
+		-- 컨트롤러 (타입, 경로후보). 경로+GetComponent로 진입한다 — GetChildComponentsByTypeName(재귀 타입검색)은
+		-- 모델 인스턴스(그룹월드=.modpackage 인스턴스) 내부를 못 훑어 컨트롤러를 못 찾기 때문.
+		return {
+			{ t = "script.UIInventoryPopup", ps = { "/ui/InventoryGroup/Controller", "/ui/InventoryGroup/UI_Inventory/Controller" } },
+			{ t = "script.UISideMenu",       ps = { "/ui/SideMenuGroup/Panel_Side/Controller", "/ui/SideMenuGroup/Controller" } },
+			{ t = "script.UIEnhancePanel",   ps = { "/ui/EnhanceGroup/EnhanceRoot/Controller", "/ui/EnhanceGroup/Controller" } },
+			{ t = "script.UIPromotePanel",   ps = { "/ui/PromoteGroup/PromoteRoot/Controller", "/ui/PromoteGroup/Controller" } },
+		}
+	end
+
+	@ExecSpace("ClientOnly")
+	method void BootTick()
+		-- 경로+GetComponent로 컨트롤러를 찾아 멱등 EnsureBoot 킥. 전부 찾으면 종료.
+		self._T.bootPolls = (self._T.bootPolls or 0) + 1
+		local specs = self:BootSpecs()
+		local allFound = true
+		for i = 1, #specs do
+			local sp = specs[i]
+			local ent = nil
+			for j = 1, #sp.ps do
+				if ent == nil then ent = _EntityService:GetEntityByPath(sp.ps[j]) end
+			end
+			if ent == nil then
+				allFound = false
+			else
+				---@type UIInventoryPopup
+				local c = ent:GetComponent(sp.t)
+				if c == nil then allFound = false else c:EnsureBoot() end
+			end
+		end
+		-- 전부 부트 킥됐거나 10초(100틱) 초과 시 폴링 종료(멱등이라 이후엔 각자 OnUpdate가 보정).
+		if allFound or self._T.bootPolls >= 100 then
+			self:StopBoot("allFound=" .. tostring(allFound) .. " polls=" .. tostring(self._T.bootPolls))
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void StopBoot(string reason)
+		-- 부트 폴링 종료.
+		if self._T.bootTimer ~= nil then
+			_TimerService:ClearTimer(self._T.bootTimer)
+			self._T.bootTimer = nil
+		end
+		log("[UIManager] KickBoot done — " .. reason)
 	end
 end

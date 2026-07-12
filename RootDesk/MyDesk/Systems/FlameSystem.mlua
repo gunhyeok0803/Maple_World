@@ -1,15 +1,15 @@
 @Component
 script FlameSystem extends Component
 
-	-- 환생의 불꽃(§06): 레전드리 전용. 고정 드랍 능력치와 별도의 '추가 옵션'을 개별 인스턴스에 부여/재설정.
-	-- 계승하지 않음(§07: 현재 장비 고점 전용) — 계승 시스템에서 flame은 승계 제외.
+	-- 환생의 불꽃(재설계): 고정 드랍 능력치와 별도의 '추가 옵션'을 개별 인스턴스에 부여/재설정.
+	-- 등급 제한 없음(스타포스만 레전드리 전용). 계승 시 flame은 승계 제외(§07: 현재 장비 고점 전용).
 
 	property integer LinesMin = 2
 
 	property integer LinesMax = 4
 
-	-- 부여/재설정 비용 명세("res:재화Type:수량;item:아이템명:수량"). placeholder — 불꽃 아이템 경제 확정 시 교체.
-	property string FlameCost = "res:1:20000"
+	-- 부여/재설정 비용 명세("res:재화Type:수량;item:아이템명:수량"). 불꽃 = ResourceDataSet Type 8. placeholder — 경제 확정 시 교체.
+	property string FlameCost = "res:8:1"
 
 	method InventoryController GetInv()
 		-- 같은 엔티티의 InventoryController(없으면 nil).
@@ -120,11 +120,8 @@ script FlameSystem extends Component
 
 	@ExecSpace("ServerOnly")
 	method boolean FlameFor(string itemName, integer grade)
-		-- 공통 검증+롤: 레전드리/풀/비용 확인 후 새 flame을 _T에 기록. 성공 시 true.
-		if (grade or 1) < _ItemGrade.Legendary then
-			log("[Flame] 레전드리만 환생의 불꽃 가능: " .. tostring(itemName) .. " G" .. tostring(grade))
-			return false
-		end
+		-- 공통 검증+롤: 풀/비용 확인 후 새 flame을 _T에 기록. 성공 시 true.
+		-- 환생=추가옵션, 등급 제한 없음(스타포스만 레전드리 전용). grade 파라미터는 호출부 호환용으로 유지.
 		local partClass = self:PartClassOf(itemName)
 		if partClass == "" then
 			log_warning("[Flame] 풀 클래스 없음(비장비?): " .. tostring(itemName))
@@ -156,8 +153,8 @@ script FlameSystem extends Component
 			return
 		end
 		if not self:FlameFor(info.name, info.grade or 1) then return end
-		inv:ConsumeItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "")
-		inv:AddItemEx(info.name, info.star or 0, info.grade or 1, info.pot or "", self._T.lastFlame)
+		inv:ConsumeItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "", info.pg or _PotentialGrade.Rare)
+		inv:AddItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", self._T.lastFlame, info.pg or _PotentialGrade.Rare)
 		log("[Flame] 부여(가방) " .. tostring(info.name) .. " [" .. self._T.lastFlame .. "]")
 	end
 
@@ -191,7 +188,7 @@ script FlameSystem extends Component
 	end
 
 	method void OnBeginPlay()
-		-- 부착 확인용 로그(서버/클라 양쪽). 환생의 불꽃: 레전드리 전용, 인스턴스 귀속, 계승 안 함.
+		-- 부착 확인용 로그(서버/클라 양쪽). 환생의 불꽃: 추가옵션, 등급 제한 없음, 인스턴스 귀속, 계승 안 함.
 		log("[FlameSystem] OnBeginPlay ok")
 	end
 
