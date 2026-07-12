@@ -741,6 +741,8 @@ script UIEnhancePanel extends Component
 			local h = n.btnConvert:ConnectEvent(ButtonClickEvent, function() self:OnPotCubeClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnConvert, h = h }
 		end
+		-- 항목4: 재료 토글(공용) — 잠재=수상한 큐브(res 7).
+		self:WireMatToggle(layout, "matTogglePot", "수상한 큐브", 7)
 		self._T.pot = n
 		return true
 	end
@@ -843,6 +845,12 @@ script UIEnhancePanel extends Component
 			local h = n.btnOk:ConnectEvent(ButtonClickEvent, function() self:OnFlameClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnOk, h = h }
 		end
+		-- 항목1: 확률 정보 / 선호 저장 버튼(위치는 Maker 배치) + 확률 팝업 닫기 배선.
+		self:WireEntOnce("flameProb", layout:GetChildByName("Btn_FlameProb"), function() self:OnFlameProbClicked() end)
+		self:WireEntOnce("flamePref", layout:GetChildByName("Btn_FlamePref"), function() self:OnFlamePrefClicked() end)
+		self:WireProbClose()
+		-- 항목4: 재료 토글(공용) — 환생=환생의 불꽃(res 8).
+		self:WireMatToggle(layout, "matToggleFlame", "환생의 불꽃", 8)
 		self._T.fl = n
 		return true
 	end
@@ -874,6 +882,110 @@ script UIEnhancePanel extends Component
 		local fs = self:GetFlame()
 		if sel == nil or fs == nil then return end
 		if sel.mode == "equip" then fs:RequestFlameEquipped(sel.key) else fs:RequestFlame(sel.key) end
+	end
+
+	method any FindProbPopup()
+		-- 확률 팝업(Popup_Prob, EnhanceGroup 직속) 참조 캐시. EnhanceRoot 재부모화 전/후 경로 모두 시도.
+		if self._T.popupProb ~= nil and isvalid(self._T.popupProb) then return self._T.popupProb end
+		local e = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Popup_Prob")
+		if e == nil then e = _EntityService:GetEntityByPath("/ui/EnhanceGroup/EnhanceRoot/Popup_Prob") end
+		self._T.popupProb = e
+		return e
+	end
+
+	@ExecSpace("ClientOnly")
+	method void WireProbClose()
+		-- 확률 팝업 닫기 버튼 1회 배선(멱등).
+		local p = self:FindProbPopup()
+		if p == nil then return end
+		self:WireEntOnce("probClose", p:GetChildByName("Btn_Close"), function() self:ShowProbPopup(false) end)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ShowProbPopup(boolean open)
+		-- 확률 팝업 표시/숨김.
+		local p = self:FindProbPopup()
+		if p == nil then return end
+		p.Enable = open
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnFlameProbClicked()
+		-- 항목1: 확률 정보 제공 — 선택 장비 부위의 추가옵션 풀 확률을 팝업으로 표시.
+		local p = self:FindProbPopup()
+		if p == nil then return end
+		self:SetText(p:GetChildByName("Text_Body"), self:FlameProbText())
+		self:ShowProbPopup(true)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnFlamePrefClicked()
+		-- 항목1: 선호 옵션 저장 — TODO(미구현). 선호 데이터 모델 확정 후 연결.
+		-- 예상 흐름: 현재 추가옵션 조합을 사용자 선호로 저장 → 재설정 시 하이라이트/우선 표기.
+		log("[Enhance] 선호 옵션 저장 클릭 — TODO(미구현)")
+	end
+
+	method string FlameProbText()
+		-- 선택 장비 부위의 환생 추가옵션 풀 확률 텍스트(FlameOptionData 가중치 기반).
+		local sel = self._T.selected
+		if sel == nil or sel.name == nil or sel.name == "" then
+			return "장비를 선택하면\n해당 부위의 추가옵션 확률이 표시됩니다."
+		end
+		local inv = self:GetInv()
+		if inv == nil then return "인벤토리 정보를 불러올 수 없습니다." end
+		local partClass = _ItemPart:ClassOf(inv:MetaCell(sel.name, "Part"))
+		local t = _DataService:GetTable("FlameOptionData")
+		if t == nil or partClass == "" then return "옵션 데이터를 찾을 수 없습니다." end
+		local rows = {}
+		local total = 0
+		local n = t:GetRowCount()
+		for i = 1, n do
+			local row = t:GetRow(i)
+			if row:GetItem("PartClass") == partClass then
+				local w = tonumber(row:GetItem("Weight")) or 0
+				rows[#rows + 1] = { stat = row:GetItem("Stat"), lo = tonumber(row:GetItem("MinValue")) or 0, hi = tonumber(row:GetItem("MaxValue")) or 0, w = w }
+				total = total + w
+			end
+		end
+		if #rows == 0 or total <= 0 then return "이 부위의 추가옵션 풀이 비어 있습니다." end
+		local fs = self:GetFlame()
+		local lmin = fs ~= nil and fs.LinesMin or 2
+		local lmax = fs ~= nil and fs.LinesMax or 4
+		local lines = { tostring(partClass) .. " · 추가옵션 " .. tostring(lmin) .. "~" .. tostring(lmax) .. "줄 부여", "" }
+		for i, r in ipairs(rows) do
+			local unit = self:IsPctStat(r.stat) and "%" or ""
+			local pct = string.format("%.1f%%", r.w / total * 100)
+			lines[#lines + 1] = "• " .. self:StatLabel(r.stat) .. "  +" .. tostring(r.lo) .. "~" .. tostring(r.hi) .. unit .. "   " .. pct
+		end
+		return table.concat(lines, "\n")
+	end
+
+	@ExecSpace("ClientOnly")
+	method void WireMatToggle(any layout, string key, string matLabel, integer resType)
+		-- 항목4 공용: 재료 토글 버튼 1회 배선(잠재/환생 동일 노드명 재사용). 접힘 뷰 라벨 세팅 + 리스트 숨김.
+		if layout == nil then return end
+		local btn = layout:GetChildByName("Btn_MatToggle")
+		if btn == nil then return end
+		local list = layout:GetChildByName("Panel_MatList")
+		if list ~= nil then list.Enable = false end
+		self:SetText(self:FirstTextChild(btn), "▼ " .. matLabel)
+		self:WireEntOnce(key, btn, function() self:ToggleMatList(layout, matLabel, resType) end)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ToggleMatList(any layout, string matLabel, integer resType)
+		-- 항목4 공용: 재료 목록 펼침/접힘 토글 + 화살표 갱신. 펼칠 때 현재 재료+보유수 표기(추후 다종 대비).
+		if layout == nil then return end
+		local list = layout:GetChildByName("Panel_MatList")
+		if list == nil then return end
+		local open = not list.Enable
+		list.Enable = open
+		local btn = layout:GetChildByName("Btn_MatToggle")
+		if btn ~= nil then self:SetText(self:FirstTextChild(btn), (open and "▲ " or "▼ ") .. matLabel) end
+		if open then
+			local have = self:GetWalletRes(resType)
+			self:SetText(list:GetChildByName("Text_List"), "• " .. matLabel .. "   보유 " .. tostring(math.floor(have or 0)))
+		end
 	end
 
 	@ExecSpace("ClientOnly")
