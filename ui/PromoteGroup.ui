@@ -41,56 +41,56 @@
               "ActivePlatform": 255,
               "AlignmentOption": 15,
               "AnchorsMax": {
-                "x": 1.0,
-                "y": 1.0
+                "x": 1,
+                "y": 1
               },
               "AnchorsMin": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
               },
               "OffsetMin": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 1920,
+                "y": 1080
               },
               "UIMode": 1,
               "UIScale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "x": 1,
+                "y": 1,
+                "z": 1
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
               },
               "Position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "x": 0,
+                "y": 0,
+                "z": 0
               },
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Scale": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
+                "x": 1,
+                "y": 1,
+                "z": 1
               },
               "Enable": true
             },
@@ -104,7 +104,7 @@
             {
               "@type": "MOD.Core.CanvasGroupComponent",
               "BlocksRaycasts": true,
-              "GroupAlpha": 1.0,
+              "GroupAlpha": 1,
               "Interactable": true,
               "Enable": true
             }
@@ -148,37 +148,37 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 960.0,
-                "y": 540.0
+                "x": 960,
+                "y": 540
               },
               "OffsetMin": {
-                "x": -960.0,
-                "y": -540.0
+                "x": -960,
+                "y": -540
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 1920,
+                "y": 1080
               },
               "UIMode": 1,
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
               },
               "Position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
+                "x": 0,
+                "y": 0,
+                "z": 0
               },
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             }
@@ -213,33 +213,33 @@
               "@type": "MOD.Core.UITransformComponent",
               "AlignmentOption": 15,
               "AnchorsMax": {
-                "x": 1.0,
-                "y": 1.0
+                "x": 1,
+                "y": 1
               },
               "AnchorsMin": {
-                "x": 0.0,
-                "y": 0.0
+                "x": 0,
+                "y": 0
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 0.0,
+                "x": 0,
                 "y": 0.0001
               },
               "OffsetMin": {
-                "x": 0.0,
+                "x": 0,
                 "y": 0.0001
               },
               "RectSize": {
-                "x": 1920.0,
-                "y": 1080.0
+                "x": 1920,
+                "y": 1080
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": -1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": -1
               },
               "Enable": true
             },
@@ -287,24 +287,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 640.0,
-                "y": 310.0
+                "x": 640,
+                "y": 310
               },
               "OffsetMin": {
-                "x": -640.0,
-                "y": -390.0
+                "x": -640,
+                "y": -390
               },
               "RectSize": {
-                "x": 1280.0,
-                "y": 700.0
+                "x": 1280,
+                "y": 700
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": -1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": -1
               },
               "Enable": true
             }
@@ -348,24 +348,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 595.0,
-                "y": 154.0
+                "x": 595,
+                "y": 154
               },
               "OffsetMin": {
-                "x": 235.0,
-                "y": 116.0
+                "x": 235,
+                "y": 116
               },
               "RectSize": {
-                "x": 360.0,
-                "y": 38.0
+                "x": 360,
+                "y": 38
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -377,8 +377,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -423,24 +423,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 595.0,
-                "y": 80.0
+                "x": 595,
+                "y": 80
               },
               "OffsetMin": {
-                "x": 235.0,
-                "y": -20.0
+                "x": 235,
+                "y": -20
               },
               "RectSize": {
-                "x": 360.0,
-                "y": 100.0
+                "x": 360,
+                "y": 100
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -452,8 +452,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -498,24 +498,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 356.0,
-                "y": -109.0
+                "x": 356,
+                "y": -109
               },
               "OffsetMin": {
-                "x": 304.0,
-                "y": -161.0
+                "x": 304,
+                "y": -161
               },
               "RectSize": {
-                "x": 52.0,
-                "y": 52.0
+                "x": 52,
+                "y": 52
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -528,28 +528,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -557,7 +557,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -572,8 +572,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -618,24 +618,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 441.0,
-                "y": -116.0
+                "x": 441,
+                "y": -116
               },
               "OffsetMin": {
-                "x": 369.0,
-                "y": -154.0
+                "x": 369,
+                "y": -154
               },
               "RectSize": {
-                "x": 72.0,
-                "y": 38.0
+                "x": 72,
+                "y": 38
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -647,8 +647,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -693,24 +693,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 499.0,
-                "y": -109.0
+                "x": 499,
+                "y": -109
               },
               "OffsetMin": {
-                "x": 447.0,
-                "y": -161.0
+                "x": 447,
+                "y": -161
               },
               "RectSize": {
-                "x": 52.0,
-                "y": 52.0
+                "x": 52,
+                "y": 52
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -723,28 +723,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -752,7 +752,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -767,8 +767,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -813,24 +813,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 579.0,
-                "y": -109.0
+                "x": 579,
+                "y": -109
               },
               "OffsetMin": {
-                "x": 501.0,
-                "y": -161.0
+                "x": 501,
+                "y": -161
               },
               "RectSize": {
-                "x": 78.0,
-                "y": 52.0
+                "x": 78,
+                "y": 52
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -843,28 +843,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -872,7 +872,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -887,8 +887,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -934,23 +934,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 592.5,
-                "y": -182.0
+                "y": -182
               },
               "OffsetMin": {
                 "x": 237.5,
-                "y": -238.0
+                "y": -238
               },
               "RectSize": {
-                "x": 355.0,
-                "y": 56.0
+                "x": 355,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -962,8 +962,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1008,24 +1008,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 530.0,
-                "y": -247.0
+                "x": 530,
+                "y": -247
               },
               "OffsetMin": {
-                "x": 300.0,
-                "y": -323.0
+                "x": 300,
+                "y": -323
               },
               "RectSize": {
-                "x": 230.0,
-                "y": 76.0
+                "x": 230,
+                "y": 76
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1038,28 +1038,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1067,7 +1067,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1082,8 +1082,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1128,24 +1128,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 170.0,
-                "y": 350.0
+                "x": 170,
+                "y": 350
               },
               "OffsetMin": {
-                "x": -620.0,
-                "y": -350.0
+                "x": -620,
+                "y": -350
               },
               "RectSize": {
-                "x": 790.0,
-                "y": 700.0
+                "x": 790,
+                "y": 700
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1194,24 +1194,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 605.0,
-                "y": 350.0
+                "x": 605,
+                "y": 350
               },
               "OffsetMin": {
-                "x": 225.0,
-                "y": -350.0
+                "x": 225,
+                "y": -350
               },
               "RectSize": {
-                "x": 380.0,
-                "y": 700.0
+                "x": 380,
+                "y": 700
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1260,24 +1260,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -486.0,
-                "y": 320.0
+                "x": -486,
+                "y": 320
               },
               "OffsetMin": {
-                "x": -604.0,
-                "y": 264.0
+                "x": -604,
+                "y": 264
               },
               "RectSize": {
-                "x": 118.0,
-                "y": 56.0
+                "x": 118,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1290,28 +1290,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1319,7 +1319,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1334,8 +1334,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1380,24 +1380,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -364.0,
-                "y": 320.0
+                "x": -364,
+                "y": 320
               },
               "OffsetMin": {
-                "x": -482.0,
-                "y": 264.0
+                "x": -482,
+                "y": 264
               },
               "RectSize": {
-                "x": 118.0,
-                "y": 56.0
+                "x": 118,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1410,28 +1410,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1439,7 +1439,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1454,8 +1454,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1500,24 +1500,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -242.0,
-                "y": 320.0
+                "x": -242,
+                "y": 320
               },
               "OffsetMin": {
-                "x": -360.0,
-                "y": 264.0
+                "x": -360,
+                "y": 264
               },
               "RectSize": {
-                "x": 118.0,
-                "y": 56.0
+                "x": 118,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1530,28 +1530,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1559,7 +1559,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1574,8 +1574,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1620,24 +1620,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -120.0,
-                "y": 320.0
+                "x": -120,
+                "y": 320
               },
               "OffsetMin": {
-                "x": -238.0,
-                "y": 264.0
+                "x": -238,
+                "y": 264
               },
               "RectSize": {
-                "x": 118.0,
-                "y": 56.0
+                "x": 118,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1650,28 +1650,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1679,7 +1679,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1694,8 +1694,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1740,24 +1740,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 2.0,
-                "y": 320.0
+                "x": 2,
+                "y": 320
               },
               "OffsetMin": {
-                "x": -116.0,
-                "y": 264.0
+                "x": -116,
+                "y": 264
               },
               "RectSize": {
-                "x": 118.0,
-                "y": 56.0
+                "x": 118,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1770,28 +1770,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1799,7 +1799,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1814,8 +1814,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1860,24 +1860,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 124.0,
-                "y": 320.0
+                "x": 124,
+                "y": 320
               },
               "OffsetMin": {
-                "x": 6.0,
-                "y": 264.0
+                "x": 6,
+                "y": 264
               },
               "RectSize": {
-                "x": 118.0,
-                "y": 56.0
+                "x": 118,
+                "y": 56
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -1890,28 +1890,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -1919,7 +1919,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -1934,8 +1934,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -1981,23 +1981,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -417.5,
-                "y": 224.0
+                "y": 224
               },
               "OffsetMin": {
                 "x": -522.5,
-                "y": 200.0
+                "y": 200
               },
               "RectSize": {
-                "x": 105.0,
-                "y": 24.0
+                "x": 105,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2009,8 +2009,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2056,23 +2056,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -272.5,
-                "y": 224.0
+                "y": 224
               },
               "OffsetMin": {
                 "x": -377.5,
-                "y": 200.0
+                "y": 200
               },
               "RectSize": {
-                "x": 105.0,
-                "y": 24.0
+                "x": 105,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2084,8 +2084,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2131,23 +2131,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -127.5,
-                "y": 224.0
+                "y": 224
               },
               "OffsetMin": {
                 "x": -232.5,
-                "y": 200.0
+                "y": 200
               },
               "RectSize": {
-                "x": 105.0,
-                "y": 24.0
+                "x": 105,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2159,8 +2159,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2206,23 +2206,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 17.5,
-                "y": 224.0
+                "y": 224
               },
               "OffsetMin": {
                 "x": -87.5,
-                "y": 200.0
+                "y": 200
               },
               "RectSize": {
-                "x": 105.0,
-                "y": 24.0
+                "x": 105,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2234,8 +2234,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2281,23 +2281,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -537.5,
-                "y": 148.0
+                "y": 148
               },
               "OffsetMin": {
                 "x": -622.5,
-                "y": 122.0
+                "y": 122
               },
               "RectSize": {
-                "x": 85.0,
-                "y": 26.0
+                "x": 85,
+                "y": 26
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2309,8 +2309,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2356,23 +2356,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -537.5,
-                "y": 13.0
+                "y": 13
               },
               "OffsetMin": {
                 "x": -622.5,
-                "y": -13.0
+                "y": -13
               },
               "RectSize": {
-                "x": 85.0,
-                "y": 26.0
+                "x": 85,
+                "y": 26
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2384,8 +2384,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2431,23 +2431,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -537.5,
-                "y": -122.0
+                "y": -122
               },
               "OffsetMin": {
                 "x": -622.5,
-                "y": -148.0
+                "y": -148
               },
               "RectSize": {
-                "x": 85.0,
-                "y": 26.0
+                "x": 85,
+                "y": 26
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2459,8 +2459,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2505,24 +2505,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -418.0,
-                "y": 187.0
+                "x": -418,
+                "y": 187
               },
               "OffsetMin": {
-                "x": -522.0,
-                "y": 83.0
+                "x": -522,
+                "y": 83
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2535,28 +2535,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -2564,7 +2564,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -2616,24 +2616,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2682,24 +2682,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2748,24 +2748,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2777,8 +2777,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2823,24 +2823,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2852,8 +2852,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -2898,24 +2898,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -273.0,
-                "y": 187.0
+                "x": -273,
+                "y": 187
               },
               "OffsetMin": {
-                "x": -377.0,
-                "y": 83.0
+                "x": -377,
+                "y": 83
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -2928,28 +2928,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -2957,7 +2957,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -3009,24 +3009,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3075,24 +3075,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3141,24 +3141,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3170,8 +3170,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -3216,24 +3216,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3245,8 +3245,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -3291,24 +3291,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -128.0,
-                "y": 187.0
+                "x": -128,
+                "y": 187
               },
               "OffsetMin": {
-                "x": -232.0,
-                "y": 83.0
+                "x": -232,
+                "y": 83
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3321,28 +3321,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -3350,7 +3350,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -3402,24 +3402,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3468,24 +3468,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3534,24 +3534,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3563,8 +3563,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -3609,24 +3609,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3638,8 +3638,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -3684,24 +3684,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 17.0,
-                "y": 187.0
+                "x": 17,
+                "y": 187
               },
               "OffsetMin": {
-                "x": -87.0,
-                "y": 83.0
+                "x": -87,
+                "y": 83
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3714,28 +3714,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -3743,7 +3743,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -3795,24 +3795,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3861,24 +3861,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3927,24 +3927,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -3956,8 +3956,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -4002,24 +4002,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4031,8 +4031,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -4077,24 +4077,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -418.0,
-                "y": 52.0
+                "x": -418,
+                "y": 52
               },
               "OffsetMin": {
-                "x": -522.0,
-                "y": -52.0
+                "x": -522,
+                "y": -52
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4107,28 +4107,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -4136,7 +4136,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -4188,24 +4188,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4254,24 +4254,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4320,24 +4320,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4349,8 +4349,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -4395,24 +4395,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4424,8 +4424,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -4470,24 +4470,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -273.0,
-                "y": 52.0
+                "x": -273,
+                "y": 52
               },
               "OffsetMin": {
-                "x": -377.0,
-                "y": -52.0
+                "x": -377,
+                "y": -52
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4500,28 +4500,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -4529,7 +4529,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -4581,24 +4581,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4647,24 +4647,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4713,24 +4713,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4742,8 +4742,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -4788,24 +4788,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4817,8 +4817,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -4863,24 +4863,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -128.0,
-                "y": 52.0
+                "x": -128,
+                "y": 52
               },
               "OffsetMin": {
-                "x": -232.0,
-                "y": -52.0
+                "x": -232,
+                "y": -52
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -4893,28 +4893,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -4922,7 +4922,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -4974,24 +4974,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5040,24 +5040,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5106,24 +5106,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5135,8 +5135,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -5181,24 +5181,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5210,8 +5210,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -5256,24 +5256,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 17.0,
-                "y": 52.0
+                "x": 17,
+                "y": 52
               },
               "OffsetMin": {
-                "x": -87.0,
-                "y": -52.0
+                "x": -87,
+                "y": -52
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5286,28 +5286,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -5315,7 +5315,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -5367,24 +5367,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5433,24 +5433,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5499,24 +5499,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5528,8 +5528,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -5574,24 +5574,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5603,8 +5603,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -5649,24 +5649,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -418.0,
-                "y": -83.0
+                "x": -418,
+                "y": -83
               },
               "OffsetMin": {
-                "x": -522.0,
-                "y": -187.0
+                "x": -522,
+                "y": -187
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5679,28 +5679,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -5708,7 +5708,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -5760,24 +5760,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5826,24 +5826,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5892,24 +5892,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5921,8 +5921,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -5967,24 +5967,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -5996,8 +5996,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -6042,24 +6042,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -273.0,
-                "y": -83.0
+                "x": -273,
+                "y": -83
               },
               "OffsetMin": {
-                "x": -377.0,
-                "y": -187.0
+                "x": -377,
+                "y": -187
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6072,28 +6072,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -6101,7 +6101,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -6153,24 +6153,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6219,24 +6219,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6285,24 +6285,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6314,8 +6314,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -6360,24 +6360,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6389,8 +6389,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -6435,24 +6435,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -128.0,
-                "y": -83.0
+                "x": -128,
+                "y": -83
               },
               "OffsetMin": {
-                "x": -232.0,
-                "y": -187.0
+                "x": -232,
+                "y": -187
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6465,28 +6465,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -6494,7 +6494,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -6546,24 +6546,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6612,24 +6612,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6678,24 +6678,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6707,8 +6707,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -6753,24 +6753,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6782,8 +6782,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -6828,24 +6828,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 17.0,
-                "y": -83.0
+                "x": 17,
+                "y": -83
               },
               "OffsetMin": {
-                "x": -87.0,
-                "y": -187.0
+                "x": -87,
+                "y": -187
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -6858,28 +6858,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -6887,7 +6887,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -6939,24 +6939,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 25.0,
-                "y": 29.0
+                "x": 25,
+                "y": 29
               },
               "OffsetMin": {
-                "x": -25.0,
-                "y": -21.0
+                "x": -25,
+                "y": -21
               },
               "RectSize": {
-                "x": 50.0,
-                "y": 50.0
+                "x": 50,
+                "y": 50
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7005,24 +7005,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 55.0,
-                "y": 55.0
+                "x": 55,
+                "y": 55
               },
               "OffsetMin": {
-                "x": -55.0,
-                "y": -55.0
+                "x": -55,
+                "y": -55
               },
               "RectSize": {
-                "x": 110.0,
-                "y": 110.0
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7071,24 +7071,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 51.0,
+                "x": 51,
                 "y": -26.5
               },
               "OffsetMin": {
-                "x": -7.0,
+                "x": -7,
                 "y": -45.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7100,8 +7100,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -7146,24 +7146,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 7.0,
+                "x": 7,
                 "y": 47.5
               },
               "OffsetMin": {
-                "x": -51.0,
+                "x": -51,
                 "y": 28.5
               },
               "RectSize": {
-                "x": 58.0,
-                "y": 19.0
+                "x": 58,
+                "y": 19
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7175,8 +7175,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -7221,24 +7221,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 155.0,
-                "y": -293.0
+                "x": 155,
+                "y": -293
               },
               "OffsetMin": {
-                "x": -605.0,
-                "y": -317.0
+                "x": -605,
+                "y": -317
               },
               "RectSize": {
-                "x": 760.0,
-                "y": 24.0
+                "x": 760,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7250,8 +7250,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -7296,24 +7296,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 467.0,
-                "y": 287.0
+                "x": 467,
+                "y": 287
               },
               "OffsetMin": {
-                "x": 363.0,
-                "y": 183.0
+                "x": 363,
+                "y": 183
               },
               "RectSize": {
-                "x": 104.0,
-                "y": 104.0
+                "x": 104,
+                "y": 104
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7362,24 +7362,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 30.0,
-                "y": 30.0
+                "x": 30,
+                "y": 30
               },
               "OffsetMin": {
-                "x": -30.0,
-                "y": -30.0
+                "x": -30,
+                "y": -30
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 60.0
+                "x": 60,
+                "y": 60
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7428,24 +7428,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 595.0,
-                "y": 110.0
+                "x": 595,
+                "y": 110
               },
               "OffsetMin": {
-                "x": 235.0,
-                "y": 86.0
+                "x": 235,
+                "y": 86
               },
               "RectSize": {
-                "x": 360.0,
-                "y": 24.0
+                "x": 360,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7457,8 +7457,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -7503,24 +7503,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 595.0,
-                "y": -19.0
+                "x": 595,
+                "y": -19
               },
               "OffsetMin": {
-                "x": 235.0,
-                "y": -91.0
+                "x": 235,
+                "y": -91
               },
               "RectSize": {
-                "x": 360.0,
-                "y": 72.0
+                "x": 360,
+                "y": 72
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7532,8 +7532,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -7578,24 +7578,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 640.0,
-                "y": 310.0
+                "x": 640,
+                "y": 310
               },
               "OffsetMin": {
-                "x": -640.0,
-                "y": -390.0
+                "x": -640,
+                "y": -390
               },
               "RectSize": {
-                "x": 1280.0,
-                "y": 700.0
+                "x": 1280,
+                "y": 700
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": -1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": -1
               },
               "Enable": true
             }
@@ -7639,24 +7639,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -345.0,
-                "y": 335.0
+                "x": -345,
+                "y": 335
               },
               "OffsetMin": {
-                "x": -595.0,
-                "y": 309.0
+                "x": -595,
+                "y": 309
               },
               "RectSize": {
-                "x": 250.0,
-                "y": 26.0
+                "x": 250,
+                "y": 26
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7668,8 +7668,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -7714,24 +7714,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -345.0,
-                "y": 265.0
+                "x": -345,
+                "y": 265
               },
               "OffsetMin": {
-                "x": -595.0,
-                "y": -315.0
+                "x": -595,
+                "y": -315
               },
               "RectSize": {
-                "x": 250.0,
-                "y": 580.0
+                "x": 250,
+                "y": 580
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7779,24 +7779,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 44.0,
-                "y": 44.0
+                "x": 44,
+                "y": 44
               },
               "OffsetMin": {
-                "x": -44.0,
-                "y": -44.0
+                "x": -44,
+                "y": -44
               },
               "RectSize": {
-                "x": 88.0,
-                "y": 88.0
+                "x": 88,
+                "y": 88
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7809,28 +7809,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -7838,7 +7838,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -7894,24 +7894,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 24.0,
-                "y": 24.0
+                "x": 24,
+                "y": 24
               },
               "OffsetMin": {
-                "x": -24.0,
-                "y": -24.0
+                "x": -24,
+                "y": -24
               },
               "RectSize": {
-                "x": 48.0,
-                "y": 48.0
+                "x": 48,
+                "y": 48
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7951,33 +7951,33 @@
               "@type": "MOD.Core.UITransformComponent",
               "AlignmentOption": 8,
               "AnchorsMax": {
-                "x": 1.0,
-                "y": 0.0
+                "x": 1,
+                "y": 0
               },
               "AnchorsMin": {
-                "x": 1.0,
-                "y": 0.0
+                "x": 1,
+                "y": 0
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -8.0,
-                "y": 30.0
+                "x": -8,
+                "y": 30
               },
               "OffsetMin": {
-                "x": -68.0,
-                "y": 6.0
+                "x": -68,
+                "y": 6
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 24.0
+                "x": 60,
+                "y": 24
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -7989,8 +7989,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8035,24 +8035,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 580.0,
-                "y": 125.0
+                "x": 580,
+                "y": 125
               },
               "OffsetMin": {
-                "x": -240.0,
-                "y": 85.0
+                "x": -240,
+                "y": 85
               },
               "RectSize": {
-                "x": 820.0,
-                "y": 40.0
+                "x": 820,
+                "y": 40
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8064,8 +8064,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8110,24 +8110,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 580.0,
+                "x": 580,
                 "y": 37.5
               },
               "OffsetMin": {
-                "x": -240.0,
+                "x": -240,
                 "y": -67.5
               },
               "RectSize": {
-                "x": 820.0,
-                "y": 105.0
+                "x": 820,
+                "y": 105
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8139,8 +8139,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8185,24 +8185,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 90.0,
-                "y": -100.0
+                "x": 90,
+                "y": -100
               },
               "OffsetMin": {
-                "x": 30.0,
-                "y": -160.0
+                "x": 30,
+                "y": -160
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 60.0
+                "x": 60,
+                "y": 60
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8215,28 +8215,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -8244,7 +8244,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -8259,8 +8259,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8305,24 +8305,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 235.0,
-                "y": -108.0
+                "x": 235,
+                "y": -108
               },
               "OffsetMin": {
-                "x": 105.0,
-                "y": -152.0
+                "x": 105,
+                "y": -152
               },
               "RectSize": {
-                "x": 130.0,
-                "y": 44.0
+                "x": 130,
+                "y": 44
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8334,8 +8334,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8380,24 +8380,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 310.0,
-                "y": -100.0
+                "x": 310,
+                "y": -100
               },
               "OffsetMin": {
-                "x": 250.0,
-                "y": -160.0
+                "x": 250,
+                "y": -160
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 60.0
+                "x": 60,
+                "y": 60
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8410,28 +8410,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -8439,7 +8439,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -8454,8 +8454,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8501,23 +8501,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 427.5,
-                "y": -100.0
+                "y": -100
               },
               "OffsetMin": {
                 "x": 332.5,
-                "y": -160.0
+                "y": -160
               },
               "RectSize": {
-                "x": 95.0,
-                "y": 60.0
+                "x": 95,
+                "y": 60
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8530,28 +8530,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -8559,7 +8559,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -8574,8 +8574,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8620,24 +8620,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 580.0,
-                "y": -182.0
+                "x": 580,
+                "y": -182
               },
               "OffsetMin": {
-                "x": -240.0,
-                "y": -228.0
+                "x": -240,
+                "y": -228
               },
               "RectSize": {
-                "x": 820.0,
-                "y": 46.0
+                "x": 820,
+                "y": 46
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8649,8 +8649,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8695,24 +8695,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 295.0,
-                "y": -245.0
+                "x": 295,
+                "y": -245
               },
               "OffsetMin": {
-                "x": 45.0,
-                "y": -325.0
+                "x": 45,
+                "y": -325
               },
               "RectSize": {
-                "x": 250.0,
-                "y": 80.0
+                "x": 250,
+                "y": 80
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8725,28 +8725,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -8754,7 +8754,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -8769,8 +8769,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -8815,24 +8815,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -335.0,
-                "y": 350.0
+                "x": -335,
+                "y": 350
               },
               "OffsetMin": {
-                "x": -605.0,
-                "y": -350.0
+                "x": -605,
+                "y": -350
               },
               "RectSize": {
-                "x": 270.0,
-                "y": 700.0
+                "x": 270,
+                "y": 700
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8881,24 +8881,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 620.0,
-                "y": 350.0
+                "x": 620,
+                "y": 350
               },
               "OffsetMin": {
-                "x": -280.0,
-                "y": -350.0
+                "x": -280,
+                "y": -350
               },
               "RectSize": {
-                "x": 900.0,
-                "y": 700.0
+                "x": 900,
+                "y": 700
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -8947,24 +8947,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 38.0,
-                "y": 248.0
+                "x": 38,
+                "y": 248
               },
               "OffsetMin": {
-                "x": -58.0,
-                "y": 152.0
+                "x": -58,
+                "y": 152
               },
               "RectSize": {
-                "x": 96.0,
-                "y": 96.0
+                "x": 96,
+                "y": 96
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9013,24 +9013,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 30.0,
-                "y": 30.0
+                "x": 30,
+                "y": 30
               },
               "OffsetMin": {
-                "x": -30.0,
-                "y": -30.0
+                "x": -30,
+                "y": -30
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 60.0
+                "x": 60,
+                "y": 60
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9079,24 +9079,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 218.0,
-                "y": 226.0
+                "x": 218,
+                "y": 226
               },
               "OffsetMin": {
-                "x": 122.0,
-                "y": 174.0
+                "x": 122,
+                "y": 174
               },
               "RectSize": {
-                "x": 96.0,
-                "y": 52.0
+                "x": 96,
+                "y": 52
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9108,8 +9108,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -9154,24 +9154,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 398.0,
-                "y": 248.0
+                "x": 398,
+                "y": 248
               },
               "OffsetMin": {
-                "x": 302.0,
-                "y": 152.0
+                "x": 302,
+                "y": 152
               },
               "RectSize": {
-                "x": 96.0,
-                "y": 96.0
+                "x": 96,
+                "y": 96
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9220,24 +9220,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 30.0,
-                "y": 30.0
+                "x": 30,
+                "y": 30
               },
               "OffsetMin": {
-                "x": -30.0,
-                "y": -30.0
+                "x": -30,
+                "y": -30
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 60.0
+                "x": 60,
+                "y": 60
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9286,24 +9286,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 460.0,
-                "y": 73.0
+                "x": 460,
+                "y": 73
               },
               "OffsetMin": {
-                "x": -120.0,
-                "y": 47.0
+                "x": -120,
+                "y": 47
               },
               "RectSize": {
-                "x": 580.0,
-                "y": 26.0
+                "x": 580,
+                "y": 26
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9315,8 +9315,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -9362,23 +9362,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -67.5,
-                "y": 420.0
+                "y": 420
               },
               "OffsetMin": {
                 "x": -252.5,
-                "y": 350.0
+                "y": 350
               },
               "RectSize": {
-                "x": 185.0,
-                "y": 70.0
+                "x": 185,
+                "y": 70
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": -1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": -1
               },
               "Enable": true
             },
@@ -9391,28 +9391,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -9420,7 +9420,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -9435,8 +9435,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -9482,23 +9482,23 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": -262.5,
-                "y": 420.0
+                "y": 420
               },
               "OffsetMin": {
                 "x": -447.5,
-                "y": 350.0
+                "y": 350
               },
               "RectSize": {
-                "x": 185.0,
-                "y": 70.0
+                "x": 185,
+                "y": 70
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": -1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": -1
               },
               "Enable": true
             },
@@ -9511,28 +9511,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -9540,7 +9540,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -9555,8 +9555,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -9601,24 +9601,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 680.0,
+                "x": 680,
                 "y": 430.0001
               },
               "OffsetMin": {
-                "x": -680.0,
+                "x": -680,
                 "y": -429.9999
               },
               "RectSize": {
-                "x": 1360.0,
-                "y": 860.0
+                "x": 1360,
+                "y": 860
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": -1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": -1
               },
               "Enable": true
             }
@@ -9662,24 +9662,24 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 680.0,
-                "y": 430.0
+                "x": 680,
+                "y": 430
               },
               "OffsetMin": {
-                "x": -680.0,
-                "y": -430.0
+                "x": -680,
+                "y": -430
               },
               "RectSize": {
-                "x": 1360.0,
-                "y": 860.0
+                "x": 1360,
+                "y": 860
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9720,32 +9720,32 @@
               "AlignmentOption": 3,
               "AnchorsMax": {
                 "x": 0.5,
-                "y": 1.0
+                "y": 1
               },
               "AnchorsMin": {
                 "x": 0.5,
-                "y": 1.0
+                "y": 1
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -460.0,
-                "y": -14.0
+                "x": -460,
+                "y": -14
               },
               "OffsetMin": {
-                "x": -650.0,
-                "y": -54.0
+                "x": -650,
+                "y": -54
               },
               "RectSize": {
-                "x": 190.0,
-                "y": 40.0
+                "x": 190,
+                "y": 40
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9757,8 +9757,8 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
               "Enable": true
@@ -9794,12 +9794,12 @@
               "@type": "MOD.Core.UITransformComponent",
               "AlignmentOption": 5,
               "AnchorsMax": {
-                "x": 1.0,
-                "y": 1.0
+                "x": 1,
+                "y": 1
               },
               "AnchorsMin": {
-                "x": 1.0,
-                "y": 1.0
+                "x": 1,
+                "y": 1
               },
               "MobileOnly": false,
               "OffsetMax": {
@@ -9811,16 +9811,16 @@
                 "y": -70.28601
               },
               "RectSize": {
-                "x": 64.0,
-                "y": 64.0
+                "x": 64,
+                "y": 64
               },
               "UIMode": 1,
               "UIVersion": 2,
               "QuaternionRotation": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 1.0
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
               },
               "Enable": true
             },
@@ -9833,28 +9833,28 @@
               "@type": "MOD.Core.ButtonComponent",
               "Colors": {
                 "NormalColor": {
-                  "r": 1.0,
-                  "g": 1.0,
-                  "b": 1.0,
-                  "a": 1.0
+                  "r": 1,
+                  "g": 1,
+                  "b": 1,
+                  "a": 1
                 },
                 "HighlightedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "PressedColor": {
                   "r": 0.784313738,
                   "g": 0.784313738,
                   "b": 0.784313738,
-                  "a": 1.0
+                  "a": 1
                 },
                 "SelectedColor": {
                   "r": 0.9607843,
                   "g": 0.9607843,
                   "b": 0.9607843,
-                  "a": 1.0
+                  "a": 1
                 },
                 "DisabledColor": {
                   "r": 0.784313738,
@@ -9862,7 +9862,7 @@
                   "b": 0.784313738,
                   "a": 0.5019608
                 },
-                "ColorMultiplier": 1.0,
+                "ColorMultiplier": 1,
                 "FadeDuration": 0.1
               },
               "ImageRUIDs": {
@@ -9877,10 +9877,198 @@
             {
               "@type": "MOD.Core.TextComponent",
               "OutlineDistance": {
-                "x": 1.0,
-                "y": -1.0
+                "x": 1,
+                "y": -1
               },
               "OverrideSorting": false,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "c80f96c7-7caa-4005-86b6-992abc6b3f77",
+        "path": "/ui/PromoteGroup/PromoteRoot/Panel_Promote/CellTemplate/QBadge",
+        "componentNames": "MOD.Core.UITransformComponent,MOD.Core.SpriteGUIRendererComponent,MOD.Core.TextGUIRendererComponent",
+        "jsonString": {
+          "name": "QBadge",
+          "path": "/ui/PromoteGroup/PromoteRoot/Panel_Promote/CellTemplate/QBadge",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 2,
+          "pathConstraints": "//////",
+          "revision": 0,
+          "origin": {
+            "type": "Model",
+            "entry_id": "UISprite",
+            "sub_entity_id": null,
+            "root_entity_id": null,
+            "replaced_model_id": null
+          },
+          "modelId": "uisprite",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "ActivePlatform": 255,
+              "AlignmentOption": 4,
+              "AnchorsMax": {
+                "x": 0,
+                "y": 1
+              },
+              "AnchorsMin": {
+                "x": 0,
+                "y": 1
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 54,
+                "y": -4
+              },
+              "OffsetMin": {
+                "x": 4,
+                "y": -30
+              },
+              "Pivot": {
+                "x": 0,
+                "y": 1
+              },
+              "RectSize": {
+                "x": 50,
+                "y": 26
+              },
+              "UIMode": 1,
+              "UIScale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "UIVersion": 2,
+              "anchoredPosition": {
+                "x": 0,
+                "y": 0
+              },
+              "Position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "QuaternionRotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "Scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+              },
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "AnimClipPlayType": 0,
+              "EndFrameIndex": 2147483647,
+              "ImageRUID": {
+                "DataId": "2860136c06ab075439721c027de365af"
+              },
+              "IgnoreMapLayerCheck": false,
+              "LocalPosition": {
+                "x": 0,
+                "y": 0
+              },
+              "LocalScale": {
+                "x": 1,
+                "y": 1
+              },
+              "MaterialId": "",
+              "OrderInLayer": 30,
+              "OverrideSorting": false,
+              "PlayRate": 1,
+              "PreserveSprite": 0,
+              "SortingLayer": "UI",
+              "StartFrameIndex": 0,
+              "Color": {
+                "r": 0.227,
+                "g": 0.247,
+                "b": 0.294,
+                "a": 0.92
+              },
+              "DropShadow": false,
+              "DropShadowAngle": 120,
+              "DropShadowColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0.72
+              },
+              "DropShadowDistance": 3,
+              "FillAmount": 1,
+              "FillCenter": true,
+              "FillClockWise": true,
+              "FillMethod": 0,
+              "FillOrigin": 0,
+              "FlipX": false,
+              "FlipY": false,
+              "FrameColumn": 1,
+              "FrameRate": 0,
+              "FrameRow": 1,
+              "Outline": false,
+              "OutlineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              },
+              "OutlineWidth": 3,
+              "RaycastTarget": false,
+              "Type": 1,
+              "Enable": true
+            },
+            {
+              "@type": "MOD.Core.TextGUIRendererComponent",
+              "BestFit": false,
+              "ConstraintX": 100,
+              "ConstraintY": 100,
+              "Font": "Default",
+              "FontColor": {
+                "r": 0.9490196,
+                "g": 0.956862748,
+                "b": 0.968627453,
+                "a": 1
+              },
+              "FontSize": 15,
+              "FontStyle": 1,
+              "HorizontalAlignment": 2,
+              "IgnoreMapLayerCheck": false,
+              "MaxSize": 40,
+              "MinSize": 10,
+              "OrderInLayer": 31,
+              "OutlineColor": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              },
+              "OutlineWidth": 0,
+              "Overflow": 0,
+              "OverrideSorting": false,
+              "Padding": {
+                "left": 0,
+                "right": 0,
+                "top": 0,
+                "bottom": 0
+              },
+              "SizeFit": false,
+              "SortingLayer": "UI",
+              "Text": "",
+              "Underlay": false,
+              "UseConstraintX": false,
+              "UseConstraintY": false,
+              "VerticalAlignment": 512,
               "Enable": true
             }
           ],
