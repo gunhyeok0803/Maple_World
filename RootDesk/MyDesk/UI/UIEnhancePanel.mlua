@@ -755,7 +755,7 @@ script UIEnhancePanel extends Component
 		local sel = self._T.selected
 		if n.cost ~= nil then
 			local have = self:GetWalletRes(7)
-			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. "개      필요 1개")
 		end
 		if sel == nil or sel.name == nil or sel.name == "" then
 			self:SetText(n.curGrade, "-")
@@ -862,7 +862,7 @@ script UIEnhancePanel extends Component
 		local n = self._T.fl
 		if n.cost ~= nil then
 			local have = self:GetWalletRes(8)
-			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. "개      필요 1개")
 		end
 		local sel = self._T.selected
 		self:SetItemHdr(n.hdr, sel)
@@ -968,7 +968,7 @@ script UIEnhancePanel extends Component
 		if btn == nil then return end
 		local list = layout:GetChildByName("Panel_MatList")
 		if list ~= nil then list.Enable = false end
-		self:SetText(self:FirstTextChild(btn), "▼ " .. matLabel)
+		self:SetText(self:FirstTextChild(btn), matLabel .. "      ▼")
 		self:WireEntOnce(key, btn, function() self:ToggleMatList(layout, matLabel, resType) end)
 	end
 
@@ -981,10 +981,10 @@ script UIEnhancePanel extends Component
 		local open = not list.Enable
 		list.Enable = open
 		local btn = layout:GetChildByName("Btn_MatToggle")
-		if btn ~= nil then self:SetText(self:FirstTextChild(btn), (open and "▲ " or "▼ ") .. matLabel) end
+		if btn ~= nil then self:SetText(self:FirstTextChild(btn), matLabel .. (open and "      ▲" or "      ▼")) end
 		if open then
-			local have = self:GetWalletRes(resType)
-			self:SetText(list:GetChildByName("Text_List"), "• " .. matLabel .. "   보유 " .. tostring(math.floor(have or 0)))
+			-- 선택 가능한 재료 종류 목록(지금은 1종, 추후 다종 확장). 보유/필요는 비용 행에서 표기.
+			self:SetText(list:GetChildByName("Text_List"), "• " .. matLabel)
 		end
 	end
 
