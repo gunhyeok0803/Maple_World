@@ -2,9 +2,9 @@
 const { UIBuilder } = require("C:/Users/rnsgu/MSW_ProjectAI00/.claude/skills/msw-ui-system/scripts/msw_ui_builder.cjs");
 const UI = "ui/EnhanceGroup.ui";
 const b = UIBuilder.read(UI);
-const potL = "/ui/EnhanceGroup/EnhanceRoot/Tab_Potential/Layout/";
+const potL = "/ui/EnhanceGroup/Tab_Potential/Layout/";
 const targets = ["Btn_OptInfo", "Btn_Prefer", "Chk_X3", "Chk_Keep", "Text_X3", "Text_Keep"].map(n => potL + n);
-targets.push("/ui/EnhanceGroup/EnhanceRoot/Popup_PotInfo");
+targets.push("/ui/EnhanceGroup/Popup_PotInfo");
 let removed = 0;
 for (const p of targets) {
   if (b.find(p)) { b.remove(p); removed++; console.log("removed:", p.split("/").pop()); }
