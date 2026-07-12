@@ -402,20 +402,15 @@ script UIEnhancePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
-	method void UnifyCostIcon(any layout, string hostName, string iconName)
-		-- 잠재/환생 비용 아이콘을 스타포스 코인(메소)으로 통일 — 실비용이 메소(res)이므로 다이아 표기는 오해 소지.
-		if layout == nil or isvalid(self.contentStar) == false then return end
-		local sp = self.contentStar:GetChildByName("Panel")
-		local coin = sp ~= nil and sp:GetChildByName("Layout_Cost") or nil
-		coin = coin ~= nil and coin:GetChildByName("Img_BG") or nil
-		coin = coin ~= nil and coin:GetChildByName("Img_Cost") or nil
-		if coin == nil or coin.SpriteGUIRendererComponent == nil then return end
+	method void SetCostIcon(any layout, string hostName, string iconName, string ruid)
+		-- 비용 아이콘(비용 왼쪽)에 탭별 통화 아이콘 RUID 지정. Layout_Cost 아래 host(Img_BG/Text_Cost) 아래 iconName 스프라이트.
+		if layout == nil or isvalid(layout) == false then return end
 		local costL = layout:GetChildByName("Layout_Cost")
 		if costL == nil then return end
 		local host = hostName ~= "" and costL:GetChildByName(hostName) or costL
 		local target = host ~= nil and host:GetChildByName(iconName) or nil
 		if target ~= nil and target.SpriteGUIRendererComponent ~= nil then
-			target.SpriteGUIRendererComponent.ImageRUID = coin.SpriteGUIRendererComponent.ImageRUID
+			target.SpriteGUIRendererComponent.ImageRUID = ruid
 		end
 	end
 
@@ -479,6 +474,7 @@ script UIEnhancePanel extends Component
 		if isvalid(self.contentStar) == false then return false end
 		local panel = self.contentStar:GetChildByName("Panel")
 		if panel == nil then return false end
+		self:SetCostIcon(panel, "Img_BG", "Img_Cost", "6d050c1d59154c968a8ff74e6fc229cb")   -- 스타포스=메소 아이콘(비용 왼쪽)
 		local prob = panel:GetChildByName("Layout_Prob")
 		local lvl = panel:GetChildByName("StarForceLevel")
 		local costL = panel:GetChildByName("Layout_Cost")
@@ -722,7 +718,7 @@ script UIEnhancePanel extends Component
 		local layout = self.contentPot:GetChildByName("Layout")
 		if layout == nil then return false end
 		local n = {}
-		self:UnifyCostIcon(layout, "Img_BG", "Img_Dia")
+		self:SetCostIcon(layout, "Img_BG", "Img_Dia", "07b0f309e17d4b4ca5564b0c038d889d")   -- 잠재=큐브 아이콘(비용 왼쪽)
 		local before = layout:GetChildByName("Layout_Before")   -- 현재 잠재옵션 박스
 		local after = layout:GetChildByName("Layout_After")      -- 가챠 결과 박스
 		if before ~= nil then
@@ -757,7 +753,7 @@ script UIEnhancePanel extends Component
 		local sel = self._T.selected
 		if n.cost ~= nil then
 			local have = self:GetWalletRes(7)
-			self:SetText(n.cost, "수상한 큐브  ·  보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
 		end
 		if sel == nil or sel.name == nil or sel.name == "" then
 			self:SetText(n.curGrade, "-")
@@ -834,7 +830,7 @@ script UIEnhancePanel extends Component
 		local layout = self.contentFlame:GetChildByName("Layout")
 		if layout == nil then return false end
 		local n = {}
-		self:UnifyCostIcon(layout, "Text_Cost", "Img_Cost")
+		self:SetCostIcon(layout, "Text_Cost", "Img_Cost", "139069e8b5ff40d48cb75edf9de27e3e")   -- 환생=불꽃 아이콘(비용 왼쪽)
 		n.name = layout:GetChildByName("Text_ItemName")
 		local info = layout:GetChildByName("Layout_PotenInfo")
 		if info ~= nil then n.opts = info:GetChildByName("Text_Opts") end
@@ -858,7 +854,7 @@ script UIEnhancePanel extends Component
 		local n = self._T.fl
 		if n.cost ~= nil then
 			local have = self:GetWalletRes(8)
-			self:SetText(n.cost, "강력한 환생의 불꽃  ·  보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
 		end
 		local sel = self._T.selected
 		self:SetItemHdr(n.hdr, sel)
