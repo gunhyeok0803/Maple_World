@@ -757,7 +757,7 @@ script UIEnhancePanel extends Component
 		local sel = self._T.selected
 		if n.cost ~= nil then
 			local have = self:GetWalletRes(7)
-			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+			self:SetText(n.cost, "수상한 큐브  ·  보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
 		end
 		if sel == nil or sel.name == nil or sel.name == "" then
 			self:SetText(n.curGrade, "-")
@@ -858,7 +858,7 @@ script UIEnhancePanel extends Component
 		local n = self._T.fl
 		if n.cost ~= nil then
 			local have = self:GetWalletRes(8)
-			self:SetText(n.cost, "보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
+			self:SetText(n.cost, "강력한 환생의 불꽃  ·  보유 " .. tostring(math.floor(have or 0)) .. " / 필요 1")
 		end
 		local sel = self._T.selected
 		self:SetItemHdr(n.hdr, sel)
