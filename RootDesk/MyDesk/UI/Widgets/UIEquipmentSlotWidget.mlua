@@ -53,12 +53,25 @@ script UIEquipmentSlotWidget extends Component
 		local countEntity = self.Entity:GetChildByName("Count")
 		if countEntity ~= nil and countEntity.TextComponent ~= nil then
 			if count ~= nil and count > 1 then
-				countEntity.TextComponent.Text = tostring(count)
+				countEntity.TextComponent.Text = self:AbbrevCount(count)
 				countEntity.Enable = true
 			else
 				countEntity.Enable = false
 			end
 		end
+	end
+
+	method string AbbrevCount(integer n)
+		-- 큰 수량 축약(아이콘 넘침 방지): <10000 그대로, <100만 "N.Nk", 그 이상 "N.Nm"(.0 제거).
+		if n < 10000 then return tostring(n) end
+		if n < 1000000 then
+			local s = string.format("%.1f", n / 1000)
+			if string.sub(s, -2) == ".0" then s = string.sub(s, 1, -3) end
+			return s .. "k"
+		end
+		local s = string.format("%.1f", n / 1000000)
+		if string.sub(s, -2) == ".0" then s = string.sub(s, 1, -3) end
+		return s .. "m"
 	end
 
 	@ExecSpace("ClientOnly")

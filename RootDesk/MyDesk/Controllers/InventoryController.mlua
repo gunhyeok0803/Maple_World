@@ -343,6 +343,32 @@ script InventoryController extends Component
 	end
 
 	@ExecSpace("ServerOnly")
+	method boolean AddItemPgN(string itemName, integer star, integer grade, string pot, string flame, integer pg, integer n)
+		-- 대량 획득: 같은 StackKey면 count += n, 없으면 새 칸 count=n. (보상/테스트 대량 지급용)
+		local cnt = n or 1
+		if cnt < 1 then return false end
+		local st = star or 0
+		local gr = grade or _ItemGrade.Rare
+		local pgv = pg or _PotentialGrade.Rare
+		local po = pot or ""
+		local fl = flame or ""
+		local key = self:StackKeyOf(itemName, st, gr, po, fl, pgv)
+		for i, s in ipairs(self._T.slots) do
+			if self:StackKeyOf(s.name, s.star or 0, s.grade or _ItemGrade.Rare, s.pot or "", s.flame or "", s.pg or _PotentialGrade.Rare) == key then
+				s.count = s.count + cnt
+				self:Publish()
+				self:MarkDirty()
+				return true
+			end
+		end
+		if not self:HasSpaceFor(1) then return false end
+		self._T.slots[#self._T.slots + 1] = { name = itemName, count = cnt, star = st, grade = gr, pg = pgv, pot = po, flame = fl }
+		self:Publish()
+		self:MarkDirty()
+		return true
+	end
+
+	@ExecSpace("ServerOnly")
 	method void RemoveItemAt(integer index)
 		if self._T.slots == nil or index == nil or index < 1 or index > #self._T.slots then
 			log_warning("[Inventory] RemoveItemAt 잘못된 index=" .. tostring(index))
