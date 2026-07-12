@@ -466,6 +466,19 @@ script UIEnhancePanel extends Component
 		return out
 	end
 
+	method any CtaColor()
+		-- 3탭 주 CTA 통일색(메이플식 형광 연두). 스크린샷 검증색.
+		return Color(0.68, 0.92, 0.18, 1)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void TintCta(any ent)
+		-- 주 CTA 버튼 스프라이트에 통일 연두 틴트(팩 버튼 베이스가 밝아 그대로 밝게 표현).
+		if ent ~= nil and isvalid(ent) and ent.SpriteGUIRendererComponent ~= nil then
+			ent.SpriteGUIRendererComponent.Color = self:CtaColor()
+		end
+	end
+
 	@ExecSpace("ClientOnly")
 	method boolean EnsureStarWired()
 		-- 스타포스 탭(Tab_StarForce/Panel) 노드 캐시(1회) + 강화·복구 버튼 배선.
@@ -501,6 +514,7 @@ script UIEnhancePanel extends Component
 		if enchant ~= nil then
 			local h = enchant:ConnectEvent(ButtonClickEvent, function() self:OnEnchantClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = enchant, h = h }
+			self:TintCta(enchant)
 		end
 		self._T.sf = n
 		return true
@@ -740,6 +754,7 @@ script UIEnhancePanel extends Component
 			self:SetText(self:FirstTextChild(n.btnConvert), "큐브 사용")
 			local h = n.btnConvert:ConnectEvent(ButtonClickEvent, function() self:OnPotCubeClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnConvert, h = h }
+			self:TintCta(n.btnConvert)
 		end
 		-- 항목4: 재료 토글(공용) — 잠재=수상한 큐브(res 7).
 		self:WireMatToggle(layout, "matTogglePot", "수상한 큐브", 7)
@@ -844,6 +859,7 @@ script UIEnhancePanel extends Component
 			self:SetText(self:FirstTextChild(n.btnOk), "환생의 불꽃 사용")
 			local h = n.btnOk:ConnectEvent(ButtonClickEvent, function() self:OnFlameClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnOk, h = h }
+			self:TintCta(n.btnOk)
 		end
 		-- 항목1: 확률 정보 / 선호 저장 버튼(위치는 Maker 배치) + 확률 팝업 닫기 배선.
 		self:WireEntOnce("flameProb", layout:GetChildByName("Btn_FlameProb"), function() self:OnFlameProbClicked() end)
