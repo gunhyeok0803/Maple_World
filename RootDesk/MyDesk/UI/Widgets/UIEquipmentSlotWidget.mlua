@@ -91,6 +91,11 @@ script UIEquipmentSlotWidget extends Component
 		-- 옛 프레임 오버레이(Body=MapleFrameSlot)는 등급 슬롯을 가리므로 끔.
 		local body = self.Entity:GetChildByName("Body")
 		if body ~= nil then body.Enable = false end
+		-- 빈 칸(아이템 없음)은 등급 배지 숨김(빈 배지 배경 노출 방지). 채워진 칸은 SetData가 표시.
+		if self.itemName == "" then
+			local qb = self.Entity:GetChildByName("QBadge")
+			if qb ~= nil then qb.Enable = false end
+		end
 	end
 
 	@EventSender("Self")
