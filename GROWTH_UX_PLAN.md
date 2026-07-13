@@ -38,6 +38,15 @@
 - **항목3 안전분**: ✅ 커밋 `7954d66`. 착용 등급 배지(EquipCell QBadge)·빈칸 배지숨김·헤더 폰트 통일(16).
 - **항목3 착용 27슬롯 스크롤**: ✅ 커밋 `476d227`. 착용부 고정 4칸 → **EquipGrid(GridView 27슬롯 스크롤)**, 인벤과 동일 27부위·**잠금 8개**·스크롤. 강화창 UX상 성장 4부위(무기/모자/신발/반지1) 전면 배치(즉시 선택), 나머지 23부위 시각 일관성용(비성장=클릭 무시). SetupGrid 공용 헬퍼(인벤/착용 CellTemplate 공유). play 검증(착용 첫칸 무기 하급 배지·스크롤바·인벤 그리드 정상). **→ Panel_EquipList는 EnhanceGroup 직속이라 자식 위치/그리드 렌더 신뢰됨(앞선 "보류" 판단 정정).**
 
+## ⚠ 사용자 수동 조치 필요 (Global 읽기전용)
+- **CombatPowerSystem → EquipStatSystem 리네임(커밋 `1b8347b`)** 후 `Global/DefaultPlayer.model` **재부착 필요**:
+  1. Maker에서 **DefaultPlayer**(또는 DefaultPlayer.model) 열기 → 컴포넌트 목록.
+  2. 고아가 된 **`CombatPowerSystem` 컴포넌트 제거**(스크립트 삭제됨).
+  3. **`script.EquipStatSystem` 컴포넌트 추가**(다른 성장 시스템들과 같은 위치).
+  4. 저장 → MCP `refresh`. (부착 안 잡히면 `UIEnhancePanel.mlua` 한 번 저장 터치 후 refresh — rename gotcha.)
+  - 재부착 전까지: 강화창 **중앙 요약 스탯 공란** + 로그에 `CombatPowerSystem.OnBeginPlay` 실행실패(비치명적, 크래시 없음).
+- 전투력(CP) 산출은 **팀원 도메인** — 우리 `EquipStatSystem`은 per-item 장비 스탯 합산만. 컬렉션 보너스는 `CollectionSystem:GetBonus()`로 노출(팀원 전투력이 소비).
+
 ## ⏳ 남은 것
 - **항목6 연출**(성공/실패 이펙트·사운드·등급업): 사용자 지시대로 모든 기능·UI 완료 후 최후 적용.
 - (선택) 컬렉션 "등록 성공률 100%" 문구도 승급처럼 결정론 표현으로 바꿀 수 있음(item5 점검만이라 미변경).
