@@ -620,10 +620,10 @@ script UIInventoryPopup extends Component
 		local eq = self:GetEquip()
 		if eq == nil then log_warning("[UIInventoryPopup] EquipmentController 미부착") return end
 		-- 선택 개체의 실제 투자값(성급/등급/잠재등급/잠재/환생) 그대로 장착
-		local st, gr, pg, po, fl = 0, _ItemGrade.Rare, _PotentialGrade.Rare, "", ""
+		local st, gr, pg, po, fl = 0, _ItemGrade.Low, _PotentialGrade.Rare, "", ""
 		if self._T.curIndex ~= nil then
 			local si = inv:GetSlots()[self._T.curIndex]
-			if si ~= nil then st = si.star or 0; gr = si.grade or _ItemGrade.Rare; pg = si.pg or _PotentialGrade.Rare; po = si.pot or ""; fl = si.flame or "" end
+			if si ~= nil then st = si.star or 0; gr = si.grade or _ItemGrade.Low; pg = si.pg or _PotentialGrade.Rare; po = si.pot or ""; fl = si.flame or "" end
 		end
 		eq:RequestEquip(part, self._T.curName, st, gr, po, fl, pg)
 		self:HideDetail()

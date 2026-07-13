@@ -443,7 +443,7 @@ script UIPromotePanel extends Component
 		for gi, s in ipairs(inv:GetSlots()) do
 			local ok = (s.star or 0) == 0 and (s.pot or "") == "" and (s.flame or "") == "" and inv:MetaCell(s.name, "Part") ~= ""
 			if ok then
-				ok = (s.grade or 1) < _ItemGrade.Legendary
+				ok = (s.grade or 1) < _ItemGrade.Best
 			end
 			if ok then filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pg = s.pg } end
 		end
@@ -484,8 +484,8 @@ script UIPromotePanel extends Component
 				log("[UIPromotePanel] 컬렉션 등록 불가(수량 부족) " .. tostring(cand.itemName) .. " Q" .. tostring(cand.grade))
 				return
 			end
-			cs:RequestRegister(cand.itemName, cand.grade, cand.maxT)
-			log("[UIPromotePanel] 컬렉션 등록 요청 " .. tostring(cand.itemName) .. " Q" .. tostring(cand.grade) .. " x" .. tostring(cand.maxT))
+			cs:RequestRegisterPg(cand.itemName, cand.grade, cand.pg, cand.maxT)
+			log("[UIPromotePanel] 컬렉션 등록 요청 " .. tostring(cand.itemName) .. " 품질" .. tostring(cand.grade) .. " 잠재" .. tostring(cand.pg) .. " x" .. tostring(cand.maxT))
 			return
 		end
 		if self._T.selWidget ~= nil and isvalid(self._T.selWidget) then self._T.selWidget:SetSelected(false) end

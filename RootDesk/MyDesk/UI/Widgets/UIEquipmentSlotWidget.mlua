@@ -11,11 +11,6 @@ script UIEquipmentSlotWidget extends Component
 
 	property Entity ownerWindow = nil
 
-	method Color ColorForGrade(integer g)
-		-- 등급별 색
-		return _ItemGrade:ColorOf(g)
-	end
-
 	method Color ColorSelected()
 		return Color(1.0, 1.0, 1.0, 1)
 	end

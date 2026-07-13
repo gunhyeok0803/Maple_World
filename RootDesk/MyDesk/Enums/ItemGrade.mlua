@@ -1,11 +1,12 @@
 @Logic
 script ItemGrade extends Logic
-	-- 등급 상수(1-기반, 0=없음) + 표기/색 헬퍼
+	-- 아이템등급(품질) 상수(1-기반, 0=없음). 잠재등급(_PotentialGrade)과 이름 충돌 제거: Low/Normal/High/Best.
+	-- ※ 정수값(1~4)은 불변 → StackKey/CSV(정수 저장) 100% 호환. 잠재등급=레어~레전드리(색), 아이템등급=하급~최상급(텍스트).
 	property integer None = 0
-	property integer Rare = 1
-	property integer Epic = 2
-	property integer Unique = 3
-	property integer Legendary = 4
+	property integer Low = 1
+	property integer Normal = 2
+	property integer High = 3
+	property integer Best = 4
 
 	method string Name(integer g)
 		-- 등급 → 한글(하급/중급/상급/최상급). 한 라인 안에서의 4단계 세부 등급(메이플키우기 기준, 사용자 확정).
@@ -23,39 +24,24 @@ script ItemGrade extends Logic
 	end
 
 	method string Key(integer g)
-		-- 등급 → 영문 키
-		if g == 4 then return "Legendary" end
-		if g == 3 then return "Unique" end
-		if g == 2 then return "Epic" end
-		if g == 1 then return "Rare" end
+		-- 등급 → 영문 키(아이템등급 전용: Low/Normal/High/Best). 잠재등급 키(Rare~)와 겹치지 않음.
+		if g == 4 then return "Best" end
+		if g == 3 then return "High" end
+		if g == 2 then return "Normal" end
+		if g == 1 then return "Low" end
 		return "None"
 	end
 
 	method integer FromKey(string s)
-		-- 문자열(영문키/신·구 한글표기) → 등급, 미상은 1
-		if s == "Legendary" or s == "최상급" or s == "레전드리" then return 4 end
-		if s == "Unique" or s == "상급" or s == "유니크" then return 3 end
-		if s == "Epic" or s == "중급" or s == "에픽" then return 2 end
+		-- 문자열(신 영문키/구 영문키/한글표기) → 등급, 미상은 1. 구키(Rare~)도 하위호환 수용.
+		if s == "Best" or s == "Legendary" or s == "최상급" then return 4 end
+		if s == "High" or s == "Unique" or s == "상급" then return 3 end
+		if s == "Normal" or s == "Epic" or s == "중급" then return 2 end
 		return 1
 	end
 
-	method Color ColorOf(integer g)
-		-- 하급 하늘 / 중급 보라 / 상급 노랑 / 최상급 초록
-		if g == 4 then return Color(0.40, 0.85, 0.45, 1) end
-		if g == 3 then return Color(0.98, 0.82, 0.25, 1) end
-		if g == 2 then return Color(0.66, 0.42, 0.92, 1) end
-		return Color(0.36, 0.74, 0.96, 1)
-	end
-
-	method string SlotRUID(integer g)
-		-- 등급 → 슬롯 배경 스프라이트 RUID(UIResourceSimpleFantasy Core_Slot 첫째줄, 그대로 사용).
-		-- 일반/레어/에픽/유니크/레전드리.
-		if g == 4 then return "70565cb756634ae7a168975f7a18fb1d" end
-		if g == 3 then return "74d4021ef1794501acb73b78d267574e" end
-		if g == 2 then return "90c4bb16c95a4ae3916098b6ffb4d0e4" end
-		if g == 1 then return "dcbbede8a7a0478b97e2ffa23b7fc14a" end
-		return "aa931a755e5949699233b817029a3e36"
-	end
+	-- ⛔ 아이템등급은 색/슬롯 없음(텍스트 전용 규칙, GRADE_AXES_RULE.md). 색·슬롯은 잠재등급(_PotentialGrade)만 담당.
+	--    과거 ColorOf/SlotRUID(잠재색과 중복·미사용)는 제거함.
 
 	method boolean IsMax(integer g)
 		-- 최고 등급(레전드리)

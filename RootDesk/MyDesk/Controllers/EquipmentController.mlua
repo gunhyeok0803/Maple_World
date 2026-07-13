@@ -46,7 +46,7 @@ script EquipmentController extends Component
 		end
 		local inv = self:GetInv()
 		if inv == nil then return end
-		inv:EquipInternalEx(part, itemName, star or 0, grade or _ItemGrade.Rare, pot or "", flame or "", pg or _PotentialGrade.Rare)
+		inv:EquipInternalEx(part, itemName, star or 0, grade or _ItemGrade.Low, pot or "", flame or "", pg or _PotentialGrade.Rare)
 	end
 
 	@ExecSpace("Server")

@@ -213,7 +213,7 @@ script StarforceSystem extends Component
 			log_warning("[SF] 잘못된 흔적 index=" .. tostring(traceIndex))
 			return
 		end
-		local mgrade = tr.grade or _ItemGrade.Legendary
+		local mgrade = tr.grade or _ItemGrade.Best
 		if inv:CountItemPg(tr.name, 0, mgrade, "", "", _PotentialGrade.Legendary) < 1 then
 			log("[SF] 복구 재료 부족(레전드리(잠재) 순정 필요): " .. tostring(tr.name))
 			return

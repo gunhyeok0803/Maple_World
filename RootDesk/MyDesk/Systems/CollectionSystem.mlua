@@ -192,6 +192,61 @@ script CollectionSystem extends Component
 		self:DoRegister(itemName, grade, times)
 	end
 
+	method integer MaxRegisterPg(string itemName, integer grade, integer pg)
+		-- ★0 순정 (name, 아이템등급 grade, 잠재등급 pg) 특정 버킷 보유량 / 등록단위 = 가능 횟수. 잠재축 정확 소모(버킷 겹침 제거).
+		local unit = self:RegUnitFor(itemName, grade)
+		if unit <= 0 then return 0 end
+		local inv = self:GetInv()
+		if inv == nil then return 0 end
+		return math.floor(inv:CountItemPg(itemName, 0, grade, "", "", pg) / unit)
+	end
+
+	@ExecSpace("ServerOnly")
+	method void DoRegisterPg(string itemName, integer grade, integer pg, integer times)
+		-- (name, 아이템등급 grade, 잠재등급 pg) 특정 스택을 times회 등록: 등록단위×times를 그 pg 버킷에서만 정확 소모.
+		-- 도감 슬롯은 아이템등급(grade) 기준으로 누적(잠재는 어떤 물리 스택을 쓸지만 결정 — 두 축 독립).
+		local key = self:ItemBookKey(itemName)
+		if key == nil then
+			log("[Collection] 도감 대상 아님: " .. tostring(itemName))
+			return
+		end
+		local row = self:FindBookRow(key.region, key.part, grade)
+		if row == nil then
+			log("[Collection] 도감 행 없음: " .. key.region .. "/" .. key.part .. "/G" .. tostring(grade))
+			return
+		end
+		local unit = tonumber(row:GetItem("RegUnit")) or 0
+		if unit <= 0 then return end
+		local t = times or 1
+		if t < 1 then t = 1 end
+		local maxT = self:MaxRegisterPg(itemName, grade, pg)
+		if t > maxT then t = maxT end
+		if t < 1 then
+			log("[Collection] 재료 부족: " .. tostring(itemName) .. " G" .. tostring(grade) .. " P" .. tostring(pg) .. " (필요 " .. tostring(unit) .. "개/회)")
+			return
+		end
+		local inv = self:GetInv()
+		if inv == nil then return end
+		local need = unit * t
+		for k = 1, need do inv:ConsumeItemPg(itemName, 0, grade, "", "", pg) end
+		inv:Publish()
+		inv:MarkDirty()
+		if self._T.book == nil then self._T.book = {} end
+		local bk = key.region .. ":" .. key.part .. ":" .. tostring(grade)
+		self._T.book[bk] = (self._T.book[bk] or 0) + t
+		self:RecalcBonus()
+		self.BookCsv = self:SerializeBook()
+		self:SaveNow()
+		log("[Collection] 등록(pg" .. tostring(pg) .. ") " .. bk .. " x" .. tostring(t) .. "회(" .. tostring(need) .. "개 소멸)")
+	end
+
+	@ExecSpace("Server")
+	method void RequestRegisterPg(string itemName, integer grade, integer pg, integer times)
+		-- 클라 컬렉션 등록 요청(품질+잠재 특정 스택) → 본인 검증 후 DoRegisterPg.
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:DoRegisterPg(itemName, grade, pg, times)
+	end
+
 	method table GetBonus()
 		-- 컬렉션 누적 보너스 {atk,def,hp}. (전투력 시스템(팀원)이 소비 — @Sync라 클라도 읽음)
 		return { atk = self.CollAtk, def = self.CollDef, hp = self.CollHp }

@@ -1,11 +1,11 @@
 @Component
 script EquipmentUpgradeSystem extends Component
 
-	property integer RareToEpic = 800
+	property integer LowToNormal = 800
 
-	property integer EpicToUnique = 200
+	property integer NormalToHigh = 200
 
-	property integer UniqueToLegendary = 20
+	property integer HighToBest = 20
 
 	property integer MaxGrade = 4
 
@@ -18,9 +18,9 @@ script EquipmentUpgradeSystem extends Component
 
 	method integer RatioFor(integer grade)
 		-- grade(현재 등급) → 다음 등급 승급에 필요한 개수. 최상위(레전드리)면 0(승급 불가).
-		if grade == _ItemGrade.Rare then return self.RareToEpic
-		elseif grade == _ItemGrade.Epic then return self.EpicToUnique
-		elseif grade == _ItemGrade.Unique then return self.UniqueToLegendary
+		if grade == _ItemGrade.Low then return self.LowToNormal
+		elseif grade == _ItemGrade.Normal then return self.NormalToHigh
+		elseif grade == _ItemGrade.High then return self.HighToBest
 		else return 0 end
 	end
 
