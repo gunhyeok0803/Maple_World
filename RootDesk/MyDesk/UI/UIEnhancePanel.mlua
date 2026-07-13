@@ -136,11 +136,11 @@ script UIEnhancePanel extends Component
 		return inv
 	end
 
-	method any GetCombat()
-		-- 로컬 플레이어의 CombatPowerSystem(스탯 집계용, 없으면 nil).
+	method any GetEquipStat()
+		-- 로컬 플레이어의 EquipStatSystem(장비 스탯 합산용, 없으면 nil). (구 CombatPowerSystem — 전투력과 분리)
 		local lp = _UserService.LocalPlayer
 		if lp == nil then return nil end
-		return lp:GetComponent("script.CombatPowerSystem")
+		return lp:GetComponent("script.EquipStatSystem")
 	end
 
 	@ExecSpace("ClientOnly")
@@ -1180,7 +1180,7 @@ script UIEnhancePanel extends Component
 			nameText.TextComponent.FontColor = _PotentialGrade:ColorOf(sel.pg or 1)   -- 잠재등급 색(인벤과 일치)
 		end
 		if statsText ~= nil and statsText.TextComponent ~= nil then
-			local cp = self:GetCombat()
+			local cp = self:GetEquipStat()
 			local lines = {}
 			local nextLines = {}
 			if cp ~= nil then

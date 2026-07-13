@@ -163,7 +163,7 @@ script CollectionSystem extends Component
 	end
 
 	method table GetBonus()
-		-- 컬렉션 누적 보너스 {atk,def,hp}. (CombatPowerSystem이 호출, @Sync라 클라도 읽음)
+		-- 컬렉션 누적 보너스 {atk,def,hp}. (전투력 시스템(팀원)이 소비 — @Sync라 클라도 읽음)
 		return { atk = self.CollAtk, def = self.CollDef, hp = self.CollHp }
 	end
 

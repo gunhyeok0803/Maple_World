@@ -30,7 +30,7 @@ script StarforceSystem extends Component
 	end
 
 	method table GetEnhanceBonus(string itemName, integer star)
-		-- 성급 1..star 누적 스타포스 스탯 보너스 {atk,def,hp}. (CombatPowerSystem이 호출)
+		-- 성급 1..star 누적 스타포스 스탯 보너스 {atk,def,hp}. (EquipStatSystem이 호출 — 장비 스탯 합산)
 		local res = { atk = 0, def = 0, hp = 0 }
 		local st = star or 0
 		if st <= 0 then return res end
