@@ -273,14 +273,8 @@ script UIEnhancePanel extends Component
 		local lp = _UserService.LocalPlayer
 		if lp ~= nil and self._T.invHandler == nil then
 			self._T.invHandler = lp:ConnectEvent(InventoryChangedEvent, function()
-				if self:IsOpen() then
-					self:RefreshSelected()
-					self:BuildList()
-					self:RefreshSummary()
-					self:RefreshStarTab()
-					self:RefreshPotTab()
-					self:RefreshFlameTab()
-				end
+				-- 즉시 재구성 대신 dirty 표시 → OnUpdate에서 프레임당 1회만(이벤트 다발 시 왼쪽 창 깜빡임 방지).
+				if self:IsOpen() then self._T.listDirty = true end
 			end)
 			self._T.invHandlerOwner = lp
 		end
@@ -708,31 +702,24 @@ script UIEnhancePanel extends Component
 				sel.flame = inv:GetEquippedFlame(sel.key)
 			end
 		else
+			-- 슬롯 모드: 같은 (name,grade,pg) 중 최고 성급 개체를 선택 추종.
+			-- 스택 강화 시 ★0 원본은 남고 새 ★N 개체가 생기므로, 항상 최고 성급을 잡아 강화 결과(★↑)가 게이지에 반영되게 함.
 			local slots = inv:GetSlots()
-			local s = slots[sel.key]
-			if s ~= nil and s.name == sel.name then
-				sel.star = s.star
-				sel.grade = s.grade
-				sel.pot = s.pot
-				sel.flame = s.flame
+			local best = nil
+			for gi = 1, #slots do
+				local c = slots[gi]
+				if c.name == sel.name and (c.grade or 1) == (sel.grade or 1) and (c.pg or _PotentialGrade.Rare) == (sel.pg or _PotentialGrade.Rare) then
+					if best == nil or (c.star or 0) > (slots[best].star or 0) then best = gi end
+				end
+			end
+			if best ~= nil then
+				local c = slots[best]
+				sel.key = best
+				sel.star = c.star
+				sel.pot = c.pot
+				sel.flame = c.flame
 			else
-				-- 강화/소모로 슬롯 재배열 — 같은 이름·등급 개체를 재탐색해 선택 유지(성급 상승분 포함)
-				local re = nil
-				for gi = 1, #slots do
-					local c = slots[gi]
-					if c.name == sel.name and c.grade == sel.grade then
-						if re == nil or (c.star or 0) > (slots[re].star or 0) then re = gi end
-					end
-				end
-				if re ~= nil then
-					local c = slots[re]
-					sel.key = re
-					sel.star = c.star
-					sel.pot = c.pot
-					sel.flame = c.flame
-				else
-					self._T.selected = nil
-				end
+				self._T.selected = nil
 			end
 		end
 	end
@@ -1095,6 +1082,16 @@ script UIEnhancePanel extends Component
 	method void OnUpdate(number delta)
 		-- OnBeginPlay 미실행/버튼 지연 스폰 대비 부트 보정(완료 후 즉시 반환).
 		self:EnsureBoot()
+		-- 인벤 변경 디바운스: 이벤트가 다발로 와도 프레임당 1회만 재구성(왼쪽 창 깜빡임 방지).
+		if self._T.listDirty and self:IsOpen() then
+			self._T.listDirty = false
+			self:RefreshSelected()
+			self:BuildList()
+			self:RefreshSummary()
+			self:RefreshStarTab()
+			self:RefreshPotTab()
+			self:RefreshFlameTab()
+		end
 		-- 잠재 pending 동기화 감지(탭2 열림 시만): PendingPot 변경 → After 갱신.
 		if self._T.tab ~= 2 or not self:IsOpen() then return end
 		local ps = self:GetPotential()
