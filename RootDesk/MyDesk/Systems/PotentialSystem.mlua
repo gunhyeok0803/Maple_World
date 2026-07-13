@@ -172,6 +172,7 @@ script PotentialSystem extends Component
 		end
 		inv:ConsumeItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "", cur)
 		inv:AddItemPg(info.name, info.star or 0, info.grade or 1, newPot, info.flame or "", newPg)
+			self:FireFx("rankup", (newPg ~= cur) and "rankup" or "success", (newPg ~= cur) and (_PotentialGrade:Name(cur) .. " 등급 상승 " .. _PotentialGrade:Name(newPg) .. "!") or "잠재 옵션 재설정", self.Entity.PlayerComponent.UserId)
 		log("[Pot] 큐브(가방) " .. tostring(info.name) .. " pg" .. tostring(cur) .. "→pg" .. tostring(newPg) .. (newPg ~= cur and " 등급업!" or "") .. " opt[" .. newPot .. "]")
 		return true
 	end
@@ -202,6 +203,7 @@ script PotentialSystem extends Component
 		local newPot = self:RollOptions(partClass, newPg)
 		inv:SetEquippedInvest(part, newPot, e.flame or "")
 		inv:SetEquippedPg(part, newPg)
+		self:FireFx("rankup", (newPg ~= cur) and "rankup" or "success", (newPg ~= cur) and (_PotentialGrade:Name(cur) .. " 등급 상승 " .. _PotentialGrade:Name(newPg) .. "!") or "잠재 옵션 재설정", self.Entity.PlayerComponent.UserId)
 		log("[Pot] 큐브(착용) " .. tostring(part) .. "/" .. tostring(e.name) .. " pg" .. tostring(cur) .. "→pg" .. tostring(newPg) .. (newPg ~= cur and " 등급업!" or "") .. " opt[" .. newPot .. "]")
 		return true
 	end
@@ -244,6 +246,12 @@ script PotentialSystem extends Component
 	method void RequestDiscard()
 		-- UI 호환용 no-op(신 즉시형 가챠엔 취소 단계 없음). UI 재작성 후 제거 예정.
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+	end
+
+	@ExecSpace("Client")
+	method void FireFx(string eventKey, string kind, string text)
+		-- 서버 결과 → 행위자 클라 피드백(효과음 + 토스트). 호출부 마지막 인자로 대상 UserId 전달.
+		if _FeedbackLogic ~= nil then _FeedbackLogic:Feedback(eventKey, kind, text) end
 	end
 
 	method void OnBeginPlay()

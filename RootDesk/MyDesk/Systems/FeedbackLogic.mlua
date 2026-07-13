@@ -1,0 +1,148 @@
+@Logic
+script FeedbackLogic extends Logic
+	-- 강화/성장 공통 피드백(SFX + 토스트 + 가벼운 트윈). 모든 RUID/수치는 프로퍼티에서 교체 가능.
+	-- 서버 시스템이 결과 확정 후, 행위자 클라로 FireFx(@Client)를 쏘면 여기 Feedback이 호출된다.
+
+	-- ── 효과음 RUID(교체 가능) ──
+	property string seStarSuccess = "33bfb1eaec244644a2749e0c11ed9513"
+	property string seStarFail = "e5389ea837dc46f49a97a69d21abbb79"
+	property string seStarDestroy = "79891b9d5f1f4a2e8245df5e211cb248"
+	property string seRankUp = "9ffd3369efdb4cc0b8e950cdfc53cf64"
+	property string seFlame = "b602decaf6b244a0a70e92ac2fdcd245"
+	property string sePromote = "f5fb4f53733a4327a6c4ba1445a6fced"
+	property string seCollect = "f399837e702843abb2c8196829101982"
+	property string seClick = "972843e759204d3e9ad84e7d3fa94f83"
+
+	-- ── 시각효과 RUID(선택, 씬/리소스 확정 후 사용) ──
+	property string vfxStar = "aa3784d325b046c0866a395ca4cb6437"
+	property string vfxBurst = "c918ebbbbff4498b98c5b45d1bd2fe1c"
+	property string vfxShine = "137539a9348b43fa859b85166e24208a"
+	property string vfxSmoke = "b72671a57530470983d927a7b6c4bab3"
+	property string vfxMagic = "826cd0bdeb6b4b438c4b34e49ee2b147"
+
+	-- ── 수치(교체 가능) ──
+	property number volume = 1.0
+	property number tweenTime = 0.3
+	property number sfxCooldown = 0.04
+	property number lastSfxAt = 0
+
+	method string SeForEvent(string eventKey, string kind)
+		-- (이벤트, 결과) → 효과음 RUID.
+		if eventKey == "star" then
+			if kind == "success" then return self.seStarSuccess end
+			if kind == "destroy" then return self.seStarDestroy end
+			return self.seStarFail
+		end
+		if eventKey == "rankup" then return self.seRankUp end
+		if eventKey == "flame" then return self.seFlame end
+		if eventKey == "promote" then return self.sePromote end
+		if eventKey == "collect" then return self.seCollect end
+		return ""
+	end
+
+	method Color ColorForKind(string kind)
+		-- 토스트 색: 성공/랭크업/등록=골드, 파괴=레드, 실패=회색, 불꽃=주황, 그 외=흰색.
+		if kind == "success" or kind == "rankup" or kind == "collect" or kind == "promote" then return Color(0.96, 0.84, 0.45, 1) end
+		if kind == "destroy" then return Color(0.92, 0.35, 0.32, 1) end
+		if kind == "fail" then return Color(0.72, 0.75, 0.82, 1) end
+		if kind == "flame" then return Color(0.98, 0.62, 0.28, 1) end
+		return Color(1, 1, 1, 1)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void PlaySE(string ruid)
+		-- 효과음 재생 + 짧은 쿨다운(연타 중첩 소음 방지).
+		if ruid == nil or ruid == "" then return end
+		local now = _UtilLogic.ElapsedSeconds
+		if (now - self.lastSfxAt) < self.sfxCooldown then return end
+		self.lastSfxAt = now
+		_SoundService:PlaySound(ruid, self.volume)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void Feedback(string eventKey, string kind, string text)
+		-- 1단계 = 효과음(SFX)만. 결과 텍스트/색/VFX는 2단계 이후 "패널 내부"에서 이펙트와 함께 연출(토스트 미사용).
+		-- text 인자는 시스템이 넘기지만 지금은 미표시(후속 패널 연출에서 사용 예정).
+		self:PlaySE(self:SeForEvent(eventKey, kind))
+	end
+
+	@ExecSpace("ClientOnly")
+	method void TweenScale(Entity e, number peak, number time)
+		-- 가벼운 Scale bounce(1→peak→1). e의 UITransformComponent.Scale 사용.
+		if e == nil or isvalid(e) == false or e.UITransformComponent == nil then return end
+		local tr = e.UITransformComponent
+		local dur = (time ~= nil and time > 0) and time or self.tweenTime
+		local pk = peak or 1.15
+		local t = 0
+		local pre = _UtilLogic.ElapsedSeconds
+		local timerId = 0
+		local step = function()
+			local d = _UtilLogic.ElapsedSeconds - pre
+			pre = _UtilLogic.ElapsedSeconds
+			t = t + d
+			local r = math.min(1, t / dur)
+			local s = 1 + (pk - 1) * math.sin(r * math.pi)   -- 0→peak→1
+			tr.Scale = Vector3(s, s, 1)
+			if r >= 1 then
+				tr.Scale = Vector3(1, 1, 1)
+				_TimerService:ClearTimer(timerId)
+			end
+		end
+		timerId = _TimerService:SetTimerRepeat(step, 1 / 60)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void TweenShake(Entity e, number amp, number time)
+		-- 좌우 Shake(감쇠). e의 anchoredPosition 기준.
+		if e == nil or isvalid(e) == false or e.UITransformComponent == nil then return end
+		local tr = e.UITransformComponent
+		local base = tr.anchoredPosition
+		local dur = (time ~= nil and time > 0) and time or 0.22
+		local a = amp or 6
+		local t = 0
+		local pre = _UtilLogic.ElapsedSeconds
+		local timerId = 0
+		local step = function()
+			local d = _UtilLogic.ElapsedSeconds - pre
+			pre = _UtilLogic.ElapsedSeconds
+			t = t + d
+			local r = math.min(1, t / dur)
+			local off = math.sin(r * math.pi * 8) * a * (1 - r)
+			tr.anchoredPosition = Vector2(base.x + off, base.y)
+			if r >= 1 then
+				tr.anchoredPosition = base
+				_TimerService:ClearTimer(timerId)
+			end
+		end
+		timerId = _TimerService:SetTimerRepeat(step, 1 / 60)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void TweenFlash(Entity e, Color flash, number time)
+		-- 스프라이트 색을 flash→원색으로 복귀(0→1 보간). SpriteGUIRendererComponent 필요.
+		if e == nil or isvalid(e) == false or e.SpriteGUIRendererComponent == nil then return end
+		local sr = e.SpriteGUIRendererComponent
+		local orig = sr.Color
+		local fc = flash or Color(1, 1, 1, 1)
+		local dur = (time ~= nil and time > 0) and time or 0.25
+		local t = 0
+		local pre = _UtilLogic.ElapsedSeconds
+		local timerId = 0
+		local step = function()
+			local d = _UtilLogic.ElapsedSeconds - pre
+			pre = _UtilLogic.ElapsedSeconds
+			t = t + d
+			local r = math.min(1, t / dur)
+			sr.Color = Color(fc.r + (orig.r - fc.r) * r, fc.g + (orig.g - fc.g) * r, fc.b + (orig.b - fc.b) * r, orig.a)
+			if r >= 1 then
+				sr.Color = orig
+				_TimerService:ClearTimer(timerId)
+			end
+		end
+		timerId = _TimerService:SetTimerRepeat(step, 1 / 60)
+	end
+
+	method void OnBeginPlay()
+		log("[FeedbackLogic] ready")
+	end
+end

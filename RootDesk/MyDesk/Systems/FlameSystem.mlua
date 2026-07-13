@@ -155,6 +155,7 @@ script FlameSystem extends Component
 		if not self:FlameFor(info.name, info.grade or 1) then return end
 		inv:ConsumeItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "", info.pg or _PotentialGrade.Rare)
 		inv:AddItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", self._T.lastFlame, info.pg or _PotentialGrade.Rare)
+		self:FireFx("flame", "flame", "환생의 불꽃 — 추가 옵션 부여", self.Entity.PlayerComponent.UserId)
 		log("[Flame] 부여(가방) " .. tostring(info.name) .. " [" .. self._T.lastFlame .. "]")
 	end
 
@@ -170,6 +171,7 @@ script FlameSystem extends Component
 		end
 		if not self:FlameFor(e.name, e.grade or 1) then return end
 		inv:SetEquippedInvest(part, e.pot or "", self._T.lastFlame)
+		self:FireFx("flame", "flame", "환생의 불꽃 — 추가 옵션 부여", self.Entity.PlayerComponent.UserId)
 		log("[Flame] 부여(착용) " .. tostring(part) .. "/" .. tostring(e.name) .. " [" .. self._T.lastFlame .. "]")
 	end
 
@@ -185,6 +187,12 @@ script FlameSystem extends Component
 		-- 클라 환생옵션 요청(착용) → 본인 검증 후 DoFlameEquipped.
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
 		self:DoFlameEquipped(part)
+	end
+
+	@ExecSpace("Client")
+	method void FireFx(string eventKey, string kind, string text)
+		-- 서버 결과 → 행위자 클라 피드백(효과음 + 토스트). 호출부 마지막 인자로 대상 UserId 전달.
+		if _FeedbackLogic ~= nil then _FeedbackLogic:Feedback(eventKey, kind, text) end
 	end
 
 	method void OnBeginPlay()

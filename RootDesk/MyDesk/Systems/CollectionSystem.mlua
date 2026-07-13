@@ -238,6 +238,13 @@ script CollectionSystem extends Component
 		self.BookCsv = self:SerializeBook()
 		self:SaveNow()
 		log("[Collection] 등록(pg" .. tostring(pg) .. ") " .. bk .. " x" .. tostring(t) .. "회(" .. tostring(need) .. "개 소멸)")
+		self:FireFx("collect", "collect", "컬렉션 등록 +" .. tostring(t), self.Entity.PlayerComponent.UserId)
+	end
+
+	@ExecSpace("Client")
+	method void FireFx(string eventKey, string kind, string text)
+		-- 서버 결과 → 행위자 클라 피드백(효과음 + 토스트). 호출부 마지막 인자로 대상 UserId 전달.
+		if _FeedbackLogic ~= nil then _FeedbackLogic:Feedback(eventKey, kind, text) end
 	end
 
 	@ExecSpace("Server")

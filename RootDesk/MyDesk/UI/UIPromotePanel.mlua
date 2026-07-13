@@ -272,9 +272,9 @@ script UIPromotePanel extends Component
 			if rgrid ~= nil and rtpl ~= nil and rgrid.GridViewComponent ~= nil then
 				local gv = rgrid.GridViewComponent
 				gv.ItemEntity = rtpl
-				gv.CellSize = Vector2(100, 100)
-				gv.Spacing = Vector2(14, 14)
-				gv.FixedCount = 3
+				gv.CellSize = Vector2(540, 66)
+				gv.Spacing = Vector2(0, 10)
+				gv.FixedCount = 1
 				gv.OnRefresh = self.OnRegGridRefresh
 				gv.TotalCount = 0
 			end
@@ -526,6 +526,8 @@ script UIPromotePanel extends Component
 		local empty = root:GetChildByName("RegEmpty", true)
 		if prompt ~= nil then prompt.Enable = true end
 		if empty ~= nil then empty.Enable = false end
+		self:SetText(root:GetChildByName("RegHdr", true), "컬렉션 등록")
+		self:SetText(root:GetChildByName("RegSub", true), "슬롯을 선택하세요")
 	end
 
 	method table BuildCandidates(string itemName)
@@ -556,6 +558,11 @@ script UIPromotePanel extends Component
 			g.maxT = (unit > 0) and math.floor(g.count / unit) or 0
 			table.insert(list, g)
 		end
+		-- 정렬: 아이템등급(하급→최상급) → 잠재등급(레어→레전드리)
+		table.sort(list, function(a, b)
+			if (a.grade or 0) ~= (b.grade or 0) then return (a.grade or 0) < (b.grade or 0) end
+			return (a.pg or 0) < (b.pg or 0)
+		end)
 		return list
 	end
 
@@ -576,7 +583,8 @@ script UIPromotePanel extends Component
 		local empty = root:GetChildByName("RegEmpty", true)
 		if prompt ~= nil then prompt.Enable = false end
 		if empty ~= nil then empty.Enable = (#self._T.candidates == 0) end
-		self:SetText(root:GetChildByName("RegHdr", true), (itemName ~= "" and itemName or "등록 가능한 보유 장비"))
+		self:SetText(root:GetChildByName("RegHdr", true), "컬렉션 등록")
+		self:SetText(root:GetChildByName("RegSub", true), tostring(region) .. " - " .. tostring(part) .. " (" .. (itemName ~= "" and itemName or "-") .. ")")
 		local rgrid = root:GetChildByName("RegGrid", true)
 		if rgrid ~= nil and rgrid.GridViewComponent ~= nil then
 			rgrid.GridViewComponent.TotalCount = #self._T.candidates
@@ -586,20 +594,52 @@ script UIPromotePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnRegGridRefresh(integer index, Entity ent)
-		-- 후보 그리드 셀 콜백(0-기반). 셀=공통 위젯: 슬롯색=잠재등급 / QBadge=품질 / Count=보유. 클릭=등록.
+		-- 행 셀 콜백(0-기반). 행 = 아이콘(공통위젯)+이름+보유/필요/등록가능+[등록]. 정렬=아이템등급→잠재등급.
 		local cand = (self._T.candidates ~= nil) and self._T.candidates[index + 1] or nil
 		if cand == nil then return end
-		---@type UIEquipmentSlotWidget
-		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
-		if w == nil then return end
-		w.ownerWindow = self.Entity
-		w.itemPg = cand.pg
-		w:SetData(cand.itemName, index + 1, cand.count, cand.grade)
-		-- 등록 불가(수량 부족) 셀은 아이콘 흐리게.
-		local iconE = ent:GetChildByName("Icon")
-		if iconE ~= nil and iconE.SpriteGUIRendererComponent ~= nil then
-			iconE.SpriteGUIRendererComponent.Color = ((cand.maxT or 0) > 0) and Color(1, 1, 1, 1) or Color(0.45, 0.48, 0.56, 1)
+		local iconCell = ent:GetChildByName("IconCell", true)
+		if iconCell ~= nil then
+			---@type UIEquipmentSlotWidget
+			local w = iconCell:GetComponent("script.UIEquipmentSlotWidget")
+			if w ~= nil then
+				w.ownerWindow = nil   -- 아이콘은 클릭 없음(등록은 [등록] 버튼)
+				w.itemPg = cand.pg    -- 슬롯색 = 잠재등급
+				w:SetData(cand.itemName, index + 1, cand.count, cand.grade)   -- slotIndex = index+1, QBadge = 아이템등급 텍스트
+			end
 		end
+		self:SetText(ent:GetChildByName("Name", true), cand.itemName)
+		self:SetText(ent:GetChildByName("Sub", true), _ItemGrade:Name(cand.grade) .. " · " .. _PotentialGrade:Name(cand.pg) .. " · 보유 " .. tostring(cand.count) .. " / 필요 " .. tostring(cand.unit) .. " · 등록 " .. tostring(cand.maxT) .. "회")
+		local btn = ent:GetChildByName("BtnReg", true)
+		if btn ~= nil and btn.SpriteGUIRendererComponent ~= nil then
+			btn.SpriteGUIRendererComponent.Color = ((cand.maxT or 0) > 0) and Color(0.23, 0.39, 0.7, 1) or Color(0.16, 0.19, 0.25, 1)
+		end
+		-- 셀별 [등록] 1회 배선(가상화 재사용 셀: 클릭 시 IconCell.slotIndex로 현재 표시 stack 조회).
+		self._T.rowWired = self._T.rowWired or {}
+		if self._T.rowWired[ent] ~= true and btn ~= nil then
+			self._T.rowWired[ent] = true
+			local cell = ent
+			self:WireEnt(btn, function() self:OnRegRowClicked(cell) end)
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnRegRowClicked(Entity cell)
+		-- 행 [등록] → 그 행이 현재 표시 중인 (아이템등급+잠재등급) 스택을 소모 등록.
+		local cs = self:GetCollection()
+		if cs == nil then return end
+		local iconCell = cell:GetChildByName("IconCell", true)
+		if iconCell == nil then return end
+		---@type UIEquipmentSlotWidget
+		local w = iconCell:GetComponent("script.UIEquipmentSlotWidget")
+		if w == nil then return end
+		local cand = (self._T.candidates ~= nil) and self._T.candidates[w.slotIndex or 0] or nil
+		if cand == nil then return end
+		if (cand.maxT or 0) < 1 then
+			log("[UIPromotePanel] 컬렉션 등록 불가(수량 부족) " .. tostring(cand.itemName) .. " 품질" .. tostring(cand.grade) .. " 잠재" .. tostring(cand.pg))
+			return
+		end
+		cs:RequestRegisterPg(cand.itemName, cand.grade, cand.pg, cand.maxT)
+		log("[UIPromotePanel] 컬렉션 등록 요청 " .. tostring(cand.itemName) .. " 품질" .. tostring(cand.grade) .. " 잠재" .. tostring(cand.pg) .. " x" .. tostring(cand.maxT))
 	end
 
 	method integer MaxTimes()

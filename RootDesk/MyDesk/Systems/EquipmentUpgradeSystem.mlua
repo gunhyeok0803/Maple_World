@@ -56,6 +56,13 @@ script EquipmentUpgradeSystem extends Component
 		for k = 1, need do inv:ConsumeItem(itemName, 0, grade) end
 		for k = 1, t do inv:AddItem(itemName, 0, grade + 1) end
 		log("[Promote] " .. tostring(itemName) .. " G" .. tostring(grade) .. " x" .. tostring(need) .. " → G" .. tostring(grade + 1) .. " x" .. tostring(t))
+		self:FireFx("promote", "promote", _ItemGrade:Name(grade + 1) .. " 승급 성공! x" .. tostring(t), self.Entity.PlayerComponent.UserId)
+	end
+
+	@ExecSpace("Client")
+	method void FireFx(string eventKey, string kind, string text)
+		-- 서버 결과 → 행위자 클라 피드백(효과음 + 토스트). 호출부 마지막 인자로 대상 UserId 전달.
+		if _FeedbackLogic ~= nil then _FeedbackLogic:Feedback(eventKey, kind, text) end
 	end
 
 	@ExecSpace("Server")

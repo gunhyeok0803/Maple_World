@@ -134,13 +134,22 @@ script StarforceSystem extends Component
 			inv:ConsumeItemPg(name, star, grade, pot, flame, pg)
 			inv:AddItemPg(name, target, grade, pot, flame, pg)   -- 잠재등급/잠재/환생 보존 승계
 			log("[SF] 성공! " .. tostring(name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
+			self:FireFx("star", "success", "★" .. tostring(target) .. " 강화 성공!", self.Entity.PlayerComponent.UserId)
 		elseif roll < success + destroy then
 			inv:ConsumeItemPg(name, star, grade, pot, flame, pg)
 			inv:AddTracePg(name, star, grade, pot, flame, pg)   -- §06 흔적에 투자 메타(잠재등급 포함) 보존
 			log("[SF] 파괴! " .. tostring(name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
+			self:FireFx("star", "destroy", "장비 파괴…", self.Entity.PlayerComponent.UserId)
 		else
 			log("[SF] 실패(유지) " .. tostring(name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
+			self:FireFx("star", "fail", "실패 — 성급 유지", self.Entity.PlayerComponent.UserId)
 		end
+	end
+
+	@ExecSpace("Client")
+	method void FireFx(string eventKey, string kind, string text)
+		-- 서버 결과 → 행위자 클라 피드백(효과음 + 토스트). 호출부 마지막 인자로 대상 UserId 전달.
+		if _FeedbackLogic ~= nil then _FeedbackLogic:Feedback(eventKey, kind, text) end
 	end
 
 	@ExecSpace("Server")
@@ -187,12 +196,15 @@ script StarforceSystem extends Component
 		if roll < success then
 			inv:SetEquippedStar(part, target)
 			log("[SF] 성공!(착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. "→★" .. tostring(target) .. " (s=" .. tostring(success) .. ", roll=" .. tostring(roll) .. ")")
+			self:FireFx("star", "success", "★" .. tostring(target) .. " 강화 성공!", self.Entity.PlayerComponent.UserId)
 		elseif roll < success + destroy then
 			inv:RemoveEquipped(part)
 			inv:AddTracePg(e.name, star, e.grade, e.pot or "", e.flame or "", e.pg or _PotentialGrade.Rare)
 			log("[SF] 파괴!(착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. " → 파괴 흔적 (d=" .. tostring(destroy) .. ", roll=" .. tostring(roll) .. ")")
+			self:FireFx("star", "destroy", "장비 파괴…", self.Entity.PlayerComponent.UserId)
 		else
 			log("[SF] 실패(유지·착용) " .. tostring(e.name) .. " ★" .. tostring(star) .. " (roll=" .. tostring(roll) .. ")")
+			self:FireFx("star", "fail", "실패 — 성급 유지", self.Entity.PlayerComponent.UserId)
 		end
 	end
 
