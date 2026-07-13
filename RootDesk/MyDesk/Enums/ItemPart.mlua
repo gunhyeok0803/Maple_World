@@ -22,7 +22,7 @@ script ItemPart extends Logic
 		if part == self.Weapon or part == "보조무기" then return "무기" end
 		-- 장신구 부위(§08: 반지/팬던트/얼굴장식/눈장식/벨트)
 		if string.find(part, "반지", 1, true) == 1 then return "장신구" end
-		if part == "팬던트" or part == "얼굴장식" or part == "눈장식" or part == "벨트" then return "장신구" end
+		if part == "팬던트" or part == "얼굴장식" or part == "눈장식" or part == "벨트" or part == "귀고리" then return "장신구" end
 		return "방어구"
 	end
 
