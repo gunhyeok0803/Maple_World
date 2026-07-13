@@ -215,14 +215,15 @@ script UIPromotePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void SelectTab(integer idx)
-		-- 탭 전환(1=승급, 2=컬렉션). 목록 필터가 달라 재구축.
+		-- 탭 전환(1=승급, 2=컬렉션). 두 탭 항상 표시, 콘텐츠 패널만 토글(전환 자유). 별도 그룹 없음.
 		if idx == nil or idx < 1 or idx > 2 then idx = 1 end
 		self._T.tab = idx
 		self._T.sel = nil
 		self._T.times = 1
+		-- 같은 창 안에서 콘텐츠 패널만 토글(승급=panelPromote / 컬렉션=panelColl). 두 탭 버튼 항상 표시, 별도 창 없음.
 		self:ApplyVisibility(self:IsOpen())
 		if self:IsOpen() then
-			self:BuildList()
+			if idx == 2 then self:RefreshBook() else self:BuildList() end
 			self:RefreshInfo()
 		end
 		log("[UIPromotePanel] 탭 " .. tostring(idx))
@@ -253,20 +254,31 @@ script UIPromotePanel extends Component
 			_UILogic:SetSiblingIndex(cardInfo.UITransformComponent, 1)
 		end
 		if isColl then
-			for i = 1, 6 do
-				local tabBtn = root:GetChildByName("PartTab_" .. tostring(i))
+			-- 좌측 지역 레일 배선.
+			for i = 1, 5 do
+				local rbtn = root:GetChildByName("Btn_Region_" .. tostring(i))
 				local idx = i
-				if tabBtn ~= nil then self:WireEnt(tabBtn, function() self:SelectPart(idx) end) end
+				if rbtn ~= nil then self:WireEnt(rbtn, function() self:SelectRegion(idx) end) end
 			end
-			for r = 1, 3 do
-				for g = 1, 4 do
-					local cell = root:GetChildByName("BookCell_" .. tostring(r) .. "_" .. tostring(g))
-					local rr = r
-					local gg = g
-					if cell ~= nil then self:WireEnt(cell, function() self:OnBookCellClicked(rr, gg) end) end
-				end
+			-- 9부위 슬롯: 부위 선택(OnCollSlotClicked)으로 배선. 위젯 ownerWindow=nil(RefreshBook)이라 위젯 클릭은 무시됨.
+			for i = 1, 9 do
+				local cslot = root:GetChildByName("CollSlot_" .. tostring(i), true)
+				local pidx = i
+				if cslot ~= nil then self:WireEnt(cslot, function() self:OnCollSlotClicked(pidx) end) end
 			end
-			if self._T.bookPart == nil then self._T.bookPart = 1 end
+			-- 우측 등록 후보 그리드(3열·셀 100·얇은 스크롤바). 셀=공통 위젯. 클릭=등록.
+			local rgrid = root:GetChildByName("RegGrid", true)
+			local rtpl = root:GetChildByName("RegCellTpl", true)
+			if rgrid ~= nil and rtpl ~= nil and rgrid.GridViewComponent ~= nil then
+				local gv = rgrid.GridViewComponent
+				gv.ItemEntity = rtpl
+				gv.CellSize = Vector2(100, 100)
+				gv.Spacing = Vector2(14, 14)
+				gv.FixedCount = 3
+				gv.OnRefresh = self.OnRegGridRefresh
+				gv.TotalCount = 0
+			end
+			if self._T.bookRegion == nil then self._T.bookRegion = 1 end
 		else
 			local grid = root:GetChildByName("Grid")
 			local tpl = root:GetChildByName("CellTemplate")
@@ -326,11 +338,12 @@ script UIPromotePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
-	method void SelectPart(integer idx)
-		-- 도감 부위 탭 전환(선택 해제 + 그리드 갱신).
-		self._T.bookPart = idx
+	method void SelectRegion(integer idx)
+		-- 컬렉션 지역 선택(좌측 레일) → 선택 해제 + 슬롯/목록 갱신.
+		self._T.bookRegion = idx
 		self._T.sel = nil
 		self._T.selCell = nil
+		self._T.cpItem = nil
 		self._T.times = 1
 		self:RefreshBook()
 		self:RefreshInfo()
@@ -338,64 +351,74 @@ script UIPromotePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void RefreshBook()
-		-- 도감 그리드 12칸 갱신: 등급 슬롯 배경/아이콘/보유 뱃지/누적 등록/선택 하이라이트 + 부위 탭 토글.
+		-- 컬렉션 도감(맵기준, 창 내 탭): 좌측 지역 레일 + 9부위 슬롯. 셀=인벤 동일 위젯(아이콘/등급/수량). 미등록=흐림.
 		local root = self.panelColl
 		if root == nil or isvalid(root) == false then return end
-		local part = self:PartName(self._T.bookPart or 1)
-		for i = 1, 6 do
-			local tabBtn = root:GetChildByName("PartTab_" .. tostring(i))
-			local sr = tabBtn ~= nil and tabBtn.SpriteGUIRendererComponent or nil
-			if sr ~= nil then sr.ImageRUID = (i == (self._T.bookPart or 1)) and self.TabOnRUID or self.TabOffRUID end
-		end
 		local cs = self:GetCollection()
-		local entries = cs ~= nil and cs:GetBookEntries() or {}
-		for r = 1, 3 do
-			local level = 10 * r
-			local name = self:ItemNameFor(part, level)
-			for g = 1, 4 do
-				local cell = root:GetChildByName("BookCell_" .. tostring(r) .. "_" .. tostring(g))
-				if cell ~= nil then
-					local sr = cell.SpriteGUIRendererComponent
-					if sr ~= nil then
-						sr.ImageRUID = _ItemGrade:SlotRUID(g)
-						sr.Color = Color(1, 1, 1, name ~= "" and 1 or 0.45)
-					end
-					local icon = cell:GetChildByName("Icon")
-					if icon ~= nil then
-						if name == "" then
-							icon.Enable = false
-						else
-							local row = _DataService:GetTable("ItemData"):FindRow("Name", name)
-							if row ~= nil and icon.SpriteGUIRendererComponent ~= nil then
-								icon.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
-								icon.Enable = true
+		if cs == nil then return end
+		-- 컬렉션은 슬롯 클릭 팝업으로 등록 → 우측 옛 등록 컨트롤(대상/결과/횟수/등록하기) 숨김.
+		local hideNames = { "Card_Info", "Btn_Action", "Btn_Minus", "Btn_Plus", "Btn_Max", "Text_Target", "Text_Result", "Text_Need", "Text_Times" }
+		for i, hn in ipairs(hideNames) do
+			local he = root:GetChildByName(hn, true)
+			if he ~= nil and isvalid(he) then he.Enable = false end
+		end
+		local regions = cs:Regions()
+		local parts = cs:Parts()
+		local ri = self._T.bookRegion or 1
+		local region = regions[ri] or regions[1]
+		-- 지역 버튼 하이라이트
+		for i = 1, 5 do
+			local btn = root:GetChildByName("Btn_Region_" .. tostring(i), true)
+			if btn ~= nil and isvalid(btn) and btn.TextGUIRendererComponent ~= nil then
+				btn.TextGUIRendererComponent.FontColor = (i == ri) and Color(0.94, 0.85, 0.54, 1) or Color(0.6, 0.65, 0.74, 1)
+			end
+		end
+		local filled = 0
+		for p = 1, 9 do
+			local part = parts[p]
+			local cell = root:GetChildByName("CollSlot_" .. tostring(p), true)
+			if cell ~= nil then
+				---@type UIEquipmentSlotWidget
+				local us = cell:GetComponent("script.UIEquipmentSlotWidget")
+				local iconE = cell:GetChildByName("Icon")
+				local qb = cell:GetChildByName("QBadge")
+				local itemName = cs:SlotItemName(region, part)
+				if us ~= nil then
+					us.ownerWindow = nil
+					us.itemPg = 0
+					if itemName == "" then
+						us:SetData("", p, 0, 1)
+						if iconE ~= nil then iconE.Enable = false end
+						if qb ~= nil then qb.Enable = false end
+					else
+						local reg = 0
+						for j, e in ipairs(cs:GetBookEntries()) do
+							if e.region == region and e.part == part then reg = reg + (e.count or 0) end
+						end
+						us:SetData(itemName, p, reg, 1)
+						if iconE ~= nil then
+							iconE.Enable = true
+							if iconE.SpriteGUIRendererComponent ~= nil then
+								iconE.SpriteGUIRendererComponent.Color = (reg > 0) and Color(1, 1, 1, 1) or Color(0.42, 0.45, 0.54, 1)
 							end
 						end
-					end
-					local have = name ~= "" and self:HaveOf(name, g) or 0
-					self:SetText(cell:GetChildByName("Count"), have > 0 and ("x" .. tostring(have)) or "")
-					local reg = 0
-					for j, e in ipairs(entries) do
-						if e.part == part and tostring(e.level) == tostring(level) and e.grade == g then reg = e.count end
-					end
-					self:SetText(cell:GetChildByName("Reg"), reg > 0 and (tostring(reg) .. "회") or "")
-					local sel = cell:GetChildByName("Sel")
-					if sel ~= nil then
-						local sc = self._T.selCell
-						sel.Enable = (sc ~= nil and sc.r == r and sc.g == g)
+						if qb ~= nil then qb.Enable = false end
+						if reg > 0 then filled = filled + 1 end
 					end
 				end
 			end
 		end
+		self:SetText(root:GetChildByName("Coll_RegionName", true), region)
+		self:SetText(root:GetChildByName("Coll_Progress", true), "등록 " .. tostring(filled) .. " / 9")
+		self:ClearRegGrid()
 	end
 
 	@ExecSpace("ClientOnly")
 	method void OnBookCellClicked(integer r, integer g)
-		-- 도감 슬롯 선택(부위×레벨×등급).
-		local part = self:PartName(self._T.bookPart or 1)
-		local level = 10 * r
-		local name = self:ItemNameFor(part, level)
-		self._T.selCell = { r = r, g = g }
+		-- (구 레벨×등급 잔재 — 매트릭스에선 위젯 클릭이 OnSlotClicked로 라우팅. 미사용 방어)
+		local part = ""
+		local level = 0
+		local name = ""
 		if name ~= "" then
 			self._T.sel = { name = name, grade = g, part = part, level = level }
 		else
@@ -448,10 +471,23 @@ script UIPromotePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnSlotClicked(Entity cell)
-		-- 대상 선택.
+		-- 승급=대상 선택 / 컬렉션=등록 후보 그리드 셀 클릭 → 해당 스택(품질) 일괄 등록.
 		---@type UIEquipmentSlotWidget
 		local w = cell:GetComponent("script.UIEquipmentSlotWidget")
 		if w == nil or w.itemName == "" then return end
+		if (self._T.tab or 1) == 2 then
+			local cs = self:GetCollection()
+			if cs == nil then return end
+			local cand = (self._T.candidates ~= nil) and self._T.candidates[w.slotIndex or 0] or nil
+			if cand == nil then return end
+			if (cand.maxT or 0) < 1 then
+				log("[UIPromotePanel] 컬렉션 등록 불가(수량 부족) " .. tostring(cand.itemName) .. " Q" .. tostring(cand.grade))
+				return
+			end
+			cs:RequestRegister(cand.itemName, cand.grade, cand.maxT)
+			log("[UIPromotePanel] 컬렉션 등록 요청 " .. tostring(cand.itemName) .. " Q" .. tostring(cand.grade) .. " x" .. tostring(cand.maxT))
+			return
+		end
 		if self._T.selWidget ~= nil and isvalid(self._T.selWidget) then self._T.selWidget:SetSelected(false) end
 		w:SetSelected(true)
 		self._T.selWidget = w
@@ -459,6 +495,111 @@ script UIPromotePanel extends Component
 		self._T.times = 1
 		self:RefreshInfo()
 		log("[UIPromotePanel] 선택 " .. tostring(w.itemName) .. " G" .. tostring(w.itemGrade))
+	end
+
+	method integer HaveCollCount(string itemName, integer grade)
+		-- 클라: 보유 ★0 순정(name, grade) 개수 합.
+		local inv = self:GetInv()
+		if inv == nil then return 0 end
+		local total = 0
+		for i, s in ipairs(inv:GetSlots()) do
+			if s.name == itemName and (s.star or 0) == 0 and (s.grade or 1) == grade and (s.pot or "") == "" and (s.flame or "") == "" then
+				total = total + (s.count or 0)
+			end
+		end
+		return total
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ClearRegGrid()
+		-- 부위 미선택 상태로 우측 후보 그리드 초기화(프롬프트 표시, 그리드 비움).
+		local root = self.panelColl
+		if root == nil or isvalid(root) == false then return end
+		self._T.cpItem = nil
+		self._T.candidates = {}
+		local rgrid = root:GetChildByName("RegGrid", true)
+		if rgrid ~= nil and rgrid.GridViewComponent ~= nil then
+			rgrid.GridViewComponent.TotalCount = 0
+			rgrid.GridViewComponent:Refresh(true, true)
+		end
+		local prompt = root:GetChildByName("RegPrompt", true)
+		local empty = root:GetChildByName("RegEmpty", true)
+		if prompt ~= nil then prompt.Enable = true end
+		if empty ~= nil then empty.Enable = false end
+	end
+
+	method table BuildCandidates(string itemName)
+		-- 보유 ★0 순정 장비를 (품질,잠재등급) 스택별로 묶어 후보 목록 생성.
+		local list = {}
+		if itemName == nil or itemName == "" then return list end
+		local inv = self:GetInv()
+		local cs = self:GetCollection()
+		if inv == nil or cs == nil then return list end
+		local groups = {}
+		local order = {}
+		for i, s in ipairs(inv:GetSlots()) do
+			if s.name == itemName and (s.star or 0) == 0 and (s.pot or "") == "" and (s.flame or "") == "" then
+				local grade = s.grade or 1
+				local pg = s.pg or 0
+				local k = tostring(grade) .. ":" .. tostring(pg)
+				if groups[k] == nil then
+					groups[k] = { itemName = itemName, grade = grade, pg = pg, count = 0 }
+					table.insert(order, k)
+				end
+				groups[k].count = groups[k].count + (s.count or 0)
+			end
+		end
+		for i, k in ipairs(order) do
+			local g = groups[k]
+			local unit = cs:RegUnitFor(itemName, g.grade)
+			g.unit = unit
+			g.maxT = (unit > 0) and math.floor(g.count / unit) or 0
+			table.insert(list, g)
+		end
+		return list
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnCollSlotClicked(integer partIdx)
+		-- 부위 슬롯 클릭 → 그 부위 아이템의 보유 후보(품질×잠재등급 스택)를 우측 그리드에 채움.
+		local root = self.panelColl
+		if root == nil or isvalid(root) == false then return end
+		local cs = self:GetCollection()
+		if cs == nil then return end
+		local region = cs:Regions()[self._T.bookRegion or 1]
+		local part = cs:Parts()[partIdx]
+		local itemName = cs:SlotItemName(region, part)
+		self._T.cpItem = itemName
+		self._T.cpPart = part
+		self._T.candidates = self:BuildCandidates(itemName)
+		local prompt = root:GetChildByName("RegPrompt", true)
+		local empty = root:GetChildByName("RegEmpty", true)
+		if prompt ~= nil then prompt.Enable = false end
+		if empty ~= nil then empty.Enable = (#self._T.candidates == 0) end
+		self:SetText(root:GetChildByName("RegHdr", true), (itemName ~= "" and itemName or "등록 가능한 보유 장비"))
+		local rgrid = root:GetChildByName("RegGrid", true)
+		if rgrid ~= nil and rgrid.GridViewComponent ~= nil then
+			rgrid.GridViewComponent.TotalCount = #self._T.candidates
+			rgrid.GridViewComponent:Refresh(true, true)
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnRegGridRefresh(integer index, Entity ent)
+		-- 후보 그리드 셀 콜백(0-기반). 셀=공통 위젯: 슬롯색=잠재등급 / QBadge=품질 / Count=보유. 클릭=등록.
+		local cand = (self._T.candidates ~= nil) and self._T.candidates[index + 1] or nil
+		if cand == nil then return end
+		---@type UIEquipmentSlotWidget
+		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
+		if w == nil then return end
+		w.ownerWindow = self.Entity
+		w.itemPg = cand.pg
+		w:SetData(cand.itemName, index + 1, cand.count, cand.grade)
+		-- 등록 불가(수량 부족) 셀은 아이콘 흐리게.
+		local iconE = ent:GetChildByName("Icon")
+		if iconE ~= nil and iconE.SpriteGUIRendererComponent ~= nil then
+			iconE.SpriteGUIRendererComponent.Color = ((cand.maxT or 0) > 0) and Color(1, 1, 1, 1) or Color(0.45, 0.48, 0.56, 1)
+		end
 	end
 
 	method integer MaxTimes()

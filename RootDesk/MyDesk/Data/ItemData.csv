@@ -1,22 +1,11 @@
 ﻿Name,IconRUID,Category,Part,Grade,ReqLevel,Attack,Defense,MaxHP,MaxStackCount,Tradable,Description,ItemId,Level,MainStat,MP,CritRate,CritDmg,ItemDropRate,MesoDropRate
-나뭇가지,d742453e486c4861b6fb5666c7ec7091,장비,무기,Rare,1,5,0,10,1,O,가늘고 긴 나뭇가지. 초보자의 첫 무기.,WPN_BRANCH,10,3,0,5,20,1000,100
-총,98c7f004e6cb4304afc628c3a846f544,장비,무기,Rare,5,30,0,20,1,O,묵직한 총. 강력한 공격력을 지녔다.,WPN_GUN,20,6,0,5,25,1000,100
-산타모자,8f4ab9534ed34035a14e6d0266bba07c,장비,모자,Rare,1,1,10,50,1,O,산타의 기운이 담긴 따뜻한 모자.,HAT_SANTA,10,3,20,0,0,10,0
-소라모자,6710e8c647d0448a80f5ea4abd95c960,장비,모자,Rare,1,1,8,40,1,O,소라 모양의 귀여운 모자.,HAT_SORA,10,2,15,0,0,10,0
-빨간포션,323920d2805d4ec1aa85eca9e3e1cab2,소비,,,,0,0,0,100,O,HP를 회복하는 빨간 물약.,POT_RED,,0,0,0,0,0,0
-파란포션,81cad13e6326415e928689badf9e9bb6,소비,,,,0,0,0,100,O,MP를 회복하는 파란 물약.,POT_BLUE,,0,0,0,0,0,0
-주문서,e4eecc56521f46ddad3885cc902b2cff,기타,,,,0,0,0,50,O,장비를 강화하는 주문서.,SCROLL,,0,0,0,0,0,0
-백호,d40e62497b8f4e72b5f1a1512074f3a6,캐시,,,,,,,,,,CASH_WHITETIGER,,,,,,,
-곰돌이슬리퍼,aef9f06af2e14803840fdc20d0b3b403,장비,신발,Rare,1,1,5,30,1,O,폭신한 곰돌이 슬리퍼.,SHOE_BEAR,10,2,10,0,0,10,0
-금반지,a20ac904cea04578b59adbab773eeeb3,장비,반지1,Rare,1,1,0,0,1,O,반짝이는 금반지.,RING_GOLD,10,2,0,0,0,15,0
-나무의자,6456dfd58a694f04acca1cb517787230,설치,,,,,,,,,,FURN_CHAIR,,,,,,,
-파란색 머리띠,thumbnail://5640eb09571f4be49a46d219c3cf3386,장비,모자,Rare,1,0,8,40,1,O,머리에 두르는 파란색 머리띠.,HAT_BLUEBAND,10,2,0,0,0,10,0
-하얀 반팔 면티,thumbnail://ae8d3590a96e48c3b7cd75d46ebd3f15,장비,상의,Rare,1,0,10,50,1,O,깔끔한 하얀 반팔 면티.,TOP_WHITETEE,10,2,0,0,0,10,0
-파란 청 반바지,thumbnail://61f10ef0a6204e0ab6593bdf36fed3e5,장비,하의,Rare,1,0,8,40,1,O,시원한 파란 청 반바지.,BTM_BLUESHORTS,10,2,0,0,0,10,0
-노가다 목장갑,thumbnail://2e58683f2f094f099a0813c36e278dd5,장비,장갑,Rare,1,1,5,20,1,O,투박한 노가다 목장갑.,GLV_WORKGLOVE,10,1,0,0,0,10,0
-가죽 샌들,thumbnail://202544d7095c42c5bfb3046619ab58cc,장비,신발,Rare,1,0,6,30,1,O,편안한 가죽 샌들.,SHOE_SANDAL,10,1,0,0,0,10,0
-한쪽 은 귀고리,thumbnail://42998039a9db44c3a4fb866967748ee8,장비,귀고리,Rare,1,0,3,20,1,O,한쪽만 남은 은 귀고리.,EAR_SILVER,10,1,0,0,0,10,0
+파란색 머리띠,5640eb09571f4be49a46d219c3cf3386,장비,모자,Rare,1,0,8,40,1,O,머리에 두르는 파란색 머리띠.,HAT_BLUEBAND,10,2,0,0,0,10,0
+하얀 반팔 면티,ae8d3590a96e48c3b7cd75d46ebd3f15,장비,상의,Rare,1,0,10,50,1,O,깔끔한 하얀 반팔 면티.,TOP_WHITETEE,10,2,0,0,0,10,0
+파란 청 반바지,61f10ef0a6204e0ab6593bdf36fed3e5,장비,하의,Rare,1,0,8,40,1,O,시원한 파란 청 반바지.,BTM_BLUESHORTS,10,2,0,0,0,10,0
+노가다 목장갑,2e58683f2f094f099a0813c36e278dd5,장비,장갑,Rare,1,1,5,20,1,O,투박한 노가다 목장갑.,GLV_WORKGLOVE,10,1,0,0,0,10,0
+가죽 샌들,202544d7095c42c5bfb3046619ab58cc,장비,신발,Rare,1,0,6,30,1,O,편안한 가죽 샌들.,SHOE_SANDAL,10,1,0,0,0,10,0
+한쪽 은 귀고리,42998039a9db44c3a4fb866967748ee8,장비,귀고리,Rare,1,0,3,20,1,O,한쪽만 남은 은 귀고리.,EAR_SILVER,10,1,0,0,0,10,0
 허름한 망토,thumbnail://c33def64db8b48f39b7b125fab1092e1,장비,망토,Rare,1,0,5,25,1,O,낡고 허름한 망토.,CAPE_SHABBY,10,1,0,0,0,10,0
-금이간 안경,thumbnail://6374adc25b004cc98b6b7104bf73f669,장비,눈장식,Rare,1,0,3,15,1,O,금이 간 낡은 안경.,EYE_CRACKGLASS,10,1,0,0,0,10,0
-목검,thumbnail://bc5de7124e584423b6bbc33cbf3a65c1,장비,무기,Rare,1,8,0,15,1,O,수련용 두손검. 초보자의 목검.,WPN_WOODSWORD,10,3,0,5,20,1000,100
-냄비 뚜껑,thumbnail://8aa98b3a659f448791cdba7bb678ea7a,장비,보조무기,Rare,1,2,8,20,1,O,방패 대용으로 쓰는 냄비 뚜껑.,SHIELD_POTLID,10,1,0,0,0,100,50
+금이간 안경,6374adc25b004cc98b6b7104bf73f669,장비,눈장식,Rare,1,0,3,15,1,O,금이 간 낡은 안경.,EYE_CRACKGLASS,10,1,0,0,0,10,0
+목검,bc5de7124e584423b6bbc33cbf3a65c1,장비,무기,Rare,1,8,0,15,1,O,수련용 두손검. 초보자의 목검.,WPN_WOODSWORD,10,3,0,5,20,1000,100
+냄비 뚜껑,8aa98b3a659f448791cdba7bb678ea7a,장비,보조무기,Rare,1,2,8,20,1,O,방패 대용으로 쓰는 냄비 뚜껑.,SHIELD_POTLID,10,1,0,0,0,100,50

@@ -1,9 +1,10 @@
 @Component
 script CollectionSystem extends Component
 
-	-- 컬렉션 도감(맵 지역 기준): 슬롯 = 지역×부위(CollectionBookData: Region/Part/ItemName/Atk/Def/Hp).
-	-- 지역별 지정 장비 1개 등록 → 소멸 → 슬롯 채움 + 영구 스탯 보너스 누적. 방패(보조무기)는 도감 제외.
-	-- 현재 암허스트만 아이템 매핑, 나머지 지역은 제목+빈슬롯. v2(부위×레벨×등급 수량형)는 도감 역산 불가로 폐기.
+	-- 컬렉션 도감(맵 지역 기준, MVP_v11 §05 반복 등록): 슬롯 = 지역×부위, 등록 = 품질 등급별 수량 소모.
+	-- CollectionBookData: Region/Part/ItemName/Grade/RegUnit/Atk/Def/Hp. RegUnit 하급800/중급200/상급20/최상급1.
+	-- ★0 순정만 등록 → 수량 소모 → 슬롯(지역:부위:등급) 등록 횟수 누적 → 보너스 = Σ(횟수×슬롯보너스). 영구·반복.
+	-- 현재 암허스트만 아이템 매핑. 저장키 collectionV3, 직렬화 "지역:부위:등급:횟수,...".
 
 	property string SaveKey = "collectionV3"
 
@@ -16,7 +17,7 @@ script CollectionSystem extends Component
 	@Sync
 	property integer CollHp = 0
 
-	-- 등록된 슬롯("지역:부위,지역:부위,..." — 도감 UI 동기화)
+	-- 등록 현황("지역:부위:등급:횟수,..." — 도감 UI 동기화)
 	@Sync
 	property string BookCsv = ""
 
@@ -37,49 +38,74 @@ script CollectionSystem extends Component
 		return inv
 	end
 
-	method any FindRegionRow(string region, string part)
-		-- CollectionBookData에서 (지역,부위) 일치 행(없으면 nil).
+	method table ItemBookKey(string itemName)
+		-- 아이템 → {region, part} (CollectionBookData ItemName 열 역참조). 도감 대상 아니면 nil.
 		local t = _DataService:GetTable("CollectionBookData")
 		if t == nil then return nil end
 		local n = t:GetRowCount()
 		for i = 1, n do
 			local row = t:GetRow(i)
-			if row:GetItem("Region") == region and row:GetItem("Part") == part then return row end
+			if row:GetItem("ItemName") == itemName then
+				return { region = row:GetItem("Region"), part = row:GetItem("Part") }
+			end
 		end
 		return nil
 	end
 
-	method any FindRegionRowByItem(string itemName)
-		-- CollectionBookData에서 ItemName 일치 행(없으면 nil). 도감 대상 아이템 판별용.
+	method any FindBookRow(string region, string part, integer grade)
+		-- CollectionBookData에서 (지역,부위,등급) 일치 행(없으면 nil).
 		local t = _DataService:GetTable("CollectionBookData")
 		if t == nil then return nil end
 		local n = t:GetRowCount()
 		for i = 1, n do
 			local row = t:GetRow(i)
-			if row:GetItem("ItemName") == itemName then return row end
+			if row:GetItem("Region") == region and row:GetItem("Part") == part and (tonumber(row:GetItem("Grade")) or 0) == grade then return row end
 		end
 		return nil
 	end
 
 	method string SlotItemName(string region, string part)
-		-- (지역,부위) 슬롯에 지정된 아이템 이름(없으면 ""). UI 아이콘/이름 표시용.
-		local row = self:FindRegionRow(region, part)
-		if row == nil then return "" end
-		return row:GetItem("ItemName") or ""
+		-- (지역,부위) 슬롯 지정 아이템 이름(없으면 ""). UI 아이콘/이름 표시용. (등급 무관 — 등급행 공통 ItemName)
+		local t = _DataService:GetTable("CollectionBookData")
+		if t == nil then return "" end
+		local n = t:GetRowCount()
+		for i = 1, n do
+			local row = t:GetRow(i)
+			if row:GetItem("Region") == region and row:GetItem("Part") == part then return row:GetItem("ItemName") or "" end
+		end
+		return ""
 	end
 
-	method boolean IsRegistered(string region, string part)
-		-- 해당 슬롯 등록 여부.
-		if self._T == nil or self._T.book == nil then return false end
-		return self._T.book[region .. ":" .. part] == true
+	method integer RegUnitFor(string itemName, integer grade)
+		-- 해당 아이템·등급의 1회 등록 필요 수량(도감 행 없으면 0).
+		local key = self:ItemBookKey(itemName)
+		if key == nil then return 0 end
+		local row = self:FindBookRow(key.region, key.part, grade)
+		if row == nil then return 0 end
+		return tonumber(row:GetItem("RegUnit")) or 0
+	end
+
+	method integer MaxRegister(string itemName, integer grade)
+		-- ★0 순정 (name,grade) 보유량 / 등록단위 = 가능 등록 횟수(§04 일괄 등록 미리보기).
+		local unit = self:RegUnitFor(itemName, grade)
+		if unit <= 0 then return 0 end
+		local inv = self:GetInv()
+		if inv == nil then return 0 end
+		return math.floor(inv:CountItem(itemName, 0, grade) / unit)
+	end
+
+	method integer RegCountOf(string region, string part, integer grade)
+		-- 서버용: 해당 슬롯·등급의 누적 등록 횟수.
+		if self._T == nil or self._T.book == nil then return 0 end
+		return self._T.book[region .. ":" .. part .. ":" .. tostring(grade)] or 0
 	end
 
 	method string SerializeBook()
-		-- _T.book → "지역:부위,지역:부위,..." (등록된 슬롯만).
+		-- _T.book → "지역:부위:등급:횟수,..." (0회 슬롯 생략)
 		local out = {}
 		if self._T ~= nil and self._T.book ~= nil then
-			for k, v in pairs(self._T.book) do
-				if v == true then out[#out + 1] = k end
+			for k, cnt in pairs(self._T.book) do
+				if cnt > 0 then out[#out + 1] = k .. ":" .. tostring(cnt) end
 			end
 		end
 		return table.concat(out, ",")
@@ -87,20 +113,20 @@ script CollectionSystem extends Component
 
 	@ExecSpace("ServerOnly")
 	method void RecalcBonus()
-		-- 등록된 슬롯 전체 보너스 합산 → @Sync 누적치 갱신.
+		-- 도감 전체(등록 횟수 × 슬롯 보너스) 재합산 → @Sync 누적치 갱신.
 		local atk = 0
 		local def = 0
 		local hp = 0
 		if self._T ~= nil and self._T.book ~= nil then
-			for k, v in pairs(self._T.book) do
-				if v == true then
+			for k, cnt in pairs(self._T.book) do
+				if cnt > 0 then
 					local kv = _UtilLogic:Split(k, ":")
-					if #kv >= 2 then
-						local row = self:FindRegionRow(kv[1], kv[2])
+					if #kv >= 3 then
+						local row = self:FindBookRow(kv[1], kv[2], tonumber(kv[3]) or 0)
 						if row ~= nil then
-							atk = atk + (tonumber(row:GetItem("Atk")) or 0)
-							def = def + (tonumber(row:GetItem("Def")) or 0)
-							hp = hp + (tonumber(row:GetItem("Hp")) or 0)
+							atk = atk + (tonumber(row:GetItem("Atk")) or 0) * cnt
+							def = def + (tonumber(row:GetItem("Def")) or 0) * cnt
+							hp = hp + (tonumber(row:GetItem("Hp")) or 0) * cnt
 						end
 					end
 				end
@@ -122,62 +148,48 @@ script CollectionSystem extends Component
 	end
 
 	@ExecSpace("ServerOnly")
-	method void DoRegisterItem(string itemName, integer grade)
-		-- itemName의 도감 슬롯 찾기 → 미등록이면 ★0 순정 1개 소모 → 슬롯 등록 → 보너스 재계산 → 저장.
-		local row = self:FindRegionRowByItem(itemName)
-		if row == nil then
+	method void DoRegister(string itemName, integer grade, integer times)
+		-- ★0 순정 (name,grade)를 슬롯(지역×부위×등급)에 times회 등록: 등록단위×times 소모 → 횟수 누적·보너스·저장.
+		local key = self:ItemBookKey(itemName)
+		if key == nil then
 			log("[Collection] 도감 대상 아님: " .. tostring(itemName))
 			return
 		end
-		local region = row:GetItem("Region")
-		local part = row:GetItem("Part")
-		local slotKey = region .. ":" .. part
-		if self._T.book == nil then self._T.book = {} end
-		if self._T.book[slotKey] == true then
-			log("[Collection] 이미 등록됨: " .. slotKey)
+		local row = self:FindBookRow(key.region, key.part, grade)
+		if row == nil then
+			log("[Collection] 도감 행 없음: " .. key.region .. "/" .. key.part .. "/G" .. tostring(grade))
+			return
+		end
+		local unit = tonumber(row:GetItem("RegUnit")) or 0
+		if unit <= 0 then return end
+		local t = times or 1
+		if t < 1 then t = 1 end
+		local maxT = self:MaxRegister(itemName, grade)
+		if t > maxT then t = maxT end
+		if t < 1 then
+			log("[Collection] 재료 부족: " .. tostring(itemName) .. " G" .. tostring(grade) .. " (필요 " .. tostring(unit) .. "개/회)")
 			return
 		end
 		local inv = self:GetInv()
 		if inv == nil then return end
-		if inv:CountItem(itemName, 0, grade) < 1 then
-			log("[Collection] 재료 없음(★0 순정 1개 필요): " .. tostring(itemName) .. " G" .. tostring(grade))
-			return
-		end
-		inv:ConsumeItem(itemName, 0, grade)
+		local need = unit * t
+		for k = 1, need do inv:ConsumeItem(itemName, 0, grade) end
 		inv:Publish()      -- 소멸 반영(@Sync) → 클라 InventoryChangedEvent → 전투력 갱신
 		inv:MarkDirty()
-		self._T.book[slotKey] = true
+		if self._T.book == nil then self._T.book = {} end
+		local bk = key.region .. ":" .. key.part .. ":" .. tostring(grade)
+		self._T.book[bk] = (self._T.book[bk] or 0) + t
 		self:RecalcBonus()
 		self.BookCsv = self:SerializeBook()
 		self:SaveNow()
-		log("[Collection] 등록 " .. slotKey .. "(" .. tostring(itemName) .. " 1개 소멸) → 누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp))
+		log("[Collection] 등록 " .. bk .. " x" .. tostring(t) .. "회(" .. tostring(need) .. "개 소멸) → 누적 공" .. tostring(self.CollAtk) .. "/방" .. tostring(self.CollDef) .. "/HP" .. tostring(self.CollHp))
 	end
 
 	@ExecSpace("Server")
 	method void RequestRegister(string itemName, integer grade, integer times)
-		-- 클라 컬렉션 등록 요청(인벤토리에서 진입) → 본인 검증 후 등록. 도감형이라 times는 무시(1개 등록).
+		-- 클라 컬렉션 등록 요청(슬롯 클릭 팝업에서) → 본인 검증 후 DoRegister.
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
-		self:DoRegisterItem(itemName, grade)
-	end
-
-	method boolean CanRegister(string itemName, integer grade)
-		-- UI용: 도감 대상 + 미등록 + ★0 순정 1개 이상 보유 → 등록 가능.
-		local row = self:FindRegionRowByItem(itemName)
-		if row == nil then return false end
-		if self:IsRegistered(row:GetItem("Region"), row:GetItem("Part")) then return false end
-		local inv = self:GetInv()
-		if inv == nil then return false end
-		return inv:CountItem(itemName, 0, grade) >= 1
-	end
-
-	method integer RegUnitFor(string itemName, integer grade)
-		-- (구 승급패널 호환) 도감형은 1개 등록이므로 항상 1.
-		return 1
-	end
-
-	method integer MaxRegister(string itemName, integer grade)
-		-- (구 승급패널 호환) 등록 가능하면 1, 아니면 0.
-		return self:CanRegister(itemName, grade) and 1 or 0
+		self:DoRegister(itemName, grade, times)
 	end
 
 	method table GetBonus()
@@ -186,15 +198,24 @@ script CollectionSystem extends Component
 	end
 
 	method table GetBookEntries()
-		-- 클라 UI용: BookCsv 파싱 → { {region,part}, ... } (등록된 슬롯).
+		-- 클라 UI용: BookCsv 파싱 → { {region,part,grade,count}, ... }.
 		local out = {}
 		if self.BookCsv ~= nil and self.BookCsv ~= "" then
 			for i, entry in ipairs(_UtilLogic:Split(self.BookCsv, ",")) do
 				local kv = _UtilLogic:Split(entry, ":")
-				if #kv >= 2 then out[#out + 1] = { region = kv[1], part = kv[2] } end
+				if #kv >= 4 then out[#out + 1] = { region = kv[1], part = kv[2], grade = tonumber(kv[3]) or 0, count = tonumber(kv[4]) or 0 } end
 			end
 		end
 		return out
+	end
+
+	method integer SlotCount(string region, string part)
+		-- 클라 UI용: 해당 슬롯(지역×부위)의 전 등급 누적 등록 횟수 합. @Sync BookCsv 기준.
+		local total = 0
+		for i, e in ipairs(self:GetBookEntries()) do
+			if e.region == region and e.part == part then total = total + (e.count or 0) end
+		end
+		return total
 	end
 
 	@ExecSpace("ServerOnly")
@@ -207,8 +228,8 @@ script CollectionSystem extends Component
 		if code == 0 and _UtilLogic:IsNilorEmptyString(raw) == false then
 			for i, entry in ipairs(_UtilLogic:Split(raw, ",")) do
 				local kv = _UtilLogic:Split(entry, ":")
-				if #kv >= 2 then
-					self._T.book[kv[1] .. ":" .. kv[2]] = true
+				if #kv >= 4 then
+					self._T.book[kv[1] .. ":" .. kv[2] .. ":" .. kv[3]] = tonumber(kv[4]) or 0
 				end
 			end
 		end
