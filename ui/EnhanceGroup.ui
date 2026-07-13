@@ -21096,7 +21096,7 @@
                 "r": 0.03,
                 "g": 0.04,
                 "b": 0.06,
-                "a": 0.985
+                "a": 0.85
               },
               "DropShadow": false,
               "DropShadowAngle": 120,
@@ -21359,11 +21359,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 214,
-                "y": -66
+                "y": -74
               },
               "OffsetMin": {
                 "x": -214,
-                "y": -320
+                "y": -334
               },
               "Pivot": {
                 "x": 0.5,
@@ -21371,7 +21371,7 @@
               },
               "RectSize": {
                 "x": 428,
-                "y": 254
+                "y": 260
               },
               "UIMode": 1,
               "UIScale": {
@@ -21442,7 +21442,7 @@
               "Underlay": false,
               "UseConstraintX": false,
               "UseConstraintY": false,
-              "VerticalAlignment": 256,
+              "VerticalAlignment": 512,
               "Enable": true
             },
             {
