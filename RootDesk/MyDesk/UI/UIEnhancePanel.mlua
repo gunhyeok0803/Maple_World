@@ -1190,6 +1190,7 @@ script UIEnhancePanel extends Component
 					t2 = cp:GetItemStats(sel.name, star + 1, sel.pot or "", sel.flame or "")
 				end
 				for i, k in ipairs(cp:StatKeys()) do
+					if k == "ItemDropRate" or k == "MesoDropRate" then continue end   -- 경제 스탯(드롭률·메소)은 요약에서 제외
 					local v = t[k] or 0
 					if v ~= 0 then
 						lines[#lines + 1] = self:StatLabel(k) .. "  " .. self:FmtVal(k, v)

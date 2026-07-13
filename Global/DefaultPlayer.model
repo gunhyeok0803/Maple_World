@@ -22,7 +22,6 @@
         "script.PlayerAttack",
         "script.PlayerResource",
         "script.PlayerDBManager",
-        "script.CombatPowerSystem",
         "script.StarforceSystem",
         "script.EquipmentUpgradeSystem",
         "script.CollectionSystem",
@@ -30,7 +29,8 @@
         "script.EquipmentController",
         "script.PotentialSystem",
         "script.FlameSystem",
-        "script.PlayerMagnet"
+        "script.PlayerMagnet",
+        "script.EquipStatSystem"
       ],
       "Properties": [],
       "Values": [
@@ -708,15 +708,6 @@
           "Value": true
         },
         {
-          "TargetType": "script.CombatPowerSystem",
-          "Name": "Enable",
-          "ValueType": {
-            "$type": "MODNativeType",
-            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-          },
-          "Value": true
-        },
-        {
           "TargetType": "script.StarforceSystem",
           "Name": "Enable",
           "ValueType": {
@@ -796,6 +787,15 @@
             "type": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
           },
           "Value": 4.0
+        },
+        {
+          "TargetType": "script.EquipStatSystem",
+          "Name": "Enable",
+          "ValueType": {
+            "$type": "MODNativeType",
+            "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+          },
+          "Value": true
         }
       ],
       "EventLinks": [],

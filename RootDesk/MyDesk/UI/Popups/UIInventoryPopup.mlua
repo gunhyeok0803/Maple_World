@@ -521,11 +521,11 @@ script UIInventoryPopup extends Component
 		if sf ~= nil and dStar > 0 then dBonus = sf:GetEnhanceBonus(itemName, dStar) end
 		if self._T.dName ~= nil then
 			local nm = tostring(itemName)
-			if dStar > 0 then nm = nm .. " (+" .. tostring(dStar) .. ")" end
+			if (dPg or _PotentialGrade.Rare) >= _PotentialGrade.Legendary and dStar > 0 then nm = nm .. " (+" .. tostring(dStar) .. ")" end   -- 레전드리(스타포스 전용)만 (+N)
 			self._T.dName.TextComponent.Text = nm
 		end
 		if self._T.dStars ~= nil and self._T.dStars.TextComponent ~= nil then
-			self._T.dStars.TextComponent.Text = self:StarStr(dStar)
+			local _lg = (dPg or _PotentialGrade.Rare) >= _PotentialGrade.Legendary; self._T.dStars.TextComponent.Text = _lg and self:StarStr(dStar) or ""; self._T.dStars.Enable = _lg   -- 레전드리만 별 표시(스타포스 전용)
 		end
 		if self._T.dTag ~= nil then
 			local part = self:Cell(row, "Part")
