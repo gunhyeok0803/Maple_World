@@ -877,6 +877,22 @@ script UIEnhancePanel extends Component
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnConvert, h = h }
 			self:TintCta(n.btnConvert)
 		end
+		-- 미리보기/확정 2단계: [적용](대기결과→아이템) / [취소](대기결과 폐기). 결과가 있을 때만 표시.
+		n.btnApply = layout:GetChildByName("Btn_ApplyPot")
+		if n.btnApply ~= nil then
+			if n.btnApply.ButtonComponent == nil then n.btnApply:AddComponent("MOD.Core.ButtonComponent") end
+			if n.btnApply.SpriteGUIRendererComponent ~= nil then n.btnApply.SpriteGUIRendererComponent.RaycastTarget = true end
+			local ha = n.btnApply:ConnectEvent(ButtonClickEvent, function() self:OnPotApplyClicked() end)
+			self._T.handlers[#self._T.handlers + 1] = { e = n.btnApply, h = ha }
+			self:TintCta(n.btnApply)
+		end
+		n.btnKeep = layout:GetChildByName("Btn_KeepPot")
+		if n.btnKeep ~= nil then
+			if n.btnKeep.ButtonComponent == nil then n.btnKeep:AddComponent("MOD.Core.ButtonComponent") end
+			if n.btnKeep.SpriteGUIRendererComponent ~= nil then n.btnKeep.SpriteGUIRendererComponent.RaycastTarget = true end
+			local hk = n.btnKeep:ConnectEvent(ButtonClickEvent, function() self:OnPotKeepClicked() end)
+			self._T.handlers[#self._T.handlers + 1] = { e = n.btnKeep, h = hk }
+		end
 		-- 항목4: 재료 토글(공용) — 잠재=수상한 큐브(res 7).
 		self:WireMatToggle(layout, "matTogglePot", "수상한 큐브", 7)
 		self:CompactCostLine(layout)
@@ -898,49 +914,49 @@ script UIEnhancePanel extends Component
 			self:SetText(n.curOpts, "장비를 선택하세요")
 			self:SetText(n.resGrade, "가챠 결과")
 			self:SetText(n.resOpts, "")
+			self:ShowPotConfirm(false)
 			return
 		end
-		-- 큐브 사용 직후 결과 캡처(인벤 변경 후 sel이 새 상태로 갱신됨).
-		if self._T.potAwait == true then
-			-- 스택 공존 보정: 원본 스택(pot='')과 리롤 개체가 같은 (name,grade,pg,star)로 공존하면
-			-- 일반 추종이 원본을 잡음 → 방금 리롤된 개체(pot이 직전과 다름)를 찾아 선택 재바인딩.
-			if sel.mode == "slot" then
-				local inv2 = self:GetInv()
-				if inv2 ~= nil then
-					local prevPot = self._T.potPrevPot or ""
-					local slots2 = inv2:GetSlots()
-					for gi = 1, #slots2 do
-						local c = slots2[gi]
-						if c.name == sel.name and (c.grade or 1) == (sel.grade or 1)
-							and (c.pot or "") ~= "" and (c.pot or "") ~= prevPot then
-							sel.key = gi
-							sel.star = c.star
-							sel.pot = c.pot
-							sel.flame = c.flame
-							sel.pg = c.pg or sel.pg
-							break
-						end
-					end
-				end
-			end
-			self._T.potResPg = sel.pg or _PotentialGrade.Rare
-			self._T.potResOpt = sel.pot or ""
-			self._T.potUp = (self._T.potResPg > (self._T.potPrevPg or 0))
-			self._T.potRolled = true
-			self._T.potAwait = false
-		end
+		-- 현재(Current) = 아이템에 실제 적용된 잠재. 큐브 롤에는 영향받지 않음(sel 기준 고정).
 		local pg = sel.pg or _PotentialGrade.Rare
 		-- 등급명에만 슬롯색과 동일한 등급색(리치텍스트) — 확률 텍스트 표시는 폐지(사용자 스펙).
 		self:SetText(n.curGrade, "현재 · " .. self:PgColoredName(pg))
 		self:SetText(n.curOpts, self:OptSummary(sel.pot, "잠재 옵션 없음 — 큐브를 사용하세요"))
-		if self._T.potRolled == true then
-			local rpg = self._T.potResPg or pg
-			self:SetText(n.resGrade, "결과 · " .. self:PgColoredName(rpg) .. (self._T.potUp and "  등급업!" or ""))
-			self:SetText(n.resOpts, self:OptSummary(self._T.potResOpt or "", ""))
+		-- 결과(Result) = 서버 pending 롤. 현재 선택과 일치하는 대기결과가 있을 때만 표시(독립 데이터).
+		local ps = self:GetPotential()
+		if ps ~= nil and ps.PendingPg > 0 and self:PendingMatchesSel(ps) then
+			local rpg = ps.PendingPg
+			self:SetText(n.resGrade, "결과 · " .. self:PgColoredName(rpg) .. ((rpg > pg) and "  등급업!" or ""))
+			self:SetText(n.resOpts, self:OptSummary(ps.PendingPot, ""))
+			self:ShowPotConfirm(true)
 		else
 			self:SetText(n.resGrade, "결과 · -")
 			self:SetText(n.resOpts, "큐브를 사용하면 결과가 표시됩니다")
+			self:ShowPotConfirm(false)
 		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void ShowPotConfirm(boolean show)
+		-- [적용]/[취소] 버튼은 대기결과가 있을 때만 노출. 큐브 사용 버튼은 항상 유지(재롤 가능).
+		local n = self._T.pot
+		if n == nil then return end
+		if n.btnApply ~= nil and isvalid(n.btnApply) then n.btnApply.Enable = show end
+		if n.btnKeep ~= nil and isvalid(n.btnKeep) then n.btnKeep.Enable = show end
+	end
+
+	method boolean PendingMatchesSel(any ps)
+		-- 서버 PendingTarget(\t 직렬화)이 현재 선택과 동일 대상인지. mode/name/grade/key 일치 검사.
+		local sel = self._T.selected
+		if sel == nil or ps == nil or ps.PendingTarget == "" then return false end
+		local p = _UtilLogic:Split(ps.PendingTarget, "\t")
+		local mode = p[1]
+		local key = p[2]
+		local name = p[3]
+		local grade = tonumber(p[5]) or 1
+		if mode ~= sel.mode or name ~= (sel.name or "") then return false end
+		if grade ~= (sel.grade or 1) then return false end
+		return key == tostring(sel.key)
 	end
 
 	method string PgColoredName(integer pg)
@@ -977,14 +993,62 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void OnPotCubeClicked()
-		-- 큐브 사용: 직전 등급 스냅샷 후 서버에 큐브 가챠 요청(즉시 리롤 + 확률 등급업).
+		-- 큐브 사용: 서버에 pending 롤 요청(아이템 미적용, 결과는 Result 패널에 미리보기).
+		-- 결과 반영은 OnUpdate의 PendingPot 변경 감지 → RefreshPotTab이 담당.
 		local sel = self._T.selected
 		local ps = self:GetPotential()
 		if sel == nil or ps == nil then return end
-		self._T.potPrevPg = sel.pg or _PotentialGrade.Rare
-		self._T.potPrevPot = sel.pot or ""   -- 리롤 개체 식별용(스택 공존 보정)
-		self._T.potAwait = true
 		ps:RequestCube(sel.mode, tostring(sel.key))
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnPotApplyClicked()
+		-- [적용]: 대기결과를 아이템에 확정(Result→Current). 확정될 값을 스냅샷하고 applyAwait 설정 →
+		-- 서버 커밋으로 pending이 비면 OnUpdate가 sel을 확정 개체로 재바인딩(스택 공존 시 정확도 보장).
+		local ps = self:GetPotential()
+		if ps == nil then return end
+		if not self:PendingMatchesSel(ps) then return end
+		self._T.applyPot = ps.PendingPot
+		self._T.applyPg = ps.PendingPg
+		self._T.applyAwait = true
+		ps:RequestApply()
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RebindAfterApply()
+		-- 확정 직후 sel을 "적용된 옵션을 가진 개체"로 정확히 재바인딩.
+		-- 슬롯 모드: (name,grade,pg,pot) 완전일치 개체 탐색(스택 공존 시 pot=''인 잔여분과 구분).
+		-- 착용 모드: SetEquipped*로 제자리 변경됐으므로 스냅샷 값으로 갱신.
+		local sel = self._T.selected
+		if sel == nil then return end
+		if sel.mode == "slot" then
+			local inv = self:GetInv()
+			if inv == nil then return end
+			local slots = inv:GetSlots()
+			for gi = 1, #slots do
+				local c = slots[gi]
+				if c.name == sel.name and (c.grade or 1) == (sel.grade or 1)
+					and (c.pg or 1) == self._T.applyPg and (c.pot or "") == self._T.applyPot then
+					sel.key = gi
+					sel.star = c.star
+					sel.pot = c.pot
+					sel.flame = c.flame
+					sel.pg = c.pg or sel.pg
+					return
+				end
+			end
+		else
+			sel.pot = self._T.applyPot
+			sel.pg = self._T.applyPg
+		end
+	end
+
+	@ExecSpace("ClientOnly")
+	method void OnPotKeepClicked()
+		-- [취소]: 대기결과 폐기(현재 유지, 큐브 환불 없음). pending 초기화 → Result "-".
+		local ps = self:GetPotential()
+		if ps == nil then return end
+		ps:RequestDiscard()
 	end
 
 	@ExecSpace("ClientOnly")
@@ -1171,6 +1235,12 @@ script UIEnhancePanel extends Component
 		if self._T.tab ~= 2 or not self:IsOpen() then return end
 		local ps = self:GetPotential()
 		if ps == nil then return end
+		-- 확정 대기 중 pending이 비었으면(=서버 커밋 완료) sel을 적용 개체로 재바인딩 → Current가 결과 반영.
+		if self._T.applyAwait == true and ps.PendingPg == 0 then
+			self._T.applyAwait = false
+			self:RebindAfterApply()
+			self:RefreshPotTab()
+		end
 		local cur = ps.PendingPot .. "|" .. ps.PendingTarget
 		if self._T.seenPending ~= cur then
 			self._T.seenPending = cur
