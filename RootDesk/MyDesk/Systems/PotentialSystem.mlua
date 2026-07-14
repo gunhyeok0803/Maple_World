@@ -5,22 +5,26 @@ script PotentialSystem extends Component
 	-- "강화"가 아니라 가챠다. 옵션 풀 = PotentialOptionData[부위클래스, 잠재등급]. 등급 하락 없음.
 	-- ⚠ 비용/확률/줄수는 placeholder(팀 튜닝 대상). 스타포스만 레전더리 전용이라 잠재는 등급 제한 없이 사용.
 
-	-- UI 호환용 sync(구 Before/After 표시 잔재 — 신 즉시형 가챠에선 미사용, UI 재작성 후 제거 예정).
+	-- 미리보기→확정(메이플 큐브식): 큐브 사용 시 새 잠재를 아이템에 즉시 적용하지 않고 pending으로 보관.
+	-- 사용자가 [적용]하면 커밋(Current로 이동), [유지/취소]하면 폐기(비용 환불 없음 — 큐브는 사용 시 소모).
 	@Sync
-	property string PendingPot = ""
+	property string PendingPot = ""      -- 새로 롤된 잠재 옵션 문자열
 
 	@Sync
-	property string PendingTarget = ""
+	property integer PendingPg = 0        -- 새로 롤된 잠재 등급(0=pending 없음)
+
+	@Sync
+	property string PendingTarget = ""    -- 대상 식별(탭 구분자 \t): mode,key,name,star,grade,pot,flame,pg
 
 	-- 큐브 1회 비용(재화 명세 "res:재화Type:수량"). 큐브 = ResourceDataSet Type 7.
 	property string CubeCost = "res:7:1"
 
-	-- 등급 상승 확률(placeholder — 기획 확정 시 교체). 레어→에픽 / 에픽→유니크 / 유니크→레전더리.
-	property number GradeUp1to2 = 0.10
+	-- 등급 상승 확률(메이플 블랙 큐브 공식 기준, 넥슨 공지 133316). 레어→에픽 / 에픽→유니크 / 유니크→레전더리.
+	property number GradeUp1to2 = 0.15
 
-	property number GradeUp2to3 = 0.05
+	property number GradeUp2to3 = 0.035
 
-	property number GradeUp3to4 = 0.02
+	property number GradeUp3to4 = 0.01
 
 	-- 큐브 1회당 재설정되는 잠재 옵션 줄 수(메이플 3줄).
 	property integer LinesPerRoll = 3
@@ -142,14 +146,30 @@ script PotentialSystem extends Component
 		return table.concat(parts, "|")
 	end
 
+	method string PackTarget(string mode, string key, any info)
+		-- 대상 식별 직렬화(탭 구분자 — pot/flame이 |·= 를 쓰므로 겹치지 않게 \t 사용).
+		return table.concat({ mode, key, info.name or "", tostring(info.star or 0), tostring(info.grade or 1),
+			info.pot or "", info.flame or "", tostring(info.pg or _PotentialGrade.Rare) }, "\t")
+	end
+
+	method table UnpackTarget(string s)
+		-- 직렬화 역변환 → {mode,key,name,star,grade,pot,flame,pg}.
+		local p = _UtilLogic:Split(s, "\t")
+		return { mode = p[1], key = p[2], name = p[3], star = tonumber(p[4]) or 0, grade = tonumber(p[5]) or 1,
+			pot = p[6] or "", flame = p[7] or "", pg = tonumber(p[8]) or _PotentialGrade.Rare }
+	end
+
 	@ExecSpace("ServerOnly")
-	method boolean CubeSlot(integer slotIndex)
-		-- 가방 슬롯 1개에 큐브 가챠: 비용 소모 → 등급 상승 확률 판정 → 결과 등급 풀에서 옵션 재설정 → 개체 교체.
+	method boolean RollPending(string mode, string key)
+		-- 큐브 사용(권위): 비용 소모 → 등급 상승 확률 판정 → 등급별 풀에서 옵션 롤 → 결과를 pending에 보관(아이템 미적용).
+		-- 재롤(이미 pending 있어도) = 새 큐브 소모 후 pending 덮어쓰기(메이플식).
 		local inv = self:GetInv()
 		if inv == nil then return false end
-		local info = inv:GetSlotInfo(slotIndex)
+		local info = nil
+		if mode == "slot" then info = inv:GetSlotInfo(tonumber(key) or 0)
+		else info = inv:GetEquippedInfo(key) end
 		if info == nil then
-			log_warning("[Pot] 잘못된 슬롯 index=" .. tostring(slotIndex))
+			log_warning("[Pot] 대상 없음 mode=" .. tostring(mode) .. " key=" .. tostring(key))
 			return false
 		end
 		local partClass = self:PartClassOf(info.name)
@@ -166,86 +186,74 @@ script PotentialSystem extends Component
 		local cur = info.pg or _PotentialGrade.Rare
 		local newPg = self:NextPotGrade(cur)
 		local newPot = self:RollOptions(partClass, newPg)
-		if inv:CountItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "", cur) < 1 then
-			log_warning("[Pot] 적용 실패 — 대상 개체 없음: " .. tostring(info.name))
-			return true
-		end
-		inv:ConsumeItemPg(info.name, info.star or 0, info.grade or 1, info.pot or "", info.flame or "", cur)
-		inv:AddItemPg(info.name, info.star or 0, info.grade or 1, newPot, info.flame or "", newPg)
-			self:FireFx("rankup", (newPg ~= cur) and "rankup" or "success", (newPg ~= cur) and (_PotentialGrade:Name(cur) .. " 등급 상승 " .. _PotentialGrade:Name(newPg) .. "!") or "잠재 옵션 재설정", self.Entity.PlayerComponent.UserId)
-		log("[Pot] 큐브(가방) " .. tostring(info.name) .. " pg" .. tostring(cur) .. "→pg" .. tostring(newPg) .. (newPg ~= cur and " 등급업!" or "") .. " opt[" .. newPot .. "]")
+		self.PendingTarget = self:PackTarget(mode, key, info)
+		self.PendingPg = newPg
+		self.PendingPot = newPot
+		log("[Pot] 큐브 롤(대기) " .. tostring(info.name) .. " pg" .. tostring(cur) .. "→pg" .. tostring(newPg) .. (newPg ~= cur and " 등급업!" or "") .. " opt[" .. newPot .. "]")
 		return true
 	end
 
 	@ExecSpace("ServerOnly")
-	method boolean CubeEquipped(string part)
-		-- 착용 장비에 큐브 가챠: 비용 소모 → 등급 상승 확률 → 옵션 재설정(SetEquippedInvest) + 등급(SetEquippedPg).
+	method void ApplyPending()
+		-- 확정(권위): pending 결과를 실제 아이템에 커밋 → Current로 이동, pending 비움.
+		if self.PendingPg == 0 or self.PendingTarget == "" then return end
 		local inv = self:GetInv()
-		if inv == nil then return false end
-		local e = inv:GetEquippedInfo(part)
-		if e == nil then
-			log_warning("[Pot] 장착품 없음 part=" .. tostring(part))
-			return false
-		end
-		local partClass = self:PartClassOf(e.name)
-		if partClass == "" then
-			log_warning("[Pot] 풀 클래스 없음(비장비?): " .. tostring(e.name))
-			return false
-		end
-		local costs = self:ParseCost(self.CubeCost)
-		if not self:CanPay(costs) then
-			log("[Pot] 큐브 부족: " .. tostring(e.name))
-			return false
-		end
-		self:PayCost(costs)
-		local cur = e.pg or _PotentialGrade.Rare
-		local newPg = self:NextPotGrade(cur)
-		local newPot = self:RollOptions(partClass, newPg)
-		inv:SetEquippedInvest(part, newPot, e.flame or "")
-		inv:SetEquippedPg(part, newPg)
-		self:FireFx("rankup", (newPg ~= cur) and "rankup" or "success", (newPg ~= cur) and (_PotentialGrade:Name(cur) .. " 등급 상승 " .. _PotentialGrade:Name(newPg) .. "!") or "잠재 옵션 재설정", self.Entity.PlayerComponent.UserId)
-		log("[Pot] 큐브(착용) " .. tostring(part) .. "/" .. tostring(e.name) .. " pg" .. tostring(cur) .. "→pg" .. tostring(newPg) .. (newPg ~= cur and " 등급업!" or "") .. " opt[" .. newPot .. "]")
-		return true
-	end
-
-	@ExecSpace("ServerOnly")
-	method boolean DoCube(string mode, string key)
-		-- 큐브 가챠 1회(권위). mode=slot(가방)/equip(착용). 진행 성공 여부 반환(재화 부족 등이면 false).
-		if mode == "slot" then
-			return self:CubeSlot(tonumber(key) or 0)
+		if inv == nil then return end
+		local t = self:UnpackTarget(self.PendingTarget)
+		local newPot = self.PendingPot
+		local newPg = self.PendingPg
+		local cur = t.pg
+		if t.mode == "slot" then
+			if inv:CountItemPg(t.name, t.star, t.grade, t.pot, t.flame, cur) < 1 then
+				log_warning("[Pot] 확정 실패 — 대상 개체 없음: " .. tostring(t.name))
+				self:ClearPending()
+				return
+			end
+			inv:ConsumeItemPg(t.name, t.star, t.grade, t.pot, t.flame, cur)
+			inv:AddItemPg(t.name, t.star, t.grade, newPot, t.flame, newPg)
 		else
-			return self:CubeEquipped(key)
+			inv:SetEquippedInvest(t.key, newPot, t.flame)
+			inv:SetEquippedPg(t.key, newPg)
 		end
+		self:FireFx("rankup", (newPg ~= cur) and "rankup" or "success",
+			(newPg ~= cur) and (_PotentialGrade:Name(cur) .. " 등급 상승 " .. _PotentialGrade:Name(newPg) .. "!") or "잠재 옵션 적용",
+			self.Entity.PlayerComponent.UserId)
+		log("[Pot] 확정 " .. tostring(t.name) .. " pg" .. tostring(cur) .. "→pg" .. tostring(newPg) .. " opt[" .. newPot .. "]")
+		self:ClearPending()
 	end
 
-	@ExecSpace("Server")
-	method void RequestConvert(string mode, string key, integer times, boolean keepBest)
-		-- 클라 큐브 가챠 요청(다회) → 본인 검증 후 DoCube 반복. keepBest는 미사용(하위호환).
-		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
-		local t = times or 1
-		if t < 1 then t = 1 end
-		for i = 1, t do
-			if not self:DoCube(mode, key) then break end
-		end
+	method void ClearPending()
+		self.PendingTarget = ""
+		self.PendingPg = 0
+		self.PendingPot = ""
 	end
 
 	@ExecSpace("Server")
 	method void RequestCube(string mode, string key)
-		-- 클라 큐브 가챠 1회 요청 → 본인 검증 후 DoCube.
+		-- 클라 큐브 사용 1회 요청 → 본인 검증 후 pending 롤(아이템 미적용).
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
-		self:DoCube(mode, key)
+		self:RollPending(mode, key)
+	end
+
+	@ExecSpace("Server")
+	method void RequestConvert(string mode, string key, integer times, boolean keepBest)
+		-- 하위호환: 1회 pending 롤로 위임(다회/keepBest 미사용).
+		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:RollPending(mode, key)
 	end
 
 	@ExecSpace("Server")
 	method void RequestApply()
-		-- UI 호환용 no-op(신 즉시형 가챠엔 선택 단계 없음). UI 재작성 후 제거 예정.
+		-- 클라 [적용] 요청 → 본인 검증 후 pending 커밋.
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:ApplyPending()
 	end
 
 	@ExecSpace("Server")
 	method void RequestDiscard()
-		-- UI 호환용 no-op(신 즉시형 가챠엔 취소 단계 없음). UI 재작성 후 제거 예정.
+		-- 클라 [유지/취소] 요청 → pending 폐기(큐브 환불 없음).
 		if senderUserId ~= self.Entity.PlayerComponent.UserId then return end
+		self:ClearPending()
 	end
 
 	@ExecSpace("Client")
