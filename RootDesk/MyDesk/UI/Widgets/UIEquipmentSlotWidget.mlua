@@ -104,10 +104,6 @@ script UIEquipmentSlotWidget extends Component
 	handler HandleButtonClickEvent(ButtonClickEvent event)
 		if self.itemName == "" then return end
 		if self.ownerWindow == nil then return end
-		-- 컬렉션 패널 소속 셀이면 슬롯 인덱스로 라우팅(공유 위젯)
-		---@type UICollectionPanel
-		local cpn = self.ownerWindow:GetComponent("script.UICollectionPanel")
-		if cpn ~= nil then cpn:OnSlotClicked(self.slotIndex) return end
 		---@type UIInventoryPopup
 		local ctrl = self.ownerWindow:GetComponent("script.UIInventoryPopup")
 		if ctrl ~= nil then ctrl:OnSlotClicked(self.Entity) return end
