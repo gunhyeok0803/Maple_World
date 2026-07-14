@@ -61,9 +61,29 @@ script FeedbackLogic extends Logic
 
 	@ExecSpace("ClientOnly")
 	method void Feedback(string eventKey, string kind, string text)
-		-- 1단계 = 효과음(SFX)만. 결과 텍스트/색/VFX는 2단계 이후 "패널 내부"에서 이펙트와 함께 연출(토스트 미사용).
-		-- text 인자는 시스템이 넘기지만 지금은 미표시(후속 패널 연출에서 사용 예정).
+		-- SFX + 패널 내부 결과 연출(트윈). text 인자는 후속 패널 텍스트 연출용으로 보존(현재 미표시).
 		self:PlaySE(self:SeForEvent(eventKey, kind))
+		self:RouteResultFx(eventKey, kind)
+	end
+
+	@ExecSpace("ClientOnly")
+	method void RouteResultFx(string eventKey, string kind)
+		-- 결과 연출을 담당 패널로 전달(패널이 자기 슬롯에 트윈). star/rankup/flame→강화창, promote/collect→승급창.
+		if eventKey == "star" or eventKey == "rankup" or eventKey == "flame" then
+			local ctrl = _EntityService:GetEntityByPath("/ui/EnhanceGroup/EnhanceRoot/Controller")
+			if ctrl == nil then ctrl = _EntityService:GetEntityByPath("/ui/EnhanceGroup/Controller") end
+			if ctrl == nil or isvalid(ctrl) == false then return end
+			---@type UIEnhancePanel
+			local panel = ctrl:GetComponent("script.UIEnhancePanel")
+			if panel ~= nil then panel:PlayResultFx(kind) end
+		elseif eventKey == "promote" or eventKey == "collect" then
+			local ctrl = _EntityService:GetEntityByPath("/ui/PromoteGroup/PromoteRoot/Controller")
+			if ctrl == nil then ctrl = _EntityService:GetEntityByPath("/ui/PromoteGroup/Controller") end
+			if ctrl == nil or isvalid(ctrl) == false then return end
+			---@type UIPromotePanel
+			local panel = ctrl:GetComponent("script.UIPromotePanel")
+			if panel ~= nil then panel:PlayResultFx(eventKey, kind) end
+		end
 	end
 
 	@ExecSpace("ClientOnly")

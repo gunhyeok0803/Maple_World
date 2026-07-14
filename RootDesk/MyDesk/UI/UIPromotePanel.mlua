@@ -720,6 +720,34 @@ script UIPromotePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void PlayResultFx(string eventKey, string kind)
+		-- 승급/컬렉션 결과 연출(bounce). FeedbackLogic:RouteResultFx가 호출. 트윈 헬퍼는 FeedbackLogic 공용.
+		-- 승급=결과 슬롯 Img_To, 컬렉션=등록 부위 CollSlot_<idx>(cpPart로 특정, 폴백 Card_Book).
+		if _FeedbackLogic == nil then return end
+		local slot = nil
+		if eventKey == "collect" then
+			local root = self.panelColl
+			if root == nil or isvalid(root) == false then return end
+			local cs = self:GetCollection()
+			if cs ~= nil and self._T.cpPart ~= nil then
+				for i, p in ipairs(cs:Parts()) do
+					if p == self._T.cpPart then
+						slot = root:GetChildByName("CollSlot_" .. tostring(i), true)
+						break
+					end
+				end
+			end
+			if slot == nil then slot = root:GetChildByName("Card_Book") end
+		else
+			local root = self.panelPromote
+			if root == nil or isvalid(root) == false then return end
+			slot = root:GetChildByName("Img_To")
+		end
+		if slot == nil or isvalid(slot) == false then return end
+		_FeedbackLogic:TweenScale(slot, 1.16, 0.28)
+	end
+
+	@ExecSpace("ClientOnly")
 	method void RefreshInfo()
 		-- 우측 정보: 대상/변환(등급→등급 or 도감 슬롯)/필요·보유/횟수/결과 미리보기.
 		local root = (self._T.tab or 1) == 1 and self.panelPromote or self.panelColl

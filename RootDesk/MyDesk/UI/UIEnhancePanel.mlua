@@ -1142,6 +1142,24 @@ script UIEnhancePanel extends Component
 	end
 
 	@ExecSpace("ClientOnly")
+	method void PlayResultFx(string kind)
+		-- 강화 결과 연출: 중앙 아이템 슬롯(Panel_Summary/Img_ItemSlot)에 트윈. FeedbackLogic:RouteResultFx가 호출.
+		-- 성공/랭크업/불꽃=bounce, 파괴=red flash+shake, 실패=shake. 트윈 헬퍼는 FeedbackLogic 공용.
+		if isvalid(self.panelSummary) == false then return end
+		local slot = self.panelSummary:GetChildByName("Img_ItemSlot")
+		if slot == nil or isvalid(slot) == false then return end
+		if _FeedbackLogic == nil then return end
+		if kind == "destroy" then
+			_FeedbackLogic:TweenFlash(slot, Color(0.92, 0.25, 0.22, 1), 0.32)
+			_FeedbackLogic:TweenShake(slot, 7, 0.24)
+		elseif kind == "fail" then
+			_FeedbackLogic:TweenShake(slot, 7, 0.24)
+		else
+			_FeedbackLogic:TweenScale(slot, 1.18, 0.28)
+		end
+	end
+
+	@ExecSpace("ClientOnly")
 	method void RefreshSummary()
 		-- 중앙 요약: 선택 장비의 아이콘/이름(★)/합산 스탯(기본+스타포스+잠재+환생, §03) + 다음 성급 증가분 컬럼.
 		if isvalid(self.panelSummary) == false then return end
