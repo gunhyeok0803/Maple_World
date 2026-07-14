@@ -364,7 +364,8 @@ script UIPromotePanel extends Component
 		local cs = self:GetCollection()
 		if cs == nil then return end
 		-- 컬렉션은 슬롯 클릭 팝업으로 등록 → 우측 옛 등록 컨트롤(대상/결과/횟수/등록하기) 숨김.
-		local hideNames = { "Card_Info", "Btn_Action", "Btn_Minus", "Btn_Plus", "Btn_Max", "Text_Target", "Text_Result", "Text_Need", "Text_Times" }
+		-- Card_Info는 우측 리스트 배경 패널로 용도 변경돼 숨김 목록에서 제외(좌우 패널 구도).
+		local hideNames = { "Btn_Action", "Btn_Minus", "Btn_Plus", "Btn_Max", "Text_Target", "Text_Result", "Text_Need", "Text_Times" }
 		for i, hn in ipairs(hideNames) do
 			local he = root:GetChildByName(hn, true)
 			if he ~= nil and isvalid(he) then he.Enable = false end
@@ -397,6 +398,11 @@ script UIPromotePanel extends Component
 						us:SetData("", p, 0, 1)
 						if iconE ~= nil then iconE.Enable = false end
 						if qb ~= nil then qb.Enable = false end
+						local plabel0 = cell:GetChildByName("PartLabel")
+						if plabel0 ~= nil then
+							if plabel0.TextGUIRendererComponent ~= nil then plabel0.TextGUIRendererComponent.Text = part end
+							plabel0.Enable = true
+						end
 					else
 						local reg = 0
 						local bestG = 0
@@ -408,6 +414,7 @@ script UIPromotePanel extends Component
 						end
 						-- 등록 전 = Empty Slot(중립 RUID, 아이콘 없음 — 실루엣 금지). 등록 후에만 인벤 스타일
 						-- (아이콘 + 품질 배지=등록된 최고 등급 + Count=총 등록횟수) 표시. [사용자 스펙]
+						local plabel = cell:GetChildByName("PartLabel")
 						if reg > 0 then
 							us:SetData(itemName, p, reg, (bestG > 0) and bestG or 1)
 							if iconE ~= nil then
@@ -416,11 +423,17 @@ script UIPromotePanel extends Component
 									iconE.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 1)
 								end
 							end
+							if plabel ~= nil then plabel.Enable = false end
 							filled = filled + 1
 						else
+							-- 미등록: 부위명 텍스트 표시(리소스 무의존, 지역 무관) — 아이콘·배지·수량 없음.
 							us:SetData("", p, 0, 1)
 							if iconE ~= nil then iconE.Enable = false end
 							if qb ~= nil then qb.Enable = false end
+							if plabel ~= nil then
+								if plabel.TextGUIRendererComponent ~= nil then plabel.TextGUIRendererComponent.Text = part end
+								plabel.Enable = true
+							end
 						end
 					end
 				end
