@@ -16752,11 +16752,11 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 250.0,
+                "x": -100.0,
                 "y": 390.0
               },
               "OffsetMin": {
-                "x": -250.0,
+                "x": -600.0,
                 "y": -390.0
               },
               "Pivot": {
@@ -16775,11 +16775,11 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 0.0,
+                "x": -350.0,
                 "y": 0.0
               },
               "Position": {
-                "x": 0.0,
+                "x": -350.0,
                 "y": 0.0,
                 "z": 0.0
               },
@@ -16884,13 +16884,13 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "ImageRUID": {
-                "DataId": "6e8e561a4582462eaad762cb11d1f835"
+                "DataId": "c26a3cc43a2347979a54ad4d35292271"
               },
               "OverrideSorting": false,
               "Color": {
-                "r": 0.04,
-                "g": 0.05,
-                "b": 0.07,
+                "r": 0.9683482,
+                "g": 0.9728224,
+                "b": 0.9817709,
                 "a": 0.92
               },
               "Type": 1,
@@ -17483,12 +17483,12 @@
               "@type": "MOD.Core.TextComponent",
               "Alignment": 0,
               "FontColor": {
-                "r": 0.682,
-                "g": 0.718,
-                "b": 0.769,
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
                 "a": 1.0
               },
-              "FontSize": 14,
+              "FontSize": 18,
               "LineSpacing": 1.4,
               "MaxSize": 40,
               "MinSize": 10,
@@ -17700,12 +17700,12 @@
               "Alignment": 3,
               "Bold": true,
               "FontColor": {
-                "r": 0.812,
-                "g": 0.839,
-                "b": 0.878,
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
                 "a": 1.0
               },
-              "FontSize": 15,
+              "FontSize": 18,
               "MaxSize": 40,
               "MinSize": 10,
               "OutlineDistance": {
@@ -17815,12 +17815,12 @@
               "@type": "MOD.Core.TextComponent",
               "Alignment": 5,
               "FontColor": {
-                "r": 0.561,
-                "g": 0.827,
-                "b": 0.604,
+                "r": 0.3789402,
+                "g": 0.7395834,
+                "b": 0.437239617,
                 "a": 1.0
               },
-              "FontSize": 13,
+              "FontSize": 18,
               "MaxSize": 40,
               "MinSize": 10,
               "OutlineDistance": {
@@ -17872,11 +17872,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 124.0,
-                "y": -24.0
+                "y": -40.0
               },
               "OffsetMin": {
                 "x": 24.0,
-                "y": -124.0
+                "y": -140.0
               },
               "Pivot": {
                 "x": 0.0,
@@ -17895,11 +17895,11 @@
               "UIVersion": 2,
               "anchoredPosition": {
                 "x": 24.0,
-                "y": -24.0
+                "y": -40.0
               },
               "Position": {
                 "x": -226.0,
-                "y": 366.0,
+                "y": 350.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -18014,16 +18014,18 @@
                 "b": 1.0,
                 "a": 0.0
               },
+              "FlipX": false,
               "Enable": true
             },
             {
               "@type": "MOD.Core.TextComponent",
               "Alignment": 3,
               "Bold": true,
+              "Font": 0,
               "FontColor": {
-                "r": 1.0,
-                "g": 1.0,
-                "b": 1.0,
+                "r": 0.6119792,
+                "g": 0.6036123,
+                "b": 0.6036123,
                 "a": 1.0
               },
               "FontSize": 25,
@@ -18291,7 +18293,7 @@
                 "b": 0.251,
                 "a": 1.0
               },
-              "FontSize": 15,
+              "FontSize": 22,
               "MaxSize": 40,
               "MinSize": 10,
               "OutlineDistance": {
@@ -18390,9 +18392,9 @@
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
               "Color": {
-                "r": 1.0,
-                "g": 1.0,
-                "b": 1.0,
+                "r": 0.0104166269,
+                "g": 0.000128851272,
+                "b": 0.000128851272,
                 "a": 0.0
               },
               "Enable": true
@@ -18401,13 +18403,13 @@
               "@type": "MOD.Core.TextComponent",
               "Alignment": 0,
               "FontColor": {
-                "r": 0.682,
-                "g": 0.718,
-                "b": 0.769,
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
                 "a": 1.0
               },
-              "FontSize": 16,
-              "LineSpacing": 1.6,
+              "FontSize": 18,
+              "LineSpacing": 1.2,
               "MaxSize": 40,
               "MinSize": 10,
               "OutlineDistance": {
@@ -18667,13 +18669,13 @@
               "@type": "MOD.Core.TextComponent",
               "Alignment": 2,
               "FontColor": {
-                "r": 1.0,
-                "g": 1.0,
-                "b": 1.0,
+                "r": 0.3496806,
+                "g": 0.363755226,
+                "b": 0.390625,
                 "a": 1.0
               },
-              "FontSize": 16,
-              "LineSpacing": 1.6,
+              "FontSize": 18,
+              "LineSpacing": 1.2,
               "MaxSize": 40,
               "MinSize": 10,
               "OutlineDistance": {
@@ -18933,12 +18935,12 @@
               "@type": "MOD.Core.TextComponent",
               "Alignment": 3,
               "FontColor": {
-                "r": 0.765,
-                "g": 0.796,
-                "b": 0.839,
+                "r": 0.00065612793,
+                "g": 0.0101996791,
+                "b": 0.0234375,
                 "a": 1.0
               },
-              "FontSize": 16,
+              "FontSize": 18,
               "MaxSize": 40,
               "MinSize": 10,
               "OutlineDistance": {
@@ -19040,12 +19042,12 @@
               "ConstraintY": 100.0,
               "Font": "Default",
               "FontColor": {
-                "r": 0.980392158,
-                "g": 0.819607854,
-                "b": 0.2509804,
+                "r": 0.949142158,
+                "g": 0.7700547,
+                "b": 0.136696279,
                 "a": 1.0
               },
-              "FontSize": 16.0,
+              "FontSize": 18.0,
               "FontStyle": 1,
               "HorizontalAlignment": 1,
               "IgnoreMapLayerCheck": false,
@@ -19182,7 +19184,7 @@
               },
               "OffsetMin": {
                 "x": 30.0,
-                "y": -554.0
+                "y": -578.825439
               },
               "Pivot": {
                 "x": 0.0,
@@ -19190,7 +19192,7 @@
               },
               "RectSize": {
                 "x": 440.0,
-                "y": 86.0
+                "y": 110.825455
               },
               "UIMode": 1,
               "UIScale": {
@@ -19228,12 +19230,12 @@
               "ConstraintY": 100.0,
               "Font": "Default",
               "FontColor": {
-                "r": 0.8784314,
-                "g": 0.894117653,
-                "b": 0.917647064,
+                "r": 0.855224669,
+                "g": 0.88281256,
+                "b": 0.0,
                 "a": 1.0
               },
-              "FontSize": 15.0,
+              "FontSize": 18.0,
               "FontStyle": 0,
               "HorizontalAlignment": 1,
               "IgnoreMapLayerCheck": false,
