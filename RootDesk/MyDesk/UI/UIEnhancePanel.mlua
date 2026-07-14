@@ -704,6 +704,7 @@ script UIEnhancePanel extends Component
 				sel.grade = inv:GetEquippedGrade(sel.key)
 				sel.pot = inv:GetEquippedPot(sel.key)
 				sel.flame = inv:GetEquippedFlame(sel.key)
+				sel.pg = inv:GetEquippedPg(sel.key)   -- 큐브 등급업 반영(누락돼 있던 갱신)
 			end
 		else
 			-- 슬롯 모드: 같은 (name,grade,pg) 중 최고 성급 개체를 선택 추종.
@@ -716,12 +717,27 @@ script UIEnhancePanel extends Component
 					if best == nil or (c.star or 0) > (slots[best].star or 0) then best = gi end
 				end
 			end
+			if best == nil then
+				-- 큐브가 pg를 바꾸면 (name,grade,pg) 키가 깨짐 → (name,grade)만 일치하는 최고 pg 개체로 추종
+				-- (등급업/옵션 리롤 결과가 "현재" 패널에 즉시 반영되게).
+				for gi = 1, #slots do
+					local c = slots[gi]
+					if c.name == sel.name and (c.grade or 1) == (sel.grade or 1) then
+						if best == nil
+							or (c.pg or 1) > (slots[best].pg or 1)
+							or ((c.pg or 1) == (slots[best].pg or 1) and (c.star or 0) > (slots[best].star or 0)) then
+							best = gi
+						end
+					end
+				end
+			end
 			if best ~= nil then
 				local c = slots[best]
 				sel.key = best
 				sel.star = c.star
 				sel.pot = c.pot
 				sel.flame = c.flame
+				sel.pg = c.pg or sel.pg   -- 큐브 등급업 반영
 			else
 				self._T.selected = nil
 			end
@@ -859,6 +875,27 @@ script UIEnhancePanel extends Component
 		end
 		-- 큐브 사용 직후 결과 캡처(인벤 변경 후 sel이 새 상태로 갱신됨).
 		if self._T.potAwait == true then
+			-- 스택 공존 보정: 원본 스택(pot='')과 리롤 개체가 같은 (name,grade,pg,star)로 공존하면
+			-- 일반 추종이 원본을 잡음 → 방금 리롤된 개체(pot이 직전과 다름)를 찾아 선택 재바인딩.
+			if sel.mode == "slot" then
+				local inv2 = self:GetInv()
+				if inv2 ~= nil then
+					local prevPot = self._T.potPrevPot or ""
+					local slots2 = inv2:GetSlots()
+					for gi = 1, #slots2 do
+						local c = slots2[gi]
+						if c.name == sel.name and (c.grade or 1) == (sel.grade or 1)
+							and (c.pot or "") ~= "" and (c.pot or "") ~= prevPot then
+							sel.key = gi
+							sel.star = c.star
+							sel.pot = c.pot
+							sel.flame = c.flame
+							sel.pg = c.pg or sel.pg
+							break
+						end
+					end
+				end
+			end
 			self._T.potResPg = sel.pg or _PotentialGrade.Rare
 			self._T.potResOpt = sel.pot or ""
 			self._T.potUp = (self._T.potResPg > (self._T.potPrevPg or 0))
@@ -912,6 +949,7 @@ script UIEnhancePanel extends Component
 		local ps = self:GetPotential()
 		if sel == nil or ps == nil then return end
 		self._T.potPrevPg = sel.pg or _PotentialGrade.Rare
+		self._T.potPrevPot = sel.pot or ""   -- 리롤 개체 식별용(스택 공존 보정)
 		self._T.potAwait = true
 		ps:RequestCube(sel.mode, tostring(sel.key))
 	end
