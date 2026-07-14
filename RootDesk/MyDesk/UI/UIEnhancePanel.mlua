@@ -877,7 +877,7 @@ script UIEnhancePanel extends Component
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnConvert, h = h }
 			self:TintCta(n.btnConvert)
 		end
-		-- 미리보기/확정 2단계: [적용](대기결과→아이템) / [취소](대기결과 폐기). 결과가 있을 때만 표시.
+		-- 미리보기/확정 2버튼(메이플식): [큐브 사용]=재롤 / [적용]=확정. 적용은 대기결과가 있을 때만 노출.
 		n.btnApply = layout:GetChildByName("Btn_ApplyPot")
 		if n.btnApply ~= nil then
 			if n.btnApply.ButtonComponent == nil then n.btnApply:AddComponent("MOD.Core.ButtonComponent") end
@@ -885,13 +885,6 @@ script UIEnhancePanel extends Component
 			local ha = n.btnApply:ConnectEvent(ButtonClickEvent, function() self:OnPotApplyClicked() end)
 			self._T.handlers[#self._T.handlers + 1] = { e = n.btnApply, h = ha }
 			self:TintCta(n.btnApply)
-		end
-		n.btnKeep = layout:GetChildByName("Btn_KeepPot")
-		if n.btnKeep ~= nil then
-			if n.btnKeep.ButtonComponent == nil then n.btnKeep:AddComponent("MOD.Core.ButtonComponent") end
-			if n.btnKeep.SpriteGUIRendererComponent ~= nil then n.btnKeep.SpriteGUIRendererComponent.RaycastTarget = true end
-			local hk = n.btnKeep:ConnectEvent(ButtonClickEvent, function() self:OnPotKeepClicked() end)
-			self._T.handlers[#self._T.handlers + 1] = { e = n.btnKeep, h = hk }
 		end
 		-- 항목4: 재료 토글(공용) — 잠재=수상한 큐브(res 7).
 		self:WireMatToggle(layout, "matTogglePot", "수상한 큐브", 7)
@@ -938,11 +931,10 @@ script UIEnhancePanel extends Component
 
 	@ExecSpace("ClientOnly")
 	method void ShowPotConfirm(boolean show)
-		-- [적용]/[취소] 버튼은 대기결과가 있을 때만 노출. 큐브 사용 버튼은 항상 유지(재롤 가능).
+		-- [적용] 버튼은 대기결과가 있을 때만 노출(메이플 '확인'과 동일). 큐브 사용은 항상 유지(재롤).
 		local n = self._T.pot
 		if n == nil then return end
 		if n.btnApply ~= nil and isvalid(n.btnApply) then n.btnApply.Enable = show end
-		if n.btnKeep ~= nil and isvalid(n.btnKeep) then n.btnKeep.Enable = show end
 	end
 
 	method boolean PendingMatchesSel(any ps)
@@ -1043,13 +1035,6 @@ script UIEnhancePanel extends Component
 		end
 	end
 
-	@ExecSpace("ClientOnly")
-	method void OnPotKeepClicked()
-		-- [취소]: 대기결과 폐기(현재 유지, 큐브 환불 없음). pending 초기화 → Result "-".
-		local ps = self:GetPotential()
-		if ps == nil then return end
-		ps:RequestDiscard()
-	end
 
 	@ExecSpace("ClientOnly")
 	method boolean EnsureFlameWired()
