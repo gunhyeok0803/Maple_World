@@ -410,6 +410,10 @@ script UIPromotePanel extends Component
 		end
 		self:SetText(root:GetChildByName("Coll_RegionName", true), region)
 		self:SetText(root:GetChildByName("Coll_Progress", true), "등록 " .. tostring(filled) .. " / 9")
+		-- 하단 누적 보상 라인(목업): 공격력/방어력/최대 HP 합산 표시.
+		local bonus = cs:GetBonus()
+		self:SetText(root:GetChildByName("Coll_Reward", true),
+			"컬렉션 보상: 공격력 +" .. tostring(bonus.atk or 0) .. " · 방어력 +" .. tostring(bonus.def or 0) .. " · 최대 HP +" .. tostring(bonus.hp or 0))
 		self:ClearRegGrid()
 	end
 
