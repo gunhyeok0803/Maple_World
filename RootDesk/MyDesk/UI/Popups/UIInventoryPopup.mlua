@@ -562,7 +562,7 @@ script UIInventoryPopup extends Component
 				local suf = ""
 				if pct then suf = "%" end
 				local v = "+" .. tostring(b0) .. suf
-				if bo > 0 then v = v .. " <color=#7fe08a>(+" .. tostring(bo) .. suf .. ")</color>" end
+				if bo > 0 then v = v .. " <color=#1F8A3B>(+" .. tostring(bo) .. suf .. ")</color>" end   -- 밝은 배경용 진초록
 				labs[#labs + 1] = lab
 				vals[#vals + 1] = v
 			end
@@ -579,7 +579,7 @@ script UIInventoryPopup extends Component
 		-- 추가 옵션: 환생의 불꽃(flame) 라인만. 잠재는 등급 축(PotGrade)으로만 표시(옵션 롤 폐지). 없으면 헤더/라인 숨김.
 		local optLines = {}
 		if inv0 ~= nil then
-			for i, p in ipairs(inv0:ParseOptPairs(dFlame)) do optLines[#optLines + 1] = "<color=#6fd6c8>· " .. tostring(p.stat) .. " +" .. tostring(p.value) .. "</color>" end
+			for i, p in ipairs(inv0:ParseOptPairs(dFlame)) do optLines[#optLines + 1] = "<color=#12776A>· " .. tostring(p.stat) .. " +" .. tostring(p.value) .. "</color>" end
 		end
 		local hasOpt = #optLines > 0
 		if self._T.dOptLines ~= nil and self._T.dOptLines.TextGUIRendererComponent ~= nil then
