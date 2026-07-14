@@ -381,7 +381,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -456,7 +462,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -576,7 +588,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -651,7 +669,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -771,7 +795,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -891,7 +921,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -966,7 +1002,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -1086,7 +1128,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -1152,7 +1200,17 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -2436,9 +2494,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.9411765,
-                "g": 0.8509804,
-                "b": 0.5411765,
+                "r": 0.55,
+                "g": 0.42,
+                "b": 0.15,
                 "a": 1
               },
               "FontSize": 20,
@@ -2624,9 +2682,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.784313738,
-                "g": 0.8235294,
-                "b": 0.9019608,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 18,
@@ -9247,9 +9305,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.9411765,
-                "g": 0.8509804,
-                "b": 0.5411765,
+                "r": 0.55,
+                "g": 0.42,
+                "b": 0.15,
                 "a": 1
               },
               "FontSize": 18,
@@ -9435,9 +9493,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.56078434,
-                "g": 0.607843161,
-                "b": 0.7019608,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 18,
@@ -9623,9 +9681,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.419607848,
-                "g": 0.4627451,
-                "b": 0.5647059,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 15,
@@ -9811,9 +9869,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.56078434,
-                "g": 0.607843161,
-                "b": 0.7019608,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 13,
@@ -10041,7 +10099,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -10625,7 +10689,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -10700,7 +10770,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -10820,7 +10896,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -10895,7 +10977,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11015,7 +11103,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11135,7 +11229,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11210,7 +11310,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11330,7 +11436,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.95,
+                "g": 0.96,
+                "b": 0.98,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11396,7 +11508,17 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "c26a3cc43a2347979a54ad4d35292271"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11462,7 +11584,17 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11669,7 +11801,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.55,
+                "g": 0.42,
+                "b": 0.15,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -11877,7 +12015,13 @@
               },
               "OverrideSorting": false,
               "Text": "실패 없는 확정 승급 · 재료만 소모",
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.16,
+                "g": 0.55,
+                "b": 0.22,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -12244,7 +12388,17 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "56bfbdd3503340ba978baeac40681ce7"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -12319,7 +12473,13 @@
                 "y": -1
               },
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "FontColor": {
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
+                "a": 1
+              }
             }
           ],
           "@version": 1
@@ -14387,9 +14547,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.6039215686274509,
-                "g": 0.6392156862745098,
-                "b": 0.6901960784313725,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 16,
