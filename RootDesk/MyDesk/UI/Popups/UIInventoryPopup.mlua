@@ -489,6 +489,18 @@ script UIInventoryPopup extends Component
 		end
 	end
 
+	method string FlameStatKR(string stat)
+		-- 추가옵션 스탯 키(FlameOptionData=영어) → 한국어 표시 통일. 강화창 StatLabel과 동일 매핑.
+		-- 저장 데이터/스탯 합산 키(EquipStatSystem)는 영어 유지 — 표시만 변환. 미매핑(이미 한국어)은 그대로.
+		local m = {
+			Attack = "공격력", MainStat = "주스탯", Defense = "방어력", MaxHP = "최대 HP", MP = "MP",
+			CritRate = "크리티컬 확률", CritDmg = "크리티컬 데미지", BossDmg = "보스 데미지",
+			ItemDropRate = "아이템 드랍률", MesoDropRate = "메소 획득",
+			AttackPct = "공격력", MainStatPct = "주스탯", MaxHPPct = "최대 HP",
+		}
+		return m[stat] or stat
+	end
+
 	@ExecSpace("ClientOnly")
 	method void ShowDetail(string itemName)
 		local row = _DataService:GetTable("ItemData"):FindRow("Name", itemName)
@@ -579,7 +591,7 @@ script UIInventoryPopup extends Component
 		-- 추가 옵션: 환생의 불꽃(flame) 라인만. 잠재는 등급 축(PotGrade)으로만 표시(옵션 롤 폐지). 없으면 헤더/라인 숨김.
 		local optLines = {}
 		if inv0 ~= nil then
-			for i, p in ipairs(inv0:ParseOptPairs(dFlame)) do optLines[#optLines + 1] = "<color=#12776A>· " .. tostring(p.stat) .. " +" .. tostring(p.value) .. "</color>" end
+			for i, p in ipairs(inv0:ParseOptPairs(dFlame)) do optLines[#optLines + 1] = "<color=#12776A>· " .. self:FlameStatKR(tostring(p.stat)) .. " +" .. tostring(p.value) .. "</color>" end
 		end
 		local hasOpt = #optLines > 0
 		if self._T.dOptLines ~= nil and self._T.dOptLines.TextGUIRendererComponent ~= nil then
