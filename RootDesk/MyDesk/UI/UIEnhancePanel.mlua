@@ -59,14 +59,7 @@ script UIEnhancePanel extends Component
 
 	property string MatLabelFlame = "환생의 불꽃"
 
-	-- 비용 바 디자인(런타임 정규화 기준값 — CompactCostLine이 3탭 공통으로 적용).
-	-- 인스펙터에서 이 값들을 바꾸면 3탭 비용 바 크기/색/폰트가 함께 바뀐다(코드 수정 불필요).
-	property Vector2 CostBarSize = Vector2(590, 50.63)
-
-	property Color CostBarColor = Color(0.90, 0.92, 0.95, 1)
-
-	property Vector2 CostIconSize = Vector2(30, 30)
-
+	-- 비용 텍스트 스타일(가독성 정규화 — 3탭 공통). 바 크기/색/위치는 .ui(에디터)가 소스.
 	property number CostLabelFontSize = 15
 
 	property Color CostLabelColor = Color(0.42, 0.45, 0.50, 1)
@@ -606,29 +599,9 @@ script UIEnhancePanel extends Component
 		end
 		local val = costL:GetChildByName("Text_Cost")
 		if val == nil then val = costL:GetChildByName("Text_Dia") end
-		self:StyleText(val, self.CostValueFontSize, self.CostValueColor)   -- 값 폰트/색(프로퍼티)
-		-- 비용 패널바 통일(3탭 공통): 크기·색은 프로퍼티, 9-slice 렌더는 고정.
-		local bg = costL:GetChildByName("Img_BG")
-		if bg ~= nil and isvalid(bg) then
-			if bg.UITransformComponent ~= nil then bg.UITransformComponent.RectSize = self.CostBarSize end
-			if bg.SpriteGUIRendererComponent ~= nil then
-				bg.SpriteGUIRendererComponent.Color = self.CostBarColor
-				bg.SpriteGUIRendererComponent.Type = 1
-			end
-		end
-		-- 통화 아이콘 크기(프로퍼티): 부모가 Img_BG(스타/잠재) 또는 Text_Cost(환생)로 상이 → 후보 순회.
-		local hosts = { costL:GetChildByName("Img_BG"), costL:GetChildByName("Text_Cost") }
-		for i = 1, #hosts do
-			local h = hosts[i]
-			if h ~= nil and isvalid(h) then
-				for j, nm in ipairs({ "Img_Cost", "Img_Dia" }) do
-					local ic = h:GetChildByName(nm)
-					if ic ~= nil and isvalid(ic) and ic.UITransformComponent ~= nil then
-						ic.UITransformComponent.RectSize = self.CostIconSize
-					end
-				end
-			end
-		end
+		self:StyleText(val, self.CostValueFontSize, self.CostValueColor)   -- 값 폰트/색(프로퍼티, 가독성)
+		-- 비용 바 크기/색/아이콘 크기 강제는 폐지(에디터 기준) — .ui 편집이 그대로 반영되도록 런타임 미개입.
+		-- 3탭 일관성은 .ui에서 동일 스펙으로 관리(UnifyCostBars 스크립트로 정리됨).
 	end
 
 	@ExecSpace("ClientOnly")
