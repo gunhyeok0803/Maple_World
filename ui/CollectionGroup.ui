@@ -13362,8 +13362,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -14791,8 +14791,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -16220,8 +16220,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -17649,8 +17649,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -19078,8 +19078,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -20507,8 +20507,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -21936,8 +21936,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -23365,8 +23365,8 @@
                 "y": 0.0
               },
               "Position": {
-                "x": 8.0,
-                "y": -8.0,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -24912,6 +24912,80 @@
               "OutlineWidth": 3.0,
               "RaycastTarget": false,
               "Type": 0,
+              "Enable": true
+            }
+          ],
+          "@version": 1
+        }
+      },
+      {
+        "id": "d8dce90f-aabf-4f21-a9cc-916c81e17fe1",
+        "path": "/ui/CollectionGroup/UIEmpty",
+        "componentNames": "MOD.Core.UITransformComponent",
+        "jsonString": {
+          "name": "UIEmpty",
+          "path": "/ui/CollectionGroup/UIEmpty",
+          "nameEditable": true,
+          "enable": true,
+          "visible": true,
+          "localize": true,
+          "displayOrder": 3,
+          "pathConstraints": "///",
+          "revision": 1,
+          "origin": {
+            "type": "Model",
+            "entry_id": "uiempty",
+            "sub_entity_id": null,
+            "root_entity_id": "d8dce90f-aabf-4f21-a9cc-916c81e17fe1",
+            "replaced_model_id": null
+          },
+          "modelId": "uiempty",
+          "@components": [
+            {
+              "@type": "MOD.Core.UITransformComponent",
+              "AlignmentOption": 0,
+              "AnchorsMax": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "AnchorsMin": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "MobileOnly": false,
+              "OffsetMax": {
+                "x": 49.99993,
+                "y": 50.0000343
+              },
+              "OffsetMin": {
+                "x": -50.00007,
+                "y": -49.9999657
+              },
+              "Pivot": {
+                "x": 0.5,
+                "y": 0.5
+              },
+              "RectSize": {
+                "x": 100.0,
+                "y": 100.0
+              },
+              "UIMode": 1,
+              "UIVersion": 2,
+              "anchoredPosition": {
+                "x": -6.781684E-05,
+                "y": 3.53244177E-05
+              },
+              "Position": {
+                "x": -6.781684E-05,
+                "y": 3.53244177E-05,
+                "z": 0.0
+              },
+              "QuaternionRotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 1.0
+              },
               "Enable": true
             }
           ],
