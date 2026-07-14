@@ -724,7 +724,8 @@ script UIPromotePanel extends Component
 		-- 승급/컬렉션 결과 연출(bounce). FeedbackLogic:RouteResultFx가 호출. 트윈 헬퍼는 FeedbackLogic 공용.
 		-- 승급=결과 슬롯 Img_To, 컬렉션=등록 부위 CollSlot_<idx>(cpPart로 특정, 폴백 Card_Book).
 		if _FeedbackLogic == nil then return end
-		local slot = nil
+		local slot = nil        -- 트윈(bounce) 대상
+		local vfxHost = nil     -- 성공 버스트 파티클(Vfx 자식) 보유 엔티티
 		if eventKey == "collect" then
 			local root = self.panelColl
 			if root == nil or isvalid(root) == false then return end
@@ -737,14 +738,22 @@ script UIPromotePanel extends Component
 					end
 				end
 			end
-			if slot == nil then slot = root:GetChildByName("Card_Book") end
+			vfxHost = root   -- Panel_Coll/Vfx (등록 축하 버스트, 중앙)
 		else
 			local root = self.panelPromote
 			if root == nil or isvalid(root) == false then return end
 			slot = root:GetChildByName("Img_To")
+			vfxHost = slot   -- Img_To/Vfx
 		end
-		if slot == nil or isvalid(slot) == false then return end
-		_FeedbackLogic:TweenScale(slot, 1.16, 0.28)
+		if slot ~= nil and isvalid(slot) then
+			_FeedbackLogic:TweenScale(slot, 1.16, 0.28)
+		end
+		if vfxHost ~= nil and isvalid(vfxHost) then
+			local vfx = vfxHost:GetChildByName("Vfx")
+			if vfx ~= nil and isvalid(vfx) and vfx.UIBasicParticleComponent ~= nil then
+				vfx.UIBasicParticleComponent:Play()
+			end
+		end
 	end
 
 	@ExecSpace("ClientOnly")
