@@ -872,7 +872,7 @@ script UIEnhancePanel extends Component
 			self:SetText(n.resOpts, self:OptSummary(self._T.potResOpt or "", ""))
 		else
 			self:SetText(n.resGrade, "등급 상승 확률 " .. self:PotUpPct(pg))
-			if n.resGrade ~= nil and n.resGrade.TextComponent ~= nil then n.resGrade.TextComponent.FontColor = Color(0.40, 0.85, 0.45, 1) end
+			if n.resGrade ~= nil and n.resGrade.TextComponent ~= nil then n.resGrade.TextComponent.FontColor = Color(0.16, 0.55, 0.22, 1) end   -- 밝은 칩 배경용 진초록
 			self:SetText(n.resOpts, "큐브를 사용하면 결과가 표시됩니다")
 		end
 	end

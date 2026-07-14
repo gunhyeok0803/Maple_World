@@ -198,7 +198,17 @@
               "OrderInLayer": 303,
               "OverrideSorting": false,
               "RaycastTarget": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "0f4b90db8a87477e9c7a962b045f90eb"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              }
             }
           ],
           "@version": 1
@@ -290,12 +300,16 @@
               "OrderInLayer": 310,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.07,
-                "g": 0.09,
-                "b": 0.12,
-                "a": 0.95
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -385,9 +399,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "OrderInLayer": 326,
@@ -1318,9 +1332,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.8,
-                "g": 0.84,
-                "b": 0.9,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 18,
@@ -1748,9 +1762,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.8,
-                "g": 0.84,
-                "b": 0.9,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 18,
@@ -2178,9 +2192,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.8,
-                "g": 0.84,
-                "b": 0.9,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 18,
@@ -2729,9 +2743,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "OrderInLayer": 336,
@@ -2802,9 +2816,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "OrderInLayer": 336,
@@ -3651,9 +3665,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.5411765,
-                "g": 0.5764706,
-                "b": 0.6392157,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 13,
@@ -3865,7 +3879,7 @@
               "EndFrameIndex": 2147483647,
               "IgnoreMapLayerCheck": false,
               "ImageRUID": {
-                "DataId": "6e8e561a4582462eaad762cb11d1f835"
+                "DataId": "56bfbdd3503340ba978baeac40681ce7"
               },
               "LocalPosition": {
                 "x": 0,
@@ -3883,10 +3897,10 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.04,
-                "g": 0.05,
-                "b": 0.07,
-                "a": 0.92
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
               "DropShadow": false,
               "DropShadowAngle": 120,
@@ -4083,9 +4097,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 26,
@@ -4463,7 +4477,17 @@
               "OrderInLayer": 503,
               "OverrideSorting": false,
               "RaycastTarget": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "0f4b90db8a87477e9c7a962b045f90eb"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              }
             }
           ],
           "@version": 1
@@ -4555,12 +4579,16 @@
               "OrderInLayer": 513,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.07,
-                "g": 0.09,
-                "b": 0.12,
-                "a": 0.95
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -4717,9 +4745,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "OrderInLayer": 526,
@@ -4816,12 +4844,16 @@
               "OrderInLayer": 523,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.1,
-                "g": 0.13,
-                "b": 0.18,
-                "a": 0.95
+                "r": 0.97,
+                "g": 0.98,
+                "b": 0.99,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -4889,12 +4921,16 @@
               "OrderInLayer": 533,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.16,
-                "g": 0.2,
-                "b": 0.28,
-                "a": 0.95
+                "r": 0.9,
+                "g": 0.92,
+                "b": 0.95,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -4960,9 +4996,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "OrderInLayer": 546,
@@ -5134,9 +5170,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 18,
@@ -5404,9 +5440,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "OrderInLayer": 536,
@@ -5553,9 +5589,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "OrderInLayer": 536,
@@ -6276,9 +6312,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 17,
@@ -6514,9 +6550,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 17,
@@ -6752,9 +6788,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 16,
@@ -7211,7 +7247,17 @@
               "OrderInLayer": 403,
               "OverrideSorting": false,
               "RaycastTarget": false,
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "0f4b90db8a87477e9c7a962b045f90eb"
+              },
+              "Type": 1,
+              "Color": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0
+              }
             }
           ],
           "@version": 1
@@ -7303,12 +7349,16 @@
               "OrderInLayer": 413,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.07,
-                "g": 0.09,
-                "b": 0.12,
-                "a": 0.95
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -7400,12 +7450,16 @@
               "OrderInLayer": 423,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.1,
-                "g": 0.13,
-                "b": 0.18,
-                "a": 0.95
+                "r": 0.97,
+                "g": 0.98,
+                "b": 0.99,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -7497,12 +7551,16 @@
               "OrderInLayer": 433,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.16,
-                "g": 0.2,
-                "b": 0.28,
-                "a": 0.95
+                "r": 0.9,
+                "g": 0.92,
+                "b": 0.95,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -7568,9 +7626,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "OrderInLayer": 446,
@@ -7741,9 +7799,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 17,
@@ -7870,12 +7928,16 @@
               "OrderInLayer": 423,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.1,
-                "g": 0.13,
-                "b": 0.18,
-                "a": 0.95
+                "r": 0.97,
+                "g": 0.98,
+                "b": 0.99,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -7967,12 +8029,16 @@
               "OrderInLayer": 433,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.16,
-                "g": 0.2,
-                "b": 0.28,
-                "a": 0.95
+                "r": 0.9,
+                "g": 0.92,
+                "b": 0.95,
+                "a": 1
               },
-              "Enable": true
+              "Enable": true,
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
+              "Type": 1
             }
           ],
           "@version": 1
@@ -8038,9 +8104,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "OrderInLayer": 446,
@@ -8211,9 +8277,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 16,
@@ -8556,9 +8622,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "OrderInLayer": 436,
@@ -8629,9 +8695,9 @@
             {
               "@type": "MOD.Core.TextGUIRendererComponent",
               "FontColor": {
-                "r": 0.93,
-                "g": 0.95,
-                "b": 0.98,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "OrderInLayer": 436,
@@ -9165,9 +9231,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 16,
@@ -9710,7 +9776,7 @@
               "EndFrameIndex": 2147483647,
               "IgnoreMapLayerCheck": false,
               "ImageRUID": {
-                "DataId": "6e8e561a4582462eaad762cb11d1f835"
+                "DataId": "c26a3cc43a2347979a54ad4d35292271"
               },
               "LocalPosition": {
                 "x": 0,
@@ -9728,10 +9794,10 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.07,
-                "g": 0.09,
-                "b": 0.12,
-                "a": 0.92
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
               "DropShadow": false,
               "DropShadowAngle": 120,
@@ -9928,9 +9994,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 16,
@@ -10800,9 +10866,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.6039216,
-                "g": 0.6431373,
-                "b": 0.698039234,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 11,
@@ -11731,9 +11797,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.6039216,
-                "g": 0.6431373,
-                "b": 0.698039234,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 11,
@@ -12662,9 +12728,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.6039216,
-                "g": 0.6431373,
-                "b": 0.698039234,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 11,
@@ -13593,9 +13659,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.6039216,
-                "g": 0.6431373,
-                "b": 0.698039234,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 11,
@@ -13983,9 +14049,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 16,
@@ -17920,9 +17986,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.6039216,
-                "g": 0.6431373,
-                "b": 0.698039234,
+                "r": 0.42,
+                "g": 0.45,
+                "b": 0.5,
                 "a": 1
               },
               "FontSize": 11,
@@ -19296,7 +19362,7 @@
               "EndFrameIndex": 2147483647,
               "IgnoreMapLayerCheck": false,
               "ImageRUID": {
-                "DataId": "6e8e561a4582462eaad762cb11d1f835"
+                "DataId": "c26a3cc43a2347979a54ad4d35292271"
               },
               "LocalPosition": {
                 "x": 0,
@@ -19314,10 +19380,10 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.07,
-                "g": 0.09,
-                "b": 0.12,
-                "a": 0.92
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
               "DropShadow": false,
               "DropShadowAngle": 120,
@@ -19804,9 +19870,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 1,
-                "g": 1,
-                "b": 1,
+                "r": 0.23,
+                "g": 0.26,
+                "b": 0.31,
                 "a": 1
               },
               "FontSize": 20,
@@ -20006,9 +20072,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.86,
-                "g": 0.89,
-                "b": 0.94,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 14,
@@ -20354,9 +20420,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.72,
-                "g": 0.76,
-                "b": 0.82,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 20,
@@ -20556,9 +20622,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.6,
-                "g": 0.85,
-                "b": 0.55,
+                "r": 0.16,
+                "g": 0.55,
+                "b": 0.22,
                 "a": 1
               },
               "FontSize": 20,
@@ -20758,9 +20824,9 @@
               "DropShadowDistance": 3,
               "Font": 0,
               "FontColor": {
-                "r": 0.55,
-                "g": 0.86,
-                "b": 0.5,
+                "r": 0.16,
+                "g": 0.55,
+                "b": 0.22,
                 "a": 1
               },
               "FontSize": 14,
@@ -21118,7 +21184,7 @@
               "EndFrameIndex": 2147483647,
               "IgnoreMapLayerCheck": false,
               "ImageRUID": {
-                "DataId": "6e8e561a4582462eaad762cb11d1f835"
+                "DataId": "0f4b90db8a87477e9c7a962b045f90eb"
               },
               "LocalPosition": {
                 "x": 0,
@@ -21136,10 +21202,10 @@
               "SortingLayer": "UI",
               "StartFrameIndex": 0,
               "Color": {
-                "r": 0.03,
-                "g": 0.04,
-                "b": 0.06,
-                "a": 0.85
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 1
               },
               "DropShadow": false,
               "DropShadowAngle": 120,
@@ -21264,9 +21330,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 1,
-                "g": 0.9137255,
-                "b": 0.65882355,
+                "r": 0.55,
+                "g": 0.42,
+                "b": 0.15,
                 "a": 1
               },
               "FontSize": 22,
@@ -21452,9 +21518,9 @@
               "ConstraintY": 100,
               "Font": "Default",
               "FontColor": {
-                "r": 0.917647064,
-                "g": 0.917647064,
-                "b": 0.917647064,
+                "r": 0.29,
+                "g": 0.33,
+                "b": 0.39,
                 "a": 1
               },
               "FontSize": 15,
