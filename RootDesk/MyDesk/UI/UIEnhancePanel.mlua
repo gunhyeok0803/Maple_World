@@ -379,11 +379,11 @@ script UIEnhancePanel extends Component
 		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
 		if w == nil then return end
 		w.ownerWindow = self.Entity
-		-- 장착 중인 장비는 강화창에서 기본 잠금 해제(테스트/개발 편의 — 사용자 스펙).
+		-- 강화창 착용 그리드는 잠금 전면 해제 → 자물쇠 없는 기본(빈) 슬롯으로 표시(사용자 스펙).
 		-- 인벤토리(페이퍼돌)의 잠금 규칙은 그대로 유지(여긴 강화창 표시만).
-		local locked = def.locked and (inv:IsUnlocked(def.part) == false) and (inv:GetEquipped(def.part) == "")
+		local locked = false
 		local lockIcon = ent:GetChildByName("Lock")
-		if lockIcon ~= nil then lockIcon.Enable = locked end
+		if lockIcon ~= nil then lockIcon.Enable = false end
 		local parts = _ItemPart:All()
 		local pidx = 0
 		for i = 1, #parts do if parts[i] == def.part then pidx = i break end end
@@ -911,19 +911,25 @@ script UIEnhancePanel extends Component
 			self._T.potAwait = false
 		end
 		local pg = sel.pg or _PotentialGrade.Rare
-		self:SetText(n.curGrade, "현재 · " .. _PotentialGrade:Name(pg))
-		if n.curGrade ~= nil and n.curGrade.TextComponent ~= nil then n.curGrade.TextComponent.FontColor = _PotentialGrade:ColorOf(pg) end
+		-- 등급명에만 슬롯색과 동일한 등급색(리치텍스트) — 확률 텍스트 표시는 폐지(사용자 스펙).
+		self:SetText(n.curGrade, "현재 · " .. self:PgColoredName(pg))
 		self:SetText(n.curOpts, self:OptSummary(sel.pot, "잠재 옵션 없음 — 큐브를 사용하세요"))
 		if self._T.potRolled == true then
 			local rpg = self._T.potResPg or pg
-			self:SetText(n.resGrade, "결과 · " .. _PotentialGrade:Name(rpg) .. (self._T.potUp and "  등급업!" or ""))
-			if n.resGrade ~= nil and n.resGrade.TextComponent ~= nil then n.resGrade.TextComponent.FontColor = _PotentialGrade:ColorOf(rpg) end
+			self:SetText(n.resGrade, "결과 · " .. self:PgColoredName(rpg) .. (self._T.potUp and "  등급업!" or ""))
 			self:SetText(n.resOpts, self:OptSummary(self._T.potResOpt or "", ""))
 		else
-			self:SetText(n.resGrade, "등급 상승 확률 " .. self:PotUpPct(pg))
-			if n.resGrade ~= nil and n.resGrade.TextComponent ~= nil then n.resGrade.TextComponent.FontColor = Color(0.16, 0.55, 0.22, 1) end   -- 밝은 칩 배경용 진초록
+			self:SetText(n.resGrade, "결과 · -")
 			self:SetText(n.resOpts, "큐브를 사용하면 결과가 표시됩니다")
 		end
+	end
+
+	method string PgColoredName(integer pg)
+		-- 잠재 등급명을 슬롯색과 동일한 등급색으로(리치텍스트). 헤더의 나머지 텍스트 색은 유지.
+		local c = _PotentialGrade:ColorOf(pg)
+		local hex = string.format("%02X%02X%02X",
+			math.floor((c.r or 0) * 255 + 0.5), math.floor((c.g or 0) * 255 + 0.5), math.floor((c.b or 0) * 255 + 0.5))
+		return "<color=#" .. hex .. ">" .. _PotentialGrade:Name(pg) .. "</color>"
 	end
 
 	method number GetWalletRes(integer resType)
