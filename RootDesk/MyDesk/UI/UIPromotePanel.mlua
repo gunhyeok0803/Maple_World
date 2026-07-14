@@ -602,8 +602,20 @@ script UIPromotePanel extends Component
 		self:SetText(root:GetChildByName("RegSub", true), tostring(region) .. " - " .. tostring(part) .. " (" .. (itemName ~= "" and itemName or "-") .. ")")
 		local rgrid = root:GetChildByName("RegGrid", true)
 		if rgrid ~= nil and rgrid.GridViewComponent ~= nil then
-			rgrid.GridViewComponent.TotalCount = #self._T.candidates
-			rgrid.GridViewComponent:Refresh(true, true)
+			local gv = rgrid.GridViewComponent
+			-- 자가치유: 리임포트/부트 race로 템플릿 주입이 유실된 세션 대비(EnsureBoot 철학과 동일).
+			if gv.ItemEntity == nil then
+				local rtpl = root:GetChildByName("RegCellTpl", true)
+				if rtpl ~= nil then
+					gv.ItemEntity = rtpl
+					gv.CellSize = Vector2(540, 66)
+					gv.Spacing = Vector2(0, 10)
+					gv.FixedCount = 1
+					gv.OnRefresh = self.OnRegGridRefresh
+				end
+			end
+			gv.TotalCount = #self._T.candidates
+			gv:Refresh(true, true)
 		end
 	end
 

@@ -372,7 +372,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -453,7 +454,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -660,7 +662,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -993,7 +996,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -1210,7 +1214,8 @@
                 "a": 1
               },
               "Type": 1,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -1280,8 +1285,8 @@
                 "y": 220
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -560,
+                "y": 220,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1518,8 +1523,8 @@
                 "y": 158
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -560,
+                "y": 158,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1756,8 +1761,8 @@
                 "y": 96
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -560,
+                "y": 96,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -1994,8 +1999,8 @@
                 "y": 34
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -560,
+                "y": 34,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2232,8 +2237,8 @@
                 "y": -28
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -560,
+                "y": -28,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2470,8 +2475,8 @@
                 "y": 300
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -390,
+                "y": 300,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2658,8 +2663,8 @@
                 "y": 300
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -150,
+                "y": 300,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -2819,20 +2824,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -340,
-                "y": 270
+                "x": -335,
+                "y": 275
               },
               "OffsetMin": {
-                "x": -440,
-                "y": 170
+                "x": -445,
+                "y": 165
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -3534,20 +3539,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -215,
-                "y": 270
+                "x": -210,
+                "y": 275
               },
               "OffsetMin": {
-                "x": -315,
-                "y": 170
+                "x": -320,
+                "y": 165
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -4249,20 +4254,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -90,
-                "y": 270
+                "x": -85,
+                "y": 275
               },
               "OffsetMin": {
-                "x": -190,
-                "y": 170
+                "x": -195,
+                "y": 165
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -4964,20 +4969,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -340,
-                "y": 145
+                "x": -335,
+                "y": 150
               },
               "OffsetMin": {
-                "x": -440,
-                "y": 45
+                "x": -445,
+                "y": 40
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -5679,20 +5684,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -215,
-                "y": 145
+                "x": -210,
+                "y": 150
               },
               "OffsetMin": {
-                "x": -315,
-                "y": 45
+                "x": -320,
+                "y": 40
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -6394,20 +6399,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -90,
-                "y": 145
+                "x": -85,
+                "y": 150
               },
               "OffsetMin": {
-                "x": -190,
-                "y": 45
+                "x": -195,
+                "y": 40
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -7109,20 +7114,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -340,
-                "y": 20
+                "x": -335,
+                "y": 25
               },
               "OffsetMin": {
-                "x": -440,
-                "y": -80
+                "x": -445,
+                "y": -85
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -7824,20 +7829,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -215,
-                "y": 20
+                "x": -210,
+                "y": 25
               },
               "OffsetMin": {
-                "x": -315,
-                "y": -80
+                "x": -320,
+                "y": -85
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -8539,20 +8544,20 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -90,
-                "y": 20
+                "x": -85,
+                "y": 25
               },
               "OffsetMin": {
-                "x": -190,
-                "y": -80
+                "x": -195,
+                "y": -85
               },
               "Pivot": {
                 "x": 0.5,
                 "y": 0.5
               },
               "RectSize": {
-                "x": 100,
-                "y": 100
+                "x": 110,
+                "y": 110
               },
               "UIMode": 1,
               "UIScale": {
@@ -9281,8 +9286,8 @@
                 "y": 300
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 285,
+                "y": 300,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9469,8 +9474,8 @@
                 "y": 60
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 285,
+                "y": 60,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9657,8 +9662,8 @@
                 "y": 60
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 285,
+                "y": 60,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9845,8 +9850,8 @@
                 "y": 272
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": 285,
+                "y": 272,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -10117,7 +10122,7 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 555,
+                "x": 575,
                 "y": 240
               },
               "OffsetMin": {
@@ -10129,7 +10134,7 @@
                 "y": 0.5
               },
               "RectSize": {
-                "x": 540,
+                "x": 560,
                 "y": 550
               },
               "UIMode": 1,
@@ -10140,7 +10145,7 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 285,
+                "x": 295,
                 "y": -35
               },
               "Position": {
@@ -11716,8 +11721,8 @@
                 "y": -120
               },
               "Position": {
-                "x": 0,
-                "y": 0,
+                "x": -265,
+                "y": -120,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -11961,7 +11966,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -12551,7 +12557,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -12632,7 +12639,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -12839,7 +12847,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -13172,7 +13181,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -13389,7 +13399,8 @@
                 "a": 1
               },
               "Type": 1,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -13465,7 +13476,8 @@
                 "a": 1
               },
               "Type": 1,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -13541,7 +13553,8 @@
                 "a": 1
               },
               "Type": 0,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -13607,7 +13620,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -13673,7 +13687,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -13764,7 +13779,8 @@
                 "a": 1
               },
               "Type": 0,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -13830,7 +13846,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             }
           ],
           "@version": 1
@@ -14007,7 +14024,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
@@ -14466,7 +14484,8 @@
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
               "OverrideSorting": false,
-              "Enable": true
+              "Enable": true,
+              "RaycastTarget": false
             },
             {
               "@type": "MOD.Core.TextComponent",
