@@ -2696,26 +2696,26 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 183.56102,
-                "y": 33.5919151
+                "x": 175.0,
+                "y": 25.0
               },
               "OffsetMin": {
-                "x": -173.137009,
-                "y": -30.2823143
+                "x": -175.0,
+                "y": -25.0
               },
               "RectSize": {
-                "x": 356.698029,
-                "y": 63.87423
+                "x": 350.0,
+                "y": 50.0
               },
               "UIMode": 1,
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 5.212,
-                "y": 1.6548
+                "x": 0.0,
+                "y": 0.0
               },
               "Position": {
-                "x": 5.212,
-                "y": 1.6548,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -2863,26 +2863,26 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -40.0,
-                "y": 30.0001
+                "x": -50.0,
+                "y": 25.0
               },
               "OffsetMin": {
                 "x": -100.0,
-                "y": -29.9999
+                "y": -25.0
               },
               "RectSize": {
-                "x": 60.0,
-                "y": 60.0
+                "x": 50.0,
+                "y": 50.0
               },
               "UIMode": 1,
               "UIVersion": 2,
               "anchoredPosition": {
                 "x": -100.0,
-                "y": 0.0001
+                "y": 0.0
               },
               "Position": {
                 "x": -206.295,
-                "y": 0.0001,
+                "y": 0.0,
                 "z": 0.0
               },
               "QuaternionRotation": {
@@ -2895,6 +2895,9 @@
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "ImageRUID": {
+                "DataId": "f820c12ce21d4be1a98c60c091bc6ba2"
+              },
               "OrderInLayer": 543,
               "OverrideSorting": false,
               "Enable": true

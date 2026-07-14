@@ -59,6 +59,22 @@ script UIEnhancePanel extends Component
 
 	property string MatLabelFlame = "환생의 불꽃"
 
+	-- 비용 바 디자인(런타임 정규화 기준값 — CompactCostLine이 3탭 공통으로 적용).
+	-- 인스펙터에서 이 값들을 바꾸면 3탭 비용 바 크기/색/폰트가 함께 바뀐다(코드 수정 불필요).
+	property Vector2 CostBarSize = Vector2(590, 50.63)
+
+	property Color CostBarColor = Color(0.90, 0.92, 0.95, 1)
+
+	property Vector2 CostIconSize = Vector2(30, 30)
+
+	property number CostLabelFontSize = 15
+
+	property Color CostLabelColor = Color(0.42, 0.45, 0.50, 1)
+
+	property number CostValueFontSize = 16
+
+	property Color CostValueColor = Color(0.29, 0.33, 0.39, 1)
+
 	method boolean WireOnce(string key, any btn, any clickFn)
 		-- 키 기준 1회 배선(멱등): 이미 배선됐으면 true, 대상 미스폰이면 false(다음 킥 때 재시도).
 		if self._T.wiredKeys == nil then self._T.wiredKeys = {} end
@@ -583,24 +599,24 @@ script UIEnhancePanel extends Component
 		local costL = host:GetChildByName("Layout_Cost")
 		if costL == nil then return end
 		local label = costL:GetChildByName("Label_Cost")
-		self:StyleText(label, 15, Color(0.42, 0.45, 0.50, 1))   -- 밝은 칩 배경용 보조 회색
+		self:StyleText(label, self.CostLabelFontSize, self.CostLabelColor)   -- 라벨 폰트/색(프로퍼티)
 		if label ~= nil then
 			local deco = label:GetChildByName("Deco")
 			if deco ~= nil and isvalid(deco) then deco.Enable = false end
 		end
 		local val = costL:GetChildByName("Text_Cost")
 		if val == nil then val = costL:GetChildByName("Text_Dia") end
-		self:StyleText(val, 16, Color(0.29, 0.33, 0.39, 1))   -- 밝은 칩 배경용 본문색(구 다크 테마 흰색 잔재 교체)
-		-- 비용 패널바 통일(스타포스 탭 기준): 밝은 회색·동일 크기·9-slice. 잠재 탭의 어두운 알약/환생 높이차 제거.
+		self:StyleText(val, self.CostValueFontSize, self.CostValueColor)   -- 값 폰트/색(프로퍼티)
+		-- 비용 패널바 통일(3탭 공통): 크기·색은 프로퍼티, 9-slice 렌더는 고정.
 		local bg = costL:GetChildByName("Img_BG")
 		if bg ~= nil and isvalid(bg) then
-			if bg.UITransformComponent ~= nil then bg.UITransformComponent.RectSize = Vector2(590, 50.63) end
+			if bg.UITransformComponent ~= nil then bg.UITransformComponent.RectSize = self.CostBarSize end
 			if bg.SpriteGUIRendererComponent ~= nil then
-				bg.SpriteGUIRendererComponent.Color = Color(0.90, 0.92, 0.95, 1)
+				bg.SpriteGUIRendererComponent.Color = self.CostBarColor
 				bg.SpriteGUIRendererComponent.Type = 1
 			end
 		end
-		-- 통화 아이콘 축소: 부모가 Img_BG(스타/잠재) 또는 Text_Cost(환생)로 상이 → 후보 순회.
+		-- 통화 아이콘 크기(프로퍼티): 부모가 Img_BG(스타/잠재) 또는 Text_Cost(환생)로 상이 → 후보 순회.
 		local hosts = { costL:GetChildByName("Img_BG"), costL:GetChildByName("Text_Cost") }
 		for i = 1, #hosts do
 			local h = hosts[i]
@@ -608,7 +624,7 @@ script UIEnhancePanel extends Component
 				for j, nm in ipairs({ "Img_Cost", "Img_Dia" }) do
 					local ic = h:GetChildByName(nm)
 					if ic ~= nil and isvalid(ic) and ic.UITransformComponent ~= nil then
-						ic.UITransformComponent.RectSize = Vector2(30, 30)
+						ic.UITransformComponent.RectSize = self.CostIconSize
 					end
 				end
 			end
