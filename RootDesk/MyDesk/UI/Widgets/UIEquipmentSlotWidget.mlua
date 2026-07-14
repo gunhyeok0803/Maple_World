@@ -32,6 +32,8 @@ script UIEquipmentSlotWidget extends Component
 		local iconEntity = self.Entity:GetChildByName("Icon")
 		if iconEntity ~= nil and row ~= nil then
 			iconEntity.SpriteGUIRendererComponent.ImageRUID = row:GetItem("IconRUID")
+			-- 가상화 셀 재사용 대비: 빈 슬롯이었던 셀의 꺼진 Icon을 반드시 다시 켬(착용 그리드 아이콘 미표시 원인).
+			iconEntity.Enable = true
 		end
 		-- 좌상단 품질등급 배지: 장비만 [하급/중급/상급/최상급] 표시, 그 외 숨김. (슬롯 배경색=잠재등급과 축 분리)
 		local q = self.Entity:GetChildByName("QBadge")

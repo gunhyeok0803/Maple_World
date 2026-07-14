@@ -288,10 +288,12 @@ script UIEnhancePanel extends Component
 		local inv = self:GetInv()
 		if inv == nil or not self:EnsureListWired() then return end
 		-- 착용 27슬롯 그리드(SlotDefs) 갱신 — 인벤과 동일한 슬롯 구성.
+		-- 깜빡임 방지: 최초 1회만 전체 구성(resetPos=true), 이후엔 내용만 갱신(false) — 셀 재생성/스크롤 리셋 금지.
 		local eg = self._T.equipGridEnt ~= nil and self._T.equipGridEnt.GridViewComponent or nil
 		if eg ~= nil then
 			eg.TotalCount = #self:SlotDefs()
-			eg:Refresh(true, true)
+			eg:Refresh(self._T.equipGridInit ~= true, true)
+			self._T.equipGridInit = true
 		end
 		local filtered = {}
 		local slots = inv:GetSlots()
@@ -305,7 +307,8 @@ script UIEnhancePanel extends Component
 		local gv = self._T.gridEnt.GridViewComponent
 		if gv ~= nil then
 			gv.TotalCount = #filtered
-			gv:Refresh(true, true)
+			gv:Refresh(self._T.invGridInit ~= true, true)
+			self._T.invGridInit = true
 		end
 		log("[UIEnhancePanel] 리스트 갱신 — 인벤 장비 " .. tostring(#filtered) .. "개")
 	end
@@ -321,6 +324,9 @@ script UIEnhancePanel extends Component
 		w.ownerWindow = self.Entity
 		w.itemPg = it.pg or 1
 		w:SetData(it.name, it.gi, it.count, it.grade)
+		-- 목록 갱신 후에도 현재 선택 하이라이트 유지(셀 재사용이라 매 바인딩 시 재적용).
+		local sel = self._T.selected
+		w:SetSelected(sel ~= nil and sel.mode == "slot" and sel.key == it.gi)
 	end
 
 	@ExecSpace("ClientOnly")
@@ -373,7 +379,9 @@ script UIEnhancePanel extends Component
 		local w = ent:GetComponent("script.UIEquipmentSlotWidget")
 		if w == nil then return end
 		w.ownerWindow = self.Entity
-		local locked = def.locked and (inv:IsUnlocked(def.part) == false)
+		-- 장착 중인 장비는 강화창에서 기본 잠금 해제(테스트/개발 편의 — 사용자 스펙).
+		-- 인벤토리(페이퍼돌)의 잠금 규칙은 그대로 유지(여긴 강화창 표시만).
+		local locked = def.locked and (inv:IsUnlocked(def.part) == false) and (inv:GetEquipped(def.part) == "")
 		local lockIcon = ent:GetChildByName("Lock")
 		if lockIcon ~= nil then lockIcon.Enable = locked end
 		local parts = _ItemPart:All()
