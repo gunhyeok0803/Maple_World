@@ -399,16 +399,22 @@ script UIPromotePanel extends Component
 								if (e.count or 0) > 0 and (e.grade or 0) > bestG then bestG = e.grade end
 							end
 						end
-						-- 등록 슬롯 = 인벤 스타일(품질 배지=등록된 최고 등급, Count=총 등록횟수). 미등록만 배지 숨김.
-						us:SetData(itemName, p, reg, (bestG > 0) and bestG or 1)
-						if iconE ~= nil then
-							iconE.Enable = true
-							if iconE.SpriteGUIRendererComponent ~= nil then
-								iconE.SpriteGUIRendererComponent.Color = (reg > 0) and Color(1, 1, 1, 1) or Color(0.42, 0.45, 0.54, 1)
+						-- 등록 전 = Empty Slot(중립 RUID, 아이콘 없음 — 실루엣 금지). 등록 후에만 인벤 스타일
+						-- (아이콘 + 품질 배지=등록된 최고 등급 + Count=총 등록횟수) 표시. [사용자 스펙]
+						if reg > 0 then
+							us:SetData(itemName, p, reg, (bestG > 0) and bestG or 1)
+							if iconE ~= nil then
+								iconE.Enable = true
+								if iconE.SpriteGUIRendererComponent ~= nil then
+									iconE.SpriteGUIRendererComponent.Color = Color(1, 1, 1, 1)
+								end
 							end
+							filled = filled + 1
+						else
+							us:SetData("", p, 0, 1)
+							if iconE ~= nil then iconE.Enable = false end
+							if qb ~= nil then qb.Enable = false end
 						end
-						if qb ~= nil and reg == 0 then qb.Enable = false end
-						if reg > 0 then filled = filled + 1 end
 					end
 				end
 			end
