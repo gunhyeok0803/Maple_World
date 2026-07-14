@@ -571,6 +571,15 @@ script UIEnhancePanel extends Component
 		local val = costL:GetChildByName("Text_Cost")
 		if val == nil then val = costL:GetChildByName("Text_Dia") end
 		self:StyleText(val, 16, Color(0.29, 0.33, 0.39, 1))   -- 밝은 칩 배경용 본문색(구 다크 테마 흰색 잔재 교체)
+		-- 비용 패널바 통일(스타포스 탭 기준): 밝은 회색·동일 크기·9-slice. 잠재 탭의 어두운 알약/환생 높이차 제거.
+		local bg = costL:GetChildByName("Img_BG")
+		if bg ~= nil and isvalid(bg) then
+			if bg.UITransformComponent ~= nil then bg.UITransformComponent.RectSize = Vector2(590, 50.63) end
+			if bg.SpriteGUIRendererComponent ~= nil then
+				bg.SpriteGUIRendererComponent.Color = Color(0.90, 0.92, 0.95, 1)
+				bg.SpriteGUIRendererComponent.Type = 1
+			end
+		end
 		-- 통화 아이콘 축소: 부모가 Img_BG(스타/잠재) 또는 Text_Cost(환생)로 상이 → 후보 순회.
 		local hosts = { costL:GetChildByName("Img_BG"), costL:GetChildByName("Text_Cost") }
 		for i = 1, #hosts do
