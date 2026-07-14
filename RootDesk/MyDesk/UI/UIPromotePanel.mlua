@@ -392,17 +392,22 @@ script UIPromotePanel extends Component
 						if qb ~= nil then qb.Enable = false end
 					else
 						local reg = 0
+						local bestG = 0
 						for j, e in ipairs(cs:GetBookEntries()) do
-							if e.region == region and e.part == part then reg = reg + (e.count or 0) end
+							if e.region == region and e.part == part then
+								reg = reg + (e.count or 0)
+								if (e.count or 0) > 0 and (e.grade or 0) > bestG then bestG = e.grade end
+							end
 						end
-						us:SetData(itemName, p, reg, 1)
+						-- 등록 슬롯 = 인벤 스타일(품질 배지=등록된 최고 등급, Count=총 등록횟수). 미등록만 배지 숨김.
+						us:SetData(itemName, p, reg, (bestG > 0) and bestG or 1)
 						if iconE ~= nil then
 							iconE.Enable = true
 							if iconE.SpriteGUIRendererComponent ~= nil then
 								iconE.SpriteGUIRendererComponent.Color = (reg > 0) and Color(1, 1, 1, 1) or Color(0.42, 0.45, 0.54, 1)
 							end
 						end
-						if qb ~= nil then qb.Enable = false end
+						if qb ~= nil and reg == 0 then qb.Enable = false end
 						if reg > 0 then filled = filled + 1 end
 					end
 				end

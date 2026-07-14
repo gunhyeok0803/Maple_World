@@ -461,7 +461,11 @@ script UIEnhancePanel extends Component
 		local sr = hdr.SpriteGUIRendererComponent
 		local icon = hdr:GetChildByName("Icon")
 		if sel == nil or sel.name == nil or sel.name == "" then
-			if sr ~= nil then sr.Color = Color(1, 1, 1, 0) end
+			-- 빈 상태 = 중립 기본 슬롯(투명/흰 네모 금지 — 모든 화면 슬롯 기본 통일).
+			if sr ~= nil then
+				sr.ImageRUID = "aa931a755e5949699233b817029a3e36"
+				sr.Color = Color(1, 1, 1, 1)
+			end
 			if icon ~= nil then icon.Enable = false end
 			return
 		end
@@ -1180,6 +1184,10 @@ script UIEnhancePanel extends Component
 			if slotImg ~= nil then
 				local icon = slotImg:GetChildByName("Icon")
 				if icon ~= nil then icon.Enable = false end
+				-- 빈 상태는 중립 기본 슬롯으로 리셋(슬롯색=잠재등급 의미 — 기본에 등급색 금지).
+				if slotImg.SpriteGUIRendererComponent ~= nil then
+					slotImg.SpriteGUIRendererComponent.ImageRUID = "aa931a755e5949699233b817029a3e36"
+				end
 			end
 			return
 		end

@@ -79,9 +79,14 @@ script UIEquipmentSlotWidget extends Component
 	@ExecSpace("ClientOnly")
 	method void RefreshBorder()
 		-- 슬롯 배경 = 잠재등급(PotentialGrade) 색 슬롯. 품질등급은 별도 [등급] 배지로 표시(색 충돌 분리).
+		-- 빈 칸은 중립 기본 슬롯(aa931a75, 모든 화면 통일) — 슬롯색=잠재등급 의미라 기본에 등급색 금지.
 		local sr = self.Entity.SpriteGUIRendererComponent
 		if sr == nil then return end
-		sr.ImageRUID = _PotentialGrade:SlotRUID(self.itemPg)
+		if self.itemName == "" then
+			sr.ImageRUID = "aa931a755e5949699233b817029a3e36"
+		else
+			sr.ImageRUID = _PotentialGrade:SlotRUID(self.itemPg)
+		end
 		if self._T.selected then sr.Color = Color(1, 1, 1, 1) else sr.Color = Color(0.82, 0.82, 0.82, 1) end
 		-- 옛 프레임 오버레이(Body=MapleFrameSlot)는 등급 슬롯을 가리므로 끔.
 		local body = self.Entity:GetChildByName("Body")

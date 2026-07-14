@@ -5928,7 +5928,7 @@
               "EndFrameIndex": 2147483647,
               "IgnoreMapLayerCheck": false,
               "ImageRUID": {
-                "DataId": "6e8e561a4582462eaad762cb11d1f835"
+                "DataId": "aa931a755e5949699233b817029a3e36"
               },
               "LocalPosition": {
                 "x": 0,
@@ -5979,7 +5979,7 @@
               },
               "OutlineWidth": 3,
               "RaycastTarget": false,
-              "Type": 1,
+              "Type": 0,
               "Enable": true
             }
           ],
