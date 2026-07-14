@@ -475,20 +475,28 @@ script UIPromotePanel extends Component
 			return
 		end
 		local filtered = {}
+		local sig = {}
 		for gi, s in ipairs(inv:GetSlots()) do
 			local ok = (s.star or 0) == 0 and (s.pot or "") == "" and (s.flame or "") == "" and inv:MetaCell(s.name, "Part") ~= ""
 			if ok then
 				ok = (s.grade or 1) < _ItemGrade.Best
 			end
-			if ok then filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pg = s.pg } end
+			if ok then
+				filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pg = s.pg }
+				sig[#sig + 1] = tostring(s.name) .. ":" .. tostring(s.count) .. ":" .. tostring(s.grade or 1) .. ":" .. tostring(s.pg or 1)
+			end
 		end
 		self._T.filtered = filtered
 		local grid = self.panelPromote:GetChildByName("Grid")
-		if grid ~= nil and grid.GridViewComponent ~= nil then
+		local psig = table.concat(sig, "|")
+		-- 불필요 Refresh 차단: 승급 후보 표시 서명이 같으면 다시 그리지 않음(깜빡임 원천 제거).
+		if grid ~= nil and grid.GridViewComponent ~= nil and (self._T.promoteSig ~= psig or self._T.promoteGridInit ~= true) then
 			grid.GridViewComponent.TotalCount = #filtered
-			grid.GridViewComponent:Refresh(true, true)
+			grid.GridViewComponent:Refresh(self._T.promoteGridInit ~= true, true)
+			self._T.promoteGridInit = true
+			self._T.promoteSig = psig
+			log("[UIPromotePanel] 목록 " .. tostring(#filtered) .. "개 (탭 " .. tostring(self._T.tab) .. ")")
 		end
-		log("[UIPromotePanel] 목록 " .. tostring(#filtered) .. "개 (탭 " .. tostring(self._T.tab) .. ")")
 	end
 
 	@ExecSpace("ClientOnly")

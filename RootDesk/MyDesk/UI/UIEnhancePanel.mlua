@@ -287,30 +287,45 @@ script UIEnhancePanel extends Component
 		-- 좌측 리스트 채우기: 착용 4부위 + 인벤 전체 장비(강화 대상). 잠재=pg 상승/환생=추가옵션은 모든 장비, 스타포스만 pg 레전드리(서버 차단).
 		local inv = self:GetInv()
 		if inv == nil or not self:EnsureListWired() then return end
-		-- 착용 27슬롯 그리드(SlotDefs) 갱신 — 인벤과 동일한 슬롯 구성.
-		-- 깜빡임 방지: 최초 1회만 전체 구성(resetPos=true), 이후엔 내용만 갱신(false) — 셀 재생성/스크롤 리셋 금지.
-		local eg = self._T.equipGridEnt ~= nil and self._T.equipGridEnt.GridViewComponent or nil
-		if eg ~= nil then
-			eg.TotalCount = #self:SlotDefs()
-			eg:Refresh(self._T.equipGridInit ~= true, true)
-			self._T.equipGridInit = true
-		end
+		-- 인벤 장비 목록 구성.
 		local filtered = {}
 		local slots = inv:GetSlots()
+		local sig = {}
 		for gi = 1, #slots do
 			local s = slots[gi]
 			if inv:MetaCell(s.name, "Part") ~= "" then
 				filtered[#filtered + 1] = { gi = gi, name = s.name, count = s.count, star = s.star, grade = s.grade, pg = s.pg, pot = s.pot, flame = s.flame }
+				-- 서명 = 셀 표시에 실제 쓰이는 값만(이름·수량·등급·잠재색). star/pot/flame은 셀 미표시 → 제외.
+				sig[#sig + 1] = tostring(s.name) .. ":" .. tostring(s.count) .. ":" .. tostring(s.grade or 1) .. ":" .. tostring(s.pg or 1)
 			end
 		end
 		self._T.filtered = filtered
+		-- 착용 그리드 서명(부위별 착용 아이템/등급/잠재색).
+		local esig = {}
+		for i, def in ipairs(self:SlotDefs()) do
+			local nm = inv:GetEquipped(def.part)
+			esig[#esig + 1] = def.part .. "=" .. tostring(nm) .. ":" .. tostring(inv:GetEquippedGrade(def.part)) .. ":" .. tostring(inv:GetEquippedPg(def.part))
+		end
+		local bagSig = table.concat(sig, "|")
+		local wornSig = table.concat(esig, "|")
+
+		-- 불필요 Refresh 차단: 표시 서명이 이전과 같으면 그리드를 다시 그리지 않음(강화/큐브/불꽃으로
+		-- 셀 표시가 안 바뀌는 경우 = 대부분 → 깜빡임 원천 제거). 바뀔 때만 스크롤 리셋 없이 갱신.
+		local eg = self._T.equipGridEnt ~= nil and self._T.equipGridEnt.GridViewComponent or nil
+		if eg ~= nil and (self._T.wornSig ~= wornSig or self._T.equipGridInit ~= true) then
+			eg.TotalCount = #self:SlotDefs()
+			eg:Refresh(self._T.equipGridInit ~= true, true)
+			self._T.equipGridInit = true
+			self._T.wornSig = wornSig
+		end
 		local gv = self._T.gridEnt.GridViewComponent
-		if gv ~= nil then
+		if gv ~= nil and (self._T.bagSig ~= bagSig or self._T.invGridInit ~= true) then
 			gv.TotalCount = #filtered
 			gv:Refresh(self._T.invGridInit ~= true, true)
 			self._T.invGridInit = true
+			self._T.bagSig = bagSig
+			log("[UIEnhancePanel] 리스트 갱신 — 인벤 장비 " .. tostring(#filtered) .. "개")
 		end
-		log("[UIEnhancePanel] 리스트 갱신 — 인벤 장비 " .. tostring(#filtered) .. "개")
 	end
 
 	@ExecSpace("ClientOnly")
