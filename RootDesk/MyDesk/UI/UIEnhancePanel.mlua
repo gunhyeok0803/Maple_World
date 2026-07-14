@@ -548,14 +548,14 @@ script UIEnhancePanel extends Component
 		local costL = host:GetChildByName("Layout_Cost")
 		if costL == nil then return end
 		local label = costL:GetChildByName("Label_Cost")
-		self:StyleText(label, 15, Color(0.60, 0.64, 0.70, 1))
+		self:StyleText(label, 15, Color(0.42, 0.45, 0.50, 1))   -- 밝은 칩 배경용 보조 회색
 		if label ~= nil then
 			local deco = label:GetChildByName("Deco")
 			if deco ~= nil and isvalid(deco) then deco.Enable = false end
 		end
 		local val = costL:GetChildByName("Text_Cost")
 		if val == nil then val = costL:GetChildByName("Text_Dia") end
-		self:StyleText(val, 16, Color(0.92, 0.94, 0.98, 1))
+		self:StyleText(val, 16, Color(0.29, 0.33, 0.39, 1))   -- 밝은 칩 배경용 본문색(구 다크 테마 흰색 잔재 교체)
 		-- 통화 아이콘 축소: 부모가 Img_BG(스타/잠재) 또는 Text_Cost(환생)로 상이 → 후보 순회.
 		local hosts = { costL:GetChildByName("Img_BG"), costL:GetChildByName("Text_Cost") }
 		for i = 1, #hosts do
@@ -579,7 +579,7 @@ script UIEnhancePanel extends Component
 		if isvalid(self.contentStar) == false then return false end
 		local panel = self.contentStar:GetChildByName("Panel")
 		if panel == nil then return false end
-		self:SetCostIcon(panel, "Img_BG", "Img_Cost", "6d050c1d59154c968a8ff74e6fc229cb")   -- 스타포스=메소 아이콘(비용 왼쪽)
+		self:SetCostIcon(panel, "Img_BG", "Img_Cost", "e4eecc56521f46ddad3885cc902b2cff")   -- 스타포스=주문서 아이콘(메소 폐지, ResourceDataSet Type9)
 		local prob = panel:GetChildByName("Layout_Prob")
 		local lvl = panel:GetChildByName("StarForceLevel")
 		local costL = panel:GetChildByName("Layout_Cost")
@@ -659,13 +659,8 @@ script UIEnhancePanel extends Component
 			self:SetText(n.suc, self:FmtPct(s))
 			self:SetText(n.keep, self:FmtPct(math.max(0, 1 - s - d)))
 			self:SetText(n.des, self:FmtPct(d))
-			local costSpec = tostring(row:GetItem("Cost"))
-			local meso = 0
-			for i, part in ipairs(_UtilLogic:Split(costSpec, ";")) do
-				local kv = _UtilLogic:Split(part, ":")
-				if kv[1] == "res" then meso = meso + (tonumber(kv[3]) or 0) end
-			end
-			self:SetText(n.cost, tostring(meso))
+			-- 비용 = 스타포스 주문서 1개 고정(메소 폐지). 잠재 탭과 동일한 "보유 X / 필요 1" 형식.
+			self:SetText(n.cost, self:CostOwnNeed(self:GetWalletRes(9)))
 		end
 	end
 

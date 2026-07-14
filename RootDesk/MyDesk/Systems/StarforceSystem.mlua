@@ -5,6 +5,10 @@ script StarforceSystem extends Component
 
 	-- 스타포스는 레전드리(잠재) 전용 — 게이트는 pg == _PotentialGrade.Legendary. 품질(_ItemGrade)과 무관.
 
+	-- 강화 비용 = 스타포스 주문서 1개(ResourceDataSet Type 9 Starforce1). 메소 소비 폐지(사용자 스펙).
+	-- StarforceData의 Cost 열은 데이터 보존 차원에서 유지하되 더 이상 사용하지 않음.
+	property string EnhanceCost = "res:9:1"
+
 	method InventoryController GetInv()
 		-- 같은 엔티티의 InventoryController(없으면 nil).
 		---@type InventoryController
@@ -121,9 +125,9 @@ script StarforceSystem extends Component
 			log_warning("[SF] 데이터 없음 star=" .. tostring(target))
 			return
 		end
-		local costs = self:ParseCost(row:GetItem("Cost"))
+		local costs = self:ParseCost(self.EnhanceCost)   -- 주문서 1개(메소 폐지)
 		if not self:CanPay(costs) then
-			log("[SF] 메소 부족: " .. tostring(name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
+			log("[SF] 스타포스 주문서 부족: " .. tostring(name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
 			return
 		end
 		self:PayCost(costs)
@@ -184,9 +188,9 @@ script StarforceSystem extends Component
 			log_warning("[SF] 데이터 없음 star=" .. tostring(target))
 			return
 		end
-		local costs = self:ParseCost(row:GetItem("Cost"))
+		local costs = self:ParseCost(self.EnhanceCost)   -- 주문서 1개(메소 폐지)
 		if not self:CanPay(costs) then
-			log("[SF] 메소 부족: " .. tostring(e.name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
+			log("[SF] 스타포스 주문서 부족: " .. tostring(e.name) .. " ★" .. tostring(star) .. "→" .. tostring(target))
 			return
 		end
 		self:PayCost(costs)

@@ -120,10 +120,10 @@
           "name": "Tab_StarForce",
           "path": "/ui/EnhanceGroup/Tab_StarForce",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 0,
+          "displayOrder": 6,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -2479,7 +2479,7 @@
           "name": "Layout_Cost",
           "path": "/ui/EnhanceGroup/Tab_StarForce/Panel/Layout_Cost",
           "nameEditable": true,
-          "enable": false,
+          "enable": true,
           "visible": true,
           "localize": true,
           "displayOrder": 5,
@@ -3732,10 +3732,10 @@
           "name": "Window",
           "path": "/ui/EnhanceGroup/Window",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 1,
+          "displayOrder": 0,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -4419,7 +4419,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 2,
+          "displayOrder": 8,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -5267,12 +5267,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 40.14995,
-                "y": 87.13757
+                "x": 185.792542,
+                "y": 205.928467
               },
               "OffsetMin": {
-                "x": -340.149963,
-                "y": 22.8624268
+                "x": -194.507355,
+                "y": 141.65332
               },
               "Pivot": {
                 "x": 0.5,
@@ -5290,12 +5290,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -150,
-                "y": 55
+                "x": -4.3574,
+                "y": 173.7909
               },
               "Position": {
-                "x": -150,
-                "y": -320,
+                "x": -4.3574,
+                "y": -201.2091,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -5383,13 +5383,16 @@
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
+              "ImageRUID": {
+                "DataId": "9eee37f21d974889947d021f08bcda62"
+              },
               "OrderInLayer": 530,
               "OverrideSorting": false,
               "Color": {
-                "r": 0.1,
-                "g": 0.13,
-                "b": 0.18,
-                "a": 0.9
+                "r": 0.8540362,
+                "g": 0.8693256,
+                "b": 0.9192709,
+                "a": 1
               },
               "Enable": true
             }
@@ -6177,12 +6180,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": -110.1552,
-                "y": -458.9999
+                "x": -141.6007,
+                "y": -665
               },
               "OffsetMin": {
-                "x": -294.1552,
-                "y": -510.9999
+                "x": -325.6007,
+                "y": -717
               },
               "Pivot": {
                 "x": 0.5,
@@ -6200,12 +6203,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -202.1552,
-                "y": -458.9999
+                "x": -233.6007,
+                "y": -665
               },
               "Position": {
-                "x": -202.1552,
-                "y": -83.99991,
+                "x": -233.6007,
+                "y": -290,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6415,12 +6418,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 92.5,
-                "y": -459
+                "x": 57,
+                "y": -665
               },
               "OffsetMin": {
-                "x": -91.5,
-                "y": -511
+                "x": -127,
+                "y": -717
               },
               "Pivot": {
                 "x": 0.5,
@@ -6438,12 +6441,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": 0.5,
-                "y": -459
+                "x": -35,
+                "y": -665
               },
               "Position": {
-                "x": 0.5,
-                "y": -84,
+                "x": -35,
+                "y": -290,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -6624,7 +6627,7 @@
           "name": "Btn_MatToggle",
           "path": "/ui/EnhanceGroup/Tab_Flame/Layout/Btn_MatToggle",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 8,
@@ -6862,7 +6865,7 @@
           "name": "Panel_MatList",
           "path": "/ui/EnhanceGroup/Tab_Flame/Layout/Panel_MatList",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 9,
@@ -7198,7 +7201,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 3,
+          "displayOrder": 7,
           "pathConstraints": "///",
           "revision": 1,
           "origin": {
@@ -7906,11 +7909,11 @@
               "MobileOnly": false,
               "OffsetMax": {
                 "x": 340,
-                "y": -316.736059
+                "y": -316.736053
               },
               "OffsetMin": {
                 "x": -340,
-                "y": -492.015341
+                "y": -492.01535
               },
               "Pivot": {
                 "x": 0.5,
@@ -7933,7 +7936,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": -29.3757019,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8034,7 +8037,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": 80,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8208,7 +8211,7 @@
               },
               "Position": {
                 "x": 0,
-                "y": 0,
+                "y": -20,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -8311,6 +8314,7 @@
               "FontSize": 17,
               "IgnoreMapLayerCheck": false,
               "IsLocalizationKey": false,
+              "LineSpacing": 1.5,
               "MaxSize": 40,
               "MinSize": 10,
               "OrderInLayer": 436,
@@ -8339,8 +8343,7 @@
               "UseConstraintX": false,
               "UseConstraintY": false,
               "UseOutLine": false,
-              "Enable": true,
-              "LineSpacing": 1.5
+              "Enable": true
             }
           ],
           "@version": 1
@@ -8383,12 +8386,12 @@
               },
               "MobileOnly": false,
               "OffsetMax": {
-                "x": 46.9527054,
-                "y": 91.00003
+                "x": 115.99971,
+                "y": 201.000244
               },
               "OffsetMin": {
-                "x": -226.763916,
-                "y": 30.03494
+                "x": -157.7169,
+                "y": 140.035156
               },
               "Pivot": {
                 "x": 0.5,
@@ -8406,12 +8409,12 @@
               },
               "UIVersion": 2,
               "anchoredPosition": {
-                "x": -89.9056,
-                "y": 60.5174866
+                "x": -20.8586,
+                "y": 170.5177
               },
               "Position": {
-                "x": -89.9056,
-                "y": -314.4825,
+                "x": -20.8586,
+                "y": -204.4823,
                 "z": 0
               },
               "QuaternionRotation": {
@@ -9077,7 +9080,7 @@
           "name": "Btn_MatToggle",
           "path": "/ui/EnhanceGroup/Tab_Potential/Layout/Btn_MatToggle",
           "nameEditable": true,
-          "enable": true,
+          "enable": false,
           "visible": true,
           "localize": true,
           "displayOrder": 4,
@@ -9651,7 +9654,7 @@
           "enable": true,
           "visible": true,
           "localize": true,
-          "displayOrder": 4,
+          "displayOrder": 1,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -18392,7 +18395,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 5,
+          "displayOrder": 3,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -18644,7 +18647,7 @@
           "enable": true,
           "visible": true,
           "localize": true,
-          "displayOrder": 6,
+          "displayOrder": 10,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -18733,7 +18736,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 7,
+          "displayOrder": 4,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -18985,7 +18988,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 8,
+          "displayOrder": 5,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -19237,7 +19240,7 @@
           "enable": false,
           "visible": true,
           "localize": true,
-          "displayOrder": 9,
+          "displayOrder": 2,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
@@ -21170,7 +21173,7 @@
           "enable": true,
           "visible": true,
           "localize": true,
-          "displayOrder": 10,
+          "displayOrder": 9,
           "pathConstraints": "///",
           "revision": 0,
           "origin": {
