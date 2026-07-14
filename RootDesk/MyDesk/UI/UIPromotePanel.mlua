@@ -223,7 +223,14 @@ script UIPromotePanel extends Component
 		-- 같은 창 안에서 콘텐츠 패널만 토글(승급=panelPromote / 컬렉션=panelColl). 두 탭 버튼 항상 표시, 별도 창 없음.
 		self:ApplyVisibility(self:IsOpen())
 		if self:IsOpen() then
-			if idx == 2 then self:RefreshBook() else self:BuildList() end
+			-- 컬렉션 탭도 배선 필수: 탭 버튼으로 전환 시 SetOpen(BuildList) 경로를 안 타므로
+			-- 여기서 EnsureWiredTab을 직접 호출(미호출 시 도감/지역/등록 클릭 전부 무반응).
+			if idx == 2 then
+				self:EnsureWiredTab()
+				self:RefreshBook()
+			else
+				self:BuildList()
+			end
 			self:RefreshInfo()
 		end
 		log("[UIPromotePanel] 탭 " .. tostring(idx))
