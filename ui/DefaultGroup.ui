@@ -1081,12 +1081,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "f9837329-e34e-4d88-a6cc-d2f45994d4cb",
+            "entry_id": "47e602fb-4b8f-4630-8182-ea40e92fac54",
             "sub_entity_id": null,
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "f9837329-e34e-4d88-a6cc-d2f45994d4cb",
+          "modelId": "47e602fb-4b8f-4630-8182-ea40e92fac54",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -1214,12 +1214,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "c2e155f9-4470-42de-aad9-00b52ba927af",
+            "entry_id": "44b375b6-cc8c-4779-9f67-ff38dd389ff2",
             "sub_entity_id": null,
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "c2e155f9-4470-42de-aad9-00b52ba927af",
+          "modelId": "44b375b6-cc8c-4779-9f67-ff38dd389ff2",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -1270,9 +1270,6 @@
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
-              "ImageRUID": {
-                "DataId": "3e9d52ed52d64794bbd6f72bab8ee3d9"
-              },
               "OverrideSorting": false,
               "Enable": true
             },
@@ -1350,12 +1347,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "c2e155f9-4470-42de-aad9-00b52ba927af",
-            "sub_entity_id": "abefbfab-0683-40fe-a3f2-abbcc271229f",
+            "entry_id": "44b375b6-cc8c-4779-9f67-ff38dd389ff2",
+            "sub_entity_id": "b58fb36b-b717-4406-9def-489b5186edae",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "abefbfab-0683-40fe-a3f2-abbcc271229f",
+          "modelId": "b58fb36b-b717-4406-9def-489b5186edae",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -1383,15 +1380,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "anchoredPosition": {
-                "x": 1.52560043,
-                "y": 3.05099869
-              },
-              "Position": {
-                "x": -44.4744,
-                "y": 49.051,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -1402,9 +1390,6 @@
             },
             {
               "@type": "MOD.Core.SpriteGUIRendererComponent",
-              "ImageRUID": {
-                "DataId": "7eadabb77ae324d45b6e06e3b81e66c3"
-              },
               "OverrideSorting": false,
               "Enable": true
             }

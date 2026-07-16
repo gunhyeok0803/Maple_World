@@ -128,12 +128,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
             "sub_entity_id": null,
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "50a6635f-6ad6-4100-ba19-635c04ba398d",
+          "modelId": "f064739d-e592-4f95-beca-f28587a64fcd",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -202,12 +202,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "15e196f8-0931-4474-83b9-cc55b6a03b5f",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "1fbf1829-6e84-477d-908c-a1e71a942236",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "15e196f8-0931-4474-83b9-cc55b6a03b5f",
+          "modelId": "1fbf1829-6e84-477d-908c-a1e71a942236",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -235,11 +235,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -324.78244,
-                "y": -0.9299,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -273,12 +268,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "740d4c7a-f006-4aba-853b-4484850668e9",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "a4fcd1f4-e2a4-415f-aa27-18cfb290e349",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "740d4c7a-f006-4aba-853b-4484850668e9",
+          "modelId": "a4fcd1f4-e2a4-415f-aa27-18cfb290e349",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -393,12 +388,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "80306fe7-e97a-47ba-bd22-89bb716d8c12",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "02d96801-e3ac-4de8-b745-219a5b25b6f4",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "80306fe7-e97a-47ba-bd22-89bb716d8c12",
+          "modelId": "02d96801-e3ac-4de8-b745-219a5b25b6f4",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -426,11 +421,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -629.848145,
-                "y": 384.4978,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -518,12 +508,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "a4864846-60c7-4aef-8b29-e421acb4ca8a",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "3decb746-6373-4b7b-8b22-986eb9d48650",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "a4864846-60c7-4aef-8b29-e421acb4ca8a",
+          "modelId": "3decb746-6373-4b7b-8b22-986eb9d48650",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -584,12 +574,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "43bd0dc2-d8ea-417c-b458-959e067193f5",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "e71b8327-0cf7-470d-ae97-77cefb8854b8",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "43bd0dc2-d8ea-417c-b458-959e067193f5",
+          "modelId": "e71b8327-0cf7-470d-ae97-77cefb8854b8",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -659,12 +649,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "9ee3f30a-ef59-4027-8e64-220e230dfd31",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "e25ed4c7-ad8c-47cc-92d8-4d36631747a4",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "9ee3f30a-ef59-4027-8e64-220e230dfd31",
+          "modelId": "e25ed4c7-ad8c-47cc-92d8-4d36631747a4",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -692,11 +682,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -509.848145,
-                "y": 384.4978,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -784,12 +769,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "ed98d679-610b-4ad0-bb51-dd52c5155ca2",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "fb1cfbc0-5546-48f3-a405-b1bbf6a7ccc6",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "ed98d679-610b-4ad0-bb51-dd52c5155ca2",
+          "modelId": "fb1cfbc0-5546-48f3-a405-b1bbf6a7ccc6",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -850,12 +835,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "b5e088c1-d43a-40cc-ae4a-67490f111da6",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "6d622053-160b-4af3-a172-64d2546459b0",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "b5e088c1-d43a-40cc-ae4a-67490f111da6",
+          "modelId": "6d622053-160b-4af3-a172-64d2546459b0",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -925,12 +910,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "63194a1c-c7a7-4a0e-81f9-19ac0f7c62d0",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "5fab96ca-06c8-49ac-96e2-66db5ba47de9",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "63194a1c-c7a7-4a0e-81f9-19ac0f7c62d0",
+          "modelId": "5fab96ca-06c8-49ac-96e2-66db5ba47de9",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -958,11 +943,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -319.924072,
-                "y": 369.0,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -996,12 +976,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "a1952fc3-a857-4ffb-9f72-4897bef64fb9",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "1787f4a5-3b4c-4820-b29c-2a10ef511f95",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "a1952fc3-a857-4ffb-9f72-4897bef64fb9",
+          "modelId": "1787f4a5-3b4c-4820-b29c-2a10ef511f95",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -1029,11 +1009,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -319.924072,
-                "y": 199.0,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -1067,12 +1042,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "af334b78-2be6-4141-be7b-47057aa2b70e",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "1d88546e-1d41-4a2f-b059-3ba231495245",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "af334b78-2be6-4141-be7b-47057aa2b70e",
+          "modelId": "1d88546e-1d41-4a2f-b059-3ba231495245",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -1100,11 +1075,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -319.924072,
-                "y": -101.0,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
@@ -1138,12 +1108,12 @@
           "revision": 0,
           "origin": {
             "type": "Model",
-            "entry_id": "50a6635f-6ad6-4100-ba19-635c04ba398d",
-            "sub_entity_id": "7aa34a72-7e12-485d-afa2-a7e850fb3755",
+            "entry_id": "f064739d-e592-4f95-beca-f28587a64fcd",
+            "sub_entity_id": "bed9383c-1c1d-4664-a0e7-b963f38234e7",
             "root_entity_id": null,
             "replaced_model_id": null
           },
-          "modelId": "7aa34a72-7e12-485d-afa2-a7e850fb3755",
+          "modelId": "bed9383c-1c1d-4664-a0e7-b963f38234e7",
           "@components": [
             {
               "@type": "MOD.Core.UITransformComponent",
@@ -1171,11 +1141,6 @@
               },
               "UIMode": 1,
               "UIVersion": 2,
-              "Position": {
-                "x": -1027.3208,
-                "y": -5.56759644,
-                "z": 0.0
-              },
               "QuaternionRotation": {
                 "x": 0.0,
                 "y": 0.0,
